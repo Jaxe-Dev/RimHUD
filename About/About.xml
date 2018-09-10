@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ModMetaData>
+  <name>RimHUD</name>
+  <author>Jaxe</author>
+  <targetVersion>0.19.0</targetVersion>
+  <description>Mod Version: 1.0.0\n\n\nRimHUD is a mod that displays a compact window containing detailed information about a selected character or creature. The window stays up as long as a pawn is selected and provides useful information that would otherwise require scrolling through character tabs.\n\nVisual warnings will appear if a pawn has any life threatening conditions, wounds that need tending or potentially unstable mental states.</description>
+</ModMetaData>

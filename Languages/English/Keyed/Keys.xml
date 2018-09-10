@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<LanguageData>
+  <RimHUD.ToggleHud>Show HUD</RimHUD.ToggleHud>
+
+  <RimHUD.RelationKindAndFaction>{0}{1}{2}</RimHUD.RelationKindAndFaction>
+  <RimHUD.OfFaction> of {0}</RimHUD.OfFaction>
+
+  <RimHUD.Faction.Own>Our </RimHUD.Faction.Own>
+  <RimHUD.Faction.Wild>Wild </RimHUD.Faction.Wild>
+  <RimHUD.Faction.Allied>Allied </RimHUD.Faction.Allied>
+  <RimHUD.Faction.Enemy>Enemy </RimHUD.Faction.Enemy>
+  <RimHUD.Faction.Hostile>Hostile </RimHUD.Faction.Hostile>
+  <RimHUD.Faction.Independent>Independent </RimHUD.Faction.Independent>
+
+  <RimHUD.Creature.Wild>creature</RimHUD.Creature.Wild>
+  <RimHUD.Creature.Tame>tame critter</RimHUD.Creature.Tame>
+  <RimHUD.Creature.Stray>stray</RimHUD.Creature.Stray>
+  <RimHUD.Creature.Pet>pet</RimHUD.Creature.Pet>
+  <RimHUD.Creature.ExoticPet>exotic pet</RimHUD.Creature.ExoticPet>
+  <RimHUD.Creature.Predator>predator</RimHUD.Creature.Predator>
+  <RimHUD.Creature.Hunt>hunting animal</RimHUD.Creature.Hunt>
+  <RimHUD.Creature.Pack>pack animal</RimHUD.Creature.Pack>
+  <RimHUD.Creature.Farm>farm animal</RimHUD.Creature.Farm>
+  <RimHUD.Creature.Herd>herd animal</RimHUD.Creature.Herd>
+  <RimHUD.Creature.Insect>insect</RimHUD.Creature.Insect>
+  <RimHUD.Creature.Beast>beast</RimHUD.Creature.Beast>
+
+  <RimHUD.GenderAndAge>{0}{1} aged {2}</RimHUD.GenderAndAge>
+  <RimHUD.Age.Birthday> (Birthday today)</RimHUD.Age.Birthday>
+  <RimHUD.Age.Day> and one day</RimHUD.Age.Day>
+  <RimHUD.Age.Days> and {0} days</RimHUD.Age.Days>
+
+  <RimHUD.Bar.Health>Health</RimHUD.Bar.Health>
+  <RimHUD.Bar.Rest>Rest</RimHUD.Bar.Rest>
+  <RimHUD.Bar.Food>Food</RimHUD.Bar.Food>
+  <RimHUD.Bar.Recreation>Recreation</RimHUD.Bar.Recreation>
+  <RimHUD.Bar.Mood>Mood</RimHUD.Bar.Mood>
+
+  <RimHUD.Health.Dead>Dead</RimHUD.Health.Dead>
+  <RimHUD.Health.Incapacitated>Incapacitated</RimHUD.Health.Incapacitated>
+  <RimHUD.Health.Bleed>Bleeding out in {0}</RimHUD.Health.Bleed>
+  <RimHUD.Health.Tend>{0} condition needs tending</RimHUD.Health.Tend>
+  <RimHUD.Health.TendPlural>{0} conditions need tending</RimHUD.Health.TendPlural>
+  <RimHUD.Health.Threat>Has life threatening {0}</RimHUD.Health.Threat>
+  <RimHUD.Health.ThreatPlural>Has {0} life threatening conditions</RimHUD.Health.ThreatPlural>
+  <RimHUD.Health.Sick>Suffers from {0}</RimHUD.Health.Sick>
+  <RimHUD.Health.SickPlural>Suffers from {0} and {1} other conditions</RimHUD.Health.SickPlural>
+  <RimHUD.Health.Stable>In stable health</RimHUD.Health.Stable>
+
+  <RimHUD.Mood.ExtremeBreakImminent>Feeling depressed</RimHUD.Mood.ExtremeBreakImminent>
+  <RimHUD.Mood.MajorBreakImminent>Feeling unhappy</RimHUD.Mood.MajorBreakImminent>
+  <RimHUD.Mood.MinorBreakImminent>Feeling stressed</RimHUD.Mood.MinorBreakImminent>
+  <RimHUD.Mood.Happy>Feeling happy</RimHUD.Mood.Happy>
+  <RimHUD.Mood.Content>Feeling content</RimHUD.Mood.Content>
+  <RimHUD.Mood.Indifferent>Feeling indifferent</RimHUD.Mood.Indifferent>
+
+  <RimHUD.Info.Equipped>Weapon: {0}</RimHUD.Info.Equipped>
+  <RimHUD.Info.Activity>Activity: {0}</RimHUD.Info.Activity>
+
+</LanguageData>

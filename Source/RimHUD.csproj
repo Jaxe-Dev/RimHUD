@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D3159CFD-253F-4FA0-8846-1B44B1C6949B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RimHUD</RootNamespace>
+    <AssemblyName>RimHUD</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Mod.cs" />
+    <Compile Include="Data\Lang.cs" />
+    <Compile Include="Data\PawnModel.cs" />
+    <Compile Include="Data\SkillModel.cs" />
+    <Compile Include="Data\StringPlus.cs" />
+    <Compile Include="Interface\GUIPlus.cs" />
+    <Compile Include="Interface\Hud.cs" />
+    <Compile Include="Interface\HudListing.cs" />
+    <Compile Include="Interface\LetterStackPlus.cs" />
+    <Compile Include="Interface\Theme.cs" />
+    <Compile Include="Patch\Access.cs" />
+    <Compile Include="Patch\Extensions.cs" />
+    <Compile Include="Patch\RimWorld_PlaySettings_DoPlaySettingsGlobalControls.cs" />
+    <Compile Include="Patch\RimWorld_Tutor_TutorOnGUI.cs" />
+    <Compile Include="Patch\Verse_MapInterface_MapInterfaceOnGUI_AfterMainTabs.cs" />
+    <Compile Include="Patch\Verse_LetterStack_LettersOnGUI.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\.gitignore">
+      <Link>-\.gitignore</Link>
+    </Content>
+    <Content Include="..\About\About.xml">
+      <Link>-\About\About.xml</Link>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\About\ModSync.xml">
+      <Link>-\About\ModSync.xml</Link>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\Languages\English\Keyed\Keys.xml">
+      <Link>-\Languages\English\Keyed\Keys.xml</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Link>-\README.md</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimHUD", "RimHUD.csproj", "{D3159CFD-253F-4FA0-8846-1B44B1C6949B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D3159CFD-253F-4FA0-8846-1B44B1C6949B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3159CFD-253F-4FA0-8846-1B44B1C6949B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3159CFD-253F-4FA0-8846-1B44B1C6949B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3159CFD-253F-4FA0-8846-1B44B1C6949B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2CD9FDC6-1F63-4E74-B5F5-0155118A4C1F}
+	EndGlobalSection
+EndGlobal
