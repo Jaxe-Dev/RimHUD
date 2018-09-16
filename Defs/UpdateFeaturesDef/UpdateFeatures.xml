@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+
+  <HugsLib.UpdateFeatureDef Abstract="true" Name="UpdateFeatureBase">
+    <modNameReadable>RimHUD</modNameReadable>
+    <modIdentifier>RimHUD</modIdentifier>
+    <linkUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027</linkUrl>
+  </HugsLib.UpdateFeatureDef>
+
+  <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+    <defName>RimHUD_1_0_1</defName>
+    <assemblyVersion>1.0.1</assemblyVersion>
+    <content>- Added basic customization options for size and position\n\n\nTo access the settings hover over the HUD and click the gear icon at the top right.\n\nThe next customization update will focus on custom colors and textures then followed by allowing custom content.</content>
+  </HugsLib.UpdateFeatureDef>
+
+</Defs>

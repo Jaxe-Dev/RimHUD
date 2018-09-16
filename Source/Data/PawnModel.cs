@@ -23,14 +23,14 @@ namespace RimHUD.Data
 
         public bool IsAnimal => Base.RaceProps.Animal;
 
-        public float Health => Base.health?.summaryHealth?.SummaryHealthPercent ?? HudListing.DefaultNullValue;
-        public float Rest => Base.needs?.rest?.CurLevelPercentage ?? HudListing.DefaultNullValue;
-        public float Food => Base.needs?.food?.CurLevelPercentage ?? HudListing.DefaultNullValue;
-        public float Recreation => Base.needs?.joy?.CurLevelPercentage ?? HudListing.DefaultNullValue;
-        public float Mood => Base.needs?.mood?.CurLevelPercentage ?? HudListing.DefaultNullValue;
-        public float MoodThresholdMinor => Base.mindState?.mentalBreaker?.BreakThresholdMinor ?? HudListing.DefaultNullValue;
-        public float MoodThresholdMajor => Base.mindState?.mentalBreaker?.BreakThresholdMajor ?? HudListing.DefaultNullValue;
-        public float MoodThresholdExtreme => Base.mindState?.mentalBreaker?.BreakThresholdExtreme ?? HudListing.DefaultNullValue;
+        public float Health => Base.health?.summaryHealth?.SummaryHealthPercent ?? Layout.DefaultNullValue;
+        public float Rest => Base.needs?.rest?.CurLevelPercentage ?? Layout.DefaultNullValue;
+        public float Food => Base.needs?.food?.CurLevelPercentage ?? Layout.DefaultNullValue;
+        public float Recreation => Base.needs?.joy?.CurLevelPercentage ?? Layout.DefaultNullValue;
+        public float Mood => Base.needs?.mood?.CurLevelPercentage ?? Layout.DefaultNullValue;
+        public float MoodThresholdMinor => Base.mindState?.mentalBreaker?.BreakThresholdMinor ?? Layout.DefaultNullValue;
+        public float MoodThresholdMajor => Base.mindState?.mentalBreaker?.BreakThresholdMajor ?? Layout.DefaultNullValue;
+        public float MoodThresholdExtreme => Base.mindState?.mentalBreaker?.BreakThresholdExtreme ?? Layout.DefaultNullValue;
 
         public SkillModel Shooting => GetSkillModel(SkillDefOf.Shooting);
         public SkillModel Melee => GetSkillModel(SkillDefOf.Melee);
@@ -92,7 +92,7 @@ namespace RimHUD.Data
             if (Base.RaceProps.petness > 0f) { return Lang.Get("Creature.ExoticPet"); }
             if (Base.RaceProps.predator) { return Lang.Get("Creature.Hunt"); }
             if (Base.RaceProps.packAnimal) { return Lang.Get("Creature.Pack"); }
-            if ((Base.kindDef.race.tradeTags?.Contains("AnimalFarm") ?? false)) { return Lang.Get("Creature.Farm"); }
+            if (Base.kindDef.race.tradeTags?.Contains("AnimalFarm") ?? false) { return Lang.Get("Creature.Farm"); }
             if (Base.RaceProps.herdAnimal) { return Lang.Get("Creature.Herd"); }
             if (Base.kindDef.race.tradeTags?.Contains("AnimalInsect") ?? false) { return Lang.Get("Creature.Insect"); }
 
