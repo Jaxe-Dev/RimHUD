@@ -39,7 +39,10 @@
       <HintPath>..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
@@ -49,14 +52,23 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Data\Lang.cs" />
+    <Compile Include="Data\Option.cs" />
     <Compile Include="Data\PawnModel.cs" />
+    <Compile Include="Data\Persistent.cs" />
+    <Compile Include="Data\RangeOption.cs" />
     <Compile Include="Data\SkillModel.cs" />
     <Compile Include="Data\StringPlus.cs" />
+    <Compile Include="Interface\Dialog_Alert.cs" />
+    <Compile Include="Interface\Dialog_Config.cs" />
     <Compile Include="Interface\GUIPlus.cs" />
     <Compile Include="Interface\Hud.cs" />
-    <Compile Include="Interface\HudListing.cs" />
+    <Compile Include="Interface\HudLayout.cs" />
+    <Compile Include="Interface\Layout.cs" />
     <Compile Include="Interface\LetterStackPlus.cs" />
+    <Compile Include="Interface\ListingPlus.cs" />
+    <Compile Include="Interface\TextStyle.cs" />
     <Compile Include="Interface\Theme.cs" />
+    <Compile Include="Interface\WindowPlus.cs" />
     <Compile Include="Patch\Access.cs" />
     <Compile Include="Patch\Extensions.cs" />
     <Compile Include="Patch\RimWorld_PlaySettings_DoPlaySettingsGlobalControls.cs" />
@@ -75,6 +87,9 @@
     <Content Include="..\About\ModSync.xml">
       <Link>-\About\ModSync.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\Defs\UpdateFeaturesDef\UpdateFeatures.xml">
+      <Link>-\Defs\UpdateFeaturesDefs\UpdateFeatures.xml</Link>
     </Content>
     <Content Include="..\Languages\English\Keyed\Keys.xml">
       <Link>-\Languages\English\Keyed\Keys.xml</Link>
