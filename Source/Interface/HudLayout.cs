@@ -7,9 +7,6 @@ namespace RimHUD.Interface
 {
     internal class HudLayout : Layout
     {
-        private const float BarLabelWidth = 50f;
-        private const float SkillLabelWidth = 80f;
-        private const float SkillValueWidth = 40f;
         public HudLayout() : base(Theme.RegularTextStyle)
         { }
 
@@ -27,11 +24,11 @@ namespace RimHUD.Interface
         {
             if (barPercent < 0f) { return false; }
 
-            Next(BarLabelWidth);
+            Next(Theme.LabelWidth.Value);
             DrawLabel(label);
 
             PadRight();
-            Next(-(SkillValueWidth + DefaultPadding));
+            Next(-(Theme.ValueWidth.Value + DefaultPadding));
             DrawBar(barPercent);
 
             PadRight();
@@ -46,11 +43,11 @@ namespace RimHUD.Interface
         {
             if (barPercent < 0f) { return false; }
 
-            Next(BarLabelWidth);
+            Next(Theme.LabelWidth.Value);
             DrawLabel(label);
 
             PadRight();
-            Next(-(SkillValueWidth + DefaultPadding));
+            Next(-(Theme.ValueWidth.Value + DefaultPadding));
             DrawBar(barPercent);
             DrawThreshold(thresholdMinor, Theme.MentalThresholdMinor);
             DrawThreshold(thresholdMajor, Theme.MentalThresholdMajor);
@@ -74,19 +71,22 @@ namespace RimHUD.Interface
 
         private void DrawLabelledSkill(SkillModel skill)
         {
-            Next(SkillLabelWidth);
+            Next(Theme.LabelWidth.Value);
             DrawLabel(skill.Label, skill.Color);
 
-            Next(SkillValueWidth);
+            Next(Theme.ValueWidth.Value);
             DrawLabel(skill.Level, skill.Color);
         }
 
-        public bool DrawSkillPair(SkillModel left, SkillModel right)
+        public bool DrawSkillPair(SkillModel left, SkillModel right) => DrawSkillPairing(left, right, false);
+        public bool DrawSkillPairFilled(SkillModel left, SkillModel right) => DrawSkillPairing(left, right, true);
+
+        private bool DrawSkillPairing(SkillModel left, SkillModel right, bool fill)
         {
             if (!left.Disabled)
             {
                 DrawLabelledSkill(left);
-                PadRight(Mathf.Max(RemainingWidth - (SkillLabelWidth + SkillValueWidth), 0f));
+                PadRight(fill ? Mathf.Max(RemainingWidth - (Theme.LabelWidth.Value + Theme.ValueWidth.Value), 0f) : DefaultPadding);
             }
 
             if (!right.Disabled) { DrawLabelledSkill(right); }

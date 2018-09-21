@@ -7,7 +7,7 @@ namespace RimHUD.Interface
     {
         public const float DefaultPadding = 2f;
         public const float DefaultLinePadding = 5f;
-        public const float DefaultNullValue = -1f;
+        public const float NullValue = -1f;
 
         protected readonly TextStyle DefaultStyle;
 
@@ -30,9 +30,9 @@ namespace RimHUD.Interface
             CurY = bounds.y;
         }
 
-        public void Next(TextStyle style, float width = DefaultNullValue) => Next(width, style.LineHeight);
+        public void Next(TextStyle style, float width = NullValue) => Next(width, style.LineHeight);
 
-        public void Next(float width = DefaultNullValue, float height = DefaultNullValue)
+        public void Next(float width = NullValue, float height = NullValue)
         {
             var newWidth = width < 0f ? RemainingWidth + width : width;
             var newHeight = height < 0f ? (_largestHeight < 0f ? DefaultStyle.LineHeight : _largestHeight) : height;

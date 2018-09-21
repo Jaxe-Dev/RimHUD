@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
@@ -51,30 +53,53 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mod.cs" />
+    <Compile Include="Data\BoolOption.cs" />
     <Compile Include="Data\Lang.cs" />
-    <Compile Include="Data\Option.cs" />
     <Compile Include="Data\PawnModel.cs" />
     <Compile Include="Data\Persistent.cs" />
     <Compile Include="Data\RangeOption.cs" />
     <Compile Include="Data\SkillModel.cs" />
+    <Compile Include="Data\State.cs" />
     <Compile Include="Data\StringPlus.cs" />
+    <Compile Include="Data\ThemeOption.cs" />
+    <Compile Include="Integration\Bubbles.cs" />
+    <Compile Include="Integration\HugsLib.cs" />
+    <Compile Include="Integration\Union.cs" />
+    <Compile Include="Integration\PawnRules.cs" />
     <Compile Include="Interface\Dialog_Alert.cs" />
     <Compile Include="Interface\Dialog_Config.cs" />
     <Compile Include="Interface\GUIPlus.cs" />
-    <Compile Include="Interface\Hud.cs" />
+    <Compile Include="Interface\HudDocked.cs" />
+    <Compile Include="Interface\HudFloating.cs" />
     <Compile Include="Interface\HudLayout.cs" />
+    <Compile Include="Interface\InspectPanePlus.cs" />
     <Compile Include="Interface\Layout.cs" />
     <Compile Include="Interface\LetterStackPlus.cs" />
     <Compile Include="Interface\ListingPlus.cs" />
+    <Compile Include="Interface\Tab.cs" />
+    <Compile Include="Interface\Tab_ConfigColors.cs" />
+    <Compile Include="Interface\Tab_ConfigContent.cs" />
+    <Compile Include="Interface\Tab_ConfigDesign.cs" />
+    <Compile Include="Interface\Tab_ConfigIntegration.cs" />
+    <Compile Include="Interface\TabManager.cs" />
     <Compile Include="Interface\TextStyle.cs" />
     <Compile Include="Interface\Theme.cs" />
     <Compile Include="Interface\WindowPlus.cs" />
     <Compile Include="Patch\Access.cs" />
     <Compile Include="Patch\Extensions.cs" />
+    <Compile Include="Patch\RimWorld_InspectPaneFiller_DoPaneContentsFor.cs" />
+    <Compile Include="Patch\RimWorld_InspectPaneUtility_DoTabs.cs" />
+    <Compile Include="Patch\RimWorld_InspectPaneUtility_InspectPaneOnGUI.cs" />
+    <Compile Include="Patch\RimWorld_InspectPaneUtility_PaneSizeFor.cs" />
+    <Compile Include="Patch\RimWorld_InspectPaneUtility_PaneWidthFor.cs" />
+    <Compile Include="Patch\RimWorld_ITab_PaneTopY.cs" />
+    <Compile Include="Patch\RimWorld_MainTabWindow_Inspect_DoInspectPaneButtons.cs" />
+    <Compile Include="Patch\RimWorld_MainTabWindow_Inspect_PaneTopY.cs" />
     <Compile Include="Patch\RimWorld_PlaySettings_DoPlaySettingsGlobalControls.cs" />
     <Compile Include="Patch\RimWorld_Tutor_TutorOnGUI.cs" />
-    <Compile Include="Patch\Verse_MapInterface_MapInterfaceOnGUI_AfterMainTabs.cs" />
     <Compile Include="Patch\Verse_LetterStack_LettersOnGUI.cs" />
+    <Compile Include="Patch\Verse_MapInterface_MapInterfaceOnGUI_AfterMainTabs.cs" />
+    <Compile Include="Patch\Verse_Profile_MemoryUtility_ClearAllMapsAndWorld.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\.gitignore">
@@ -91,8 +116,19 @@
     <Content Include="..\Defs\UpdateFeaturesDef\UpdateFeatures.xml">
       <Link>-\Defs\UpdateFeaturesDefs\UpdateFeatures.xml</Link>
     </Content>
-    <Content Include="..\Languages\English\Keyed\Keys.xml">
-      <Link>-\Languages\English\Keyed\Keys.xml</Link>
+    <Content Include="..\Languages\English\Keyed\Base.xml">
+      <Link>-\Languages\English\Keyed\Base.xml</Link>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\Languages\English\Keyed\Integration.xml">
+      <Link>-\Languages\English\Keyed\Integration.xml</Link>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\Languages\English\Keyed\Model.xml">
+      <Link>-\Languages\English\Keyed\Model.xml</Link>
+    </Content>
+    <Content Include="..\Languages\English\Keyed\Theme.xml">
+      <Link>-\Languages\English\Keyed\Theme.xml</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>

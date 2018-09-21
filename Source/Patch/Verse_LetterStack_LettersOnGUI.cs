@@ -1,12 +1,13 @@
 ﻿using Harmony;
+using RimHUD.Data;
 using RimHUD.Interface;
 using Verse;
 
 namespace RimHUD.Patch
 {
-    [HarmonyPatch(typeof(LetterStack), "LettersOnGUI", typeof(float))]
+    [HarmonyPatch(typeof(LetterStack), "LettersOnGUI")]
     internal static class Verse_LetterStack_LettersOnGUI
     {
-        private static bool Prefix(float baseY) => LetterStackPlus.DrawLetters(baseY);
+        private static bool Prefix(float baseY) => !State.AltLetters || LetterStackPlus.DrawLetters(baseY);
     }
 }

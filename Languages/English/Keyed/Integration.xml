@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<LanguageData>
+
+  <RimHUD.Integration.GetMod>Link to mod</RimHUD.Integration.GetMod>
+
+  <RimHUD.Integration.PawnRules>Pawn Rules</RimHUD.Integration.PawnRules>
+
+  <RimHUD.InspectPane.PawnRules.RuleNameFormat>Rules: {0}</RimHUD.InspectPane.PawnRules.RuleNameFormat>
+  <RimHUD.Theme.PawnRules.InspectPaneAddRules>Show Rules</RimHUD.Theme.PawnRules.InspectPaneAddRules>
+
+  <RimHUD.Theme.PawnRules.HideGizmo>Hide Gizmo</RimHUD.Theme.PawnRules.HideGizmo>
+  <RimHUD.Theme.PawnRules.HideGizmoDesc>Disables the rules gizmo that appears next to the draft button as RimHUD adds a rules button in the inspect pane.</RimHUD.Theme.PawnRules.HideGizmoDesc>
+
+  <RimHUD.Integration.Bubbles>Interaction Bubbles</RimHUD.Integration.Bubbles>
+  <RimHUD.Theme.Bubbles.FadeStart>Ticks to start fade</RimHUD.Theme.Bubbles.FadeStart>
+  <RimHUD.Theme.Bubbles.FadeTime>Ticks to fade</RimHUD.Theme.Bubbles.FadeTime>
+  <RimHUD.Theme.Bubbles.Width>Bubble Width</RimHUD.Theme.Bubbles.Width>
+  <RimHUD.Theme.Bubbles.Padding>Bubble Padding</RimHUD.Theme.Bubbles.Padding>
+  <RimHUD.Theme.Bubbles.MaxPerPawn>Maximum per pawn</RimHUD.Theme.Bubbles.MaxPerPawn>
+
+</LanguageData>

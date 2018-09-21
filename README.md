@@ -1,13 +1,13 @@
 # RimHUD
-![](https://img.shields.io/badge/Mod_Version-1.0.1-blue.svg)
+![](https://img.shields.io/badge/Mod_Version-1.1.0-blue.svg)
 ![](https://img.shields.io/badge/Built_for_RimWorld-B19-blue.svg)
 ![](https://img.shields.io/badge/Powered_by_Harmony-1.2.0.1-blue.svg)
 
-[Link to Steam Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=1503185309)
+[Link to Steam Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027)
 
 ---
 
-RimHUD is a mod that displays a compact window containing detailed information about a selected character or creature. The window stays up as long as a pawn is selected and provides useful information that would otherwise require scrolling through character tabs.
+RimHUD is a UI mod that displays a detailed information about a selected character or creature. The HUD display is integrated into the inspect pane which can be resized to fit the additional information. Alternatively the HUD can a separate floating window and docked to any position on the screen.
 
 Visual warnings will appear if a pawn has any life threatening conditions, has wounds that need tending or is close to a mental breakdown.
 
@@ -19,9 +19,20 @@ Visual warnings will appear if a pawn has any life threatening conditions, has w
 ---
 
 The following base methods are patched with Harmony:
-```C#
+```
+Prefix* : RimWorld.InspectPaneFiller.DoPaneContentsFor
+Prefix* : RimWorld.InspectPaneUtility.DoTabs
+Prefix* : RimWorld.InspectPaneUtility.InspectPaneOnGUI
+Prefix* : RimWorld.InspectPaneUtility.PaneSizeFor
+Postfix : RimWorld.InspectPaneUtility.PaneWidthFor
+Prefix* : RimWorld.ITab.PaneTopY
+Postfix : RimWorld.MainTabWindow.Inspect_DoInspectPaneButtons
+Prefix* : RimWorld.MainTabWindow_Inspect.PaneTopY
 Postfix : RimWorld.PlaySettings.DoPlaySettingsGlobalControls
-Prefix  : RimWorld.Tutor.TutorOnGUI
-Prefix  : Verse.LetterStack.LettersOnGUI
-Postfix : Verse.MapInterface.MapInterfaceOnGUI_BeforeMainTabs
+Prefix* : RimWorld.Tutor.TutorOnGUI
+Prefix* : Verse.LetterStack.LettersOnGUI
+Prefix  : Verse.MapInterface.MapInterfaceOnGUI_AfterMainTabs
+Prefix  : Verse.Profile.MemoryUtility.ClearAllMapsAndWorld
+
+A prefix marked by a * means it in some circumstances it will bypass the original method**
 ```

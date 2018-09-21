@@ -1,4 +1,6 @@
-﻿using RimHUD.Patch;
+﻿using System.Collections.Generic;
+using RimHUD.Patch;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -14,16 +16,18 @@ namespace RimHUD.Interface
         private const float LetterHeight = 30f;
         private const float AlertHeight = 28f;
 
+        private static List<Alert> GetActiveAlerts() => (List<Alert>) Access.Field_RimWorld_AlertsReadout_ActiveAlerts.GetValue(((UIRoot_Play) Find.UIRoot).alerts);
+        private static List<Letter> GetLetters() => (List<Letter>) Access.Field_Verse_LetterStack_Letters.GetValue(Find.LetterStack);
+        private static void SetLastTopYInt(float value) => Access.Field_Verse_LetterStack_LastTopYInt.SetValue(Find.LetterStack, value);
+
         public static bool DrawLetters(float baseY)
         {
-            if (!Hud.Activated || !Theme.LetterCompress) { return true; }
-
-            var letters = Access.Field_Verse_LetterStack_Letters_Get();
+            var letters = GetLetters();
             if (letters.Count == 0) { return true; }
 
-            var alertsHeight = Access.Field_RimWorld_AlertsReadout_ActiveAlerts_Get().Count * AlertHeight;
+            var alertsHeight = GetActiveAlerts().Count * AlertHeight;
 
-            var hudRect = Hud.Bounds.ExpandedBy(HudPadding);
+            var hudRect = HudFloating.Bounds.ExpandedBy(HudPadding);
             var regularLettersHeight = letters.Count * (LetterHeight + Theme.LetterPadding.Value);
             var controlsHeight = regularLettersHeight + alertsHeight;
             var controlsRect = new Rect(UI.screenWidth - ControlsWidth, baseY - controlsHeight, ControlsWidth, controlsHeight);
@@ -42,7 +46,7 @@ namespace RimHUD.Interface
                 curY += letterHeightCompressed;
             }
 
-            Access.Field_Verse_LetterStack_LastTopYInt_Set(topY);
+            SetLastTopYInt(topY);
             return false;
         }
     }

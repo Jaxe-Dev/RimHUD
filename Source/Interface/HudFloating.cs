@@ -5,20 +5,14 @@ using Verse;
 
 namespace RimHUD.Interface
 {
-    internal static class Hud
+    internal static class HudFloating
     {
-        private const float Padding = 4f;
+        private const float Padding = 8f;
 
         public static Rect Bounds => Theme.GetHudBounds();
 
-        public static bool Activated { get; set; } = true;
-        public static bool Visible => Activated && IsReady && (PawnModel.Selected != null);
-        public static bool IsReady => Activated && (Current.Game != null) && (Current.Game.CurrentMap != null);
-
         public static void OnGUI()
         {
-            if (!IsReady) { return; }
-
             var model = PawnModel.Selected;
             if (model == null) { return; }
 
@@ -32,7 +26,7 @@ namespace RimHUD.Interface
 
         private static void Draw(Rect bounds, PawnModel model)
         {
-            GUIPlus.DrawBackground(bounds);
+            Widgets.DrawWindowBackground(bounds);
             var inner = bounds.ContractedBy(Padding);
             var mouseOver = Mouse.IsOver(inner);
 
@@ -53,12 +47,12 @@ namespace RimHUD.Interface
             var usesHealth = l.DrawLabelledBar(Lang.Get("Bar.Health"), model.Health);
 
             var healthCondition = model.HealthCondition;
-            if (healthCondition != null) { l.DrawDescriptionRow(healthCondition?.Text ?? null, healthCondition?.Color); }
+            if (healthCondition != null) { l.DrawDescriptionRow(healthCondition.Text, healthCondition.Color); }
             if (usesHealth || (healthCondition != null)) { l.PadLine(); }
 
             var usesMood = l.DrawMoodBar(Lang.Get("Bar.Mood"), model.Mood, model.MoodThresholdMinor, model.MoodThresholdMajor, model.MoodThresholdExtreme);
             var mentalCondition = model.MentalCondition;
-            if (mentalCondition != null) { l.DrawDescriptionRow(mentalCondition?.Text ?? null, mentalCondition?.Color); }
+            if (mentalCondition != null) { l.DrawDescriptionRow(mentalCondition.Text, mentalCondition.Color); }
             if (usesMood || (mentalCondition != null)) { l.PadLine(); }
 
             var usesOtherNeeds = l.DrawLabelledBar(Lang.Get("Bar.Rest"), model.Rest);
@@ -66,12 +60,12 @@ namespace RimHUD.Interface
             usesOtherNeeds |= l.DrawLabelledBar(Lang.Get("Bar.Recreation"), model.Recreation);
             if (usesOtherNeeds) { l.PadLine(); }
 
-            var usesSkills = l.DrawSkillPair(model.Shooting, model.Melee);
-            usesSkills |= l.DrawSkillPair(model.Construction, model.Mining);
-            usesSkills |= l.DrawSkillPair(model.Cooking, model.Medicine);
-            usesSkills |= l.DrawSkillPair(model.Plants, model.Animals);
-            usesSkills |= l.DrawSkillPair(model.Crafting, model.Artistic);
-            usesSkills |= l.DrawSkillPair(model.Social, model.Intellectual);
+            var usesSkills = l.DrawSkillPairFilled(model.Shooting, model.Melee);
+            usesSkills |= l.DrawSkillPairFilled(model.Construction, model.Mining);
+            usesSkills |= l.DrawSkillPairFilled(model.Cooking, model.Medicine);
+            usesSkills |= l.DrawSkillPairFilled(model.Plants, model.Animals);
+            usesSkills |= l.DrawSkillPairFilled(model.Crafting, model.Artistic);
+            usesSkills |= l.DrawSkillPairFilled(model.Social, model.Intellectual);
             if (usesSkills) { l.PadLine(); }
 
             var equipped = model.Equipped;

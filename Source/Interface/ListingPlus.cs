@@ -12,17 +12,28 @@ namespace RimHUD.Interface
         private const float ValueWidth = 100f;
         private const float ElementPadding = 1f;
 
+        private static readonly Color LinkColor = new Color(0.3f, 0.7f, 1f);
         private static readonly Regex RangeSliderEntryRegex = new Regex(@"^[-]?\d{0,4}$");
 
-        public void Label(string label, string tooltip = null, GameFont? font = null, Color? color = null)
+        public bool Label(string label, string tooltip = null, GameFont? font = null, Color? color = null, bool highlight = false)
         {
             GUIPlus.SetFont(font);
             GUIPlus.SetColor(color);
 
-            base.Label(label, tooltip: tooltip);
+            var rect = GetRect(Text.CalcHeight(label, ColumnWidth));
+            Widgets.Label(rect, label);
+            GUIPlus.DrawTooltip(rect, tooltip, highlight);
+            Gap(verticalSpacing);
 
             GUIPlus.ResetColor();
             GUIPlus.ResetFont();
+
+            return Widgets.ButtonInvisible(rect);
+        }
+
+        public void LinkLabel(string label, string url, string tooltip = null)
+        {
+            if (Label(label, tooltip, GameFont.Tiny, LinkColor, true)) { Application.OpenURL(url); }
         }
 
         public void TextStyleEditor(TextStyle style, bool enabled = true)
@@ -33,6 +44,13 @@ namespace RimHUD.Interface
             RangeSlider(style.Size, enabled);
             RangeSlider(style.Height, enabled);
 
+            GUIPlus.ResetColor();
+        }
+
+        public void BoolToggle(BoolOption option, bool enabled = true)
+        {
+            GUIPlus.SetEnabledColor(enabled);
+            option.Value = CheckboxLabeled(option.Label, option.Value, option.Tooltip, enabled);
             GUIPlus.ResetColor();
         }
 
@@ -48,7 +66,7 @@ namespace RimHUD.Interface
             var value = Mathf.RoundToInt(Widgets.HorizontalSlider(grid[3], range.Value, range.Min, range.Max, true));
             if (enabled) { range.Value = value; }
 
-            GUIPlus.DrawTooltip(grid[0], range.Tooltip);
+            GUIPlus.DrawTooltip(grid[0], range.Tooltip, true);
             Gap(verticalSpacing);
 
             GUIPlus.ResetColor();
@@ -95,7 +113,7 @@ namespace RimHUD.Interface
             }
             if (Widgets.ButtonInvisible(grid[3])) { GUI.FocusControl(sliderName); }
 
-            GUIPlus.DrawTooltip(grid[0], range.Tooltip);
+            GUIPlus.DrawTooltip(grid[0], range.Tooltip, true);
             Gap(verticalSpacing);
 
             GUIPlus.ResetColor();
@@ -104,10 +122,11 @@ namespace RimHUD.Interface
         public bool CheckboxLabeled(string label, bool value, string tooltip = null, bool enabled = true)
         {
             GUIPlus.SetEnabledColor(enabled);
+            var previous = value;
             CheckboxLabeled(label, ref value, tooltip);
             GUIPlus.ResetColor();
 
-            return value;
+            return enabled ? value : previous;
         }
     }
 }

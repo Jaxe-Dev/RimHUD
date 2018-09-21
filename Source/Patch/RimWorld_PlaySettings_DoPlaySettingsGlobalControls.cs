@@ -6,16 +6,16 @@ using Verse;
 
 namespace RimHUD.Patch
 {
-    [HarmonyPatch(typeof(PlaySettings), "DoPlaySettingsGlobalControls", typeof(WidgetRow), typeof(bool))]
+    [HarmonyPatch(typeof(PlaySettings), "DoPlaySettingsGlobalControls")]
     internal static class RimWorld_PlaySettings_DoPlaySettingsGlobalControls
     {
         private static void Postfix(WidgetRow row, bool worldView)
         {
             if (worldView || (row == null)) { return; }
 
-            var showHud = Hud.Activated;
+            var showHud = State.Activated;
             row.ToggleableIcon(ref showHud, Theme.ToggleIcon, Lang.Get("ToggleHud"), SoundDefOf.Mouseover_ButtonToggle);
-            Hud.Activated = showHud;
+            State.Activated = showHud;
         }
     }
 }
