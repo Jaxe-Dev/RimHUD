@@ -19,6 +19,8 @@ Visual warnings will appear if a pawn has any life threatening conditions, has w
 
 ---
 
+**Translators**: Save your energy for now as there are a few upcoming updates that may add, remove or modify the key names and strings.
+
 The following base methods are patched with Harmony:
 ```
 Prefix* : RimWorld.InspectPaneFiller.DoPaneContentsFor
@@ -35,5 +37,5 @@ Prefix* : Verse.LetterStack.LettersOnGUI
 Prefix  : Verse.MapInterface.MapInterfaceOnGUI_AfterMainTabs
 Prefix  : Verse.Profile.MemoryUtility.ClearAllMapsAndWorld
 
-A prefix marked by a * means it in some circumstances it will bypass the original method**
+A prefix marked by a * means it in some circumstances it will bypass the original method
 ```
