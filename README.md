@@ -21,6 +21,8 @@ Visual warnings will appear if a pawn has any life threatening conditions, has w
 
 **Translators**: Save your energy for now as there are a few upcoming updates that may add, remove or modify the key names and strings.
 
+---
+
 The following base methods are patched with Harmony:
 ```
 Prefix* : RimWorld.InspectPaneFiller.DoPaneContentsFor
