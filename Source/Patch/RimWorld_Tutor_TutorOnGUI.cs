@@ -1,13 +1,12 @@
-﻿using System;
-using Harmony;
-using RimHUD.Interface;
+﻿using Harmony;
+using RimHUD.Data;
 using RimWorld;
 
 namespace RimHUD.Patch
 {
-    [HarmonyPatch(typeof(Tutor), "TutorOnGUI", new Type[] { })]
+    [HarmonyPatch(typeof(Tutor), "TutorOnGUI")]
     internal static class RimWorld_Tutor_TutorOnGUI
     {
-        private static bool Prefix() => !Hud.Visible;
+        private static bool Prefix() => !State.HudFloatingVisible;
     }
 }

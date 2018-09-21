@@ -7,12 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimHUD", "RimHUD.csproj", "
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D3159CFD-253F-4FA0-8846-1B44B1C6949B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3159CFD-253F-4FA0-8846-1B44B1C6949B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3159CFD-253F-4FA0-8846-1B44B1C6949B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3159CFD-253F-4FA0-8846-1B44B1C6949B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

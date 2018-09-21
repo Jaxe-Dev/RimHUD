@@ -23,14 +23,15 @@ namespace RimHUD.Data
 
         public bool IsAnimal => Base.RaceProps.Animal;
 
-        public float Health => Base.health?.summaryHealth?.SummaryHealthPercent ?? Layout.DefaultNullValue;
-        public float Rest => Base.needs?.rest?.CurLevelPercentage ?? Layout.DefaultNullValue;
-        public float Food => Base.needs?.food?.CurLevelPercentage ?? Layout.DefaultNullValue;
-        public float Recreation => Base.needs?.joy?.CurLevelPercentage ?? Layout.DefaultNullValue;
-        public float Mood => Base.needs?.mood?.CurLevelPercentage ?? Layout.DefaultNullValue;
-        public float MoodThresholdMinor => Base.mindState?.mentalBreaker?.BreakThresholdMinor ?? Layout.DefaultNullValue;
-        public float MoodThresholdMajor => Base.mindState?.mentalBreaker?.BreakThresholdMajor ?? Layout.DefaultNullValue;
-        public float MoodThresholdExtreme => Base.mindState?.mentalBreaker?.BreakThresholdExtreme ?? Layout.DefaultNullValue;
+        public float Health => Base.health?.summaryHealth?.SummaryHealthPercent ?? Layout.NullValue;
+        public float Rest => Base.needs?.rest?.CurLevelPercentage ?? Layout.NullValue;
+        public float Food => Base.needs?.food?.CurLevelPercentage ?? Layout.NullValue;
+        public float Recreation => Base.needs?.joy?.CurLevelPercentage ?? Layout.NullValue;
+        public float Mood => Base.needs?.mood?.CurLevelPercentage ?? Layout.NullValue;
+        public float MoodThresholdMinor => Base.mindState?.mentalBreaker?.BreakThresholdMinor ?? Layout.NullValue;
+        public float MoodThresholdMajor => Base.mindState?.mentalBreaker?.BreakThresholdMajor ?? Layout.NullValue;
+        public float MoodThresholdExtreme => Base.mindState?.mentalBreaker?.BreakThresholdExtreme ?? Layout.NullValue;
+        public bool HasNeeds => Base.needs != null;
 
         public SkillModel Shooting => GetSkillModel(SkillDefOf.Shooting);
         public SkillModel Melee => GetSkillModel(SkillDefOf.Melee);
@@ -52,8 +53,8 @@ namespace RimHUD.Data
 
         private static PawnModel GetSelected()
         {
-            if ((Current.Game == null) || !(Find.Selector.SingleSelectedThing is Pawn pawn)) { return null; }
-            return pawn == null ? null : new PawnModel(pawn);
+            var selected = State.SelectedPawn;
+            return selected == null ? null : new PawnModel(selected);
         }
 
         private SkillModel GetSkillModel(SkillDef def) => new SkillModel(Base, def);
@@ -148,7 +149,7 @@ namespace RimHUD.Data
 
         private StringPlus GetLifeThreateningWarning()
         {
-            var threats = Base.health.hediffSet.hediffs.Where(hediff => hediff.CurStage?.lifeThreatening ?? false);
+            var threats = Base.health.hediffSet.hediffs.Where(hediff => hediff.CurStage?.lifeThreatening ?? false).ToArray();
             var count = threats.Count();
             if (count == 0) { return null; }
 
@@ -160,7 +161,7 @@ namespace RimHUD.Data
 
         private StringPlus GetSicknessWarning()
         {
-            var sicknesses = Base.health.hediffSet.hediffs.Where(hediff => hediff.def.makesSickThought);
+            var sicknesses = Base.health.hediffSet.hediffs.Where(hediff => hediff.def.makesSickThought).ToArray();
             var count = sicknesses.Count();
             if (count == 0) { return null; }
 
@@ -199,7 +200,7 @@ namespace RimHUD.Data
             return StringPlus.Create(inspiration, Theme.ExcellentColor);
         }
 
-        private StringPlus GetMentalCondition() => Base.needs.mood == null ? null : (GetInspiration() ?? GetMindState());
+        private StringPlus GetMentalCondition() => Base.needs?.mood == null ? null : (GetInspiration() ?? GetMindState());
 
         private string GetEquipped()
         {

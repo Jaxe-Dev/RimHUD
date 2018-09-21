@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.IO;
 using Harmony;
 using RimHUD.Data;
+using RimHUD.Integration;
 using RimWorld;
 using Verse;
 
@@ -14,7 +12,7 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.0.1";
+        public const string Version = "1.1.0";
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
         public static bool FirstTimeUser { get; }
@@ -26,21 +24,11 @@ namespace RimHUD
             FirstTimeUser = !ConfigDirectory.Exists;
             ConfigDirectory.Create();
 
-            //if (!FirstTimeUser) { TryRegisterHugsLibUpdateFeature(); }
-            TryRegisterHugsLibUpdateFeature(); // FOR THIS VERSION ONLY
-
             Persistent.Load();
 
+            if (!FirstTimeUser) { HugsLib.RegisterUpdateFeature(); }
+
             Log("Initialized");
-        }
-
-        private static void TryRegisterHugsLibUpdateFeature()
-        {
-            var hugsLib = (from assembly in AppDomain.CurrentDomain.GetAssemblies() from type in assembly.GetTypes() where type.Name == "HugsLibController" select type).FirstOrDefault();
-            if (hugsLib == null) { return; }
-
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            Traverse.Create(hugsLib).Field("instance")?.Property("UpdateFeatures")?.Method("InspectActiveMod", Id, version)?.GetValue();
         }
 
         public static void Log(string message) => Verse.Log.Message(PrefixMessage(message));

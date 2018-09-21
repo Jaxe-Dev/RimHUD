@@ -2,13 +2,6 @@
 
 <LanguageData>
 
-  <RimHUD.ToggleHud>Show HUD</RimHUD.ToggleHud>
-  <RimHUD.Button.OK>OK</RimHUD.Button.OK>
-  <RimHUD.Button.Yes>Yes</RimHUD.Button.Yes>
-  <RimHUD.Button.No>No</RimHUD.Button.No>
-  <RimHUD.Button.Cancel>Cancel</RimHUD.Button.Cancel>
-  <RimHUD.Button.Close>Close</RimHUD.Button.Close>
-
   <RimHUD.RelationKindAndFaction>{0}{1}{2}</RimHUD.RelationKindAndFaction>
   <RimHUD.OfFaction> of {0}</RimHUD.OfFaction>
 
@@ -63,34 +56,5 @@
 
   <RimHUD.Info.Equipped>Weapon: {0}</RimHUD.Info.Equipped>
   <RimHUD.Info.Activity>Activity: {0}</RimHUD.Info.Activity>
-
-  <RimHUD.Dialog_Config.Title>RimHUD</RimHUD.Dialog_Config.Title>
-  <RimHUD.Dialog_Config.SetToDefault>Use Default</RimHUD.Dialog_Config.SetToDefault>
-
-  <RimHUD.Theme.HudDimensions>HUD Dimensions</RimHUD.Theme.HudDimensions>
-  <RimHUD.Theme.HudWidth>Width</RimHUD.Theme.HudWidth>
-  <RimHUD.Theme.HudHeight>Height</RimHUD.Theme.HudHeight>
-  <RimHUD.Theme.HudAnchor>Anchor</RimHUD.Theme.HudAnchor>
-  <RimHUD.Theme.HudAnchors>Top Left|Top Center|Top Right|Center Left|Center|Center Right|Bottom Left|Bottom Center|Bottom Right</RimHUD.Theme.HudAnchors>
-  <RimHUD.Theme.HudOffset>HUD Offset</RimHUD.Theme.HudOffset>
-  <RimHUD.Theme.HudOffsetX>X</RimHUD.Theme.HudOffsetX>
-  <RimHUD.Theme.HudOffsetY>Y</RimHUD.Theme.HudOffsetY>
-
-  <RimHUD.Theme.TextOptions>Text Options</RimHUD.Theme.TextOptions>
-
-  <RimHUD.Theme.TextStyleRegular>Regular Text</RimHUD.Theme.TextStyleRegular>
-  <RimHUD.Theme.TextStyleLarge>Header Text</RimHUD.Theme.TextStyleLarge>
-  <RimHUD.Theme.TextStyleSmall>Description Text</RimHUD.Theme.TextStyleSmall>
-
-  <RimHUD.Theme.OtherOptions>Other Options</RimHUD.Theme.OtherOptions>
-  <RimHUD.Theme.LetterPadding>Letter Padding</RimHUD.Theme.LetterPadding>
-  <RimHUD.Theme.LetterPaddingDesc>Changes the distance between the letter notifications that appear on the right side of the screen. Vanilla: 12</RimHUD.Theme.LetterPaddingDesc>
-  <RimHUD.Theme.LetterCompress>Compress Notifications</RimHUD.Theme.LetterCompress>
-  <RimHUD.Theme.LetterCompressDesc>Will compress any letters and alerts on the right side of the screen if they overlap with the HUD.</RimHUD.Theme.LetterCompressDesc>
-
-  <RimHUD.TextStyle.Size>Size</RimHUD.TextStyle.Size>
-  <RimHUD.TextStyle.Height>Height</RimHUD.TextStyle.Height>
-
-  <RimHUD.Alert.SetToDefault>Are you sure you want to revert these settings to default?</RimHUD.Alert.SetToDefault>
 
 </LanguageData>

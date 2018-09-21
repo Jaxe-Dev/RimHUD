@@ -29,7 +29,10 @@ namespace RimHUD.Interface
 
             var wrap = Text.WordWrap;
             Text.WordWrap = true;
-            InitialSize = new Vector2(400f, 72f + Text.CalcHeight(_message, 364f));
+
+            GUIPlus.SetFont(GameFont.Small);
+            InitialSize = new Vector2(400f, 80f + Text.CalcHeight(_message, 364f));
+            GUIPlus.ResetFont();
             Text.WordWrap = wrap;
         }
 
