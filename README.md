@@ -3,7 +3,7 @@
 ![](https://img.shields.io/badge/Built_for_RimWorld-B19-blue.svg)
 ![](https://img.shields.io/badge/Powered_by_Harmony-1.2.0.1-blue.svg)
 
-[Link to Steam Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027)
+[Link to Steam Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027)\
 [Link to Ludeon Forum thread](https://ludeon.com/forums/index.php?topic=45787.0)
 
 ---
