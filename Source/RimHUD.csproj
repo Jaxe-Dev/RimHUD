@@ -83,6 +83,7 @@
     <Compile Include="Interface\Tab_ConfigIntegration.cs" />
     <Compile Include="Interface\TabManager.cs" />
     <Compile Include="Interface\TextStyle.cs" />
+    <Compile Include="Interface\Textures.cs" />
     <Compile Include="Interface\Theme.cs" />
     <Compile Include="Interface\WindowPlus.cs" />
     <Compile Include="Patch\Access.cs" />

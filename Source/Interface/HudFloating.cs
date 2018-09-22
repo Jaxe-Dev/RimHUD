@@ -37,7 +37,7 @@ namespace RimHUD.Interface
 
             l.DrawTitleRow(model.Name.Bold(), relationColor);
 
-            if (mouseOver && Widgets.ButtonImage(new Rect(inner.xMax - 16f, inner.y, 16f, 16f), Theme.ConfigIcon)) { Dialog_Config.Open(); }
+            if (mouseOver && Widgets.ButtonImage(new Rect(inner.xMax - 16f, inner.y, 16f, 16f), Textures.ConfigIcon)) { Dialog_Config.Open(); }
             l.PadLine();
 
             l.DrawDescriptionRow(model.RelationKindAndFaction, relationColor);
