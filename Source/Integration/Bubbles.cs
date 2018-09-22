@@ -9,7 +9,7 @@ namespace RimHUD.Integration
         public const string Url = "https://steamcommunity.com/sharedfiles/filedetails/?id=1516158345";
         public const string Description = "Shows bubbles when characters perform a social interaction with the text that would normally only be found in the log.";
 
-        private static readonly Assembly Assembly = Union.GetModAssembly("Bubbles");
+        private static readonly Assembly Assembly = Union.GetModAssembly("Interaction Bubbles", "Bubbles") ?? Union.GetModAssembly("Bubbles", "Bubbles");
         private static readonly Type Integrator = Assembly?.GetType("Bubbles.Interface.Bubbler");
 
         public static readonly bool IsLoaded = Integrator != null;

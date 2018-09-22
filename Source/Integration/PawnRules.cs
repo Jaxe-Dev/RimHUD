@@ -11,7 +11,7 @@ namespace RimHUD.Integration
         public const string Description = "Pawn Rules is a mod that allows custom rules to be assigned individually to your colonists, animals, guests and prisoners:\n\n- Disallow certain foods\n- Disallow bonding with certain animals\n- Disallow new romances\n- Disallow constructing items that have a quality level";
         public const string RequiredAlert = "This requires the mod <b>Pawn Rules</b> to be loaded.\n<i>The rules button can be removed in the options dialog.</i>\n\n" + Description + "\n\n\nWould you like to open the Steam page for this mod?";
 
-        private static readonly Assembly Assembly = Union.GetModAssembly("PawnRules");
+        private static readonly Assembly Assembly = Union.GetModAssembly("Pawn Rules", "PawnRules");
         private static readonly Type Integrator = Assembly?.GetType("PawnRules.Integration.RimHUD");
         private static readonly Type RulesDialog = Assembly?.GetType("PawnRules.Interface.Dialog_Rules");
 

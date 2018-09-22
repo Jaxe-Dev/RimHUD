@@ -9,10 +9,10 @@ namespace RimHUD.Integration
         public static bool PawnRules => Integration.PawnRules.IsLoaded;
         public static bool Bubbles => Integration.Bubbles.IsLoaded;
 
-        public static Assembly GetModAssembly(string name, string id = null)
+        public static Assembly GetModAssembly(string modName, string assemblyName)
         {
-            var found = LoadedModManager.RunningModsListForReading.FirstOrDefault(mod => mod.Identifier == (id ?? name))?.assemblies.loadedAssemblies.FirstOrDefault(assembly => assembly.GetName().Name == name);
-            if (found != null) { Mod.Log($"Integrated with {id ?? name}"); }
+            var found = LoadedModManager.RunningModsListForReading.FirstOrDefault(mod => mod.Name == modName)?.assemblies.loadedAssemblies.FirstOrDefault(assembly => assembly.GetName().Name == assemblyName);
+            if (found != null) { Mod.Log($"Integrated with {modName}"); }
 
             return found;
         }
