@@ -13,7 +13,7 @@
   <RimHUD.Dialog_Config.Title>RimHUD</RimHUD.Dialog_Config.Title>
   <RimHUD.Dialog_Config.SetToDefault>Use Default</RimHUD.Dialog_Config.SetToDefault>
 
-  <RimHUD.Dialog_Config.Tab.Geometry>Size &amp; Position</RimHUD.Dialog_Config.Tab.Geometry>
+  <RimHUD.Dialog_Config.Tab.Design>Design</RimHUD.Dialog_Config.Tab.Design>
   <RimHUD.Dialog_Config.Tab.Colors>Colors</RimHUD.Dialog_Config.Tab.Colors>
   <RimHUD.Dialog_Config.Tab.Content>Content</RimHUD.Dialog_Config.Tab.Content>
   <RimHUD.Dialog_Config.Tab.Integration>Integration</RimHUD.Dialog_Config.Tab.Integration>

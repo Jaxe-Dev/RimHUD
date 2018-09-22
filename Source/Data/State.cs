@@ -21,10 +21,7 @@ namespace RimHUD.Data
         {
             var thing = Find.Selector.SingleSelectedThing;
 
-            if (thing is Pawn pawn) { return pawn; }
-            if (thing is Corpse corpse) { return corpse.InnerPawn; }
-
-            return null;
+            return thing is Pawn pawn ? pawn : null;
         }
     }
 }

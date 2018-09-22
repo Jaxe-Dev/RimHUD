@@ -11,7 +11,7 @@ namespace RimHUD.Interface
         private string _hudOffsetXText;
         private string _hudOffsetYText;
 
-        public override string Label => Lang.Get("Dialog_Config.Tab.Geometry");
+        public override string Label => Lang.Get("Dialog_Config.Tab.Design");
         public override string Tooltip => null;
 
         public override void Draw(Rect rect)
