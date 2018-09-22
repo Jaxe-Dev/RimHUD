@@ -1,5 +1,7 @@
-﻿using RimHUD.Data;
+﻿using System.Linq;
+using RimHUD.Data;
 using RimHUD.Patch;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -29,7 +31,7 @@ namespace RimHUD.Interface
 
             var relationColor = model.FactionRelationColor;
 
-            if (mouseOver && Widgets.ButtonImage(new Rect(bounds.xMax - 16f, bounds.yMax - 16f, 16f, 16f), Theme.ConfigIcon)) { Dialog_Config.Open(); }
+            if (mouseOver && Widgets.ButtonImage(new Rect(bounds.xMax - 16f, bounds.yMax - 16f, 16f, 16f), Textures.ConfigIcon)) { Dialog_Config.Open(); }
 
             l.DrawDescriptionRow(model.RelationKindAndFaction, relationColor);
             l.DrawDescriptionRow(model.GenderAndAge);
@@ -49,6 +51,12 @@ namespace RimHUD.Interface
             l.DrawLabelledBar(Lang.Get("Bar.Rest"), model.Rest);
             l.DrawLabelledBar(Lang.Get("Bar.Food"), model.Food);
             l.DrawLabelledBar(Lang.Get("Bar.Recreation"), model.Recreation);
+
+            if (model.HasNeeds && Theme.IntegrationGeneralShowCustomNeeds.Value)
+            {
+                var otherNeeds = model.Base.needs.AllNeeds.Where(need => !Theme.SkippedNeeds.Contains(need.def) && (need.def.needClass != typeof(Need_Chemical)) && need.ShowOnNeedList).ToArray();
+                foreach (var need in otherNeeds) { l.DrawLabelledBar(need.LabelCap, need.CurLevelPercentage); }
+            }
 
             l.Bind(grid[2]);
 

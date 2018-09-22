@@ -19,4 +19,7 @@
   <RimHUD.Theme.Bubbles.Padding>Bubble Offset</RimHUD.Theme.Bubbles.Padding>
   <RimHUD.Theme.Bubbles.MaxPerPawn>Maximum per pawn</RimHUD.Theme.Bubbles.MaxPerPawn>
 
+  <RimHUD.Integration.General>General Settings</RimHUD.Integration.General>
+  <RimHUD.Theme.GeneralIntegration.ShowCustomNeeds>Show needs from other mods</RimHUD.Theme.GeneralIntegration.ShowCustomNeeds>
+
 </LanguageData>
