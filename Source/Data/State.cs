@@ -9,7 +9,7 @@ namespace RimHUD.Data
         public static bool Activated { get; set; } = true;
         public static bool AltInspectPane => Activated && !IsWorldView && Theme.InspectPaneTabModify.Value;
         public static bool AltLetters => Activated && !IsWorldView && Theme.LetterCompress.Value;
-        public static bool PawnSelected => Activated && (SelectedPawn != null);
+        public static bool PawnSelected => Activated && (Current.ProgramState == ProgramState.Playing) && (SelectedPawn != null);
         public static bool ValidSelected => PawnSelected && !IsWorldView;
         public static bool HudDockedVisible => Activated && ValidSelected && Theme.HudDocked.Value;
         public static bool HudFloatingVisible => Activated && ValidSelected && !Theme.HudDocked.Value;

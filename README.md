@@ -1,5 +1,5 @@
 # RimHUD
-![](https://img.shields.io/badge/Mod_Version-1.1.0-blue.svg)
+![](https://img.shields.io/badge/Mod_Version-1.1.0.1-blue.svg)
 ![](https://img.shields.io/badge/Built_for_RimWorld-B19-blue.svg)
 ![](https://img.shields.io/badge/Powered_by_Harmony-1.2.0.1-blue.svg)
 
