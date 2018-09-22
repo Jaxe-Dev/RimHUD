@@ -23,7 +23,7 @@
   <RimHUD.Alert.MoreComingSoon>More features coming soon™</RimHUD.Alert.MoreComingSoon>
 
   <RimHUD.InspectPane.OutfitFormat>Outfit: {0}</RimHUD.InspectPane.OutfitFormat>
-  <RimHUD.InspectPane.TimetableFormat>Agenda: {0}</RimHUD.InspectPane.TimetableFormat>
+  <RimHUD.InspectPane.TimetableFormat>Schedule: {0}</RimHUD.InspectPane.TimetableFormat>
   <RimHUD.InspectPane.AreaFormat>Area: {0}</RimHUD.InspectPane.AreaFormat>
   <RimHUD.InspectPane.RulesDisabled>Rules: Disabled</RimHUD.InspectPane.RulesDisabled>
   <RimHUD.InspectPane.MedicalCare>Change the level of medical care given to this {0}.\n\nCurrent: {1}</RimHUD.InspectPane.MedicalCare>

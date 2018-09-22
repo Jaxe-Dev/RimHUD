@@ -31,8 +31,8 @@ namespace RimHUD.Interface
         private const bool DefaultInspectPaneAddPawnRules = true;
 
         private const int DefaultInspectPaneHeight = 270;
-        private const int DefaultInspectPaneMaxTabs = 6;
-        private const int DefaultInspectPaneTabWidth = 95;
+        private const int DefaultInspectPaneMaxTabs = 7;
+        private const int DefaultInspectPaneTabWidth = 80;
 
         public static GUIStyle BaseGUIStyle => new GUIStyle(Text.fontStyles[(int) GameFont.Medium]) { fontSize = DefaultBaseFontSize, alignment = TextAnchor.MiddleLeft, wordWrap = false, padding = new RectOffset(0, 0, 0, 0) };
         private static readonly string[] HudAnchors = Lang.Get("Theme.HudAnchors").Split('|');
