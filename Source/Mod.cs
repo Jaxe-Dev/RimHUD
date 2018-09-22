@@ -12,7 +12,7 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.1.0.1";
+        public const string Version = "1.1.0.2";
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
         public static bool FirstTimeUser { get; }

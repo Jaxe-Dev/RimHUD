@@ -16,7 +16,7 @@
   <RimHUD.Theme.Bubbles.FadeStart>Ticks to start fade</RimHUD.Theme.Bubbles.FadeStart>
   <RimHUD.Theme.Bubbles.FadeTime>Ticks to fade</RimHUD.Theme.Bubbles.FadeTime>
   <RimHUD.Theme.Bubbles.Width>Bubble Width</RimHUD.Theme.Bubbles.Width>
-  <RimHUD.Theme.Bubbles.Padding>Bubble Padding</RimHUD.Theme.Bubbles.Padding>
+  <RimHUD.Theme.Bubbles.Padding>Bubble Offset</RimHUD.Theme.Bubbles.Padding>
   <RimHUD.Theme.Bubbles.MaxPerPawn>Maximum per pawn</RimHUD.Theme.Bubbles.MaxPerPawn>
 
 </LanguageData>
