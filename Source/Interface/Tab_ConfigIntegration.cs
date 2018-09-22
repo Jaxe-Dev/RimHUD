@@ -16,6 +16,11 @@ namespace RimHUD.Interface
             var l = new ListingPlus();
             l.Begin(hGrid[1]);
 
+            l.Label(Lang.Get("Integration.General").Bold());
+            l.BoolToggle(Theme.IntegrationGeneralShowCustomNeeds);
+            l.GapLine();
+            l.Gap();
+
             l.Label(Lang.Get("Integration.PawnRules").Bold(), PawnRules.Description);
             if (!PawnRules.IsLoaded) { l.LinkLabel(Lang.Get("Integration.GetMod"), PawnRules.Url, PawnRules.Url); }
             l.BoolToggle(Theme.IntegrationPawnRulesHideGizmo, Union.PawnRules);

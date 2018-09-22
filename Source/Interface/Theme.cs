@@ -1,12 +1,12 @@
 ﻿using RimHUD.Data;
 using RimHUD.Integration;
 using RimHUD.Patch;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface
 {
-    [StaticConstructorOnStartup]
     internal static class Theme
     {
         private const int DefaultBaseFontSize = 12;
@@ -35,6 +35,8 @@ namespace RimHUD.Interface
         private const int DefaultInspectPaneTabWidth = 80;
 
         public static GUIStyle BaseGUIStyle => new GUIStyle(Text.fontStyles[(int) GameFont.Medium]) { fontSize = DefaultBaseFontSize, alignment = TextAnchor.MiddleLeft, wordWrap = false, padding = new RectOffset(0, 0, 0, 0) };
+        public static readonly Def[] SkippedNeeds = { DefDatabase<NeedDef>.GetNamed("Mood"), NeedDefOf.Rest, NeedDefOf.Food, NeedDefOf.Joy, DefDatabase<NeedDef>.GetNamed("Beauty"), DefDatabase<NeedDef>.GetNamed("Comfort"), DefDatabase<NeedDef>.GetNamed("Outdoors"), DefDatabase<NeedDef>.GetNamed("RoomSize") };
+
         private static readonly string[] HudAnchors = Lang.Get("Theme.HudAnchors").Split('|');
 
         [Persistent.Option("HudPosition", "Docked")]
@@ -112,6 +114,9 @@ namespace RimHUD.Interface
         [Persistent.Option("Integration.Bubbles", "MaxPerPawn")]
         public static RangeOption IntegrationBubblesMaxPerPawn { get; } = new RangeOption(3, 1, 10, Lang.Get("Theme.Bubbles.MaxPerPawn"), onChange: option => Bubbles.SetMaxPerPawn((int) option.Object));
 
+        [Persistent.Option("Integration.General", "ShowCustomNeeds")]
+        public static BoolOption IntegrationGeneralShowCustomNeeds { get; } = new BoolOption(false, Lang.Get("Theme.GeneralIntegration.ShowCustomNeeds"));
+
         public static Color LineColor { get; set; } = new Color(0.8f, 0.8f, 0.8f, 0.4f);
 
         public static Color FactionOwnColor { get; set; } = new Color(1f, 1f, 1f);
@@ -138,11 +143,6 @@ namespace RimHUD.Interface
         public static Color MentalThresholdMinor { get; set; } = new Color(0.9f, 0.9f, 0.4f, 0.4f);
         public static Color MentalThresholdMajor { get; set; } = new Color(0.9f, 0.7f, 0.4f, 0.4f);
         public static Color MentalThresholdExtreme { get; set; } = new Color(0.9f, 0.4f, 0.4f, 0.4f);
-
-        public static readonly Texture2D ToggleIcon = LoadTexture("ToggleIcon");
-        public static readonly Texture2D ConfigIcon = LoadTexture("ConfigIcon");
-        public static readonly Texture2D InspectTabButtonFillTex = (Texture2D) Access.Field_RimWorld_InspectPaneUtility_InspectTabButtonFillTex.GetValue(null);
-        public static readonly Texture2D SelectOverlappingNextTex = ContentFinder<Texture2D>.Get("UI/Buttons/SelectNextOverlapping");
 
         public static Rect GetHudBounds()
         {
@@ -176,8 +176,6 @@ namespace RimHUD.Interface
             HudOffsetX.SetMinMax(Mathf.RoundToInt(xMin), Mathf.RoundToInt(xMin + halfWidth));
             HudOffsetY.SetMinMax(Mathf.RoundToInt(yMin), Mathf.RoundToInt(yMin + halfHeight));
         }
-
-        private static Texture2D LoadTexture(string key) => ContentFinder<Texture2D>.Get(Mod.Id + "/" + key);
 
         private static Color HexColor(string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : default(Color);
 

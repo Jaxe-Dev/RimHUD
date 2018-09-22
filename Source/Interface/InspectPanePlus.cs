@@ -38,6 +38,7 @@ namespace RimHUD.Interface
 
             pane.RecentHeight = 165f;
 
+            if (model == null) { return; }
             if (!pane.AnythingSelected) { return; }
 
             var rect = inRect.ContractedBy(12f);
@@ -51,7 +52,7 @@ namespace RimHUD.Interface
             if (pane.ShouldShowSelectNextInCellButton)
             {
                 var selectOverlappingNextRect = new Rect(rect.width - ButtonSize, 0f, ButtonSize, ButtonSize);
-                if (Widgets.ButtonImage(selectOverlappingNextRect, Theme.SelectOverlappingNextTex)) { pane.SelectNextInCell(); }
+                if (Widgets.ButtonImage(selectOverlappingNextRect, Textures.SelectOverlappingNextTex)) { pane.SelectNextInCell(); }
                 lineEndWidth += 24f;
                 TooltipHandler.TipRegion(selectOverlappingNextRect, "SelectNextInSquareTip".Translate(KeyBindingDefOf.SelectNextInCell.MainKeyLabel));
             }
@@ -152,7 +153,7 @@ namespace RimHUD.Interface
                 }
                 if (!isSelected) { return false; }
 
-                GUI.DrawTexture(new Rect(0.0f, y, width, 30f), Theme.InspectTabButtonFillTex);
+                GUI.DrawTexture(new Rect(0.0f, y, width, 30f), Textures.InspectTabButtonFillTex);
             }
             catch (Exception ex) { Log.ErrorOnce(ex.ToString(), 742783); }
 

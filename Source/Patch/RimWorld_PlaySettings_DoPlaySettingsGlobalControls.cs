@@ -14,7 +14,7 @@ namespace RimHUD.Patch
             if (worldView || (row == null)) { return; }
 
             var showHud = State.Activated;
-            row.ToggleableIcon(ref showHud, Theme.ToggleIcon, Lang.Get("ToggleHud"), SoundDefOf.Mouseover_ButtonToggle);
+            row.ToggleableIcon(ref showHud, Textures.ToggleIcon, Lang.Get("ToggleHud"), SoundDefOf.Mouseover_ButtonToggle);
             State.Activated = showHud;
         }
     }
