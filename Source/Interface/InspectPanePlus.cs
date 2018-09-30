@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using RimHUD.Data;
 using RimHUD.Integration;
+using RimHUD.Interface.Dialog;
+using RimHUD.Interface.HUD;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
@@ -36,7 +38,7 @@ namespace RimHUD.Interface
         {
             var model = PawnModel.Selected;
 
-            pane.RecentHeight = 165f;
+            pane.RecentHeight = Theme.InspectPaneHeight.Value - 35f;
 
             if (model == null) { return; }
             if (!pane.AnythingSelected) { return; }
@@ -72,6 +74,7 @@ namespace RimHUD.Interface
             GUIPlus.ResetFont();
             GUIPlus.ResetColor();
             Text.Anchor = previousAnchor;
+            GUIPlus.DrawTooltip(labelRect, model.BioTooltip, false);
 
             if (!pane.ShouldShowPaneContents) { return; }
 
@@ -112,7 +115,7 @@ namespace RimHUD.Interface
             var contentRect = rect.AtZero();
             contentRect.yMin = y + 4f;
 
-            if (Theme.HudDocked.Value) { HudDocked.OnGUI(model, contentRect); }
+            if (Theme.HudDocked.Value) { HudDocked.OnGUI(model ?? PawnModel.Selected, contentRect); }
             else if (Theme.InspectPaneTabAddLog.Value) { DrawLog(pawn, contentRect); }
 
             GUI.EndGroup();
@@ -168,7 +171,7 @@ namespace RimHUD.Interface
 
             var careRect = new Rect(rect.width - lineEndWidth - ButtonSize - ButtonPadding, 0f, ButtonSize, ButtonSize);
             MedicalCareUtility.MedicalCareSelectButton(careRect, pawn);
-            GUIPlus.DrawTooltip(careRect, Lang.Get("InspectPane.MedicalCare", pawn.KindLabel, pawn.playerSettings.medCare.GetLabel()), true);
+            GUIPlus.DrawTooltip(careRect, () => Lang.Get("InspectPane.MedicalCare", pawn.KindLabel, pawn.playerSettings.medCare.GetLabel()), true);
 
             lineEndWidth += ButtonSize + ButtonPadding;
 
@@ -187,7 +190,7 @@ namespace RimHUD.Interface
             GUIPlus.SetFont(GameFont.Tiny);
             var previousAnchor = Text.Anchor;
             Text.Anchor = TextAnchor.MiddleRight;
-            pawn.playerSettings.selfTend = GUIPlus.DrawCheckbox(selfTendRect, "SelfTend".Translate(), pawn.playerSettings.selfTend, selfTendTip, canDoctor, SelfTendHeight);
+            pawn.playerSettings.selfTend = GUIPlus.DrawCheckbox(selfTendRect, "SelfTend".Translate(), pawn.playerSettings.selfTend, () => selfTendTip, canDoctor, SelfTendHeight);
             Text.Anchor = previousAnchor;
             GUIPlus.ResetFont();
 
@@ -196,7 +199,7 @@ namespace RimHUD.Interface
 
         private static void DrawOutfit(WidgetRow row, Pawn pawn, float barWidth)
         {
-            if (!pawn.IsColonistPlayerControlled || (pawn.outfits?.CurrentOutfit == null)) { return; }
+            if ((!pawn.Faction?.IsPlayer ?? true) || (pawn.outfits?.CurrentOutfit == null)) { return; }
             row.Gap(WidgetRowGap);
 
             var name = Lang.Get("InspectPane.OutfitFormat", pawn.outfits.CurrentOutfit.label);
@@ -223,12 +226,12 @@ namespace RimHUD.Interface
         {
             if (!Theme.InspectPaneTabAddPawnRules.Value) { return; }
 
-            var isLoaded = PawnRules.IsLoaded;
-            var name = isLoaded ? PawnRules.GetRulesInfo(pawn) : null;
+            var isIntegrated = PawnRules.Instance.IsActive;
+            var name = isIntegrated ? PawnRules.GetRulesInfo(pawn) ?? Lang.Get("InspectPane.PawnRules.NoRules") : null;
 
             row.Gap(WidgetRowGap);
 
-            var label = isLoaded ? Lang.Get("InspectPane.PawnRules.RuleNameFormat", name) : Lang.Get("InspectPane.RulesDisabled");
+            var label = isIntegrated ? Lang.Get("InspectPane.PawnRules.RuleNameFormat", name) : Lang.Get("InspectPane.RulesDisabled");
 
             var rect = row.FillableBar(barWidth, BarHeight, 1f, label, BaseContent.GreyTex);
             if (Mouse.IsOver(rect))
@@ -239,13 +242,13 @@ namespace RimHUD.Interface
 
             if (!Widgets.ButtonInvisible(rect)) { return; }
 
-            if (isLoaded) { PawnRules.OpenRulesDialog(pawn); }
+            if (isIntegrated) { PawnRules.OpenRulesDialog(pawn); }
             else { Dialog_Alert.Open(PawnRules.RequiredAlert, Dialog_Alert.Buttons.YesNo, () => Application.OpenURL(PawnRules.Url)); }
         }
 
         private static void DrawTimetableSetting(WidgetRow row, Pawn pawn, float barWidth)
         {
-            if (!pawn.IsColonistPlayerControlled || (pawn.timetable == null)) { return; }
+            if ((!pawn.Faction?.IsPlayer ?? true) || (pawn.timetable == null)) { return; }
             row.Gap(WidgetRowGap);
 
             var rect = row.FillableBar(barWidth, BarHeight, 1f, Lang.Get("InspectPane.TimetableFormat", pawn.timetable.CurrentAssignment.LabelCap), pawn.timetable.CurrentAssignment.ColorTexture);
@@ -255,12 +258,12 @@ namespace RimHUD.Interface
                 Widgets.DrawBox(border);
             }
 
-            if (Widgets.ButtonInvisible(rect)) { Find.MainTabsRoot.SetCurrentTab(DefDatabase<MainButtonDef>.GetNamed("Restrict")); }
+            if (Widgets.ButtonInvisible(rect)) { Find.MainTabsRoot.SetCurrentTab(Access.MainButtonDefOfRestrict); }
         }
 
         private static void DrawAreaAllowed(WidgetRow row, Pawn pawn, float barWidth)
         {
-            if (!pawn.IsColonistPlayerControlled || (pawn.playerSettings == null) || !pawn.playerSettings.RespectsAllowedArea) { return; }
+            if ((!pawn.Faction?.IsPlayer ?? true) || (pawn.playerSettings == null) || (pawn.IsColonist && !pawn.playerSettings.RespectsAllowedArea)) { return; }
             row.Gap(WidgetRowGap);
 
             var hasRestrictedArea = pawn.playerSettings?.EffectiveAreaRestriction != null;

@@ -3,7 +3,7 @@ using RimHUD.Patch;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Interface
+namespace RimHUD.Interface.Dialog
 {
     internal class Dialog_Config : WindowPlus
     {
@@ -38,6 +38,6 @@ namespace RimHUD.Interface
             else if (button == 2) { Close(); }
         }
 
-        private static void SetToDefault() => Dialog_Alert.Open(Lang.Get("Alert.SetToDefault"), Dialog_Alert.Buttons.YesNo, Theme.ToDefault);
+        private static void SetToDefault() => Dialog_Alert.Open(Lang.Get("Alert.SetToDefault"), Dialog_Alert.Buttons.YesNo, Persistent.AllToDefault);
     }
 }

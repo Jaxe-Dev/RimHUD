@@ -1,7 +1,9 @@
 # RimHUD
-![](https://img.shields.io/badge/Mod_Version-1.1.0.3-blue.svg)
-![](https://img.shields.io/badge/Built_for_RimWorld-B19-blue.svg)
-![](https://img.shields.io/badge/Powered_by_Harmony-1.2.0.1-blue.svg)
+![Mod Version](https://img.shields.io/badge/Mod_Version-1.2.0-blue.svg)
+![RimWorld Version](https://img.shields.io/badge/Built_for_RimWorld-B19-blue.svg)
+![Harmony Version](https://img.shields.io/badge/Powered_by_Harmony-1.2.0.1-blue.svg)\
+![Steam Subscribers](https://img.shields.io/badge/dynamic/xml.svg?label=Steam+Subscribers&query=//table/tr[2]/td[1]&colorB=blue&url=https://steamcommunity.com/sharedfiles/filedetails/%3Fid=1508850027&suffix=+total)
+![GitHub Downloads](https://img.shields.io/github/downloads/Jaxe-Dev/RimHUD/total.svg?colorB=blue&label=GitHub+Downloads)
 
 [Link to Steam Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027)\
 [Link to Ludeon Forum thread](https://ludeon.com/forums/index.php?topic=45787.0)
@@ -19,7 +21,7 @@ Visual warnings will appear if a pawn has any life threatening conditions, has w
 
 ---
 
-**Translators**: Save your energy for now as there are a few upcoming updates that may add, remove or modify the key names and strings.
+**Note to Translators**: Save your energy for now as there are a few upcoming updates that may add, remove or modify the key names and strings.
 
 ---
 
@@ -35,9 +37,12 @@ Postfix : RimWorld.MainTabWindow.Inspect_DoInspectPaneButtons
 Prefix* : RimWorld.MainTabWindow_Inspect.PaneTopY
 Postfix : RimWorld.PlaySettings.DoPlaySettingsGlobalControls
 Prefix* : RimWorld.Tutor.TutorOnGUI
+Postfix : Verse.Game.FinalizeInit
 Prefix* : Verse.LetterStack.LettersOnGUI
 Prefix  : Verse.MapInterface.MapInterfaceOnGUI_AfterMainTabs
+Postfix : Verse.MapInterface.Notify_SwitchedMap
+Postfix : Verse.PlayDataLoader.DoPlayLoad
 Prefix  : Verse.Profile.MemoryUtility.ClearAllMapsAndWorld
 
-A prefix marked by a * means it in some circumstances it will bypass the original method
+A prefix marked by a * denotes that in some circumstances the original method will be bypassed
 ```

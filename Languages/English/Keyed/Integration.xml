@@ -7,17 +7,35 @@
   <RimHUD.Integration.PawnRules>Pawn Rules</RimHUD.Integration.PawnRules>
 
   <RimHUD.InspectPane.PawnRules.RuleNameFormat>Rules: {0}</RimHUD.InspectPane.PawnRules.RuleNameFormat>
+  <RimHUD.InspectPane.PawnRules.NoRules>None</RimHUD.InspectPane.PawnRules.NoRules>
   <RimHUD.Theme.PawnRules.InspectPaneAddRules>Show Rules</RimHUD.Theme.PawnRules.InspectPaneAddRules>
 
   <RimHUD.Theme.PawnRules.HideGizmo>Hide Gizmo</RimHUD.Theme.PawnRules.HideGizmo>
   <RimHUD.Theme.PawnRules.HideGizmoDesc>Disables the rules gizmo that appears next to the draft button as RimHUD adds a rules button in the inspect pane.</RimHUD.Theme.PawnRules.HideGizmoDesc>
 
   <RimHUD.Integration.Bubbles>Interaction Bubbles</RimHUD.Integration.Bubbles>
+  <RimHUD.Theme.Bubbles.Activated>Activated</RimHUD.Theme.Bubbles.Activated>
+  <RimHUD.Theme.Bubbles.DoNonPlayer>Show for non-player faction</RimHUD.Theme.Bubbles.DoNonPlayer>
+  <RimHUD.Theme.Bubbles.DoAnimals>Show for animal interactions</RimHUD.Theme.Bubbles.DoAnimals>
+
+  <RimHUD.Theme.Bubbles.MinScale>Minimum zoom visible</RimHUD.Theme.Bubbles.MinScale>
+  <RimHUD.Theme.Bubbles.ScaleStart>Zoom to start scale</RimHUD.Theme.Bubbles.ScaleStart>
+  <RimHUD.Theme.Bubbles.MaxWidth>Maximum width</RimHUD.Theme.Bubbles.MaxWidth>
+  <RimHUD.Theme.Bubbles.Spacing>Spacing</RimHUD.Theme.Bubbles.Spacing>
+  <RimHUD.Theme.Bubbles.StartOffset>Offset from label</RimHUD.Theme.Bubbles.StartOffset>
+  <RimHUD.Theme.Bubbles.OffsetDirection>Offset direction</RimHUD.Theme.Bubbles.OffsetDirection>
+  <RimHUD.Theme.Bubbles.OffsetDirections>Down|Left|Up|Right</RimHUD.Theme.Bubbles.OffsetDirections>
+  <RimHUD.Theme.Bubbles.StartOpacity>Starting opacity</RimHUD.Theme.Bubbles.StartOpacity>
+  <RimHUD.Theme.Bubbles.MouseOverOpacity>Mouse-over opacity</RimHUD.Theme.Bubbles.MouseOverOpacity>
+
+  <RimHUD.Theme.Bubbles.MinTime>Minimum time to fade</RimHUD.Theme.Bubbles.MinTime>
   <RimHUD.Theme.Bubbles.FadeStart>Ticks to start fade</RimHUD.Theme.Bubbles.FadeStart>
-  <RimHUD.Theme.Bubbles.FadeTime>Ticks to fade</RimHUD.Theme.Bubbles.FadeTime>
-  <RimHUD.Theme.Bubbles.Width>Bubble Width</RimHUD.Theme.Bubbles.Width>
-  <RimHUD.Theme.Bubbles.Padding>Bubble Offset</RimHUD.Theme.Bubbles.Padding>
+  <RimHUD.Theme.Bubbles.FadeLength>Ticks to fade</RimHUD.Theme.Bubbles.FadeLength>
   <RimHUD.Theme.Bubbles.MaxPerPawn>Maximum per pawn</RimHUD.Theme.Bubbles.MaxPerPawn>
+
+  <RimHUD.Theme.Bubbles.FontSize>Font size</RimHUD.Theme.Bubbles.FontSize>
+  <RimHUD.Theme.Bubbles.PaddingX>Text padding X</RimHUD.Theme.Bubbles.PaddingX>
+  <RimHUD.Theme.Bubbles.PaddingY>Text padding Y</RimHUD.Theme.Bubbles.PaddingY>
 
   <RimHUD.Integration.General>General Settings</RimHUD.Integration.General>
   <RimHUD.Theme.GeneralIntegration.ShowCustomNeeds>Show needs from other mods</RimHUD.Theme.GeneralIntegration.ShowCustomNeeds>

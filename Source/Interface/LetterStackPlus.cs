@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RimHUD.Interface.HUD;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;

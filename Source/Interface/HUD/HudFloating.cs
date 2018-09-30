@@ -1,9 +1,10 @@
 ﻿using RimHUD.Data;
+using RimHUD.Interface.Dialog;
 using RimHUD.Patch;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Interface
+namespace RimHUD.Interface.HUD
 {
     internal static class HudFloating
     {
@@ -50,7 +51,7 @@ namespace RimHUD.Interface
             if (healthCondition != null) { l.DrawDescriptionRow(healthCondition.Text, healthCondition.Color); }
             if (usesHealth || (healthCondition != null)) { l.PadLine(); }
 
-            var usesMood = l.DrawMoodBar(Lang.Get("Bar.Mood"), model.Mood, model.MoodThresholdMinor, model.MoodThresholdMajor, model.MoodThresholdExtreme);
+            var usesMood = l.DrawLabelledBar(Lang.Get("Bar.Mood"), model.Mood, model.MoodThresholdMinor, model.MoodThresholdMajor, model.MoodThresholdExtreme);
             var mentalCondition = model.MentalCondition;
             if (mentalCondition != null) { l.DrawDescriptionRow(mentalCondition.Text, mentalCondition.Color); }
             if (usesMood || (mentalCondition != null)) { l.PadLine(); }
@@ -60,12 +61,12 @@ namespace RimHUD.Interface
             usesOtherNeeds |= l.DrawLabelledBar(Lang.Get("Bar.Recreation"), model.Recreation);
             if (usesOtherNeeds) { l.PadLine(); }
 
-            var usesSkills = l.DrawSkillPairFilled(model.Shooting, model.Melee);
-            usesSkills |= l.DrawSkillPairFilled(model.Construction, model.Mining);
-            usesSkills |= l.DrawSkillPairFilled(model.Cooking, model.Medicine);
-            usesSkills |= l.DrawSkillPairFilled(model.Plants, model.Animals);
-            usesSkills |= l.DrawSkillPairFilled(model.Crafting, model.Artistic);
-            usesSkills |= l.DrawSkillPairFilled(model.Social, model.Intellectual);
+            var usesSkills = l.DrawStatPairFilled(model.Shooting, model.Melee);
+            usesSkills |= l.DrawStatPairFilled(model.Construction, model.Mining);
+            usesSkills |= l.DrawStatPairFilled(model.Cooking, model.Medicine);
+            usesSkills |= l.DrawStatPairFilled(model.Plants, model.Animals);
+            usesSkills |= l.DrawStatPairFilled(model.Crafting, model.Artistic);
+            usesSkills |= l.DrawStatPairFilled(model.Social, model.Intellectual);
             if (usesSkills) { l.PadLine(); }
 
             var equipped = model.Equipped;

@@ -1,11 +1,11 @@
 ﻿using Harmony;
 using RimHUD.Data;
-using RimHUD.Interface;
+using RimHUD.Interface.HUD;
 using RimWorld;
 
 namespace RimHUD.Patch
 {
-    [HarmonyPatch(typeof(MapInterface), nameof(MapInterface.MapInterfaceOnGUI_AfterMainTabs))]
+    [HarmonyPatch(typeof(MapInterface), "MapInterfaceOnGUI_AfterMainTabs")]
     internal static class Verse_MapInterface_MapInterfaceOnGUI_AfterMainTabs
     {
         private static void Prefix()
