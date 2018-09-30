@@ -10,8 +10,7 @@ namespace RimHUD.Data
         public int Min { get; private set; }
         public int Max { get; private set; }
 
-        [Persistent.Option(typeof(int))]
-        public int Value { get => (int) Object; set => Object = Mathf.Clamp(value, Min, Max); }
+        [Persistent.Option(typeof(int))] public int Value { get => (int) Object; set => Object = Mathf.Clamp(value, Min, Max); }
 
         public RangeOption(int @default, int min, int max, string label, Func<int, string> format = null, string tooltip = null, Action<ThemeOption> onChange = null) : base(@default, label, tooltip, onChange)
         {

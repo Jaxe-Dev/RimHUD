@@ -23,7 +23,7 @@
   <RimHUD.Creature.Farm>farm animal</RimHUD.Creature.Farm>
   <RimHUD.Creature.Herd>herd animal</RimHUD.Creature.Herd>
   <RimHUD.Creature.Insect>insect</RimHUD.Creature.Insect>
-  <RimHUD.Creature.Beast>beast</RimHUD.Creature.Beast>
+  <RimHUD.Creature.Beast>animal</RimHUD.Creature.Beast>
 
   <RimHUD.GenderAndAge>{0}{1} aged {2}</RimHUD.GenderAndAge>
   <RimHUD.Age.Birthday> (Birthday today)</RimHUD.Age.Birthday>
@@ -46,6 +46,7 @@
   <RimHUD.Health.Sick>Suffers from {0}</RimHUD.Health.Sick>
   <RimHUD.Health.SickPlural>Suffers from {0} and {1} other conditions</RimHUD.Health.SickPlural>
   <RimHUD.Health.Stable>In stable health</RimHUD.Health.Stable>
+  <RimHUD.Health.IsTended> (tended)</RimHUD.Health.IsTended>
 
   <RimHUD.Mood.ExtremeBreakImminent>Feeling depressed</RimHUD.Mood.ExtremeBreakImminent>
   <RimHUD.Mood.MajorBreakImminent>Feeling unhappy</RimHUD.Mood.MajorBreakImminent>
@@ -54,7 +55,13 @@
   <RimHUD.Mood.Content>Feeling content</RimHUD.Mood.Content>
   <RimHUD.Mood.Indifferent>Feeling indifferent</RimHUD.Mood.Indifferent>
 
-  <RimHUD.Info.Equipped>Weapon: {0}</RimHUD.Info.Equipped>
   <RimHUD.Info.Activity>Activity: {0}</RimHUD.Info.Activity>
+  <RimHUD.Info.Attacking>Attacking {0}</RimHUD.Info.Attacking>
+  <RimHUD.Info.Queued>Queued: {0}</RimHUD.Info.Queued>
+  <RimHUD.Info.Equipped>Equipped: {0}</RimHUD.Info.Equipped>
+  <RimHUD.Info.Carrying>Carrying: {0}</RimHUD.Info.Carrying>
+
+  <RimHUD.Bio.Title>Title: {0}</RimHUD.Bio.Title>
+  <RimHUD.Bio.Faction>Faction: {0}</RimHUD.Bio.Faction>
 
 </LanguageData>

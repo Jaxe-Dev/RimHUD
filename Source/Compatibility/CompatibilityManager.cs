@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace RimHUD.Compatibility
+{
+    internal static class CompatibilityManager
+    {
+        private static readonly List<CompatibilityPatch> List = new List<CompatibilityPatch>();
+        public static CompatibilityPatch[] Patches => List.ToArray();
+
+        public static void OnStartup()
+        {
+            List.Clear();
+            foreach (var type in Mod.Assembly.GetTypes())
+            {
+                if ((type.BaseType != typeof(CompatibilityPatch)) || type.IsAbstract) { continue; }
+
+                var compatibility = Activator.CreateInstance(type) as CompatibilityPatch;
+                if (compatibility?.OnStartup() ?? false) { List.Add(compatibility); }
+            }
+        }
+    }
+}

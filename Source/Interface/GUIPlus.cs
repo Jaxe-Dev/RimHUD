@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using RimHUD.Patch;
 using RimWorld;
@@ -10,7 +11,7 @@ namespace RimHUD.Interface
 {
     internal static class GUIPlus
     {
-        public const float ScrollbarWidth = 16f;
+        public const float ScrollbarWidth = 20f;
         public const float CheckboxSize = 24f;
         public const float MediumPadding = 8f;
         public const float LargePadding = 16f;
@@ -63,10 +64,22 @@ namespace RimHUD.Interface
             Text.Font = font.Value;
         }
 
-        public static void DrawLabel(Rect rect, string text, Color? color = null, TextStyle style = null)
+        public static void DrawLabel(Rect rect, string text, Color? color = null, TextStyle style = null, Func<string> tooltip = null)
         {
             SetColor(color);
-            GUI.Label(rect, text, style?.GUIStyle ?? Text.CurFontStyle);
+            var textRect = rect;
+            var textStyle = style?.GUIStyle ?? Text.CurFontStyle;
+            var content = new GUIContent(text);
+            if (textStyle.CalcSize(content).x > rect.width)
+            {
+                content.text = "...";
+                var ellipsesLength = textStyle.CalcSize(content);
+                textRect.width -= ellipsesLength.x;
+                GUI.Label(new Rect(rect.RightPartPixels(ellipsesLength.x)), content.text, textStyle);
+            }
+
+            GUI.Label(textRect, text, textStyle);
+            DrawTooltip(rect, tooltip, false);
             ResetColor();
         }
 
@@ -83,7 +96,7 @@ namespace RimHUD.Interface
             ResetColor();
         }
 
-        public static bool DrawButton(Rect rect, string label, string tooltip = null, bool enabled = true)
+        public static bool DrawButton(Rect rect, string label, Func<string> tooltip = null, bool enabled = true)
         {
             SetEnabledColor(enabled);
             var result = Widgets.ButtonText(rect, label, active: enabled);
@@ -104,7 +117,7 @@ namespace RimHUD.Interface
 
             return 0;
         }
-        public static bool DrawCheckbox(Rect rect, string label, bool value, string tooltip = null, bool enabled = true, float checkSize = CheckboxSize)
+        public static bool DrawCheckbox(Rect rect, string label, bool value, Func<string> tooltip = null, bool enabled = true, float checkSize = CheckboxSize)
         {
             SetEnabledColor(enabled);
 
@@ -133,16 +146,18 @@ namespace RimHUD.Interface
 
         public static void DrawBar(Rect rect, float percentage, Color color)
         {
-            Widgets.DrawBoxSolid(rect, Theme.BarBackgroundColor);
+            Widgets.DrawBoxSolid(rect, Theme.BarBackgroundColor.Value);
             Widgets.DrawBoxSolid(rect.LeftPart(percentage), color);
         }
 
-        public static void DrawTooltip(Rect rect, string tooltip, bool highlight)
+        public static void DrawTooltip(Rect rect, Func<string> tooltip, bool highlight)
         {
-            if (tooltip.NullOrEmpty() || !Mouse.IsOver(rect)) { return; }
+            if ((tooltip == null) || !Mouse.IsOver(rect)) { return; }
 
             if (highlight) { Widgets.DrawHighlight(rect); }
-            TooltipHandler.TipRegion(rect, tooltip);
+            TooltipHandler.TipRegion(rect, tooltip.Invoke());
         }
+
+        public static Color HexToColor(string hex) => ColorUtility.TryParseHtmlString("#" + hex.TrimStart('#'), out var color) ? color : default(Color);
     }
 }

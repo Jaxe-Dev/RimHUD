@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using RimHUD.Interface;
 using RimHUD.Patch;
+using UnityEngine;
 using Verse;
 
 namespace RimHUD.Data
@@ -12,20 +15,65 @@ namespace RimHUD.Data
     {
         private const string ConfigFileName = "Config.xml";
 
-        private static bool VersionNeedsNewConfig { get; } = false;
+        private static bool VersionNeedsNewConfig { get; } = true;
+        public static bool ConfigWasReset { get; private set; }
 
         private static readonly FileInfo ConfigFile = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, ConfigFileName));
 
-        public static void Save()
+        private static bool HasConfigFile()
         {
-            var doc = new XDocument();
-
-            var theme = new XElement("RimHUD", new XAttribute("Version", Mod.Version));
-            SaveElements(theme, typeof(Theme));
-            doc.Add(theme);
-
-            doc.Save(ConfigFile.FullName);
+            ConfigFile.Refresh();
+            return ConfigFile.Exists;
         }
+        private static bool NeedsNewConfig(string version)
+        {
+            if (version == Mod.Version) { return false; }
+            Mod.Warning($"Loaded config version ({version ?? "NULL"}) is different from the current mod version{(VersionNeedsNewConfig ? ". A new config is required and has been applied" : null)}");
+
+            return true;
+        }
+
+        public static void CheckAlerts()
+        {
+            if (!ConfigWasReset) { return; }
+
+            var alert = Lang.Get("Alert.ConfigReset", Mod.Version);
+            Mod.Message(alert);
+            Mod.Warning(alert);
+        }
+
+        private static IEnumerable<Type> GetIntegrations() => Assembly.GetExecutingAssembly().GetTypes().Where(type => type.HasAttribute<IntegratedOptions>());
+
+        public static void AllToDefault()
+        {
+            SetToDefault(typeof(Theme));
+
+            foreach (var integration in GetIntegrations()) { SetToDefault(integration); }
+        }
+
+        private static void SetToDefault(object subject)
+        {
+            var type = GetSubjectType(subject);
+            foreach (var property in type.GetProperties())
+            {
+                var attribute = property.TryGetAttribute<Option>();
+                if (attribute == null) { continue; }
+
+                var propertyValue = property.GetValue(null, null);
+                if (propertyValue == null) { continue; }
+
+                if (!(propertyValue is IDefaultable option)) { continue; }
+                option.ToDefault();
+            }
+        }
+
+        private static Type GetSubjectType(object subject)
+        {
+            if (subject is Type type) { return type; }
+            return subject.GetType();
+        }
+
+        private static string GetIntegrationName(object subject) => "Integration." + GetSubjectType(subject).Name;
 
         public static void Load()
         {
@@ -40,31 +88,28 @@ namespace RimHUD.Data
             if (NeedsNewConfig(loadedVersion))
             {
                 Save();
+                Mod.Warning($"Updating to version {Mod.Version} required your RimHUD config to be reset to default.");
+                ConfigWasReset = true;
                 return;
             }
 
-            LoadElements(doc.Root, typeof(Theme));
+            LoadElements(typeof(Theme), doc.Root);
+
+            foreach (var integration in GetIntegrations()) { LoadClassElements(integration, doc.Root); }
         }
 
-        private static bool NeedsNewConfig(string version)
+        private static void LoadClassElements(object subject, XElement root)
         {
-            if (version == Mod.Version) { return false; }
-            Mod.Warning($"Loaded config version ({version ?? "NULL"}) is different from the current mod version{(VersionNeedsNewConfig ? ". A new config is required and has been applied" : null)}");
+            var element = root.Element(GetIntegrationName(subject));
+            if (element == null) { return; }
 
-            return true;
+            LoadElements(subject, element);
         }
 
-        private static bool HasConfigFile()
+        private static void LoadElements(object subject, XElement current)
         {
-            ConfigFile.Refresh();
-            return ConfigFile.Exists;
-        }
-
-        private static void LoadElements(XElement current, object subject)
-        {
-            var isStatic = subject is Type;
-            var type = isStatic ? (Type) subject : subject.GetType();
-            var instance = isStatic ? null : subject;
+            var type = GetSubjectType(subject);
+            var instance = subject is Type ? null : subject;
 
             foreach (var propertyInfo in type.GetProperties())
             {
@@ -77,7 +122,7 @@ namespace RimHUD.Data
                 {
                     if (option.Type == null) { return; }
 
-                    var value = option.Convert(current.Value);
+                    var value = option.ConvertFromXml(current.Value);
                     if (value != null) { propertyInfo.SetValue(instance, value, null); }
                     return;
                 }
@@ -88,15 +133,35 @@ namespace RimHUD.Data
 
                 if (element == null) { continue; }
 
-                LoadElements(element, propertyValue);
+                LoadElements(propertyValue, element);
             }
         }
 
-        private static void SaveElements(XElement current, object subject)
+        public static void Save()
         {
-            var isStatic = subject is Type;
-            var type = isStatic ? (Type) subject : subject.GetType();
-            var instance = isStatic ? null : subject;
+            var doc = new XDocument();
+
+            var theme = SaveClassElements(typeof(Theme), "Theme");
+            theme.Add(new XAttribute("Version", Mod.Version));
+
+            foreach (var integration in GetIntegrations()) { theme.Add(SaveClassElements(integration)); }
+
+            doc.Add(theme);
+
+            doc.Save(ConfigFile.FullName);
+        }
+
+        private static XElement SaveClassElements(object subject, string name = null)
+        {
+            var element = new XElement(name ?? GetIntegrationName(subject));
+            SaveElements(subject, element);
+            return element;
+        }
+
+        private static void SaveElements(object subject, XElement current)
+        {
+            var type = GetSubjectType(subject);
+            var instance = subject is Type ? null : subject;
 
             var categories = new Dictionary<string, XElement>();
 
@@ -109,14 +174,14 @@ namespace RimHUD.Data
 
                 if (option.Label.NullOrEmpty())
                 {
-                    if (option.Type != null) { current.Value = propertyValue.ToString(); }
+                    if (option.Type != null) { current.Value = option.ConvertToXml(propertyValue); }
                     return;
                 }
 
                 var element = new XElement(option.Label);
 
-                if (option.Type != null) { element.Value = propertyValue.ToString(); }
-                else { SaveElements(element, propertyValue); }
+                if (option.Type != null) { element.Value = option.ConvertToXml(propertyValue); }
+                else { SaveElements(propertyValue, element); }
 
                 if (element.IsEmpty) { continue; }
                 if (option.Category == null) { current.Add(element); }
@@ -129,6 +194,10 @@ namespace RimHUD.Data
 
             if (categories.Count > 0) { current.Add(categories.Values); }
         }
+
+        [AttributeUsage(AttributeTargets.Class)]
+        public class IntegratedOptions : Attribute
+        { }
 
         [AttributeUsage(AttributeTargets.Property)]
         public class Option : Attribute
@@ -148,7 +217,14 @@ namespace RimHUD.Data
                 Type = type;
             }
 
-            public object Convert(string text)
+            public string ConvertToXml(object value)
+            {
+                if (Type == null) { return null; }
+
+                return Type == typeof(Color) ? ((Color) value).ToHex() : value.ToString();
+            }
+
+            public object ConvertFromXml(string text)
             {
                 if (Type == null) { return null; }
 
@@ -156,6 +232,7 @@ namespace RimHUD.Data
                 if (Type == typeof(string)) { value = text; }
                 else if (Type == typeof(bool)) { value = text.ToBool(); }
                 else if (Type == typeof(int)) { value = text.ToInt(); }
+                else if (Type == typeof(Color)) { value = GUIPlus.HexToColor(text); }
                 else { return null; }
 
                 return value;

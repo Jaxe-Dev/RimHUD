@@ -2,7 +2,7 @@
 using RimHUD.Patch;
 using UnityEngine;
 
-namespace RimHUD.Interface
+namespace RimHUD.Interface.Dialog
 {
     internal class TabManager
     {

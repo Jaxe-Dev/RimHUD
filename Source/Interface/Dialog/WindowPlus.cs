@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Verse;
 
-namespace RimHUD.Interface
+namespace RimHUD.Interface.Dialog
 {
     internal abstract class WindowPlus : Window
     {
