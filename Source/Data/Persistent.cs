@@ -15,7 +15,7 @@ namespace RimHUD.Data
     {
         private const string ConfigFileName = "Config.xml";
 
-        private static bool VersionNeedsNewConfig { get; } = true;
+        private static bool VersionNeedsNewConfig { get; } = false;
         public static bool ConfigWasReset { get; private set; }
 
         private static readonly FileInfo ConfigFile = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, ConfigFileName));
