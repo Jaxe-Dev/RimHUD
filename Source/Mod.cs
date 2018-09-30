@@ -1,5 +1,7 @@
 ﻿using System.IO;
+using System.Reflection;
 using Harmony;
+using RimHUD.Compatibility;
 using RimHUD.Data;
 using RimHUD.Integration;
 using RimWorld;
@@ -12,14 +14,19 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.1.0.3";
+        public const string Version = "1.2.0";
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
         public static bool FirstTimeUser { get; }
 
+        public static readonly Assembly Assembly;
+        public static readonly HarmonyInstance Harmony;
+
         static Mod()
         {
-            HarmonyInstance.Create(Id).PatchAll();
+            Assembly = Assembly.GetExecutingAssembly();
+            Harmony = HarmonyInstance.Create(Id);
+            Harmony.PatchAll();
 
             FirstTimeUser = !ConfigDirectory.Exists;
             ConfigDirectory.Create();
@@ -30,6 +37,9 @@ namespace RimHUD
 
             Log("Initialized");
         }
+
+        public static void OnStartup() => CompatibilityManager.OnStartup();
+        public static void OnEnteredGame() => Persistent.CheckAlerts();
 
         public static void Log(string message) => Verse.Log.Message(PrefixMessage(message));
         public static void Warning(string message) => Verse.Log.Warning(PrefixMessage(message));

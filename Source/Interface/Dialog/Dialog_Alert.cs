@@ -4,7 +4,7 @@ using RimHUD.Patch;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Interface
+namespace RimHUD.Interface.Dialog
 {
     internal class Dialog_Alert : Window
     {

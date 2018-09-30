@@ -2,7 +2,7 @@
 
 namespace RimHUD.Data
 {
-    internal abstract class ThemeOption
+    internal abstract class ThemeOption : IDefaultable
     {
         private readonly Action<ThemeOption> _onChange;
 

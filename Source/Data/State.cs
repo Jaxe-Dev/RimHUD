@@ -7,12 +7,12 @@ namespace RimHUD.Data
     internal static class State
     {
         public static bool Activated { get; set; } = true;
-        public static bool AltInspectPane => Activated && !IsWorldView && Theme.InspectPaneTabModify.Value;
-        public static bool AltLetters => Activated && !IsWorldView && Theme.LetterCompress.Value;
-        public static bool PawnSelected => Activated && (Current.ProgramState == ProgramState.Playing) && (SelectedPawn != null);
-        public static bool ValidSelected => PawnSelected && !IsWorldView;
-        public static bool HudDockedVisible => Activated && ValidSelected && Theme.HudDocked.Value;
-        public static bool HudFloatingVisible => Activated && ValidSelected && !Theme.HudDocked.Value;
+        public static bool Available => Activated && (Current.ProgramState == ProgramState.Playing) && !IsWorldView;
+        public static bool AltInspectPane => Available && Theme.InspectPaneTabModify.Value;
+        public static bool AltLetters => Available && Theme.LetterCompress.Value;
+        public static bool PawnSelected => SelectedPawn != null;
+        public static bool HudDockedVisible => Theme.HudDocked.Value && Available && PawnSelected;
+        public static bool HudFloatingVisible => !Theme.HudDocked.Value && Available && PawnSelected;
 
         public static Pawn SelectedPawn => GetSelectedPawn();
         public static bool IsWorldView => WorldRendererUtility.WorldRenderedNow;

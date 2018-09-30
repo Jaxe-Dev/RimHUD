@@ -1,8 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using RimHUD.Data;
 using RimHUD.Patch;
 using UnityEngine;
 using Verse;
+using ColorOption = RimHUD.Data.ColorOption;
 
 namespace RimHUD.Interface
 {
@@ -15,7 +17,23 @@ namespace RimHUD.Interface
         private static readonly Color LinkColor = new Color(0.3f, 0.7f, 1f);
         private static readonly Regex RangeSliderEntryRegex = new Regex(@"^[-]?\d{0,4}$");
 
-        public bool Label(string label, string tooltip = null, GameFont? font = null, Color? color = null, bool highlight = false)
+        public new void BeginScrollView(Rect rect, ref Vector2 scrollPosition, ref Rect viewRect)
+        {
+            if (viewRect == default(Rect)) { viewRect = new Rect(0f, 0f, rect.width - GUIPlus.ScrollbarWidth, 100000f); }
+
+            Widgets.BeginScrollView(rect, ref scrollPosition, viewRect);
+
+            Begin(viewRect);
+        }
+
+        public new void EndScrollView(ref Rect viewRect)
+        {
+            viewRect.height = CurHeight;
+            Widgets.EndScrollView();
+            End();
+        }
+
+        public bool Label(string label, Func<string> tooltip = null, GameFont? font = null, Color? color = null, bool highlight = false)
         {
             GUIPlus.SetFont(font);
             GUIPlus.SetColor(color);
@@ -31,9 +49,16 @@ namespace RimHUD.Interface
             return Widgets.ButtonInvisible(rect);
         }
 
-        public void LinkLabel(string label, string url, string tooltip = null)
+        public void LinkLabel(string label, string url, Func<string> tooltip = null)
         {
             if (Label(label, tooltip, GameFont.Tiny, LinkColor, true)) { Application.OpenURL(url); }
+        }
+
+        public void ColorOptionSelect(ColorOption colorOption, ref ColorOption selected, bool enabled = true)
+        {
+            GUIPlus.SetColor(colorOption.Value);
+            if (RadioButton(colorOption.Label, selected == colorOption, tooltip: colorOption.Tooltip)) { selected = colorOption; }
+            GUIPlus.ResetColor();
         }
 
         public void TextStyleEditor(TextStyle style, bool enabled = true)
@@ -66,7 +91,7 @@ namespace RimHUD.Interface
             var value = Mathf.RoundToInt(Widgets.HorizontalSlider(grid[3], range.Value, range.Min, range.Max, true));
             if (enabled) { range.Value = value; }
 
-            GUIPlus.DrawTooltip(grid[0], range.Tooltip, true);
+            GUIPlus.DrawTooltip(grid[0], () => range.Tooltip, true);
             Gap(verticalSpacing);
 
             GUIPlus.ResetColor();
@@ -113,7 +138,7 @@ namespace RimHUD.Interface
             }
             if (Widgets.ButtonInvisible(grid[3])) { GUI.FocusControl(sliderName); }
 
-            GUIPlus.DrawTooltip(grid[0], range.Tooltip, true);
+            GUIPlus.DrawTooltip(grid[0], () => range.Tooltip, true);
             Gap(verticalSpacing);
 
             GUIPlus.ResetColor();

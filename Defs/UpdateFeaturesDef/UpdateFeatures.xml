@@ -9,9 +9,9 @@
   </HugsLib.UpdateFeatureDef>
 
   <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
-    <defName>RimHUD_1_1_0</defName>
-    <assemblyVersion>1.1.0</assemblyVersion>
-    <content>Huge update:\n\n- The HUD can now be docked to the inspect pane (Default: on)\n\n- The settings button can be found by hovering over the HUD\n\n- The inspect pane modification can be disabled\n\n- Inspect pane now includes buttons for Self-tend and Medical care\n\n- If the HUD is used in undocked mode, the inspect pane can display the selected character log\n\n- Integrated with Pawn Rules (not required)\n\n- Pawn Rules for the character can be selected via the inspect pane. This can be disabled.\n\n- Can hide the gizmo for Pawn Rules (Default: off)\n\n- Integrated with Interaction Bubbles (not required)\n\n- Basic customization options for Interaction Bubbles. More coming soon\n\n\nThe next customization update will focus on custom colors then followed by custom content.</content>
+    <defName>RimHUD_1_2_0</defName>
+    <assemblyVersion>1.2.0</assemblyVersion>
+    <content>- Basic color customization options now available\n\n- Fixed area button not showing for player faction animals\n\n- Added experimental compatibility with ExtendedInspectData\n\n- More information added to the HUD: queued jobs, lord job, target, carrying, stunned, restraints, animal training, animal product progress, mental state for animals\n\n- Hovering over Health will display a tooltip with current conditions\n\n- Hovering over Mood will display a tooltip with current thoughts\n\n- Hovering over name, title or age shows backstory, traits and disabled work types\n\n- Hover over a skill shows detailed stats for that skill\n\n- Currently these new features only apply to the docked (default) mode</content>
   </HugsLib.UpdateFeatureDef>
 
 </Defs>
