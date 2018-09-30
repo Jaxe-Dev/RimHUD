@@ -214,6 +214,9 @@ namespace RimHUD.Data
             if (Base.mindState.mentalBreaker.BreakMajorIsImminent) { return StringPlus.Create(Lang.Get("Mood.MajorBreakImminent"), Theme.WarningColor.Value); }
             if (Base.mindState.mentalBreaker.BreakMinorIsImminent) { return StringPlus.Create(Lang.Get("Mood.MinorBreakImminent"), Theme.WarningColor.Value); }
 
+            var inspiration = GetInspiration();
+            if (inspiration != null) { return inspiration; }
+
             if (Base.needs.mood.CurLevel > 0.9f) { return StringPlus.Create(Lang.Get("Mood.Happy"), Theme.ExcellentColor.Value); }
             return Base.needs.mood.CurLevel > 0.65f ? StringPlus.Create(Lang.Get("Mood.Content"), Theme.GoodColor.Value) : StringPlus.Create(Lang.Get("Mood.Indifferent"), Theme.InfoColor.Value);
         }
@@ -226,7 +229,7 @@ namespace RimHUD.Data
             return StringPlus.Create(inspiration, Theme.ExcellentColor.Value);
         }
 
-        private StringPlus GetMindCondition() => GetMindState() ?? GetInspiration();
+        private StringPlus GetMindCondition() => GetMindState();
 
         private string GetActivity()
         {
@@ -328,6 +331,9 @@ namespace RimHUD.Data
                 var line = $"{thought.LabelCap}: {offset}".Color(color);
                 builder.AppendLine(line);
             }
+
+            builder.AppendLine();
+            if (Base.Inspired) { builder.AppendLine(Base.Inspiration.InspectLine.Color(Theme.ExcellentColor.Value)); }
 
             return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
         }
