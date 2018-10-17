@@ -1,5 +1,5 @@
-﻿using System;
-using RimHUD.Data;
+﻿using RimHUD.Data;
+using RimHUD.Integration;
 using RimHUD.Patch;
 using UnityEngine;
 using Verse;
@@ -10,7 +10,7 @@ namespace RimHUD.Interface.Dialog
     internal class Tab_ConfigColors : Tab
     {
         public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Colors");
-        public override Func<string> Tooltip { get; } = null;
+        public override TipSignal? Tooltip { get; } = null;
 
         private Vector2 _scrollPosition = Vector2.zero;
 
@@ -39,6 +39,7 @@ namespace RimHUD.Interface.Dialog
             l.Label(Lang.Get("Theme.HudColors").Bold());
             l.GapLine();
             l.ColorOptionSelect(Theme.MainTextColor, ref _selected);
+            l.ColorOptionSelect(Theme.DisabledColor, ref _selected);
             l.ColorOptionSelect(Theme.CriticalColor, ref _selected);
             l.ColorOptionSelect(Theme.WarningColor, ref _selected);
             l.ColorOptionSelect(Theme.InfoColor, ref _selected);
@@ -64,9 +65,17 @@ namespace RimHUD.Interface.Dialog
 
             l.Label(Lang.Get("Theme.SkillColors").Bold());
             l.GapLine();
-            l.ColorOptionSelect(Theme.SkillDisabledColor, ref _selected);
             l.ColorOptionSelect(Theme.SkillMinorPassionColor, ref _selected);
             l.ColorOptionSelect(Theme.SkillMajorPassionColor, ref _selected);
+            l.Gap();
+
+            var hasBubbles = Bubbles.Instance.IsActive;
+            l.Label(Lang.Get("Theme.Bubbles.Colors").Bold());
+            l.GapLine();
+            l.ColorOptionSelect(Bubbles.ForeColor, ref _selected, hasBubbles);
+            l.ColorOptionSelect(Bubbles.BackColor, ref _selected, hasBubbles);
+            l.ColorOptionSelect(Bubbles.SelectedForeColor, ref _selected, hasBubbles);
+            l.ColorOptionSelect(Bubbles.SelectedBackColor, ref _selected, hasBubbles);
 
             l.EndScrollView(ref _viewRect);
 

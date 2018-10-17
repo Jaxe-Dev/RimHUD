@@ -1,5 +1,6 @@
 ﻿using System;
 using RimHUD.Data;
+using UnityEngine;
 
 namespace RimHUD.Integration
 {
@@ -8,7 +9,7 @@ namespace RimHUD.Integration
     {
         public const string Url = "https://steamcommunity.com/sharedfiles/filedetails/?id=1516158345";
         public const string Description = "Shows bubbles when characters perform a social interaction with the text that would normally only be found in the log.";
-        private const string VersionExpected = "1.4";
+        private const string VersionExpected = "1.5";
 
         public static IntegratedMod Instance { get; } = new IntegratedMod("Interaction Bubbles", "Bubbles", "Interface.Theme", new Version(VersionExpected));
 
@@ -33,5 +34,10 @@ namespace RimHUD.Integration
         [Persistent.Option("Text", "FontSize")] public static RangeOption FontSize { get; } = new RangeOption(12, 9, 30, Lang.Get("Theme.Bubbles.FontSize"), onChange: option => Instance.SetValue("FontSize", option.Object));
         [Persistent.Option("Text", "PaddingX")] public static RangeOption PaddingX { get; } = new RangeOption(4, 1, 20, Lang.Get("Theme.Bubbles.PaddingX"), onChange: option => Instance.SetValue("PaddingX", option.Object));
         [Persistent.Option("Text", "PaddingY")] public static RangeOption PaddingY { get; } = new RangeOption(2, 1, 20, Lang.Get("Theme.Bubbles.PaddingY"), onChange: option => Instance.SetValue("PaddingY", option.Object));
+
+        [Persistent.Option("Color", "ForeColor")] public static ColorOption ForeColor { get; } = new ColorOption(Color.white, Lang.Get("Theme.Bubbles.ForeColor"));
+        [Persistent.Option("Color", "BackColor")] public static ColorOption BackColor { get; } = new ColorOption(Color.black, Lang.Get("Theme.Bubbles.BackColor"));
+        [Persistent.Option("Color", "SelectedForeColor")] public static ColorOption SelectedForeColor { get; } = new ColorOption(Color.black, Lang.Get("Theme.Bubbles.SelectedForeColor"));
+        [Persistent.Option("Color", "SelectedBackColor")] public static ColorOption SelectedBackColor { get; } = new ColorOption(new Color(1f, 1f, 0.75f), Lang.Get("Theme.Bubbles.SelectedBackColor"));
     }
 }

@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using RimHUD.Interface;
 using UnityEngine;
+using Verse;
 
 namespace RimHUD.Patch
 {
@@ -23,8 +25,7 @@ namespace RimHUD.Patch
         public static string ToHex(this Color color) => ColorUtility.ToHtmlStringRGBA(color);
         public static int? ToInt(this string self) => int.TryParse(self, out var result) ? result : (int?) null;
         public static bool? ToBool(this string self) => bool.TryParse(self, out var result) ? result : (bool?) null;
-        public static string ToDecimalString(this int self, int remainder) => $"{self.ToString().Bold()}.{remainder.ToString("D2").Italic()}";
-        public static string ToPercentageString(this float self) => self.ToPercentageInt() + "%";
+        public static string ToDecimalString(this int self, int remainder) => $"{self.ToString().Bold()}.{(remainder >= 100 ? "99" : remainder.ToString("D2")).Size(Theme.SmallTextStyle.ActualSize)}";
         public static int ToPercentageInt(this float self) => Mathf.RoundToInt(self * 100f);
         public static float ToPercentageFloat(this int self) => self / 100f;
         public static int WrapTo(this int self, int max) => ((self % max) + max) % max;
@@ -32,8 +33,8 @@ namespace RimHUD.Patch
         public static GUIStyle SetTo(this GUIStyle self, int? size = null, TextAnchor? alignment = null, bool? wrap = null) => new GUIStyle(self) { fontSize = size ?? self.fontSize, alignment = alignment ?? self.alignment, wordWrap = wrap ?? self.wordWrap };
         public static GUIStyle ResizedBy(this GUIStyle self, int size = 0) => new GUIStyle(self) { fontSize = self.fontSize + size };
 
-        public static Rect Fix(this Rect self) => new Rect(Mathf.Round(self.x), Mathf.Round(self.y), Mathf.Round(self.width), Mathf.Round(self.height));
-        public static Rect AdjustedBy(this Rect self, float x, float y, float width, float height) => new Rect(self.x + x, self.y + y, self.width + width, self.height + height);
+        public static Rect Round(this Rect self) => new Rect(Mathf.Round(self.x), Mathf.Round(self.y), Mathf.Round(self.width), Mathf.Round(self.height));
+        public static Rect ContractedBy(this Rect self, float x, float y) => new Rect(self.x + x, self.y + y, self.width - (x * 2f), self.height - (y * 2f));
         public static Rect[] GetHGrid(this Rect self, float padding, params float[] widths)
         {
             var unfixedCount = 0;
@@ -51,7 +52,7 @@ namespace RimHUD.Patch
                 if (index != widths.LastIndex()) { fixedWidths += padding; }
             }
 
-            var unfixedWidth = unfixedCount > 0 ? (self.width - fixedWidths) / unfixedCount : 0f;
+            var unfixedWidth = unfixedCount > 0 ? Mathf.Max(0f, (self.width - fixedWidths) / unfixedCount) : 0f;
 
             foreach (var width in widths)
             {
@@ -60,15 +61,15 @@ namespace RimHUD.Patch
                 if (width >= 0f)
                 {
                     newWidth = width;
-                    rects.Add(new Rect(currentX, self.y, newWidth, self.height).Fix());
+                    rects.Add(new Rect(currentX, self.y, newWidth, self.height).Round());
                 }
                 else
                 {
                     newWidth = unfixedWidth;
-                    rects.Add(new Rect(currentX, self.y, newWidth, self.height).Fix());
+                    rects.Add(new Rect(currentX, self.y, newWidth, self.height).Round());
                 }
 
-                currentX += newWidth + padding;
+                currentX = Mathf.Min(self.xMax, currentX + newWidth + (newWidth > 0f ? padding : 0f));
             }
 
             return rects.ToArray();
@@ -90,7 +91,7 @@ namespace RimHUD.Patch
                 if (index != heights.LastIndex()) { fixedHeights += padding; }
             }
 
-            var unfixedHeight = unfixedCount > 0 ? (self.height - fixedHeights) / unfixedCount : 0f;
+            var unfixedHeight = unfixedCount > 0 ? Mathf.Max(0f, (self.height - fixedHeights) / unfixedCount) : 0f;
 
             foreach (var height in heights)
             {
@@ -99,15 +100,15 @@ namespace RimHUD.Patch
                 if (height >= 0f)
                 {
                     newHeight = height;
-                    rects.Add(new Rect(self.x, currentY, self.width, newHeight).Fix());
+                    rects.Add(new Rect(self.x, currentY, self.width, newHeight).Round());
                 }
                 else
                 {
                     newHeight = unfixedHeight;
-                    rects.Add(new Rect(self.x, currentY, self.width, newHeight).Fix());
+                    rects.Add(new Rect(self.x, currentY, self.width, newHeight).Round());
                 }
 
-                currentY += newHeight + padding;
+                currentY = Mathf.Min(self.yMax, currentY + newHeight + (newHeight > 0f ? padding : 0f));
             }
 
             return rects.ToArray();
@@ -134,5 +135,7 @@ namespace RimHUD.Patch
 
             return 0;
         }
+
+        public static string GetName(this Pawn self) => self.Name?.ToStringFull.CapitalizeFirst() ?? self.LabelCap;
     }
 }

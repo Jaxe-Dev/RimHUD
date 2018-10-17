@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimHUD.Data;
-using RimHUD.Integration;
-using RimHUD.Interface.Dialog;
+using RimHUD.Data.Models;
 using RimHUD.Interface.HUD;
 using RimHUD.Patch;
 using RimWorld;
@@ -15,13 +14,6 @@ namespace RimHUD.Interface
     internal static class InspectPanePlus
     {
         private const float ButtonSize = 24f;
-        private const float ButtonPadding = 4f;
-        private const float SelfTendWidth = 80f;
-        private const float SelfTendHeight = 20f;
-
-        private const float WidgetRowGap = 6f;
-        private const int BarsCount = 4;
-        private const float BarHeight = 16f;
 
         private static Vector2 _scrollPosition = Vector2.zero;
 
@@ -47,7 +39,7 @@ namespace RimHUD.Interface
             rect.yMin -= 4f;
             rect.yMax += 6f;
 
-            GUI.BeginGroup(rect);
+            GUI.BeginGroup(rect.ExpandedBy(1f));
 
             var lineEndWidth = 0f;
 
@@ -55,22 +47,22 @@ namespace RimHUD.Interface
             {
                 var selectOverlappingNextRect = new Rect(rect.width - ButtonSize, 0f, ButtonSize, ButtonSize);
                 if (Widgets.ButtonImage(selectOverlappingNextRect, Textures.SelectOverlappingNextTex)) { pane.SelectNextInCell(); }
-                lineEndWidth += 24f;
+                lineEndWidth += ButtonSize;
                 TooltipHandler.TipRegion(selectOverlappingNextRect, "SelectNextInSquareTip".Translate(KeyBindingDefOf.SelectNextInCell.MainKeyLabel));
             }
 
-            pane.DoInspectPaneButtons(rect, ref lineEndWidth);
-
-            var labelRect = new Rect(0f, 0f, rect.width - lineEndWidth, 50f);
-            var label = model.Name;
-
-            labelRect.width += 300f;
+            DrawButtons(rect, ref lineEndWidth);
 
             var previousAnchor = Text.Anchor;
             Text.Anchor = TextAnchor.UpperLeft;
             GUIPlus.SetFont(GameFont.Medium);
             GUIPlus.SetColor(model.FactionRelationColor);
+
+            var labelRect = new Rect(0f, 0f, rect.width - lineEndWidth, Text.LineHeight);
+            var label = model.Name;
+
             Widgets.Label(labelRect, label);
+
             GUIPlus.ResetFont();
             GUIPlus.ResetColor();
             Text.Anchor = previousAnchor;
@@ -81,6 +73,7 @@ namespace RimHUD.Interface
             var contentRect = rect.AtZero();
             contentRect.yMin += 26f;
             DrawContent(contentRect, model, null);
+
             GUI.EndGroup();
         }
 
@@ -95,30 +88,8 @@ namespace RimHUD.Interface
 
             Text.Font = GameFont.Small;
 
-            GUI.BeginGroup(rect);
-
-            var y = 3f;
-            var barWidth = Mathf.RoundToInt((rect.width - (WidgetRowGap * (BarsCount - 1))) / BarsCount);
-
-            var row = new WidgetRow(0f, y);
-
-            if (CanHaveRules(pawn))
-            {
-                DrawOutfit(row, pawn, barWidth);
-                DrawRules(row, pawn, barWidth);
-                DrawTimetableSetting(row, pawn, barWidth);
-                DrawAreaAllowed(row, pawn, barWidth);
-            }
-
-            y += 18f;
-
-            var contentRect = rect.AtZero();
-            contentRect.yMin = y + 4f;
-
-            if (Theme.HudDocked.Value) { HudDocked.OnGUI(model ?? PawnModel.Selected, contentRect); }
-            else if (Theme.InspectPaneTabAddLog.Value) { DrawLog(pawn, contentRect); }
-
-            GUI.EndGroup();
+            if (Theme.HudDocked.Value) { Hud.DrawDocked(rect, model); }
+            else if (Theme.InspectPaneTabAddLog.Value) { DrawLog(pawn, rect); }
         }
 
         public static bool DrawTabs(IInspectPane pane)
@@ -163,121 +134,51 @@ namespace RimHUD.Interface
             return false;
         }
 
-        public static void DrawSettingsButtons(Rect rect, ref float lineEndWidth)
+        private static void DrawButtons(Rect rect, ref float lineEndWidth)
         {
-            if ((Find.Selector.NumSelected != 1) || !(Find.Selector.SingleSelectedThing is Pawn pawn) || !CanHaveRules(pawn)) { return; }
+            if (Find.Selector.NumSelected != 1) { return; }
+            var selected = Find.Selector.SingleSelectedThing;
+            if (selected == null) { return; }
 
-            lineEndWidth += ButtonPadding;
+            lineEndWidth += ButtonSize;
+            Widgets.InfoCardButton(rect.width - lineEndWidth, 0f, selected);
 
-            var careRect = new Rect(rect.width - lineEndWidth - ButtonSize - ButtonPadding, 0f, ButtonSize, ButtonSize);
+            if (!(selected is Pawn pawn) || !PlayerControlled(pawn)) { return; }
+
+            if (pawn.playerSettings.UsesConfigurableHostilityResponse)
+            {
+                lineEndWidth += ButtonSize;
+                HostilityResponseModeUtility.DrawResponseButton(new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize), pawn, false);
+                lineEndWidth += GUIPlus.SmallPadding;
+            }
+
+            lineEndWidth += ButtonSize;
+            var careRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
             MedicalCareUtility.MedicalCareSelectButton(careRect, pawn);
-            GUIPlus.DrawTooltip(careRect, () => Lang.Get("InspectPane.MedicalCare", pawn.KindLabel, pawn.playerSettings.medCare.GetLabel()), true);
+            GUIPlus.DrawTooltip(careRect, new TipSignal(() => Lang.Get("InspectPane.MedicalCare", pawn.KindLabel, pawn.playerSettings.medCare.GetLabel()), GUIPlus.TooltipId), true);
+            lineEndWidth += GUIPlus.SmallPadding;
 
-            lineEndWidth += ButtonSize + ButtonPadding;
+            if (!pawn.IsColonist) { return; }
 
-            if (!pawn.IsColonist || pawn.Dead) { return; }
+            lineEndWidth += ButtonSize;
 
             var canDoctor = !pawn.story.WorkTypeIsDisabled(WorkTypeDefOf.Doctor);
             var canDoctorPriority = pawn.workSettings.GetPriority(WorkTypeDefOf.Doctor) > 0;
 
-            var selfTendRect = new Rect(rect.width - lineEndWidth - ButtonPadding - SelfTendWidth, 0f + ((ButtonSize - SelfTendHeight) / 2f), SelfTendWidth, SelfTendHeight);
-
+            var selfTendRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
             var selfTendTip = "SelfTendTip".Translate(Faction.OfPlayer.def.pawnsPlural, 0.7f.ToStringPercent()).CapitalizeFirst();
 
             if (!canDoctor) { selfTendTip += "\n\n" + "MessageCannotSelfTendEver".Translate(pawn.LabelShort, pawn); }
             else if (!canDoctorPriority) { selfTendTip += "\n\n" + "MessageSelfTendUnsatisfied".Translate(pawn.LabelShort, pawn); }
 
             GUIPlus.SetFont(GameFont.Tiny);
-            var previousAnchor = Text.Anchor;
-            Text.Anchor = TextAnchor.MiddleRight;
-            pawn.playerSettings.selfTend = GUIPlus.DrawCheckbox(selfTendRect, "SelfTend".Translate(), pawn.playerSettings.selfTend, () => selfTendTip, canDoctor, SelfTendHeight);
-            Text.Anchor = previousAnchor;
+            pawn.playerSettings.selfTend = GUIPlus.DrawToggle(selfTendRect, pawn.playerSettings.selfTend, new TipSignal(() => selfTendTip, GUIPlus.TooltipId), canDoctor, Textures.SelfTendOnIcon, Textures.SelfTendOffIcon);
             GUIPlus.ResetFont();
 
-            lineEndWidth += SelfTendWidth;
+            lineEndWidth += GUIPlus.SmallPadding;
         }
 
-        private static void DrawOutfit(WidgetRow row, Pawn pawn, float barWidth)
-        {
-            if ((!pawn.Faction?.IsPlayer ?? true) || (pawn.outfits?.CurrentOutfit == null)) { return; }
-            row.Gap(WidgetRowGap);
-
-            var name = Lang.Get("InspectPane.OutfitFormat", pawn.outfits.CurrentOutfit.label);
-
-            var rect = row.FillableBar(barWidth, BarHeight, 1f, name, BaseContent.GreyTex);
-            if (Mouse.IsOver(rect))
-            {
-                var border = rect.ContractedBy(-1f);
-                Widgets.DrawBox(border);
-            }
-
-            if (Widgets.ButtonInvisible(rect)) { DrawOutfitFloatMenu(pawn); }
-        }
-
-        private static void DrawOutfitFloatMenu(Pawn pawn)
-        {
-            var options = from outfit in Current.Game.outfitDatabase.AllOutfits select new FloatMenuOption(outfit.label, () => pawn.outfits.CurrentOutfit = outfit);
-            Find.WindowStack.Add(new FloatMenu(options.ToList()));
-        }
-
-        private static bool CanHaveRules(Pawn pawn) => !pawn.Dead && ((pawn.Faction?.IsPlayer ?? false) || (pawn.HostFaction?.IsPlayer ?? false));
-
-        private static void DrawRules(WidgetRow row, Pawn pawn, float barWidth)
-        {
-            if (!Theme.InspectPaneTabAddPawnRules.Value) { return; }
-
-            var isIntegrated = PawnRules.Instance.IsActive;
-            var name = isIntegrated ? PawnRules.GetRulesInfo(pawn) ?? Lang.Get("InspectPane.PawnRules.NoRules") : null;
-
-            row.Gap(WidgetRowGap);
-
-            var label = isIntegrated ? Lang.Get("InspectPane.PawnRules.RuleNameFormat", name) : Lang.Get("InspectPane.RulesDisabled");
-
-            var rect = row.FillableBar(barWidth, BarHeight, 1f, label, BaseContent.GreyTex);
-            if (Mouse.IsOver(rect))
-            {
-                var border = rect.ContractedBy(-1f);
-                Widgets.DrawBox(border);
-            }
-
-            if (!Widgets.ButtonInvisible(rect)) { return; }
-
-            if (isIntegrated) { PawnRules.OpenRulesDialog(pawn); }
-            else { Dialog_Alert.Open(PawnRules.RequiredAlert, Dialog_Alert.Buttons.YesNo, () => Application.OpenURL(PawnRules.Url)); }
-        }
-
-        private static void DrawTimetableSetting(WidgetRow row, Pawn pawn, float barWidth)
-        {
-            if ((!pawn.Faction?.IsPlayer ?? true) || (pawn.timetable == null)) { return; }
-            row.Gap(WidgetRowGap);
-
-            var rect = row.FillableBar(barWidth, BarHeight, 1f, Lang.Get("InspectPane.TimetableFormat", pawn.timetable.CurrentAssignment.LabelCap), pawn.timetable.CurrentAssignment.ColorTexture);
-            if (Mouse.IsOver(rect))
-            {
-                var border = rect.ContractedBy(-1f);
-                Widgets.DrawBox(border);
-            }
-
-            if (Widgets.ButtonInvisible(rect)) { Find.MainTabsRoot.SetCurrentTab(Access.MainButtonDefOfRestrict); }
-        }
-
-        private static void DrawAreaAllowed(WidgetRow row, Pawn pawn, float barWidth)
-        {
-            if ((!pawn.Faction?.IsPlayer ?? true) || (pawn.playerSettings == null) || (pawn.IsColonist && !pawn.playerSettings.RespectsAllowedArea)) { return; }
-            row.Gap(WidgetRowGap);
-
-            var hasRestrictedArea = pawn.playerSettings?.EffectiveAreaRestriction != null;
-            var fillTex = hasRestrictedArea ? pawn.playerSettings.EffectiveAreaRestriction.ColorTexture : BaseContent.GreyTex;
-            var rect = row.FillableBar(barWidth, BarHeight, 1f, Lang.Get("InspectPane.AreaFormat", AreaUtility.AreaAllowedLabel(pawn)), fillTex);
-
-            if (Mouse.IsOver(rect))
-            {
-                if (hasRestrictedArea) { pawn.playerSettings.EffectiveAreaRestriction.MarkForDraw(); }
-                var border = rect.ContractedBy(-1f);
-                Widgets.DrawBox(border);
-            }
-            if (Widgets.ButtonInvisible(rect)) { AreaUtility.MakeAllowedAreaListFloatMenu(area => pawn.playerSettings.AreaRestriction = area, true, true, pawn.Map); }
-        }
+        private static bool PlayerControlled(Pawn pawn) => !pawn.Dead && (pawn.playerSettings != null) && ((pawn.Faction?.IsPlayer ?? false) || (pawn.HostFaction?.IsPlayer ?? false));
 
         private static void DrawLog(Pawn pawn, Rect rect)
         {

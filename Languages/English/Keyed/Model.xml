@@ -23,18 +23,11 @@
   <RimHUD.Creature.Farm>farm animal</RimHUD.Creature.Farm>
   <RimHUD.Creature.Herd>herd animal</RimHUD.Creature.Herd>
   <RimHUD.Creature.Insect>insect</RimHUD.Creature.Insect>
-  <RimHUD.Creature.Beast>animal</RimHUD.Creature.Beast>
 
   <RimHUD.GenderAndAge>{0}{1} aged {2}</RimHUD.GenderAndAge>
   <RimHUD.Age.Birthday> (Birthday today)</RimHUD.Age.Birthday>
   <RimHUD.Age.Day> and one day</RimHUD.Age.Day>
   <RimHUD.Age.Days> and {0} days</RimHUD.Age.Days>
-
-  <RimHUD.Bar.Health>Health</RimHUD.Bar.Health>
-  <RimHUD.Bar.Rest>Rest</RimHUD.Bar.Rest>
-  <RimHUD.Bar.Food>Food</RimHUD.Bar.Food>
-  <RimHUD.Bar.Recreation>Recreation</RimHUD.Bar.Recreation>
-  <RimHUD.Bar.Mood>Mood</RimHUD.Bar.Mood>
 
   <RimHUD.Health.Dead>Dead</RimHUD.Health.Dead>
   <RimHUD.Health.Incapacitated>Incapacitated</RimHUD.Health.Incapacitated>
@@ -63,5 +56,10 @@
 
   <RimHUD.Bio.Title>Title: {0}</RimHUD.Bio.Title>
   <RimHUD.Bio.Faction>Faction: {0}</RimHUD.Bio.Faction>
+  <RimHUD.Bio.Master>Master: {0}</RimHUD.Bio.Master>
+  <RimHUD.Bio.Diet>Diet: {0}</RimHUD.Bio.Diet>
+  <RimHUD.Bio.Trainability>Trainability: {0}</RimHUD.Bio.Trainability>
+  <RimHUD.Bio.Wildness>Wildness: {0}</RimHUD.Bio.Wildness>
+  <RimHUD.Bio.Petness>Petness: {0}</RimHUD.Bio.Petness>
 
 </LanguageData>

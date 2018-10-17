@@ -37,6 +37,12 @@
   <RimHUD.Theme.Bubbles.PaddingX>Text padding X</RimHUD.Theme.Bubbles.PaddingX>
   <RimHUD.Theme.Bubbles.PaddingY>Text padding Y</RimHUD.Theme.Bubbles.PaddingY>
 
+  <RimHUD.Theme.Bubbles.Colors>Bubble Colors</RimHUD.Theme.Bubbles.Colors>
+  <RimHUD.Theme.Bubbles.ForeColor>Text color</RimHUD.Theme.Bubbles.ForeColor>
+  <RimHUD.Theme.Bubbles.BackColor>Back color</RimHUD.Theme.Bubbles.BackColor>
+  <RimHUD.Theme.Bubbles.SelectedForeColor>Selected text color</RimHUD.Theme.Bubbles.SelectedForeColor>
+  <RimHUD.Theme.Bubbles.SelectedBackColor>Selected back color</RimHUD.Theme.Bubbles.SelectedBackColor>
+
   <RimHUD.Integration.General>General Settings</RimHUD.Integration.General>
   <RimHUD.Theme.GeneralIntegration.ShowCustomNeeds>Show needs from other mods</RimHUD.Theme.GeneralIntegration.ShowCustomNeeds>
 
