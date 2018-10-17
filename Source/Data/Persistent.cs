@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using RimHUD.Interface;
+using RimHUD.Interface.HUD;
 using RimHUD.Patch;
 using UnityEngine;
 using Verse;
@@ -96,6 +97,8 @@ namespace RimHUD.Data
             LoadElements(typeof(Theme), doc.Root);
 
             foreach (var integration in GetIntegrations()) { LoadClassElements(integration, doc.Root); }
+
+            LoadLayouts();
         }
 
         private static void LoadClassElements(object subject, XElement root)
@@ -193,6 +196,18 @@ namespace RimHUD.Data
             }
 
             if (categories.Count > 0) { current.Add(categories.Values); }
+        }
+
+        private static void LoadLayouts()
+        {
+            var docked = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.DockedFileName));
+            var floating = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.FloatingFileName));
+
+            if (docked.Exists) { HudLayout.Docked = HudLayout.FromXml(XDocument.Load(docked.FullName)); }
+            else { HudLayout.Docked.AsXDocument().Save(docked.FullName); }
+
+            if (floating.Exists) { HudLayout.Floating = HudLayout.FromXml(XDocument.Load(floating.FullName)); }
+            else { HudLayout.Floating.AsXDocument().Save(floating.FullName); }
         }
 
         [AttributeUsage(AttributeTargets.Class)]

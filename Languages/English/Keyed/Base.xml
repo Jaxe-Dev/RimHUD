@@ -25,9 +25,10 @@
   <RimHUD.Dialog_Config.Tab.Integration>Integration</RimHUD.Dialog_Config.Tab.Integration>
 
   <RimHUD.InspectPane.OutfitFormat>Outfit: {0}</RimHUD.InspectPane.OutfitFormat>
+  <RimHUD.InspectPane.FoodFormat>Food: {0}</RimHUD.InspectPane.FoodFormat>
   <RimHUD.InspectPane.TimetableFormat>Schedule: {0}</RimHUD.InspectPane.TimetableFormat>
   <RimHUD.InspectPane.AreaFormat>Area: {0}</RimHUD.InspectPane.AreaFormat>
-  <RimHUD.InspectPane.RulesDisabled>Rules: Disabled</RimHUD.InspectPane.RulesDisabled>
+  <RimHUD.InspectPane.ManageSelector>Manage...</RimHUD.InspectPane.ManageSelector>
   <RimHUD.InspectPane.MedicalCare>Change the level of medical care given to this {0}.\n\nCurrent: {1}</RimHUD.InspectPane.MedicalCare>
 
   <RimHUD.Alert.ConfigReset>RimHUD updated to version {0} and required it's configuration to be reset to default.</RimHUD.Alert.ConfigReset>

@@ -41,6 +41,7 @@
   <RimHUD.Theme.HudColors>HUD Colors</RimHUD.Theme.HudColors>
 
   <RimHUD.Theme.MainTextColor>Main text</RimHUD.Theme.MainTextColor>
+  <RimHUD.Theme.DisabledColor>Disabled</RimHUD.Theme.DisabledColor>
   <RimHUD.Theme.CriticalColor>Critical text</RimHUD.Theme.CriticalColor>
   <RimHUD.Theme.WarningColor>Warning text</RimHUD.Theme.WarningColor>
   <RimHUD.Theme.InfoColor>Info text</RimHUD.Theme.InfoColor>
@@ -62,7 +63,6 @@
   <RimHUD.Theme.FactionWildColor>Wild</RimHUD.Theme.FactionWildColor>
 
   <RimHUD.Theme.SkillColors>Skill Colors</RimHUD.Theme.SkillColors>
-  <RimHUD.Theme.SkillDisabledColor>Disabled</RimHUD.Theme.SkillDisabledColor>
   <RimHUD.Theme.SkillMinorPassionColor>Minor passion</RimHUD.Theme.SkillMinorPassionColor>
   <RimHUD.Theme.SkillMajorPassionColor>Major passion</RimHUD.Theme.SkillMajorPassionColor>
 

@@ -12,7 +12,7 @@ namespace RimHUD.Patch
         {
             if (!State.HudFloatingVisible) { return; }
 
-            HudFloating.OnGUI();
+            Hud.DrawFloating();
         }
     }
 }
