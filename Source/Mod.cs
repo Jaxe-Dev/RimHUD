@@ -14,7 +14,7 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.2.1";
+        public const string Version = "1.2.9";
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
         public static bool FirstTimeUser { get; }
@@ -49,7 +49,7 @@ namespace RimHUD
 
         public class Exception : System.Exception
         {
-            public Exception(string message) : base($"[{Name} : EXCEPTION] {message}")
+            public Exception(string message) : base(PrefixMessage(message))
             { }
         }
     }

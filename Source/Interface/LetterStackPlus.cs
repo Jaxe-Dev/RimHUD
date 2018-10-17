@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using RimHUD.Interface.HUD;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
@@ -28,7 +27,7 @@ namespace RimHUD.Interface
 
             var alertsHeight = GetActiveAlerts().Count * AlertHeight;
 
-            var hudRect = HudFloating.Bounds.ExpandedBy(HudPadding);
+            var hudRect = Theme.GetHudBounds().ExpandedBy(HudPadding);
             var regularLettersHeight = letters.Count * (LetterHeight + Theme.LetterPadding.Value);
             var controlsHeight = regularLettersHeight + alertsHeight;
             var controlsRect = new Rect(UI.screenWidth - ControlsWidth, baseY - controlsHeight, ControlsWidth, controlsHeight);

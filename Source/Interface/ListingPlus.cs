@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using RimHUD.Data;
 using RimHUD.Patch;
 using UnityEngine;
@@ -33,7 +32,7 @@ namespace RimHUD.Interface
             End();
         }
 
-        public bool Label(string label, Func<string> tooltip = null, GameFont? font = null, Color? color = null, bool highlight = false)
+        public bool Label(string label, TipSignal? tooltip = null, GameFont? font = null, Color? color = null, bool highlight = false)
         {
             GUIPlus.SetFont(font);
             GUIPlus.SetColor(color);
@@ -49,7 +48,7 @@ namespace RimHUD.Interface
             return Widgets.ButtonInvisible(rect);
         }
 
-        public void LinkLabel(string label, string url, Func<string> tooltip = null)
+        public void LinkLabel(string label, string url, TipSignal? tooltip = null)
         {
             if (Label(label, tooltip, GameFont.Tiny, LinkColor, true)) { Application.OpenURL(url); }
         }
@@ -85,13 +84,13 @@ namespace RimHUD.Interface
 
             var grid = GetRect(Text.LineHeight).GetHGrid(ElementPadding, LabelWidth, ValueWidth, -1f);
 
-            GUIPlus.DrawLabel(grid[1], range.Label);
-            GUIPlus.DrawLabel(grid[2], range.ToString());
+            GUIPlus.DrawText(grid[1], range.Label);
+            GUIPlus.DrawText(grid[2], range.ToString());
 
             var value = Mathf.RoundToInt(Widgets.HorizontalSlider(grid[3], range.Value, range.Min, range.Max, true));
             if (enabled) { range.Value = value; }
 
-            GUIPlus.DrawTooltip(grid[0], () => range.Tooltip, true);
+            GUIPlus.DrawTooltip(grid[0], range.Tooltip, true);
             Gap(verticalSpacing);
 
             GUIPlus.ResetColor();
@@ -103,7 +102,7 @@ namespace RimHUD.Interface
 
             var grid = GetRect(Text.LineHeight).GetHGrid(ElementPadding, LabelWidth, ValueWidth, -1f);
 
-            GUIPlus.DrawLabel(grid[1], range.Label);
+            GUIPlus.DrawText(grid[1], range.Label);
 
             var entryName = "RangeSliderEntry_Text" + id;
             var isFocused = GUI.GetNameOfFocusedControl() == entryName;
@@ -138,7 +137,7 @@ namespace RimHUD.Interface
             }
             if (Widgets.ButtonInvisible(grid[3])) { GUI.FocusControl(sliderName); }
 
-            GUIPlus.DrawTooltip(grid[0], () => range.Tooltip, true);
+            GUIPlus.DrawTooltip(grid[0], range.Tooltip, true);
             Gap(verticalSpacing);
 
             GUIPlus.ResetColor();

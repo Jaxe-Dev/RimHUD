@@ -9,9 +9,9 @@
   </HugsLib.UpdateFeatureDef>
 
   <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
-    <defName>RimHUD_1_2_0</defName>
-    <assemblyVersion>1.2.0</assemblyVersion>
-    <content>- Basic color customization options now available\n\n- Fixed area button not showing for player faction animals\n\n- Added experimental compatibility with ExtendedInspectData\n\n- More information added to the HUD: queued jobs, lord job, target, carrying, stunned, restraints, animal training, animal product progress, mental state for animals\n\n- Hovering over Health will display a tooltip with current conditions\n\n- Hovering over Mood will display a tooltip with current thoughts\n\n- Hovering over name, title or age shows backstory, traits and disabled work types\n\n- Hover over a skill shows detailed stats for that skill\n\n- Currently these new features only apply to the docked (default) mode</content>
+    <defName>RimHUD_1_2_9</defName>
+    <assemblyVersion>1.2.9</assemblyVersion>
+    <content>- Built for RimWorld 1.0\n\n- Pre-content update: Docked and Floating HUDs can now be customized (currently only via the .xml files in your config folder, next update will add a GUI to visually customize this)\n\n- Custom needs and skills can be added via xml (example: &lt;Skill DefName="Hygiene" /&gt;)\n\n- Floating mode now uses all new features\n\n- Added selector for food restrictions where available\n\n- Added icon for self tend\n\n- Fixed age miscalculation\n\n- More tooltips added for skills and training and fixed tooltip flicker\n\n- Pawn Rules integration removed until it has been updated</content>
   </HugsLib.UpdateFeatureDef>
 
 </Defs>

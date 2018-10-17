@@ -1,14 +1,13 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using RimHUD.Interface;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Data
+namespace RimHUD.Data.Models
 {
-    internal class SkillModel : StatModel
+    internal class SkillModel : ValueModel
     {
         private static readonly StatDef SmeltingSpeed = DefDatabase<StatDef>.GetNamed("SmeltingSpeed");
         private static readonly StatDef SmithingSpeed = DefDatabase<StatDef>.GetNamed("SmithingSpeed");
@@ -27,18 +26,18 @@ namespace RimHUD.Data
         public override bool Hidden { get; }
 
         public override string Label { get; }
-        public override string Level { get; }
-        public override Color Color { get; }
+        public override string Value { get; }
+        public override Color? Color { get; }
         public SkillDef Def { get; }
         public SkillRecord Skill { get; }
 
-        public override Func<string> Tooltip => GetTooltip;
+        public override TipSignal? Tooltip => GetTooltip();
 
-        public SkillModel(Pawn pawn, SkillDef def) : base(pawn)
+        public SkillModel(PawnModel model, SkillDef def) : base(model)
         {
             Def = def;
 
-            var skill = pawn.skills?.GetSkill(def);
+            var skill = model.Base.skills?.GetSkill(def);
 
             if (skill == null)
             {
@@ -49,8 +48,8 @@ namespace RimHUD.Data
             Skill = skill;
 
             Label = def.LabelCap + new string('+', (int) skill.passion);
-            Level = skill.TotallyDisabled ? "-" : skill.Level.ToDecimalString(skill.XpProgressPercent.ToPercentageInt()) + (skill.LearningSaturatedToday ? "*" : null);
-            Color = skill.TotallyDisabled ? Theme.SkillDisabledColor.Value : GetSkillPassionColor(skill.passion);
+            Value = skill.TotallyDisabled ? "-" : skill.Level.ToDecimalString(skill.XpProgressPercent.ToPercentageInt()) + (skill.LearningSaturatedToday ? "*" : null);
+            Color = skill.TotallyDisabled ? Theme.DisabledColor.Value : GetSkillPassionColor(skill.passion);
         }
 
         private static Color GetSkillPassionColor(Passion passion)
@@ -62,9 +61,16 @@ namespace RimHUD.Data
             throw new Mod.Exception("Invalid skill passion level.");
         }
 
-        private string GetTooltip()
+        private string GetSkillDescription() => (string) Access.Method_RimWorld_SkillUI_GetSkillDescription.Invoke(null, new object[] { Skill });
+
+        private TipSignal? GetTooltip()
         {
             var builder = new StringBuilder();
+
+            builder.AppendLine(GetSkillDescription());
+            if (Skill.TotallyDisabled) { return new TipSignal(() => builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize), GUIPlus.TooltipId); }
+            builder.AppendLine();
+
             if (Def == SkillDefOf.Shooting)
             {
                 BuildStatString(builder, StatDefOf.ShootingAccuracyPawn);
@@ -146,13 +152,13 @@ namespace RimHUD.Data
                 }
             }
 
-            return builder.Length == 0 ? null : builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize);
+            return builder.Length == 0 ? null : new TipSignal(() => builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize), GUIPlus.TooltipId);
         }
 
         private void BuildStatString(StringBuilder builder, StatDef def)
         {
-            if (def.Worker.IsDisabledFor(Pawn)) { return; }
-            builder.AppendLine($"{def.LabelCap}: {def.ValueToString(Pawn.GetStatValue(def))}");
+            if (def.Worker.IsDisabledFor(Model.Base)) { return; }
+            builder.AppendLine($"{def.LabelCap}: {def.ValueToString(Model.Base.GetStatValue(def))}");
         }
     }
 }

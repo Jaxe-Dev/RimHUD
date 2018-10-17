@@ -1,15 +1,15 @@
-﻿using System;
-using RimHUD.Data;
+﻿using RimHUD.Data;
 using RimHUD.Integration;
 using RimHUD.Patch;
 using UnityEngine;
+using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
     internal class Tab_ConfigIntegration : Tab
     {
         public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Integration");
-        public override Func<string> Tooltip { get; } = null;
+        public override TipSignal? Tooltip { get; } = null;
 
         public override void Draw(Rect rect)
         {
@@ -17,23 +17,9 @@ namespace RimHUD.Interface.Dialog
             var l = new ListingPlus();
             l.Begin(hGrid[1]);
 
-            l.Label(Lang.Get("Integration.General").Bold());
-            l.BoolToggle(Theme.IntegrationGeneralShowCustomNeeds);
-            l.GapLine();
-            l.Gap();
-
-            l.Label(Lang.Get("Integration.PawnRules").Bold(), () => PawnRules.Description);
-            var hasPawnRules = PawnRules.Instance.IsActive;
-            if (!hasPawnRules) { l.LinkLabel(Lang.Get("Integration.GetMod"), PawnRules.Url, () => PawnRules.Url); }
-            l.BoolToggle(PawnRules.HideGizmo, hasPawnRules);
-
-            l.End();
-
-            l.Begin(hGrid[2]);
-
             var hasBubbles = Bubbles.Instance.IsActive;
-            l.Label(Lang.Get("Integration.Bubbles").Bold(), () => Bubbles.Description);
-            if (!hasBubbles) { l.LinkLabel(Lang.Get("Integration.GetMod"), Bubbles.Url, () => Bubbles.Url); }
+            l.Label(Lang.Get("Integration.Bubbles").Bold(), Bubbles.Description);
+            if (!hasBubbles) { l.LinkLabel(Lang.Get("Integration.GetMod"), Bubbles.Url, Bubbles.Url); }
 
             var bubblesActive = hasBubbles && Bubbles.Activated.Value;
             l.BoolToggle(Bubbles.Activated, hasBubbles);

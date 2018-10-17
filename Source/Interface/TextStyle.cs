@@ -1,4 +1,5 @@
-﻿using RimHUD.Data;
+﻿using System;
+using RimHUD.Data;
 using RimHUD.Patch;
 using UnityEngine;
 
@@ -14,11 +15,13 @@ namespace RimHUD.Interface
         [Persistent.Option("Size")] public RangeOption Size { get; }
         [Persistent.Option("Height")] public RangeOption Height { get; }
 
+        private readonly Action<TextStyle> _onChange;
         public float LineHeight;
 
-        public TextStyle(string label, TextStyle baseStyle, int size, int sizeMin, int sizeMax, int height, int heightMin, int heightMax)
+        public TextStyle(string label, TextStyle baseStyle, int size, int sizeMin, int sizeMax, int height, int heightMin, int heightMax, Action<TextStyle> onChange = null)
         {
             _baseStyle = baseStyle;
+            _onChange = onChange;
             Label = label;
 
             Size = new RangeOption(size, sizeMin, sizeMax, Lang.Get("TextStyle.Size"), value => ((baseStyle != null) && (Size.Value > 0) ? "+" : null) + value, onChange: _ => UpdateStyle());
@@ -27,10 +30,11 @@ namespace RimHUD.Interface
             UpdateStyle();
         }
 
-        private void UpdateStyle()
+        public void UpdateStyle()
         {
             GUIStyle = _baseStyle?.GUIStyle.ResizedBy(Size.Value) ?? Theme.BaseGUIStyle.SetTo(Size.Value);
             LineHeight = GUIStyle.lineHeight * Height.Value.ToPercentageFloat();
+            _onChange?.Invoke(this);
         }
 
         public void ToDefault()

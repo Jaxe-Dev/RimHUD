@@ -16,7 +16,10 @@ namespace RimHUD.Compatibility
                 if ((type.BaseType != typeof(CompatibilityPatch)) || type.IsAbstract) { continue; }
 
                 var compatibility = Activator.CreateInstance(type) as CompatibilityPatch;
-                if (compatibility?.OnStartup() ?? false) { List.Add(compatibility); }
+                if (!compatibility?.OnStartup() ?? true) { continue; }
+
+                List.Add(compatibility);
+                compatibility.ReportApplied();
             }
         }
     }

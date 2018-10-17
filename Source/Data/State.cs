@@ -20,7 +20,6 @@ namespace RimHUD.Data
         private static Pawn GetSelectedPawn()
         {
             var thing = Find.Selector.SingleSelectedThing;
-
             return thing is Pawn pawn ? pawn : null;
         }
     }

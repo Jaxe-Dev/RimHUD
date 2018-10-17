@@ -1,7 +1,7 @@
-﻿using System;
-using RimHUD.Data;
+﻿using RimHUD.Data;
 using RimHUD.Patch;
 using UnityEngine;
+using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
@@ -14,7 +14,7 @@ namespace RimHUD.Interface.Dialog
         private string _inspectPaneHeightText;
 
         public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Design");
-        public override Func<string> Tooltip { get; } = null;
+        public override TipSignal? Tooltip { get; } = null;
 
         public override void Draw(Rect rect)
         {
@@ -39,7 +39,6 @@ namespace RimHUD.Interface.Dialog
             l.Label(Lang.Get("Theme.InspectPane").Bold());
             l.BoolToggle(Theme.InspectPaneTabModify);
             l.BoolToggle(Theme.InspectPaneTabAddLog, Theme.InspectPaneTabModify.Value && !Theme.HudDocked.Value);
-            l.BoolToggle(Theme.InspectPaneTabAddPawnRules, Theme.InspectPaneTabModify.Value);
             l.RangeSliderEntry(Theme.InspectPaneHeight, ref _inspectPaneHeightText, 5, Theme.InspectPaneTabModify.Value);
             l.RangeSlider(Theme.InspectPaneTabWidth, Theme.InspectPaneTabModify.Value);
             l.RangeSlider(Theme.InspectPaneMinTabs, Theme.InspectPaneTabModify.Value);
@@ -53,12 +52,11 @@ namespace RimHUD.Interface.Dialog
             l.RangeSlider(Theme.ValueWidth);
             l.GapLine();
             l.Gap();
-            if (!Theme.HudDocked.Value)
-            {
-                l.TextStyleEditor(Theme.LargeTextStyle);
-                l.GapLine();
-                l.Gap();
-            }
+
+            l.TextStyleEditor(Theme.LargeTextStyle);
+            l.GapLine();
+            l.Gap();
+
             l.TextStyleEditor(Theme.SmallTextStyle);
             l.GapLine();
             l.Gap();

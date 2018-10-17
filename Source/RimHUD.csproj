@@ -41,7 +41,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\HUD\HudStatValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Compatibility\CompatibilityManager.cs" />
@@ -49,41 +48,67 @@
     <Compile Include="Compatibility\ExtendedInspectData.cs" />
     <Compile Include="Data\BoolOption.cs" />
     <Compile Include="Data\ColorOption.cs" />
-    <Compile Include="Data\ExternalMod.cs" />
     <Compile Include="Data\IDefaultable.cs" />
     <Compile Include="Data\Lang.cs" />
-    <Compile Include="Data\PawnModel.cs" />
     <Compile Include="Data\Persistent.cs" />
     <Compile Include="Data\RangeOption.cs" />
-    <Compile Include="Data\SkillModel.cs" />
     <Compile Include="Data\State.cs" />
-    <Compile Include="Data\StatModel.cs" />
-    <Compile Include="Data\StringPlus.cs" />
     <Compile Include="Data\ThemeOption.cs" />
-    <Compile Include="Data\TrainingModel.cs" />
+    <Compile Include="Data\ExternalMod.cs" />
+    <Compile Include="Data\Models\AreaModel.cs" />
+    <Compile Include="Data\Models\AttributeModel.cs" />
+    <Compile Include="Data\Models\BarModel.cs" />
+    <Compile Include="Data\Models\ButtonModel.cs" />
+    <Compile Include="Data\Models\FoodModel.cs" />
+    <Compile Include="Data\Models\HealthBarModel.cs" />
+    <Compile Include="Data\Models\HudModel.cs" />
+    <Compile Include="Data\Models\NeedModel.cs" />
+    <Compile Include="Data\Models\OutfitModel.cs" />
+    <Compile Include="Data\Models\PawnHealthModel.cs" />
+    <Compile Include="Data\Models\PawnMindModel.cs" />
+    <Compile Include="Data\Models\PawnModel.cs" />
+    <Compile Include="Data\Models\SkillModel.cs" />
+    <Compile Include="Data\Models\TextModel.cs" />
+    <Compile Include="Data\Models\TimetableModel.cs" />
+    <Compile Include="Data\Models\TrainingModel.cs" />
+    <Compile Include="Data\Models\ValueModel.cs" />
     <Compile Include="Integration\Bubbles.cs" />
     <Compile Include="Integration\HugsLib.cs" />
     <Compile Include="Integration\IntegratedMod.cs" />
-    <Compile Include="Integration\PawnRules.cs" />
-    <Compile Include="Interface\Dialog\Dialog_Alert.cs" />
-    <Compile Include="Interface\Dialog\Dialog_Config.cs" />
     <Compile Include="Interface\GUIPlus.cs" />
-    <Compile Include="Interface\HUD\HudDocked.cs" />
-    <Compile Include="Interface\HUD\HudFloating.cs" />
-    <Compile Include="Interface\HUD\HudLayout.cs" />
     <Compile Include="Interface\InspectPanePlus.cs" />
-    <Compile Include="Interface\Layout.cs" />
     <Compile Include="Interface\LetterStackPlus.cs" />
     <Compile Include="Interface\ListingPlus.cs" />
+    <Compile Include="Interface\TextStyle.cs" />
+    <Compile Include="Interface\Textures.cs" />
+    <Compile Include="Interface\Theme.cs" />
+    <Compile Include="Interface\Dialog\Dialog_Alert.cs" />
+    <Compile Include="Interface\Dialog\Dialog_Config.cs" />
+    <Compile Include="Interface\HUD\Hud.cs" />
+    <Compile Include="Interface\HUD\HudBar.cs" />
+    <Compile Include="Interface\HUD\HudBlank.cs" />
+    <Compile Include="Interface\HUD\HudButton.cs" />
+    <Compile Include="Interface\HUD\HudComponent.cs" />
+    <Compile Include="Interface\HUD\HudContainer.cs" />
+    <Compile Include="Interface\HUD\HudElement.cs" />
+    <Compile Include="Interface\HUD\HudFeature.cs" />
+    <Compile Include="Interface\HUD\HudHStack.cs" />
+    <Compile Include="Interface\HUD\HudLayout.cs" />
+    <Compile Include="Interface\HUD\HudPanel.cs" />
+    <Compile Include="Interface\HUD\HudRow.cs" />
+    <Compile Include="Interface\HUD\HudSeparator.cs" />
+    <Compile Include="Interface\HUD\HudStack.cs" />
+    <Compile Include="Interface\HUD\HudTarget.cs" />
+    <Compile Include="Interface\HUD\HudTargetUtility.cs" />
+    <Compile Include="Interface\HUD\HudValue.cs" />
+    <Compile Include="Interface\HUD\HudVStack.cs" />
+    <Compile Include="Interface\HUD\HudWidget.cs" />
     <Compile Include="Interface\Dialog\Tab.cs" />
     <Compile Include="Interface\Dialog\Tab_ConfigColors.cs" />
     <Compile Include="Interface\Dialog\Tab_ConfigContent.cs" />
     <Compile Include="Interface\Dialog\Tab_ConfigDesign.cs" />
     <Compile Include="Interface\Dialog\Tab_ConfigIntegration.cs" />
     <Compile Include="Interface\Dialog\TabManager.cs" />
-    <Compile Include="Interface\TextStyle.cs" />
-    <Compile Include="Interface\Textures.cs" />
-    <Compile Include="Interface\Theme.cs" />
     <Compile Include="Interface\Dialog\WindowPlus.cs" />
     <Compile Include="Patch\Access.cs" />
     <Compile Include="Patch\Extensions.cs" />
@@ -93,8 +118,6 @@
     <Compile Include="Patch\RimWorld_InspectPaneUtility_PaneSizeFor.cs" />
     <Compile Include="Patch\RimWorld_InspectPaneUtility_PaneWidthFor.cs" />
     <Compile Include="Patch\RimWorld_ITab_PaneTopY.cs" />
-    <Compile Include="Patch\Verse_PlayDataLoader_DoPlayLoad.cs" />
-    <Compile Include="Patch\RimWorld_MainTabWindow_Inspect_DoInspectPaneButtons.cs" />
     <Compile Include="Patch\RimWorld_MainTabWindow_Inspect_PaneTopY.cs" />
     <Compile Include="Patch\RimWorld_PlaySettings_DoPlaySettingsGlobalControls.cs" />
     <Compile Include="Patch\RimWorld_Tutor_TutorOnGUI.cs" />
@@ -102,6 +125,7 @@
     <Compile Include="Patch\Verse_LetterStack_LettersOnGUI.cs" />
     <Compile Include="Patch\Verse_MapInterface_Notify_SwitchedMap.cs" />
     <Compile Include="Patch\Verse_MapInterface_MapInterfaceOnGUI_AfterMainTabs.cs" />
+    <Compile Include="Patch\Verse_PlayDataLoader_DoPlayLoad.cs" />
     <Compile Include="Patch\Verse_Profile_MemoryUtility_ClearAllMapsAndWorld.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +158,12 @@
     <Content Include="..\Languages\English\Keyed\Theme.xml">
       <Link>-\Languages\English\Keyed\Theme.xml</Link>
     </Content>
+    <EmbeddedResource Include="Layouts\DefaultFloating.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layouts\DefaultDocked.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">
