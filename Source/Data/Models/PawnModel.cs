@@ -76,10 +76,10 @@ namespace RimHUD.Data.Models
         public TipSignal? BioTooltip => GetBioTooltip();
         public TipSignal? AnimalTooltip => GetAnimalTooltip();
 
-        public ButtonModel OutfitSelector => new OutfitModel(this);
-        public ButtonModel FoodSelector => new FoodModel(this);
-        public ButtonModel TimetableSelector => new TimetableModel(this);
-        public ButtonModel AreaSelector => new AreaModel(this);
+        public SelectorModel OutfitSelector => new OutfitModel(this);
+        public SelectorModel FoodSelector => new FoodModel(this);
+        public SelectorModel TimetableSelector => new TimetableModel(this);
+        public SelectorModel AreaSelector => new AreaModel(this);
 
         private PawnModel(Pawn pawn)
         {

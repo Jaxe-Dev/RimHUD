@@ -24,14 +24,9 @@
   <RimHUD.Dialog_Config.Tab.Content>Content</RimHUD.Dialog_Config.Tab.Content>
   <RimHUD.Dialog_Config.Tab.Integration>Integration</RimHUD.Dialog_Config.Tab.Integration>
 
-  <RimHUD.InspectPane.OutfitFormat>Outfit: {0}</RimHUD.InspectPane.OutfitFormat>
-  <RimHUD.InspectPane.FoodFormat>Food: {0}</RimHUD.InspectPane.FoodFormat>
-  <RimHUD.InspectPane.TimetableFormat>Schedule: {0}</RimHUD.InspectPane.TimetableFormat>
-  <RimHUD.InspectPane.AreaFormat>Area: {0}</RimHUD.InspectPane.AreaFormat>
-  <RimHUD.InspectPane.ManageSelector>Manage...</RimHUD.InspectPane.ManageSelector>
   <RimHUD.InspectPane.MedicalCare>Change the level of medical care given to this {0}.\n\nCurrent: {1}</RimHUD.InspectPane.MedicalCare>
 
-  <RimHUD.Alert.ConfigReset>RimHUD updated to version {0} and required it's configuration to be reset to default.</RimHUD.Alert.ConfigReset>
+  <RimHUD.Alert.ConfigReset>RimHUD updated to version {0} and required that its configuration to be reset to default.</RimHUD.Alert.ConfigReset>
   <RimHUD.Alert.SetToDefault>Are you sure you want to revert these settings to default?</RimHUD.Alert.SetToDefault>
   <RimHUD.Alert.NotImplemented>This feature is not yet implemented</RimHUD.Alert.NotImplemented>
   <RimHUD.Alert.MoreComingSoon>More features coming soon™</RimHUD.Alert.MoreComingSoon>

@@ -19,10 +19,10 @@ namespace RimHUD.Data.Models
 
                     { "NameHeader", model => HudValue.FromText(model.Name, model.BioTooltip, Theme.LargeTextStyle) },
 
-                    { "Outfit", model => HudButton.FromModel(model.OutfitSelector, Theme.SmallTextStyle) },
-                    { "Food", model => HudButton.FromModel(model.FoodSelector, Theme.SmallTextStyle) },
-                    { "Timetable", model => HudButton.FromModel(model.TimetableSelector, Theme.SmallTextStyle) },
-                    { "Area", model => HudButton.FromModel(model.AreaSelector, Theme.SmallTextStyle) },
+                    { "Outfit", model => HudSelector.FromModel(model.OutfitSelector, Theme.SmallTextStyle) },
+                    { "Food", model => HudSelector.FromModel(model.FoodSelector, Theme.SmallTextStyle) },
+                    { "Timetable", model => HudSelector.FromModel(model.TimetableSelector, Theme.SmallTextStyle) },
+                    { "Area", model => HudSelector.FromModel(model.AreaSelector, Theme.SmallTextStyle) },
 
                     { "RelationKindAndFaction", model => HudValue.FromTextModel(model.RelationKindAndFaction, Theme.SmallTextStyle) },
                     { "GenderAndAge", model => HudValue.FromTextModel(model.GenderAndAge, Theme.SmallTextStyle) },

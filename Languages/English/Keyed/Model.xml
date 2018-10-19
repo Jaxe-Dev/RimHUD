@@ -62,4 +62,12 @@
   <RimHUD.Bio.Wildness>Wildness: {0}</RimHUD.Bio.Wildness>
   <RimHUD.Bio.Petness>Petness: {0}</RimHUD.Bio.Petness>
 
+  <RimHUD.Selector.OutfitFormat>Outfit: {0}</RimHUD.Selector.OutfitFormat>
+  <RimHUD.Selector.FoodFormat>Food: {0}</RimHUD.Selector.FoodFormat>
+  <RimHUD.Selector.TimetableFormat>Schedule: {0}</RimHUD.Selector.TimetableFormat>
+  <RimHUD.Selector.SetTimeAssignment>Set hour {0} to {1}</RimHUD.Selector.SetTimeAssignment>
+  <RimHUD.Selector.AreaFormat>Area: {0}</RimHUD.Selector.AreaFormat>
+  <RimHUD.Selector.Manage>Manage...</RimHUD.Selector.Manage>
+
+
 </LanguageData>

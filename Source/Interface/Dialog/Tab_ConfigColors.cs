@@ -27,6 +27,20 @@ namespace RimHUD.Interface.Dialog
 
         private Rect _viewRect = default(Rect);
 
+        private void ParseColor()
+        {
+            if (_selected == null) { return; }
+
+            GUI.FocusControl(null);
+            Color.RGBToHSV(_selected.Value, out var hue, out var saturation, out var lightness);
+            _hue.Value = hue.ToPercentageInt();
+            _saturation.Value = saturation.ToPercentageInt();
+            _lightness.Value = lightness.ToPercentageInt();
+            _alpha.Value = _selected.Value.a.ToPercentageInt();
+        }
+
+        public override void Reset() => ParseColor();
+
         public override void Draw(Rect rect)
         {
             var hGrid = rect.GetHGrid(GUIPlus.LargePadding, -1f, -1f);
@@ -48,9 +62,9 @@ namespace RimHUD.Interface.Dialog
             l.ColorOptionSelect(Theme.BarBackgroundColor, ref _selected);
             l.ColorOptionSelect(Theme.BarMainColor, ref _selected);
             l.ColorOptionSelect(Theme.BarLowColor, ref _selected);
-            l.ColorOptionSelect(Theme.BarThresholdMinorColor, ref _selected);
-            l.ColorOptionSelect(Theme.BarThresholdMajorColor, ref _selected);
-            l.ColorOptionSelect(Theme.BarThresholdExtremeColor, ref _selected);
+            l.ColorOptionSelect(Theme.BarThresholdColor, ref _selected);
+            l.ColorOptionSelect(Theme.SelectorTextColor, ref _selected);
+            l.ColorOptionSelect(Theme.SelectorBackgroundColor, ref _selected);
             l.ColorOptionSelect(Theme.LineColor, ref _selected);
             l.Gap();
 
@@ -83,15 +97,7 @@ namespace RimHUD.Interface.Dialog
 
             if (_selected != null)
             {
-                if (_selected != selected)
-                {
-                    GUI.FocusControl(null);
-                    Color.RGBToHSV(_selected.Value, out var hue, out var saturation, out var lightness);
-                    _hue.Value = hue.ToPercentageInt();
-                    _saturation.Value = saturation.ToPercentageInt();
-                    _lightness.Value = lightness.ToPercentageInt();
-                    _alpha.Value = _selected.Value.a.ToPercentageInt();
-                }
+                if (_selected != selected) { ParseColor(); }
 
                 l.Label(Lang.Get("Dialog_Config.Tab.Colors.Editor", _selected.Label).Bold());
                 l.GapLine();
