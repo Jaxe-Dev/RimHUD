@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using RimHUD.Interface;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
@@ -8,12 +7,12 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class OutfitModel : ButtonModel
+    internal class OutfitModel : SelectorModel
     {
         public override bool Hidden { get; }
         public override string Label { get; }
         public override TipSignal? Tooltip { get; }
-        public override Texture2D Texture { get; }
+        public override Color? Color { get; }
         public override Action OnClick { get; }
         public override Action OnHover { get; }
 
@@ -25,9 +24,9 @@ namespace RimHUD.Data.Models
                 return;
             }
 
-            Label = Lang.Get("InspectPane.OutfitFormat", model.Base.outfits.CurrentOutfit.label);
+            Label = Lang.Get("Selector.OutfitFormat", model.Base.outfits.CurrentOutfit.label);
             Tooltip = null;
-            Texture = Textures.InspectPaneButtonGreyTex;
+            Color = null;
 
             OnClick = DrawFloatMenu;
             OnHover = null;
@@ -36,7 +35,7 @@ namespace RimHUD.Data.Models
         private void DrawFloatMenu()
         {
             var options = (from outfit in Current.Game.outfitDatabase.AllOutfits select new FloatMenuOption(outfit.label, () => Model.Base.outfits.CurrentOutfit = outfit)).ToList();
-            options.Add(new FloatMenuOption(Lang.Get("InspectPane.ManageSelector").Italic(), () => Find.WindowStack.Add(new Dialog_ManageOutfits(Model.Base.outfits.CurrentOutfit))));
+            options.Add(new FloatMenuOption(Lang.Get("Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageOutfits(Model.Base.outfits.CurrentOutfit))));
 
             Find.WindowStack.Add(new FloatMenu(options));
         }

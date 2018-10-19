@@ -11,6 +11,9 @@ namespace RimHUD.Interface.Dialog
 
         public Tab_ConfigContent() => Enabled = false;
 
+        public override void Reset()
+        { }
+
         public override void Draw(Rect rect)
         { }
     }

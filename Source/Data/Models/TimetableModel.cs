@@ -1,5 +1,5 @@
 ﻿using System;
-using RimHUD.Interface;
+using System.Linq;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
@@ -7,12 +7,12 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class TimetableModel : ButtonModel
+    internal class TimetableModel : SelectorModel
     {
         public override bool Hidden { get; }
         public override string Label { get; }
         public override TipSignal? Tooltip { get; }
-        public override Texture2D Texture { get; }
+        public override Color? Color { get; }
         public override Action OnClick { get; }
         public override Action OnHover { get; }
 
@@ -24,13 +24,22 @@ namespace RimHUD.Data.Models
                 return;
             }
 
-            Label = Lang.Get("InspectPane.TimetableFormat", model.Base.timetable.CurrentAssignment.LabelCap);
+            Label = Lang.Get("Selector.TimetableFormat", model.Base.timetable.CurrentAssignment.LabelCap);
             Tooltip = null;
             var assignment = model.Base.timetable.CurrentAssignment;
-            Texture = assignment == TimeAssignmentDefOf.Anything ? Textures.InspectPaneButtonGreyTex : assignment.ColorTexture;
+            Color = assignment == TimeAssignmentDefOf.Anything ? (Color?) null : assignment.color;
 
-            OnClick = () => Find.MainTabsRoot.SetCurrentTab(Access.MainButtonDefOfRestrict);
+            OnClick = DrawFloatMenu;
             OnHover = null;
+        }
+
+        private void DrawFloatMenu()
+        {
+            var hour = GenLocalDate.HourOfDay(Model.Base);
+            var options = DefDatabase<TimeAssignmentDef>.AllDefs.Select(timeAssignment => new FloatMenuOption(Lang.Get("Selector.SetTimeAssignment", hour, timeAssignment.LabelCap), () => Model.Base.timetable.SetAssignment(hour, timeAssignment))).ToList();
+            options.Add(new FloatMenuOption(Lang.Get("Selector.Manage").Italic(), () => Find.MainTabsRoot.SetCurrentTab(Access.MainButtonDefOfRestrict)));
+
+            Find.WindowStack.Add(new FloatMenu(options));
         }
     }
 }

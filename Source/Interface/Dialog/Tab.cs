@@ -10,6 +10,7 @@ namespace RimHUD.Interface.Dialog
 
         public bool Enabled { get; set; } = true;
 
+        public abstract void Reset();
         public abstract void Draw(Rect rect);
     }
 }

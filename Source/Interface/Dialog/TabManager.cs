@@ -25,6 +25,10 @@ namespace RimHUD.Interface.Dialog
             if (tabs.Length == 0) { return; }
             _selected = tabs[0];
         }
+        public void Reset()
+        {
+            foreach (var tab in _tabs) { tab.Reset(); }
+        }
 
         public void Draw(Rect rect)
         {
