@@ -33,6 +33,7 @@
 
   <RimHUD.Theme.OtherOptions>Other Options</RimHUD.Theme.OtherOptions>
 
+  <RimHUD.Theme.ShowDecimals>Show Decimals</RimHUD.Theme.ShowDecimals>
   <RimHUD.Theme.LetterPadding>Letter Padding</RimHUD.Theme.LetterPadding>
   <RimHUD.Theme.LetterPaddingDesc>Changes the distance between the letter notifications that appear on the right side of the screen. Vanilla: 12</RimHUD.Theme.LetterPaddingDesc>
   <RimHUD.Theme.LetterCompress>Compress Notifications</RimHUD.Theme.LetterCompress>
@@ -41,7 +42,7 @@
   <RimHUD.Theme.HudColors>HUD Colors</RimHUD.Theme.HudColors>
 
   <RimHUD.Theme.MainTextColor>Main text</RimHUD.Theme.MainTextColor>
-  <RimHUD.Theme.DisabledColor>Disabled</RimHUD.Theme.DisabledColor>
+  <RimHUD.Theme.DisabledColor>Disabled text</RimHUD.Theme.DisabledColor>
   <RimHUD.Theme.CriticalColor>Critical text</RimHUD.Theme.CriticalColor>
   <RimHUD.Theme.WarningColor>Warning text</RimHUD.Theme.WarningColor>
   <RimHUD.Theme.InfoColor>Info text</RimHUD.Theme.InfoColor>
@@ -50,9 +51,9 @@
   <RimHUD.Theme.BarBackgroundColor>Bar background</RimHUD.Theme.BarBackgroundColor>
   <RimHUD.Theme.BarMainColor>Bar main</RimHUD.Theme.BarMainColor>
   <RimHUD.Theme.BarLowColor>Bar low</RimHUD.Theme.BarLowColor>
-  <RimHUD.Theme.BarThresholdMinorColor>Bar threshold minor</RimHUD.Theme.BarThresholdMinorColor>
-  <RimHUD.Theme.BarThresholdMajorColor>Bar threshold major</RimHUD.Theme.BarThresholdMajorColor>
-  <RimHUD.Theme.BarThresholdExtremeColor>Bar threshold extreme</RimHUD.Theme.BarThresholdExtremeColor>
+  <RimHUD.Theme.BarThresholdColor>Bar threshold</RimHUD.Theme.BarThresholdColor>
+  <RimHUD.Theme.SelectorBackgroundColor>Selector Background</RimHUD.Theme.SelectorBackgroundColor>
+  <RimHUD.Theme.SelectorTextColor>Selector Text</RimHUD.Theme.SelectorTextColor>
   <RimHUD.Theme.LineColor>Line</RimHUD.Theme.LineColor>
 
   <RimHUD.Theme.FactionColors>Faction Colors</RimHUD.Theme.FactionColors>

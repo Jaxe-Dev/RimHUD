@@ -25,10 +25,9 @@ namespace RimHUD.Patch
         public static string ToHex(this Color color) => ColorUtility.ToHtmlStringRGBA(color);
         public static int? ToInt(this string self) => int.TryParse(self, out var result) ? result : (int?) null;
         public static bool? ToBool(this string self) => bool.TryParse(self, out var result) ? result : (bool?) null;
-        public static string ToDecimalString(this int self, int remainder) => $"{self.ToString().Bold()}.{(remainder >= 100 ? "99" : remainder.ToString("D2")).Size(Theme.SmallTextStyle.ActualSize)}";
+        public static string ToDecimalString(this int self, int remainder) => !Theme.ShowDecimals.Value ? self.ToString().Bold() : $"{self.ToString().Bold()}.{(remainder >= 100 ? "99" : remainder.ToString("D2")).Size(Theme.SmallTextStyle.ActualSize)}";
         public static int ToPercentageInt(this float self) => Mathf.RoundToInt(self * 100f);
         public static float ToPercentageFloat(this int self) => self / 100f;
-        public static int WrapTo(this int self, int max) => ((self % max) + max) % max;
 
         public static GUIStyle SetTo(this GUIStyle self, int? size = null, TextAnchor? alignment = null, bool? wrap = null) => new GUIStyle(self) { fontSize = size ?? self.fontSize, alignment = alignment ?? self.alignment, wordWrap = wrap ?? self.wordWrap };
         public static GUIStyle ResizedBy(this GUIStyle self, int size = 0) => new GUIStyle(self) { fontSize = self.fontSize + size };

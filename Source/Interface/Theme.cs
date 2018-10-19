@@ -24,13 +24,14 @@ namespace RimHUD.Interface
         [Persistent.Option("InspectPane", "AddLog")] public static BoolOption InspectPaneTabAddLog { get; } = new BoolOption(true, Lang.Get("Theme.InspectPaneAddLog"), Lang.Get("Theme.InspectPaneAddLogDesc"));
         [Persistent.Option("InspectPane", "Height")] public static RangeOption InspectPaneHeight { get; } = new RangeOption(255, 200, 500, Lang.Get("Theme.InspectPaneHeight"));
         [Persistent.Option("InspectPane", "MinTabs")] public static RangeOption InspectPaneMinTabs { get; } = new RangeOption(7, 6, 12, Lang.Get("Theme.InspectPaneMinTabs"));
-        [Persistent.Option("InspectPane", "TabWidth")] public static RangeOption InspectPaneTabWidth { get; } = new RangeOption(82, 72, 150, Lang.Get("Theme.InspectPaneTabWidth"));
+        [Persistent.Option("InspectPane", "TabWidth")] public static RangeOption InspectPaneTabWidth { get; } = new RangeOption(80, 72, 150, Lang.Get("Theme.InspectPaneTabWidth"));
 
         [Persistent.Option("Text", "Regular")] public static TextStyle RegularTextStyle { get; } = new TextStyle(Lang.Get("Theme.TextStyleRegular"), null, BaseGUIStyle.fontSize, 7, 20, 100, 100, 250, _ => UpdateTextStyles());
         [Persistent.Option("Text", "Large")] public static TextStyle LargeTextStyle { get; } = new TextStyle(Lang.Get("Theme.TextStyleLarge"), RegularTextStyle, 3, 0, 5, 150, 100, 250);
         [Persistent.Option("Text", "Small")] public static TextStyle SmallTextStyle { get; } = new TextStyle(Lang.Get("Theme.TextStyleSmall"), RegularTextStyle, -1, -5, 0, 100, 100, 250);
         [Persistent.Option("Text", "LabelWidth")] public static RangeOption LabelWidth { get; } = new RangeOption(95, 30, 150, Lang.Get("Theme.LabelWidth"));
         [Persistent.Option("Text", "ValueWidth")] public static RangeOption ValueWidth { get; } = new RangeOption(40, 30, 150, Lang.Get("Theme.ValueWidth"));
+        [Persistent.Option("Text", "ShowDecimals")] public static BoolOption ShowDecimals { get; } = new BoolOption(true, Lang.Get("Theme.ShowDecimals"));
 
         [Persistent.Option("Letters", "Padding")] public static RangeOption LetterPadding { get; } = new RangeOption(4, 0, 12, Lang.Get("Theme.LetterPadding"), tooltip: Lang.Get("Theme.LetterPaddingDesc"));
         [Persistent.Option("Letters", "Compress")] public static BoolOption LetterCompress { get; } = new BoolOption(true, Lang.Get("Theme.LetterCompress"), Lang.Get("Theme.LetterCompressDesc"));
@@ -43,12 +44,11 @@ namespace RimHUD.Interface
         [Persistent.Option("HudColors", "Good")] public static ColorOption GoodColor { get; } = new ColorOption(new Color(0.4f, 0.8f, 0.8f), Lang.Get("Theme.GoodColor"));
         [Persistent.Option("HudColors", "Excellent")] public static ColorOption ExcellentColor { get; } = new ColorOption(new Color(0.4f, 0.8f, 0.2f), Lang.Get("Theme.ExcellentColor"));
         [Persistent.Option("HudColors", "BarBackground")] public static ColorOption BarBackgroundColor { get; } = new ColorOption(new Color(0.2f, 0.2f, 0.2f), Lang.Get("Theme.BarBackgroundColor"));
-        [Persistent.Option("HudColors", "BarMain")] public static ColorOption BarMainColor { get; } = new ColorOption(new Color(0.1f, 0.6f, 0f), Lang.Get("Theme.BarMainColor"));
-        [Persistent.Option("HudColors", "BarLow")] public static ColorOption BarLowColor { get; } = new ColorOption(new Color(0.6f, 0f, 0.1f), Lang.Get("Theme.BarLowColor"));
-        [Persistent.Option("HudColors", "BarThresholdMinor")] public static ColorOption BarThresholdMinorColor { get; } = new ColorOption(new Color(0.9f, 0.9f, 0.4f, 0.4f), Lang.Get("Theme.BarThresholdMinorColor"));
-        [Persistent.Option("HudColors", "BarThresholdMajor")] public static ColorOption BarThresholdMajorColor { get; } = new ColorOption(new Color(0.9f, 0.7f, 0.4f, 0.4f), Lang.Get("Theme.BarThresholdMajorColor"));
-        [Persistent.Option("HudColors", "BarThresholdExtreme")] public static ColorOption BarThresholdExtremeColor { get; } = new ColorOption(new Color(0.9f, 0.4f, 0.4f, 0.4f), Lang.Get("Theme.BarThresholdExtremeColor"));
-        [Persistent.Option("HudColors", "BarThreshold")] public static ColorOption BarThresholdColor { get; } = new ColorOption(new Color(0.9f, 0.9f, 0.4f), Lang.Get("Theme.BarThresholdColor"));
+        [Persistent.Option("HudColors", "BarMain")] public static ColorOption BarMainColor { get; } = new ColorOption(new Color(0.25f, 0.6f, 0f), Lang.Get("Theme.BarMainColor"));
+        [Persistent.Option("HudColors", "BarLow")] public static ColorOption BarLowColor { get; } = new ColorOption(new Color(0.6f, 0f, 0f), Lang.Get("Theme.BarLowColor"));
+        [Persistent.Option("HudColors", "BarThreshold")] public static ColorOption BarThresholdColor { get; } = new ColorOption(new Color(0f, 0f, 0f, 0.75f), Lang.Get("Theme.BarThresholdColor"));
+        [Persistent.Option("HudColors", "SelectorText")] public static ColorOption SelectorTextColor { get; } = new ColorOption(new Color(1f, 1f, 1f), Lang.Get("Theme.SelectorTextColor"));
+        [Persistent.Option("HudColors", "SelectorBackground")] public static ColorOption SelectorBackgroundColor { get; } = new ColorOption(new Color(0.31f, 0.32f, 0.33f), Lang.Get("Theme.SelectorBackgroundColor"));
         [Persistent.Option("HudColors", "Line")] public static ColorOption LineColor { get; } = new ColorOption(new Color(0.8f, 0.8f, 0.8f, 0.4f), Lang.Get("Theme.LineColor"));
 
         [Persistent.Option("FactionColors", "Own")] public static ColorOption FactionOwnColor { get; } = new ColorOption(new Color(1f, 1f, 1f), Lang.Get("Theme.FactionOwnColor"));

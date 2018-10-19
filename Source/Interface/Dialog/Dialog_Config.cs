@@ -34,10 +34,16 @@ namespace RimHUD.Interface.Dialog
             _tabs.Draw(grid[1]);
 
             var button = GUIPlus.DrawButtonRow(grid[2], ButtonWidth, Padding, Lang.Get("Dialog_Config.SetToDefault"), Lang.Get("Button.Close"));
-            if (button == 1) { SetToDefault(); }
+            if (button == 1) { ConfirmSetToDefault(); }
             else if (button == 2) { Close(); }
         }
 
-        private static void SetToDefault() => Dialog_Alert.Open(Lang.Get("Alert.SetToDefault"), Dialog_Alert.Buttons.YesNo, Persistent.AllToDefault);
+        private void ConfirmSetToDefault() => Dialog_Alert.Open(Lang.Get("Alert.SetToDefault"), Dialog_Alert.Buttons.YesNo, SetToDefault);
+
+        private void SetToDefault()
+        {
+            Persistent.AllToDefault();
+            _tabs.Reset();
+        }
     }
 }

@@ -132,7 +132,7 @@ namespace RimHUD.Interface
 
             DrawTooltip(rect, tooltip, highlight);
 
-            var image = result ? onTex ?? Widgets.CheckboxOnTex : offTex ?? Widgets.CheckboxOffTex;
+            var image = result ? onTex ? onTex : Widgets.CheckboxOnTex : offTex ? offTex : Widgets.CheckboxOffTex;
             GUI.DrawTexture(rect, image);
             ResetColor();
 
@@ -147,7 +147,6 @@ namespace RimHUD.Interface
 
         public static void DrawTooltip(Rect rect, TipSignal? tooltip, bool highlight)
         {
-            //if ((tooltip == null) || !Mouse.IsOver(rect) || (tooltip.Value.text.NullOrEmpty() && (tooltip.Value.textGetter == null))) { return; }
             if ((tooltip == null) || !Mouse.IsOver(rect)) { return; }
 
             if (highlight) { Widgets.DrawHighlight(rect); }

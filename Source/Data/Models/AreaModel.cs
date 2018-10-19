@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using RimHUD.Interface;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
@@ -8,12 +8,12 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class AreaModel : ButtonModel
+    internal class AreaModel : SelectorModel
     {
         public override bool Hidden { get; }
         public override string Label { get; }
         public override TipSignal? Tooltip { get; }
-        public override Texture2D Texture { get; }
+        public override Color? Color { get; }
         public override Action OnClick { get; }
         public override Action OnHover { get; }
 
@@ -25,9 +25,9 @@ namespace RimHUD.Data.Models
                 return;
             }
 
-            Label = Lang.Get("InspectPane.AreaFormat", AreaUtility.AreaAllowedLabel(model.Base));
+            Label = Lang.Get("Selector.AreaFormat", AreaUtility.AreaAllowedLabel(model.Base));
             Tooltip = null;
-            Texture = model.Base.playerSettings?.EffectiveAreaRestriction == null ? Textures.InspectPaneButtonGreyTex : model.Base.playerSettings.EffectiveAreaRestriction.ColorTexture;
+            Color = model.Base.playerSettings?.EffectiveAreaRestriction?.Color;
 
             OnClick = DrawFloatMenu;
             OnHover = () => model.Base.playerSettings.EffectiveAreaRestriction?.MarkForDraw();
@@ -35,8 +35,9 @@ namespace RimHUD.Data.Models
 
         private void DrawFloatMenu()
         {
-            var options = (from area in Find.CurrentMap.areaManager.AllAreas.Where(area => area.AssignableAsAllowed()) select new FloatMenuOption(area.Label, () => Model.Base.playerSettings.AreaRestriction = area)).ToList();
-            options.Add(new FloatMenuOption(Lang.Get("InspectPane.ManageSelector").Italic(), () => Find.WindowStack.Add(new Dialog_ManageAreas(Find.CurrentMap))));
+            var options = new List<FloatMenuOption> { new FloatMenuOption("NoAreaAllowed".Translate(), () => Model.Base.playerSettings.AreaRestriction = null) };
+            options.AddRange(from area in Find.CurrentMap.areaManager.AllAreas.Where(area => area.AssignableAsAllowed()) select new FloatMenuOption(area.Label, () => Model.Base.playerSettings.AreaRestriction = area));
+            options.Add(new FloatMenuOption(Lang.Get("Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageAreas(Find.CurrentMap))));
 
             Find.WindowStack.Add(new FloatMenu(options));
         }

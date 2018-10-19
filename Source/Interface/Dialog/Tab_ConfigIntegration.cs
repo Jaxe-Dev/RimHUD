@@ -11,6 +11,9 @@ namespace RimHUD.Interface.Dialog
         public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Integration");
         public override TipSignal? Tooltip { get; } = null;
 
+        public override void Reset()
+        { }
+
         public override void Draw(Rect rect)
         {
             var hGrid = rect.GetHGrid(GUIPlus.LargePadding, -1f, -1f);

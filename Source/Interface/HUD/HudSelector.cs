@@ -6,29 +6,29 @@ using Verse;
 
 namespace RimHUD.Interface.HUD
 {
-    internal class HudButton : HudFeature
+    internal class HudSelector : HudFeature
     {
-        private readonly Texture2D _texture;
+        private readonly Color? _color;
         private readonly Action _onClick;
         private readonly Action _onHover;
         public override float Height { get; }
-        public HudButton(string label, TipSignal? tooltip, TextStyle textStyle, Texture2D texture, Action onClick, Action onHover) : base(label, tooltip, textStyle)
+        public HudSelector(string label, TipSignal? tooltip, TextStyle textStyle, Color? color, Action onClick, Action onHover) : base(label, tooltip, textStyle)
         {
-            _texture = texture;
+            _color = color;
             _onClick = onClick;
             _onHover = onHover;
             Height = textStyle.LineHeight;
         }
 
-        private HudButton(ButtonModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, textStyle, model.Texture, model.OnClick, model.OnHover)
+        private HudSelector(SelectorModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, textStyle, model.Color, model.OnClick, model.OnHover)
         { }
 
-        public static HudButton FromModel(ButtonModel model, TextStyle textStyle) => model == null ? null : new HudButton(model, textStyle);
+        public static HudSelector FromModel(SelectorModel model, TextStyle textStyle) => model == null ? null : new HudSelector(model, textStyle);
 
         public override bool Draw(Rect rect)
         {
-            GUI.DrawTexture(rect, _texture);
-            DrawText(rect.ContractedBy(GUIPlus.SmallPadding, 0f), Label);
+            Widgets.DrawBoxSolid(rect, _color ?? Theme.SelectorBackgroundColor.Value);
+            DrawText(rect.ContractedBy(GUIPlus.SmallPadding, 0f), Label, Theme.SelectorTextColor.Value);
 
             if (Mouse.IsOver(rect))
             {

@@ -16,8 +16,8 @@ namespace RimHUD.Data
     {
         private const string ConfigFileName = "Config.xml";
 
-        private static bool VersionNeedsNewConfig { get; } = false;
-        public static bool ConfigWasReset { get; private set; }
+        private static bool VersionNeedsNewConfig { get; } = true;
+        private static bool _configWasReset;
 
         private static readonly FileInfo ConfigFile = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, ConfigFileName));
 
@@ -31,12 +31,12 @@ namespace RimHUD.Data
             if (version == Mod.Version) { return false; }
             Mod.Warning($"Loaded config version ({version ?? "NULL"}) is different from the current mod version{(VersionNeedsNewConfig ? ". A new config is required and has been applied" : null)}");
 
-            return true;
+            return VersionNeedsNewConfig;
         }
 
         public static void CheckAlerts()
         {
-            if (!ConfigWasReset) { return; }
+            if (!_configWasReset) { return; }
 
             var alert = Lang.Get("Alert.ConfigReset", Mod.Version);
             Mod.Message(alert);
@@ -90,7 +90,7 @@ namespace RimHUD.Data
             {
                 Save();
                 Mod.Warning($"Updating to version {Mod.Version} required your RimHUD config to be reset to default.");
-                ConfigWasReset = true;
+                _configWasReset = true;
                 return;
             }
 

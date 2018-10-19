@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D3159CFD-253F-4FA0-8846-1B44B1C6949B}</ProjectGuid>
+    <ProjectGuid>{CCCC7430-4D27-4A71-A435-9E3F8B424D7B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RimHUD</RootNamespace>
@@ -58,7 +58,6 @@
     <Compile Include="Data\Models\AreaModel.cs" />
     <Compile Include="Data\Models\AttributeModel.cs" />
     <Compile Include="Data\Models\BarModel.cs" />
-    <Compile Include="Data\Models\ButtonModel.cs" />
     <Compile Include="Data\Models\FoodModel.cs" />
     <Compile Include="Data\Models\HealthBarModel.cs" />
     <Compile Include="Data\Models\HudModel.cs" />
@@ -67,6 +66,7 @@
     <Compile Include="Data\Models\PawnHealthModel.cs" />
     <Compile Include="Data\Models\PawnMindModel.cs" />
     <Compile Include="Data\Models\PawnModel.cs" />
+    <Compile Include="Data\Models\SelectorModel.cs" />
     <Compile Include="Data\Models\SkillModel.cs" />
     <Compile Include="Data\Models\TextModel.cs" />
     <Compile Include="Data\Models\TimetableModel.cs" />
@@ -87,7 +87,6 @@
     <Compile Include="Interface\HUD\Hud.cs" />
     <Compile Include="Interface\HUD\HudBar.cs" />
     <Compile Include="Interface\HUD\HudBlank.cs" />
-    <Compile Include="Interface\HUD\HudButton.cs" />
     <Compile Include="Interface\HUD\HudComponent.cs" />
     <Compile Include="Interface\HUD\HudContainer.cs" />
     <Compile Include="Interface\HUD\HudElement.cs" />
@@ -96,6 +95,7 @@
     <Compile Include="Interface\HUD\HudLayout.cs" />
     <Compile Include="Interface\HUD\HudPanel.cs" />
     <Compile Include="Interface\HUD\HudRow.cs" />
+    <Compile Include="Interface\HUD\HudSelector.cs" />
     <Compile Include="Interface\HUD\HudSeparator.cs" />
     <Compile Include="Interface\HUD\HudStack.cs" />
     <Compile Include="Interface\HUD\HudTarget.cs" />
@@ -136,12 +136,12 @@
       <Link>-\About\About.xml</Link>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="..\About\ModSync.xml">
-      <Link>-\About\ModSync.xml</Link>
-      <SubType>Designer</SubType>
+    <Content Include="..\About\Manifest.xml">
+      <Link>-\About\Manifest.xml</Link>
     </Content>
     <Content Include="..\Defs\UpdateFeaturesDef\UpdateFeatures.xml">
       <Link>-\Defs\UpdateFeaturesDefs\UpdateFeatures.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\Languages\English\Keyed\Base.xml">
       <Link>-\Languages\English\Keyed\Base.xml</Link>

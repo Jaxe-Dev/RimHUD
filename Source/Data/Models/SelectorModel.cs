@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace RimHUD.Data.Models
 {
-    internal abstract class ButtonModel : AttributeModel
+    internal abstract class SelectorModel : AttributeModel
     {
-        public abstract Texture2D Texture { get; }
+        public abstract Color? Color { get; }
         public abstract Action OnClick { get; }
         public abstract Action OnHover { get; }
         public override string Label { get; } = null;
 
-        protected ButtonModel(PawnModel model) : base(model)
+        protected SelectorModel(PawnModel model) : base(model)
         { }
     }
 }

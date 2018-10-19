@@ -21,6 +21,7 @@ namespace RimHUD.Interface.Dialog
             closeOnAccept = true;
             closeOnClickedOutside = false;
             absorbInputAroundWindow = true;
+            draggable = true;
 
             _message = message;
             _buttons = buttons;

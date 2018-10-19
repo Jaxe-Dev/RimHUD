@@ -16,6 +16,9 @@ namespace RimHUD.Interface.Dialog
         public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Design");
         public override TipSignal? Tooltip { get; } = null;
 
+        public override void Reset()
+        { }
+
         public override void Draw(Rect rect)
         {
             var hGrid = rect.GetHGrid(GUIPlus.LargePadding, -1f, -1f);
@@ -62,6 +65,7 @@ namespace RimHUD.Interface.Dialog
             l.Gap();
 
             l.Label(Lang.Get("Theme.OtherOptions").Bold());
+            l.BoolToggle(Theme.ShowDecimals);
             l.BoolToggle(Theme.LetterCompress);
             l.RangeSlider(Theme.LetterPadding, Theme.LetterCompress.Value);
 
