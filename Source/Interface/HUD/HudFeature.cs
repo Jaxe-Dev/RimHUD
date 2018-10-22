@@ -19,6 +19,6 @@ namespace RimHUD.Interface.HUD
             Height = _textStyle.LineHeight;
         }
 
-        protected void DrawText(Rect rect, string text, Color? color = null) => GUIPlus.DrawText(rect, text, color, _textStyle);
+        protected void DrawText(Rect rect, string text, Color? color = null, TextAnchor? alignment = null) => GUIPlus.DrawText(rect, text, color, _textStyle, alignment);
     }
 }

@@ -43,7 +43,7 @@ namespace RimHUD.Interface.HUD
         {
             if (!_visible || (_elements.Length == 0)) { return false; }
 
-            var grid = rect.GetHGrid(HudLayout.Padding, Enumerable.Repeat(-1f, _elements.Length).ToArray());
+            var grid = rect.GetHGrid(GUIPlus.MediumPadding, Enumerable.Repeat(-1f, _elements.Length).ToArray());
 
             var index = 1;
             foreach (var element in _elements)
