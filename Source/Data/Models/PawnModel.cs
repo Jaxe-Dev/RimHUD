@@ -96,9 +96,8 @@ namespace RimHUD.Data.Models
 
         private HudTarget GetTargetType()
         {
-            var isColonist = Base.IsColonist;
-            if (IsPlayerFaction) { return isColonist ? HudTarget.PlayerColonist : HudTarget.PlayerAnimal; }
-            return isColonist ? HudTarget.OtherColonist : HudTarget.OtherAnimal;
+            if (IsPlayerFaction) { return IsAnimal ? HudTarget.PlayerAnimal : HudTarget.PlayerColonist; }
+            return IsAnimal ? HudTarget.OtherAnimal : HudTarget.OtherColonist;
         }
 
         private NeedModel GetNeedModel(NeedDef def) => new NeedModel(this, def);

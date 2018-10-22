@@ -63,13 +63,14 @@ namespace RimHUD.Interface
             Text.Font = font.Value;
         }
 
-        public static void DrawText(Rect rect, string text, Color? color = null, TextStyle style = null, TipSignal? tooltip = null)
+        public static void DrawText(Rect rect, string text, Color? color = null, TextStyle style = null, TextAnchor? alignment = null, TipSignal? tooltip = null)
         {
             if (text.NullOrEmpty()) { return; }
 
             SetColor(color);
             var textRect = rect;
-            var textStyle = style?.GUIStyle ?? Text.CurFontStyle;
+            var textStyle = (style?.GUIStyle ?? Text.CurFontStyle).SetTo(alignment: alignment);
+
             var content = new GUIContent(text);
             if (textStyle.CalcSize(content).x > rect.width)
             {

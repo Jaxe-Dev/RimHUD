@@ -16,7 +16,7 @@ namespace RimHUD.Data
     {
         private const string ConfigFileName = "Config.xml";
 
-        private static bool VersionNeedsNewConfig { get; } = true;
+        private static bool VersionNeedsNewConfig { get; } = false;
         private static bool _configWasReset;
 
         private static readonly FileInfo ConfigFile = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, ConfigFileName));
@@ -26,12 +26,13 @@ namespace RimHUD.Data
             ConfigFile.Refresh();
             return ConfigFile.Exists;
         }
+
         private static bool NeedsNewConfig(string version)
         {
             if (version == Mod.Version) { return false; }
-            Mod.Warning($"Loaded config version ({version ?? "NULL"}) is different from the current mod version{(VersionNeedsNewConfig ? ". A new config is required and has been applied" : null)}");
+            Mod.Warning($"Loaded config version ({version ?? "NULL"}) is different from the current mod version");
 
-            return VersionNeedsNewConfig;
+            return VersionNeedsNewConfig || (version != Mod.LastVersion);
         }
 
         public static void CheckAlerts()
@@ -40,7 +41,6 @@ namespace RimHUD.Data
 
             var alert = Lang.Get("Alert.ConfigReset", Mod.Version);
             Mod.Message(alert);
-            Mod.Warning(alert);
         }
 
         private static IEnumerable<Type> GetIntegrations() => Assembly.GetExecutingAssembly().GetTypes().Where(type => type.HasAttribute<IntegratedOptions>());
@@ -85,7 +85,8 @@ namespace RimHUD.Data
             }
 
             var doc = XDocument.Load(ConfigFile.FullName);
-            var loadedVersion = doc.Root?.Attribute("Version")?.Value;
+            var versionAttribute = doc.Root?.Attribute("Version");
+            var loadedVersion = versionAttribute?.Value;
             if (NeedsNewConfig(loadedVersion))
             {
                 Save();
@@ -94,11 +95,16 @@ namespace RimHUD.Data
                 return;
             }
 
+            if (versionAttribute == null) { doc.Root?.Add(new XAttribute("Version", Mod.Version)); }
+            else { versionAttribute.Value = Mod.Version; }
+
             LoadElements(typeof(Theme), doc.Root);
 
             foreach (var integration in GetIntegrations()) { LoadClassElements(integration, doc.Root); }
 
             LoadLayouts();
+
+            doc.Save(ConfigFile.FullName);
         }
 
         private static void LoadClassElements(object subject, XElement root)

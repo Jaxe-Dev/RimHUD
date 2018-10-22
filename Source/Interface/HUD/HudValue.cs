@@ -37,8 +37,8 @@ namespace RimHUD.Interface.HUD
             var grid = rect.GetHGrid(GUIPlus.TinyPadding, showLabel ? Theme.LabelWidth.Value : 0f, -1f);
 
             GUIPlus.SetColor(_color);
-            DrawText(grid[1], Label);
-            DrawText(grid[2], _value);
+            if (showLabel) { DrawText(grid[1], Label); }
+            DrawText(grid[2], _value, alignment: showLabel ? TextAnchor.MiddleRight : (TextAnchor?) null);
             GUIPlus.ResetColor();
 
             GUIPlus.DrawTooltip(grid[0], Tooltip, false);
