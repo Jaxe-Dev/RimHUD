@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Reflection;
 using Harmony;
 using RimHUD.Compatibility;
@@ -14,7 +14,8 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.2.9.1";
+        public const string Version = "1.2.9.2";
+        public const string LastVersion = "1.2.9.1";
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
         public static bool FirstTimeUser { get; }
