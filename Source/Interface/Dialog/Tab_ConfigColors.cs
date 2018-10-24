@@ -84,7 +84,7 @@ namespace RimHUD.Interface.Dialog
             l.Gap();
 
             var hasBubbles = Bubbles.Instance.IsActive;
-            l.Label(Lang.Get("Theme.Bubbles.Colors").Bold());
+            l.Label(Lang.Get("Integration.Bubbles.Colors").Bold());
             l.GapLine();
             l.ColorOptionSelect(Bubbles.ForeColor, ref _selected, hasBubbles);
             l.ColorOptionSelect(Bubbles.BackColor, ref _selected, hasBubbles);

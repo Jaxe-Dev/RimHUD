@@ -25,7 +25,7 @@ namespace RimHUD.Data.Models
                 return;
             }
 
-            Label = Lang.Get("Selector.AreaFormat", AreaUtility.AreaAllowedLabel(model.Base));
+            Label = Lang.Get("Model.Selector.AreaFormat", AreaUtility.AreaAllowedLabel(model.Base));
             Tooltip = null;
             Color = model.Base.playerSettings?.EffectiveAreaRestriction?.Color;
 
@@ -37,7 +37,7 @@ namespace RimHUD.Data.Models
         {
             var options = new List<FloatMenuOption> { new FloatMenuOption("NoAreaAllowed".Translate(), () => Model.Base.playerSettings.AreaRestriction = null) };
             options.AddRange(from area in Find.CurrentMap.areaManager.AllAreas.Where(area => area.AssignableAsAllowed()) select new FloatMenuOption(area.Label, () => Model.Base.playerSettings.AreaRestriction = area));
-            options.Add(new FloatMenuOption(Lang.Get("Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageAreas(Find.CurrentMap))));
+            options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageAreas(Find.CurrentMap))));
 
             Find.WindowStack.Add(new FloatMenu(options));
         }

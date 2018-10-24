@@ -18,13 +18,13 @@ namespace RimHUD.Data.Models
 
         public FoodModel(PawnModel model) : base(model)
         {
-            if ((!model.Base.Faction?.IsPlayer ?? true) || (model.Base.foodRestriction?.CurrentFoodRestriction == null))
+            if (!model.IsPlayerManaged || (model.Base.foodRestriction == null) || !model.Base.foodRestriction.Configurable)
             {
                 Hidden = true;
                 return;
             }
 
-            Label = Lang.Get("Selector.FoodFormat", model.Base.foodRestriction.CurrentFoodRestriction.label);
+            Label = Lang.Get("Model.Selector.FoodFormat", model.Base.foodRestriction.CurrentFoodRestriction.label);
             Tooltip = null;
             Color = null;
 
@@ -35,7 +35,7 @@ namespace RimHUD.Data.Models
         private void DrawFloatMenu()
         {
             var options = (from food in Current.Game.foodRestrictionDatabase.AllFoodRestrictions select new FloatMenuOption(food.label, () => Model.Base.foodRestriction.CurrentFoodRestriction = food)).ToList();
-            options.Add(new FloatMenuOption(Lang.Get("Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageFoodRestrictions(Model.Base.foodRestriction.CurrentFoodRestriction))));
+            options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageFoodRestrictions(Model.Base.foodRestriction.CurrentFoodRestriction))));
             Find.WindowStack.Add(new FloatMenu(options));
         }
     }

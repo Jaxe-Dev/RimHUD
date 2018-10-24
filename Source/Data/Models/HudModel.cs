@@ -14,7 +14,7 @@ namespace RimHUD.Data.Models
 
         private static readonly Dictionary<string, Func<PawnModel, HudWidget>> Widgets = new Dictionary<string, Func<PawnModel, HudWidget>>
         {
-                    { HudBlank.Name, _ => HudBlank.Get(0f) },
+                    { HudBlank.Name, _ => HudBlank.GetEmpty },
                     { HudSeparator.Name, _ => HudSeparator.Get() },
 
                     { "NameHeader", model => HudValue.FromText(model.Name, model.BioTooltip, Theme.LargeTextStyle) },
@@ -74,19 +74,25 @@ namespace RimHUD.Data.Models
             var widget = Widgets.TryGetValue(id);
             if (widget == null) { throw new Mod.Exception($"Invalid HUD Widget, type '{id}' is not recognized"); }
 
-            return widget.Invoke(model) ?? HudBlank.Get(0f);
+            return widget.Invoke(model) ?? HudBlank.GetEmpty;
         }
 
         private static HudWidget GetNeedWidget(PawnModel model, string defName)
         {
-            var def = DefDatabase<NeedDef>.GetNamed(defName) ?? throw new Mod.Exception($"Invalid HUD Widget, Need def '{defName}' not found");
-            return HudBar.FromModel(new NeedModel(model, def), Theme.RegularTextStyle);
+            var def = DefDatabase<NeedDef>.GetNamed(defName, false);
+            if (def != null) { return (HudWidget) HudBar.FromModel(new NeedModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty; }
+
+            Mod.ErrorOnce($"Invalid HUD Widget, Need def '{defName}' not found", "InvalidNeedDefName" + defName);
+            return HudBlank.GetEmpty;
         }
 
         private static HudWidget GetSkillWidget(PawnModel model, string defName)
         {
-            var def = DefDatabase<SkillDef>.GetNamed(defName) ?? throw new Mod.Exception($"Invalid HUD Widget, Skill def '{defName}' not found");
-            return HudValue.FromValueModel(new SkillModel(model, def), Theme.RegularTextStyle);
+            var def = DefDatabase<SkillDef>.GetNamed(defName, false);
+            if (def != null) { return (HudWidget) HudValue.FromValueModel(new SkillModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty;  }
+
+            Mod.ErrorOnce($"Invalid HUD Widget, Skill def '{defName}' not found", "InvalidSkillDefName" + defName);
+            return HudBlank.GetEmpty;
         }
     }
 }

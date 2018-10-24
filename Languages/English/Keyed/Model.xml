@@ -2,72 +2,71 @@
 
 <LanguageData>
 
-  <RimHUD.RelationKindAndFaction>{0}{1}{2}</RimHUD.RelationKindAndFaction>
-  <RimHUD.OfFaction> of {0}</RimHUD.OfFaction>
+  <RimHUD.Model.RelationKindAndFaction>{0}{1}{2}</RimHUD.Model.RelationKindAndFaction>
+  <RimHUD.Model.OfFaction> of {0}</RimHUD.Model.OfFaction>
 
-  <RimHUD.Faction.Own>Our </RimHUD.Faction.Own>
-  <RimHUD.Faction.Wild>Wild </RimHUD.Faction.Wild>
-  <RimHUD.Faction.Allied>Allied </RimHUD.Faction.Allied>
-  <RimHUD.Faction.Enemy>Enemy </RimHUD.Faction.Enemy>
-  <RimHUD.Faction.Hostile>Hostile </RimHUD.Faction.Hostile>
-  <RimHUD.Faction.Independent>Independent </RimHUD.Faction.Independent>
+  <RimHUD.Model.Faction.Own>Our </RimHUD.Model.Faction.Own>
+  <RimHUD.Model.Faction.Wild>Wild </RimHUD.Model.Faction.Wild>
+  <RimHUD.Model.Faction.Allied>Allied </RimHUD.Model.Faction.Allied>
+  <RimHUD.Model.Faction.Enemy>Enemy </RimHUD.Model.Faction.Enemy>
+  <RimHUD.Model.Faction.Hostile>Hostile </RimHUD.Model.Faction.Hostile>
+  <RimHUD.Model.Faction.Independent>Independent </RimHUD.Model.Faction.Independent>
 
-  <RimHUD.Creature.Wild>creature</RimHUD.Creature.Wild>
-  <RimHUD.Creature.Tame>tame critter</RimHUD.Creature.Tame>
-  <RimHUD.Creature.Stray>stray</RimHUD.Creature.Stray>
-  <RimHUD.Creature.Pet>pet</RimHUD.Creature.Pet>
-  <RimHUD.Creature.ExoticPet>exotic pet</RimHUD.Creature.ExoticPet>
-  <RimHUD.Creature.Predator>predator</RimHUD.Creature.Predator>
-  <RimHUD.Creature.Hunt>hunting animal</RimHUD.Creature.Hunt>
-  <RimHUD.Creature.Pack>pack animal</RimHUD.Creature.Pack>
-  <RimHUD.Creature.Farm>farm animal</RimHUD.Creature.Farm>
-  <RimHUD.Creature.Herd>herd animal</RimHUD.Creature.Herd>
-  <RimHUD.Creature.Insect>insect</RimHUD.Creature.Insect>
+  <RimHUD.Model.Creature.Wild>creature</RimHUD.Model.Creature.Wild>
+  <RimHUD.Model.Creature.Tame>tame critter</RimHUD.Model.Creature.Tame>
+  <RimHUD.Model.Creature.Stray>stray</RimHUD.Model.Creature.Stray>
+  <RimHUD.Model.Creature.Pet>pet</RimHUD.Model.Creature.Pet>
+  <RimHUD.Model.Creature.ExoticPet>exotic pet</RimHUD.Model.Creature.ExoticPet>
+  <RimHUD.Model.Creature.Predator>predator</RimHUD.Model.Creature.Predator>
+  <RimHUD.Model.Creature.Hunt>hunting animal</RimHUD.Model.Creature.Hunt>
+  <RimHUD.Model.Creature.Pack>pack animal</RimHUD.Model.Creature.Pack>
+  <RimHUD.Model.Creature.Farm>farm animal</RimHUD.Model.Creature.Farm>
+  <RimHUD.Model.Creature.Herd>herd animal</RimHUD.Model.Creature.Herd>
+  <RimHUD.Model.Creature.Insect>insect</RimHUD.Model.Creature.Insect>
 
-  <RimHUD.GenderAndAge>{0}{1} aged {2}</RimHUD.GenderAndAge>
-  <RimHUD.Age.Birthday> (Birthday today)</RimHUD.Age.Birthday>
-  <RimHUD.Age.Day> and one day</RimHUD.Age.Day>
-  <RimHUD.Age.Days> and {0} days</RimHUD.Age.Days>
+  <RimHUD.Model.GenderAndAge>{0}{1} aged {2}</RimHUD.Model.GenderAndAge>
+  <RimHUD.Model.Age.Birthday> (Birthday today)</RimHUD.Model.Age.Birthday>
+  <RimHUD.Model.Age.Day> and one day</RimHUD.Model.Age.Day>
+  <RimHUD.Model.Age.Days> and {0} days</RimHUD.Model.Age.Days>
 
-  <RimHUD.Health.Dead>Dead</RimHUD.Health.Dead>
-  <RimHUD.Health.Incapacitated>Incapacitated</RimHUD.Health.Incapacitated>
-  <RimHUD.Health.Bleed>Bleeding out in {0}</RimHUD.Health.Bleed>
-  <RimHUD.Health.Tend>{0} condition needs tending</RimHUD.Health.Tend>
-  <RimHUD.Health.TendPlural>{0} conditions need tending</RimHUD.Health.TendPlural>
-  <RimHUD.Health.Threat>Has life threatening {0}</RimHUD.Health.Threat>
-  <RimHUD.Health.ThreatPlural>Has {0} life threatening conditions</RimHUD.Health.ThreatPlural>
-  <RimHUD.Health.Sick>Suffers from {0}</RimHUD.Health.Sick>
-  <RimHUD.Health.SickPlural>Suffers from {0} and {1} other conditions</RimHUD.Health.SickPlural>
-  <RimHUD.Health.Stable>In stable health</RimHUD.Health.Stable>
-  <RimHUD.Health.IsTended> (tended)</RimHUD.Health.IsTended>
+  <RimHUD.Model.Health.Dead>Dead</RimHUD.Model.Health.Dead>
+  <RimHUD.Model.Health.Incapacitated>Incapacitated</RimHUD.Model.Health.Incapacitated>
+  <RimHUD.Model.Health.Bleed>Bleeding out in {0}</RimHUD.Model.Health.Bleed>
+  <RimHUD.Model.Health.Tend>{0} condition needs tending</RimHUD.Model.Health.Tend>
+  <RimHUD.Model.Health.TendPlural>{0} conditions need tending</RimHUD.Model.Health.TendPlural>
+  <RimHUD.Model.Health.Threat>Has life threatening {0}</RimHUD.Model.Health.Threat>
+  <RimHUD.Model.Health.ThreatPlural>Has {0} life threatening conditions</RimHUD.Model.Health.ThreatPlural>
+  <RimHUD.Model.Health.Sick>Suffers from {0}</RimHUD.Model.Health.Sick>
+  <RimHUD.Model.Health.SickPlural>Suffers from {0} and {1} other conditions</RimHUD.Model.Health.SickPlural>
+  <RimHUD.Model.Health.Stable>In stable health</RimHUD.Model.Health.Stable>
+  <RimHUD.Model.Health.IsTended> (tended)</RimHUD.Model.Health.IsTended>
 
-  <RimHUD.Mood.ExtremeBreakImminent>Feeling depressed</RimHUD.Mood.ExtremeBreakImminent>
-  <RimHUD.Mood.MajorBreakImminent>Feeling unhappy</RimHUD.Mood.MajorBreakImminent>
-  <RimHUD.Mood.MinorBreakImminent>Feeling stressed</RimHUD.Mood.MinorBreakImminent>
-  <RimHUD.Mood.Happy>Feeling happy</RimHUD.Mood.Happy>
-  <RimHUD.Mood.Content>Feeling content</RimHUD.Mood.Content>
-  <RimHUD.Mood.Indifferent>Feeling indifferent</RimHUD.Mood.Indifferent>
+  <RimHUD.Model.Mood.ExtremeBreakImminent>Feeling depressed</RimHUD.Model.Mood.ExtremeBreakImminent>
+  <RimHUD.Model.Mood.MajorBreakImminent>Feeling unhappy</RimHUD.Model.Mood.MajorBreakImminent>
+  <RimHUD.Model.Mood.MinorBreakImminent>Feeling stressed</RimHUD.Model.Mood.MinorBreakImminent>
+  <RimHUD.Model.Mood.Happy>Feeling happy</RimHUD.Model.Mood.Happy>
+  <RimHUD.Model.Mood.Content>Feeling content</RimHUD.Model.Mood.Content>
+  <RimHUD.Model.Mood.Indifferent>Feeling indifferent</RimHUD.Model.Mood.Indifferent>
 
-  <RimHUD.Info.Activity>Activity: {0}</RimHUD.Info.Activity>
-  <RimHUD.Info.Attacking>Attacking {0}</RimHUD.Info.Attacking>
-  <RimHUD.Info.Queued>Queued: {0}</RimHUD.Info.Queued>
-  <RimHUD.Info.Equipped>Equipped: {0}</RimHUD.Info.Equipped>
-  <RimHUD.Info.Carrying>Carrying: {0}</RimHUD.Info.Carrying>
+  <RimHUD.Model.Info.Activity>Activity: {0}</RimHUD.Model.Info.Activity>
+  <RimHUD.Model.Info.Attacking>Attacking {0}</RimHUD.Model.Info.Attacking>
+  <RimHUD.Model.Info.Queued>Queued: {0}</RimHUD.Model.Info.Queued>
+  <RimHUD.Model.Info.Equipped>Equipped: {0}</RimHUD.Model.Info.Equipped>
+  <RimHUD.Model.Info.Carrying>Carrying: {0}</RimHUD.Model.Info.Carrying>
 
-  <RimHUD.Bio.Title>Title: {0}</RimHUD.Bio.Title>
-  <RimHUD.Bio.Faction>Faction: {0}</RimHUD.Bio.Faction>
-  <RimHUD.Bio.Master>Master: {0}</RimHUD.Bio.Master>
-  <RimHUD.Bio.Diet>Diet: {0}</RimHUD.Bio.Diet>
-  <RimHUD.Bio.Trainability>Trainability: {0}</RimHUD.Bio.Trainability>
-  <RimHUD.Bio.Wildness>Wildness: {0}</RimHUD.Bio.Wildness>
-  <RimHUD.Bio.Petness>Petness: {0}</RimHUD.Bio.Petness>
+  <RimHUD.Model.Bio.Title>Title: {0}</RimHUD.Model.Bio.Title>
+  <RimHUD.Model.Bio.Faction>Faction: {0}</RimHUD.Model.Bio.Faction>
+  <RimHUD.Model.Bio.Master>Master: {0}</RimHUD.Model.Bio.Master>
+  <RimHUD.Model.Bio.Diet>Diet: {0}</RimHUD.Model.Bio.Diet>
+  <RimHUD.Model.Bio.Trainability>Trainability: {0}</RimHUD.Model.Bio.Trainability>
+  <RimHUD.Model.Bio.Wildness>Wildness: {0}</RimHUD.Model.Bio.Wildness>
+  <RimHUD.Model.Bio.Petness>Petness: {0}</RimHUD.Model.Bio.Petness>
 
-  <RimHUD.Selector.OutfitFormat>Outfit: {0}</RimHUD.Selector.OutfitFormat>
-  <RimHUD.Selector.FoodFormat>Food: {0}</RimHUD.Selector.FoodFormat>
-  <RimHUD.Selector.TimetableFormat>Schedule: {0}</RimHUD.Selector.TimetableFormat>
-  <RimHUD.Selector.SetTimeAssignment>Set hour {0} to {1}</RimHUD.Selector.SetTimeAssignment>
-  <RimHUD.Selector.AreaFormat>Area: {0}</RimHUD.Selector.AreaFormat>
-  <RimHUD.Selector.Manage>Manage...</RimHUD.Selector.Manage>
-
+  <RimHUD.Model.Selector.OutfitFormat>Outfit: {0}</RimHUD.Model.Selector.OutfitFormat>
+  <RimHUD.Model.Selector.FoodFormat>Food: {0}</RimHUD.Model.Selector.FoodFormat>
+  <RimHUD.Model.Selector.TimetableFormat>Schedule: {0}</RimHUD.Model.Selector.TimetableFormat>
+  <RimHUD.Model.Selector.SetTimeAssignment>Set hour {0} to {1}</RimHUD.Model.Selector.SetTimeAssignment>
+  <RimHUD.Model.Selector.AreaFormat>Area: {0}</RimHUD.Model.Selector.AreaFormat>
+  <RimHUD.Model.Selector.Manage>Manage...</RimHUD.Model.Selector.Manage>
 
 </LanguageData>

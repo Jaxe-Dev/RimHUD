@@ -4,46 +4,36 @@
 
   <RimHUD.Integration.GetMod>Link to mod</RimHUD.Integration.GetMod>
 
-  <RimHUD.Integration.PawnRules>Pawn Rules</RimHUD.Integration.PawnRules>
-
-  <RimHUD.InspectPane.PawnRules.RuleNameFormat>Rules: {0}</RimHUD.InspectPane.PawnRules.RuleNameFormat>
-  <RimHUD.InspectPane.PawnRules.NoRules>None</RimHUD.InspectPane.PawnRules.NoRules>
-  <RimHUD.Theme.PawnRules.InspectPaneAddRules>Show Rules</RimHUD.Theme.PawnRules.InspectPaneAddRules>
-
-  <RimHUD.Theme.PawnRules.HideGizmo>Hide Gizmo</RimHUD.Theme.PawnRules.HideGizmo>
-  <RimHUD.Theme.PawnRules.HideGizmoDesc>Disables the rules gizmo that appears next to the draft button as RimHUD adds a rules button in the inspect pane.</RimHUD.Theme.PawnRules.HideGizmoDesc>
-
   <RimHUD.Integration.Bubbles>Interaction Bubbles</RimHUD.Integration.Bubbles>
-  <RimHUD.Theme.Bubbles.Activated>Activated</RimHUD.Theme.Bubbles.Activated>
-  <RimHUD.Theme.Bubbles.DoNonPlayer>Show for non-player faction</RimHUD.Theme.Bubbles.DoNonPlayer>
-  <RimHUD.Theme.Bubbles.DoAnimals>Show for animal interactions</RimHUD.Theme.Bubbles.DoAnimals>
-
-  <RimHUD.Theme.Bubbles.MinScale>Minimum zoom visible</RimHUD.Theme.Bubbles.MinScale>
-  <RimHUD.Theme.Bubbles.ScaleStart>Zoom to start scale</RimHUD.Theme.Bubbles.ScaleStart>
-  <RimHUD.Theme.Bubbles.MaxWidth>Maximum width</RimHUD.Theme.Bubbles.MaxWidth>
-  <RimHUD.Theme.Bubbles.Spacing>Spacing</RimHUD.Theme.Bubbles.Spacing>
-  <RimHUD.Theme.Bubbles.StartOffset>Offset from label</RimHUD.Theme.Bubbles.StartOffset>
-  <RimHUD.Theme.Bubbles.OffsetDirection>Offset direction</RimHUD.Theme.Bubbles.OffsetDirection>
-  <RimHUD.Theme.Bubbles.OffsetDirections>Down|Left|Up|Right</RimHUD.Theme.Bubbles.OffsetDirections>
-  <RimHUD.Theme.Bubbles.StartOpacity>Starting opacity</RimHUD.Theme.Bubbles.StartOpacity>
-  <RimHUD.Theme.Bubbles.MouseOverOpacity>Mouse-over opacity</RimHUD.Theme.Bubbles.MouseOverOpacity>
-
-  <RimHUD.Theme.Bubbles.MinTime>Minimum time to fade</RimHUD.Theme.Bubbles.MinTime>
-  <RimHUD.Theme.Bubbles.FadeStart>Ticks to start fade</RimHUD.Theme.Bubbles.FadeStart>
-  <RimHUD.Theme.Bubbles.FadeLength>Ticks to fade</RimHUD.Theme.Bubbles.FadeLength>
-  <RimHUD.Theme.Bubbles.MaxPerPawn>Maximum per pawn</RimHUD.Theme.Bubbles.MaxPerPawn>
-
-  <RimHUD.Theme.Bubbles.FontSize>Font size</RimHUD.Theme.Bubbles.FontSize>
-  <RimHUD.Theme.Bubbles.PaddingX>Text padding X</RimHUD.Theme.Bubbles.PaddingX>
-  <RimHUD.Theme.Bubbles.PaddingY>Text padding Y</RimHUD.Theme.Bubbles.PaddingY>
-
-  <RimHUD.Theme.Bubbles.Colors>Bubble Colors</RimHUD.Theme.Bubbles.Colors>
-  <RimHUD.Theme.Bubbles.ForeColor>Text color</RimHUD.Theme.Bubbles.ForeColor>
-  <RimHUD.Theme.Bubbles.BackColor>Back color</RimHUD.Theme.Bubbles.BackColor>
-  <RimHUD.Theme.Bubbles.SelectedForeColor>Selected text color</RimHUD.Theme.Bubbles.SelectedForeColor>
-  <RimHUD.Theme.Bubbles.SelectedBackColor>Selected back color</RimHUD.Theme.Bubbles.SelectedBackColor>
-
   <RimHUD.Integration.General>General Settings</RimHUD.Integration.General>
-  <RimHUD.Theme.GeneralIntegration.ShowCustomNeeds>Show needs from other mods</RimHUD.Theme.GeneralIntegration.ShowCustomNeeds>
+
+  <RimHUD.Integration.Bubbles.Activated>Activated</RimHUD.Integration.Bubbles.Activated>
+  <RimHUD.Integration.Bubbles.DoNonPlayer>Show for non-player faction</RimHUD.Integration.Bubbles.DoNonPlayer>
+  <RimHUD.Integration.Bubbles.DoAnimals>Show for animal interactions</RimHUD.Integration.Bubbles.DoAnimals>
+
+  <RimHUD.Integration.Bubbles.MinScale>Minimum zoom visible</RimHUD.Integration.Bubbles.MinScale>
+  <RimHUD.Integration.Bubbles.ScaleStart>Zoom to start scale</RimHUD.Integration.Bubbles.ScaleStart>
+  <RimHUD.Integration.Bubbles.MaxWidth>Maximum width</RimHUD.Integration.Bubbles.MaxWidth>
+  <RimHUD.Integration.Bubbles.Spacing>Spacing</RimHUD.Integration.Bubbles.Spacing>
+  <RimHUD.Integration.Bubbles.StartOffset>Offset from label</RimHUD.Integration.Bubbles.StartOffset>
+  <RimHUD.Integration.Bubbles.OffsetDirection>Offset direction</RimHUD.Integration.Bubbles.OffsetDirection>
+  <RimHUD.Integration.Bubbles.OffsetDirections>Down|Left|Up|Right</RimHUD.Integration.Bubbles.OffsetDirections>
+  <RimHUD.Integration.Bubbles.StartOpacity>Starting opacity</RimHUD.Integration.Bubbles.StartOpacity>
+  <RimHUD.Integration.Bubbles.MouseOverOpacity>Mouse-over opacity</RimHUD.Integration.Bubbles.MouseOverOpacity>
+
+  <RimHUD.Integration.Bubbles.MinTime>Minimum time to fade</RimHUD.Integration.Bubbles.MinTime>
+  <RimHUD.Integration.Bubbles.FadeStart>Ticks to start fade</RimHUD.Integration.Bubbles.FadeStart>
+  <RimHUD.Integration.Bubbles.FadeLength>Ticks to fade</RimHUD.Integration.Bubbles.FadeLength>
+  <RimHUD.Integration.Bubbles.MaxPerPawn>Maximum per pawn</RimHUD.Integration.Bubbles.MaxPerPawn>
+
+  <RimHUD.Integration.Bubbles.FontSize>Font size</RimHUD.Integration.Bubbles.FontSize>
+  <RimHUD.Integration.Bubbles.PaddingX>Text padding X</RimHUD.Integration.Bubbles.PaddingX>
+  <RimHUD.Integration.Bubbles.PaddingY>Text padding Y</RimHUD.Integration.Bubbles.PaddingY>
+
+  <RimHUD.Integration.Bubbles.Colors>Bubble Colors</RimHUD.Integration.Bubbles.Colors>
+  <RimHUD.Integration.Bubbles.ForeColor>Text color</RimHUD.Integration.Bubbles.ForeColor>
+  <RimHUD.Integration.Bubbles.BackColor>Back color</RimHUD.Integration.Bubbles.BackColor>
+  <RimHUD.Integration.Bubbles.SelectedForeColor>Selected text color</RimHUD.Integration.Bubbles.SelectedForeColor>
+  <RimHUD.Integration.Bubbles.SelectedBackColor>Selected back color</RimHUD.Integration.Bubbles.SelectedBackColor>
 
 </LanguageData>
