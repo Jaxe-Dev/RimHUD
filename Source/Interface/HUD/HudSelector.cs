@@ -27,6 +27,8 @@ namespace RimHUD.Interface.HUD
 
         public override bool Draw(Rect rect)
         {
+            if (Label.NullOrEmpty()) { return true; }
+
             Widgets.DrawBoxSolid(rect, _color ?? Theme.SelectorBackgroundColor.Value);
             DrawText(rect.ContractedBy(GUIPlus.SmallPadding, 0f), Label, Theme.SelectorTextColor.Value);
 

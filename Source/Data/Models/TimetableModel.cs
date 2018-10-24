@@ -24,7 +24,7 @@ namespace RimHUD.Data.Models
                 return;
             }
 
-            Label = Lang.Get("Selector.TimetableFormat", model.Base.timetable.CurrentAssignment.LabelCap);
+            Label = Lang.Get("Model.Selector.TimetableFormat", model.Base.timetable.CurrentAssignment.LabelCap);
             Tooltip = null;
             var assignment = model.Base.timetable.CurrentAssignment;
             Color = assignment == TimeAssignmentDefOf.Anything ? (Color?) null : assignment.color;
@@ -36,8 +36,8 @@ namespace RimHUD.Data.Models
         private void DrawFloatMenu()
         {
             var hour = GenLocalDate.HourOfDay(Model.Base);
-            var options = DefDatabase<TimeAssignmentDef>.AllDefs.Select(timeAssignment => new FloatMenuOption(Lang.Get("Selector.SetTimeAssignment", hour, timeAssignment.LabelCap), () => Model.Base.timetable.SetAssignment(hour, timeAssignment))).ToList();
-            options.Add(new FloatMenuOption(Lang.Get("Selector.Manage").Italic(), () => Find.MainTabsRoot.SetCurrentTab(Access.MainButtonDefOfRestrict)));
+            var options = DefDatabase<TimeAssignmentDef>.AllDefs.Select(timeAssignment => new FloatMenuOption(Lang.Get("Model.Selector.SetTimeAssignment", hour, timeAssignment.LabelCap), () => Model.Base.timetable.SetAssignment(hour, timeAssignment))).ToList();
+            options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.MainTabsRoot.SetCurrentTab(Access.MainButtonDefOfRestrict)));
 
             Find.WindowStack.Add(new FloatMenu(options));
         }

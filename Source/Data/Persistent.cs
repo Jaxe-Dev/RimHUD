@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -50,6 +51,8 @@ namespace RimHUD.Data
             SetToDefault(typeof(Theme));
 
             foreach (var integration in GetIntegrations()) { SetToDefault(integration); }
+
+            HudLayout.LoadDefault();
         }
 
         private static void SetToDefault(object subject)
@@ -158,6 +161,8 @@ namespace RimHUD.Data
             doc.Add(theme);
 
             doc.Save(ConfigFile.FullName);
+
+            SaveLayouts();
         }
 
         private static XElement SaveClassElements(object subject, string name = null)
@@ -215,6 +220,17 @@ namespace RimHUD.Data
             if (floating.Exists) { HudLayout.Floating = HudLayout.FromXml(XDocument.Load(floating.FullName)); }
             else { HudLayout.Floating.AsXDocument().Save(floating.FullName); }
         }
+
+        public static void SaveLayouts()
+        {
+            var docked = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.DockedFileName));
+            var floating = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.FloatingFileName));
+
+            HudLayout.Docked.AsXDocument().Save(docked.FullName);
+            HudLayout.Floating.AsXDocument().Save(floating.FullName);
+        }
+
+        public static void OpenConfigFolder() => Process.Start(Mod.ConfigDirectory.FullName);
 
         [AttributeUsage(AttributeTargets.Class)]
         public class IntegratedOptions : Attribute

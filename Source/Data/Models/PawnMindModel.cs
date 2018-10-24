@@ -23,15 +23,15 @@ namespace RimHUD.Data.Models
 
             if ((Model.Base.needs?.mood == null) || (Model.Base.mindState?.mentalBreaker == null)) { return null; }
 
-            if (Model.Base.mindState.mentalBreaker.BreakExtremeIsImminent) { return TextModel.Create(Lang.Get("Mood.ExtremeBreakImminent"), GetTooltip(), Theme.CriticalColor.Value); }
-            if (Model.Base.mindState.mentalBreaker.BreakMajorIsImminent) { return TextModel.Create(Lang.Get("Mood.MajorBreakImminent"), GetTooltip(), Theme.WarningColor.Value); }
-            if (Model.Base.mindState.mentalBreaker.BreakMinorIsImminent) { return TextModel.Create(Lang.Get("Mood.MinorBreakImminent"), GetTooltip(), Theme.WarningColor.Value); }
+            if (Model.Base.mindState.mentalBreaker.BreakExtremeIsImminent) { return TextModel.Create(Lang.Get("Model.Mood.ExtremeBreakImminent"), GetTooltip(), Theme.CriticalColor.Value); }
+            if (Model.Base.mindState.mentalBreaker.BreakMajorIsImminent) { return TextModel.Create(Lang.Get("Model.Mood.MajorBreakImminent"), GetTooltip(), Theme.WarningColor.Value); }
+            if (Model.Base.mindState.mentalBreaker.BreakMinorIsImminent) { return TextModel.Create(Lang.Get("Model.Mood.MinorBreakImminent"), GetTooltip(), Theme.WarningColor.Value); }
 
             var inspiration = GetInspiration();
             if (inspiration != null) { return inspiration; }
 
-            if (Model.Base.needs.mood.CurLevel > 0.9f) { return TextModel.Create(Lang.Get("Mood.Happy"), GetTooltip(), Theme.ExcellentColor.Value); }
-            return Model.Base.needs.mood.CurLevel > 0.65f ? TextModel.Create(Lang.Get("Mood.Content"), GetTooltip(), Theme.GoodColor.Value) : TextModel.Create(Lang.Get("Mood.Indifferent"), GetTooltip(), Theme.InfoColor.Value);
+            if (Model.Base.needs.mood.CurLevel > 0.9f) { return TextModel.Create(Lang.Get("Model.Mood.Happy"), GetTooltip(), Theme.ExcellentColor.Value); }
+            return Model.Base.needs.mood.CurLevel > 0.65f ? TextModel.Create(Lang.Get("Model.Mood.Content"), GetTooltip(), Theme.GoodColor.Value) : TextModel.Create(Lang.Get("Model.Mood.Indifferent"), GetTooltip(), Theme.InfoColor.Value);
         }
 
         private TextModel GetInspiration()

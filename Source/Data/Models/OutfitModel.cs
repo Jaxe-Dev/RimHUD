@@ -18,13 +18,13 @@ namespace RimHUD.Data.Models
 
         public OutfitModel(PawnModel model) : base(model)
         {
-            if ((!model.Base.Faction?.IsPlayer ?? true) || (model.Base.outfits?.CurrentOutfit == null))
+            if (!model.IsPlayerFaction || (model.Base.outfits?.CurrentOutfit == null))
             {
                 Hidden = true;
                 return;
             }
 
-            Label = Lang.Get("Selector.OutfitFormat", model.Base.outfits.CurrentOutfit.label);
+            Label = Lang.Get("Model.Selector.OutfitFormat", model.Base.outfits?.CurrentOutfit.label);
             Tooltip = null;
             Color = null;
 
@@ -35,7 +35,7 @@ namespace RimHUD.Data.Models
         private void DrawFloatMenu()
         {
             var options = (from outfit in Current.Game.outfitDatabase.AllOutfits select new FloatMenuOption(outfit.label, () => Model.Base.outfits.CurrentOutfit = outfit)).ToList();
-            options.Add(new FloatMenuOption(Lang.Get("Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageOutfits(Model.Base.outfits.CurrentOutfit))));
+            options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageOutfits(Model.Base.outfits.CurrentOutfit))));
 
             Find.WindowStack.Add(new FloatMenu(options));
         }
