@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using System.Xml.Linq;
+using RimHUD.Data;
 using RimHUD.Data.Models;
 using UnityEngine;
 
@@ -20,12 +21,12 @@ namespace RimHUD.Interface.HUD
         private HudLayout(XElement xe) : base(xe, true)
         { }
 
-        private static HudLayout FromEmbedded(string name)
+        private static HudLayout FromEmbedded(string id)
         {
-            using (var stream = Mod.Assembly.GetManifestResourceStream("RimHUD.Layouts." + name))
+            using (var stream = Mod.Assembly.GetManifestResourceStream("RimHUD.Layouts." + id))
             {
-                if (stream == null) { throw new Mod.Exception($"Cannot find embedded default HUD layout '{name}'"); }
-                using (var reader = XmlReader.Create(stream)) { return FromXml(XDocument.Load(reader)) ?? throw new Mod.Exception($"Error reading embedded default HUD layout '{name}'"); }
+                if (stream == null) { throw new Mod.Exception($"Cannot find embedded HUD layout '{id}'"); }
+                using (var reader = XmlReader.Create(stream)) { return FromXml(XDocument.Load(reader)) ?? throw new Mod.Exception($"Error reading embedded HUD layout '{id}'"); }
             }
         }
 
@@ -43,6 +44,20 @@ namespace RimHUD.Interface.HUD
             var doc = new XDocument();
             doc.Add(ToXml());
             return doc;
+        }
+
+        public static void LoadDefault()
+        {
+            Docked = DefaultDocked;
+            Floating = DefaultFloating;
+        }
+
+        public static void LoadPreset(string id)
+        {
+            Docked = FromEmbedded($"Presets.{id}.Docked.xml");
+            Floating = FromEmbedded($"Presets.{id}.Floating.xml");
+
+            Persistent.SaveLayouts();
         }
 
         public void Draw(Rect rect, PawnModel model)

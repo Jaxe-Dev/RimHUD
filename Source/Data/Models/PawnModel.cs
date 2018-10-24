@@ -32,6 +32,7 @@ namespace RimHUD.Data.Models
         public PawnHealthModel Health { get; }
         public PawnMindModel Mind { get; }
 
+        public bool IsHumanlike => Base.RaceProps.Humanlike;
         public bool IsAnimal => Base.RaceProps.Animal;
         public TextModel Master => GetMaster();
 
@@ -96,8 +97,8 @@ namespace RimHUD.Data.Models
 
         private HudTarget GetTargetType()
         {
-            if (IsPlayerFaction) { return IsAnimal ? HudTarget.PlayerAnimal : HudTarget.PlayerColonist; }
-            return IsAnimal ? HudTarget.OtherAnimal : HudTarget.OtherColonist;
+            if (IsPlayerManaged) { return Base.RaceProps.Humanlike ? HudTarget.PlayerColonist : HudTarget.PlayerAnimal; }
+            return Base.RaceProps.Humanlike ? HudTarget.OtherColonist : HudTarget.OtherAnimal;
         }
 
         private NeedModel GetNeedModel(NeedDef def) => new NeedModel(this, def);
@@ -114,39 +115,39 @@ namespace RimHUD.Data.Models
             var ageDays = (quadrums * GenDate.DaysPerQuadrum) + days;
 
             var age = years.ToString().Bold();
-            if ((ageDays == 0) || (ageDays == GenDate.DaysPerYear)) { age += Lang.Get("Age.Birthday"); }
-            else if (ageDays == 1) { age += Lang.Get("Age.Day"); }
-            else { age += Lang.Get("Age.Days", ageDays); }
+            if ((ageDays == 0) || (ageDays == GenDate.DaysPerYear)) { age += Lang.Get("Model.Age.Birthday"); }
+            else if (ageDays == 1) { age += Lang.Get("Model.Age.Day"); }
+            else { age += Lang.Get("Model.Age.Days", ageDays); }
 
-            return TextModel.Create(Lang.Get("GenderAndAge", gender, race, age), GetBioTooltip(), FactionRelationColor);
+            return TextModel.Create(Lang.Get("Model.GenderAndAge", gender, race, age), GetBioTooltip(), FactionRelationColor);
         }
 
         private string GetKind()
         {
-            if (!IsAnimal) { return Base.Faction == Faction.OfPlayer ? Base.story?.Title ?? Base.KindLabel : Base.TraderKind?.label ?? Base.KindLabel; }
+            if (IsHumanlike) { return Base.Faction == Faction.OfPlayer ? Base.story?.Title ?? Base.KindLabel : Base.TraderKind?.label ?? Base.KindLabel; }
 
             if (Base.Faction == null)
             {
-                if (Base.RaceProps.petness > 0.5f) { return Lang.Get("Creature.Stray"); }
-                if (Base.RaceProps.predator) { return Lang.Get("Creature.Predator"); }
-                if (Base.kindDef.race.tradeTags?.Contains("AnimalInsect") ?? false) { return Lang.Get("Creature.Insect"); }
-                return Lang.Get("Creature.Wild");
+                if (Base.RaceProps.petness > 0.5f) { return Lang.Get("Model.Creature.Stray"); }
+                if (Base.RaceProps.predator) { return Lang.Get("Model.Creature.Predator"); }
+                if (Base.kindDef.race.tradeTags?.Contains("AnimalInsect") ?? false) { return Lang.Get("Model.Creature.Insect"); }
+                return Lang.Get("Model.Creature.Wild");
             }
 
-            if (Base.RaceProps.petness > 0.5f) { return Lang.Get("Creature.Pet"); }
-            if (Base.RaceProps.petness > 0f) { return Lang.Get("Creature.ExoticPet"); }
-            if (Base.RaceProps.predator) { return Lang.Get("Creature.Hunt"); }
-            if (Base.RaceProps.packAnimal) { return Lang.Get("Creature.Pack"); }
-            if (Base.kindDef.race.tradeTags?.Contains("AnimalFarm") ?? false) { return Lang.Get("Creature.Farm"); }
-            if (Base.RaceProps.herdAnimal) { return Lang.Get("Creature.Herd"); }
-            if (Base.kindDef.race.tradeTags?.Contains("AnimalInsect") ?? false) { return Lang.Get("Creature.Insect"); }
+            if (Base.RaceProps.petness > 0.5f) { return Lang.Get("Model.Creature.Pet"); }
+            if (Base.RaceProps.petness > 0f) { return Lang.Get("Model.Creature.ExoticPet"); }
+            if (Base.RaceProps.predator) { return Lang.Get("Model.Creature.Hunt"); }
+            if (Base.RaceProps.packAnimal) { return Lang.Get("Model.Creature.Pack"); }
+            if (Base.kindDef.race.tradeTags?.Contains("AnimalFarm") ?? false) { return Lang.Get("Model.Creature.Farm"); }
+            if (Base.RaceProps.herdAnimal) { return Lang.Get("Model.Creature.Herd"); }
+            if (Base.kindDef.race.tradeTags?.Contains("AnimalInsect") ?? false) { return Lang.Get("Model.Creature.Insect"); }
 
-            return Lang.Get("Creature.Tame");
+            return Lang.Get("Model.Creature.Tame");
         }
 
         private Color GetFactionRelationColor()
         {
-            if (Base.Faction == null) { return IsAnimal ? Theme.FactionWildColor.Value : Theme.FactionIndependentColor.Value; }
+            if (Base.Faction == null) { return IsHumanlike ? Theme.FactionIndependentColor.Value : Theme.FactionWildColor.Value; }
             if (Base.Faction.IsPlayer) { return Theme.FactionOwnColor.Value; }
 
             if (Base.Faction.PlayerRelationKind == FactionRelationKind.Hostile) { return Theme.FactionHostileColor.Value; }
@@ -155,21 +156,21 @@ namespace RimHUD.Data.Models
 
         private string GetFactionRelation()
         {
-            if (Base.Faction == null) { return IsAnimal ? (Base.kindDef == PawnKindDefOf.WildMan ? null : Lang.Get("Faction.Wild")) : Lang.Get("Faction.Independent"); }
+            if (Base.Faction == null) { return IsHumanlike ? Lang.Get("Model.Faction.Independent") : (Base.kindDef == PawnKindDefOf.WildMan ? null : Lang.Get("Model.Faction.Wild")); }
             if (Base.Faction.IsPlayer) { return null; }
 
             var relation = Base.Faction.PlayerRelationKind;
-            if (relation == FactionRelationKind.Hostile) { return Base.RaceProps.IsMechanoid ? Lang.Get("Faction.Hostile") : Lang.Get("Faction.Enemy"); }
-            return relation == FactionRelationKind.Ally ? Lang.Get("Faction.Allied") : null;
+            if (relation == FactionRelationKind.Hostile) { return Base.RaceProps.IsMechanoid ? Lang.Get("Model.Faction.Hostile") : Lang.Get("Model.Faction.Enemy"); }
+            return relation == FactionRelationKind.Ally ? Lang.Get("Model.Faction.Allied") : null;
         }
 
         private TextModel GetRelationKindAndFaction()
         {
-            var faction = (Base.Faction == null) || !Base.Faction.HasName ? null : Lang.Get("OfFaction", Base.Faction.Name);
+            var faction = (Base.Faction == null) || !Base.Faction.HasName ? null : Lang.Get("Model.OfFaction", Base.Faction.Name);
             var relation = GetFactionRelation();
             var kind = GetKind();
 
-            return TextModel.Create(Lang.Get("RelationKindAndFaction", relation, relation == null ? kind.CapitalizeFirst() : kind, faction), GetBioTooltip(), FactionRelationColor);
+            return TextModel.Create(Lang.Get("Model.RelationKindAndFaction", relation, relation == null ? kind.CapitalizeFirst() : kind, faction), GetBioTooltip(), FactionRelationColor);
         }
 
         private string GetActivity()
@@ -178,9 +179,9 @@ namespace RimHUD.Data.Models
             var jobText = Base.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst();
 
             var target = (Base.jobs?.curJob?.def == JobDefOf.AttackStatic) || (Base.jobs?.curJob?.def == JobDefOf.Wait_Combat) ? Base.TargetCurrentlyAimingAt.Thing?.LabelCap : null;
-            var activity = target == null ? lord.NullOrEmpty() ? jobText : $"{lord} ({jobText})" : Lang.Get("Info.Attacking", target);
+            var activity = target == null ? lord.NullOrEmpty() ? jobText : $"{lord} ({jobText})" : Lang.Get("Model.Info.Attacking", target);
 
-            return activity == null ? null : Lang.Get("Info.Activity", activity.Bold());
+            return activity == null ? null : Lang.Get("Model.Info.Activity", activity.Bold());
         }
 
         private string GetQueued()
@@ -191,20 +192,20 @@ namespace RimHUD.Data.Models
             var remaining = Base.jobs.jobQueue.Count - 1;
             if (remaining > 0) { queued += $" (+{remaining})"; }
 
-            return queued == null ? null : Lang.Get("Info.Queued", queued);
+            return queued == null ? null : Lang.Get("Model.Info.Queued", queued);
         }
 
         private string GetCarrying()
         {
             var carried = Base.carryTracker?.CarriedThing?.LabelCap;
-            return carried == null ? null : Lang.Get("Info.Carrying", carried.Bold());
+            return carried == null ? null : Lang.Get("Model.Info.Carrying", carried.Bold());
         }
 
         private string GetEquipped()
         {
             var equipped = Base.equipment?.Primary?.LabelCap;
 
-            return RestraintsUtility.ShouldShowRestraintsInfo(Base) ? "InRestraints".Translate() : equipped == null ? null : Lang.Get("Info.Equipped", equipped.Bold());
+            return RestraintsUtility.ShouldShowRestraintsInfo(Base) ? "InRestraints".Translate() : equipped == null ? null : Lang.Get("Model.Info.Equipped", equipped.Bold());
         }
 
         private string GetCompInfo()
@@ -228,9 +229,9 @@ namespace RimHUD.Data.Models
             var builder = new StringBuilder();
 
             var title = Base.story?.TitleCap;
-            if (title != null) { builder.TryAppendLine(Lang.Get("Bio.Title", title)); }
+            if (title != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Title", title)); }
             var faction = Base.Faction?.Name;
-            if (faction != null) { builder.TryAppendLine(Lang.Get("Bio.Faction", faction)); }
+            if (faction != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Faction", faction)); }
 
             builder.AppendLine();
 
@@ -264,27 +265,27 @@ namespace RimHUD.Data.Models
 
             var masterName = master.LabelShort;
             var relation = Base.GetMostImportantRelation(master)?.LabelCap;
-            return TextModel.Create(Lang.Get("Bio.Master", masterName), GetAnimalTooltip(), relation == null ? (Color?) null : Theme.SkillMinorPassionColor.Value);
+            return TextModel.Create(Lang.Get("Model.Bio.Master", masterName), GetAnimalTooltip(), relation == null ? (Color?) null : Theme.SkillMinorPassionColor.Value);
         }
 
         public TipSignal? GetAnimalTooltip(TrainableDef def = null)
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine(Lang.Get("Bio.Trainability", Base.RaceProps.trainability.LabelCap));
-            builder.AppendLine(Lang.Get("Bio.Wildness", Base.RaceProps.wildness.ToStringPercent()));
+            builder.AppendLine(Lang.Get("Model.Bio.Trainability", Base.RaceProps.trainability.LabelCap));
+            builder.AppendLine(Lang.Get("Model.Bio.Wildness", Base.RaceProps.wildness.ToStringPercent()));
 
             builder.AppendLine($"{"TrainingDecayInterval".Translate()}: {TrainableUtility.DegradationPeriodTicks(Base.def).ToStringTicksToDays()}");
             if (!TrainableUtility.TamenessCanDecay(Base.def)) { builder.AppendLine("TamenessWillNotDecay".Translate()); }
 
-            builder.AppendLine(Lang.Get("Bio.Petness", Base.RaceProps.petness.ToStringPercent()));
-            builder.AppendLine(Lang.Get("Bio.Diet", Base.RaceProps.ResolvedDietCategory.ToStringHuman()));
+            builder.AppendLine(Lang.Get("Model.Bio.Petness", Base.RaceProps.petness.ToStringPercent()));
+            builder.AppendLine(Lang.Get("Model.Bio.Diet", Base.RaceProps.ResolvedDietCategory.ToStringHuman()));
 
             var master = Base.playerSettings?.Master?.LabelShort;
             if (!master.NullOrEmpty())
             {
                 builder.AppendLine();
-                builder.AppendLine(Lang.Get("Bio.Master", master));
+                builder.AppendLine(Lang.Get("Model.Bio.Master", master));
             }
 
             if (def != null)

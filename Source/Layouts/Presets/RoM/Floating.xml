@@ -34,6 +34,9 @@
     <Row>
       <HealthCondition />
     </Row>
+    <Row>
+      <Need DefName="TM_Mana" />
+    </Row>
     <Row Targets="Cc">
       <NeedMood />
     </Row>

@@ -44,6 +44,15 @@
       <NeedFood />
     </Row>
     <Row>
+      <Need DefName="DBHThirst" />
+    </Row>
+    <Row>
+      <Need DefName="Bladder" />
+    </Row>
+    <Row>
+      <Need DefName="Hygiene" />
+    </Row>
+    <Row>
       <NeedRest />
     </Row>
     <Row Targets="Cc">

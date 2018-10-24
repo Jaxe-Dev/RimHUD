@@ -75,6 +75,7 @@
     <Compile Include="Integration\Bubbles.cs" />
     <Compile Include="Integration\HugsLib.cs" />
     <Compile Include="Integration\IntegratedMod.cs" />
+    <Compile Include="Integration\LayoutPresets.cs" />
     <Compile Include="Interface\GUIPlus.cs" />
     <Compile Include="Interface\InspectPanePlus.cs" />
     <Compile Include="Interface\LetterStackPlus.cs" />
@@ -162,6 +163,18 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Layouts\DefaultFloating.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layouts\Presets\DBH\Docked.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layouts\Presets\DBH\Floating.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layouts\Presets\RoM\Docked.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layouts\Presets\RoM\Floating.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

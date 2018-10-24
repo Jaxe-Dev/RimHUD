@@ -6,7 +6,7 @@ using Verse;
 
 namespace RimHUD.Data
 {
-    internal abstract class ExternalMod
+    internal class ExternalMod
     {
         public string Name { get; }
         public Version VersionExpected { get; }
@@ -16,7 +16,7 @@ namespace RimHUD.Data
         public Assembly MainAssembly { get; }
         public bool IsActive => MainAssembly != null;
 
-        protected ExternalMod(string name, string assemblyName, Version versionExpected = null)
+        public ExternalMod(string name, string assemblyName, Version versionExpected = null)
         {
             Name = name;
             VersionExpected = versionExpected;
