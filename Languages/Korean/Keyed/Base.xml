@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<LanguageData>
+
+  <RimHUD.ToggleHud>HUD 보기</RimHUD.ToggleHud>
+
+  <RimHUD.Button.OK>확인</RimHUD.Button.OK>
+  <RimHUD.Button.Yes>예</RimHUD.Button.Yes>
+  <RimHUD.Button.No>아니오</RimHUD.Button.No>
+  <RimHUD.Button.Cancel>취소</RimHUD.Button.Cancel>
+  <RimHUD.Button.Close>닫기</RimHUD.Button.Close>
+
+  <RimHUD.Dialog_Config.Title>RimHUD</RimHUD.Dialog_Config.Title>
+  <RimHUD.Dialog_Config.SetToDefault>기본값 사용</RimHUD.Dialog_Config.SetToDefault>
+  <RimHUD.Dialog_Config.OpenFolder>설정 폴더</RimHUD.Dialog_Config.OpenFolder>
+
+  <RimHUD.Dialog_Config.Tab.Design>디자인</RimHUD.Dialog_Config.Tab.Design>
+
+  <RimHUD.Dialog_Config.Tab.Colors>색상</RimHUD.Dialog_Config.Tab.Colors>
+  <RimHUD.Dialog_Config.Tab.Colors.Editor>{0} 색상 변경</RimHUD.Dialog_Config.Tab.Colors.Editor>
+  <RimHUD.Dialog_Config.Tab.Colors.Hue>색조</RimHUD.Dialog_Config.Tab.Colors.Hue>
+  <RimHUD.Dialog_Config.Tab.Colors.Saturation>채도</RimHUD.Dialog_Config.Tab.Colors.Saturation>
+  <RimHUD.Dialog_Config.Tab.Colors.Lightness>밝기</RimHUD.Dialog_Config.Tab.Colors.Lightness>
+  <RimHUD.Dialog_Config.Tab.Colors.Alpha>투명도</RimHUD.Dialog_Config.Tab.Colors.Alpha>
+  <RimHUD.Dialog_Config.Tab.Colors.Hex>16진수</RimHUD.Dialog_Config.Tab.Colors.Hex>
+
+  <RimHUD.Dialog_Config.Tab.Content>컨텐츠</RimHUD.Dialog_Config.Tab.Content>
+  <RimHUD.Dialog_Config.Tab.Content.Layout>레이아웃</RimHUD.Dialog_Config.Tab.Content.Layout>
+  <RimHUD.Dialog_Config.Tab.Content.Layout.Preset>프리셋 설정</RimHUD.Dialog_Config.Tab.Content.Layout.Preset>
+  <RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Invalid>'{0}'을/를 찾을 수 없습니다. 이 프리셋은 더 이상 동작하지 않습니다.</RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Invalid>
+  <RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Default>기본</RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Default>
+  <RimHUD.Dialog_Config.Tab.Content.Layout.Preset.DefaultLoaded>레이아웃 기본값으로 초기화.</RimHUD.Dialog_Config.Tab.Content.Layout.Preset.DefaultLoaded>
+  <RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Loaded>'{0}'을/를 위한 레이아웃 프리셋 불러옴.</RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Loaded>
+  
+  <RimHUD.Dialog_Config.Tab.Integration>통합</RimHUD.Dialog_Config.Tab.Integration>
+
+  <RimHUD.Alert.ConfigReset>RimHUD가 {0} 업데이트 됨에 따라 설정을 기본값으로 초기화 해야 합니다.</RimHUD.Alert.ConfigReset>
+  <RimHUD.Alert.SetToDefault>모든 변경 사항을 취소하고 기본값으로 복원할까요?</RimHUD.Alert.SetToDefault>
+  <RimHUD.Alert.NotImplemented>이 기능은 아직 구현되지 않았습니다.</RimHUD.Alert.NotImplemented>
+  <RimHUD.Alert.MoreComingSoon>더 많은 기능이 기다리고 있습니다™</RimHUD.Alert.MoreComingSoon>
+
+  <RimHUD.InspectPane.MedicalCare>의료 정책을 {0}로 변경합니다.\n\n현재: {1}</RimHUD.InspectPane.MedicalCare>
+
+</LanguageData>

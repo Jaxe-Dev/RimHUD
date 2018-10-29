@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<LanguageData>
+
+  <RimHUD.Theme.HudPosition>HUD 위치</RimHUD.Theme.HudPosition>
+  <RimHUD.Theme.HudDocked>조사 창에 도킹</RimHUD.Theme.HudDocked>
+  <RimHUD.Theme.HudDockedDesc>조사 창이 수정됩니다. 아래를 확인하세요.</RimHUD.Theme.HudDockedDesc>
+  <RimHUD.Theme.HudAnchor>고정점</RimHUD.Theme.HudAnchor>
+  <RimHUD.Theme.HudAnchors>좌상단|상단 중앙|우상단|좌측 중앙|중앙|우측 중앙|좌하단|하단 중앙|우하단</RimHUD.Theme.HudAnchors>
+  <RimHUD.Theme.HudOffsetX>X</RimHUD.Theme.HudOffsetX>
+  <RimHUD.Theme.HudOffsetY>Y</RimHUD.Theme.HudOffsetY>
+
+  <RimHUD.Theme.HudDimensions>HUD 크기</RimHUD.Theme.HudDimensions>
+  <RimHUD.Theme.HudWidth>너비</RimHUD.Theme.HudWidth>
+  <RimHUD.Theme.HudHeight>높이</RimHUD.Theme.HudHeight>
+
+  <RimHUD.Theme.TextOptions>글꼴 설정</RimHUD.Theme.TextOptions>
+
+  <RimHUD.Theme.TextStyleRegular>일반 글자</RimHUD.Theme.TextStyleRegular>
+  <RimHUD.Theme.TextStyleLarge>해더 글자</RimHUD.Theme.TextStyleLarge>
+  <RimHUD.Theme.TextStyleSmall>설명문</RimHUD.Theme.TextStyleSmall>
+  <RimHUD.Theme.LabelWidth>레이블 너비</RimHUD.Theme.LabelWidth>
+  <RimHUD.Theme.ValueWidth>값 너비</RimHUD.Theme.ValueWidth>
+
+  <RimHUD.Theme.InspectPane>조사창</RimHUD.Theme.InspectPane>
+  <RimHUD.Theme.InspectPaneModify>수정</RimHUD.Theme.InspectPaneModify>
+  <RimHUD.Theme.InspectPaneModifyDesc>이 옵션은 HUD가 도킹 모드여야 합니다.</RimHUD.Theme.InspectPaneModifyDesc>
+  <RimHUD.Theme.InspectPaneAddLog>림 로그 보기</RimHUD.Theme.InspectPaneAddLog>
+  <RimHUD.Theme.InspectPaneAddLogDesc>조사창을 선택된 림의 로그로 채웁니다. 오직 도킹하지 않은 모드에서만 사용가능합니다.</RimHUD.Theme.InspectPaneAddLogDesc>
+  <RimHUD.Theme.InspectPaneHeight>창 높이</RimHUD.Theme.InspectPaneHeight>
+  <RimHUD.Theme.InspectPaneMinTabs>최소 탭</RimHUD.Theme.InspectPaneMinTabs>
+  <RimHUD.Theme.InspectPaneTabWidth>탭 너비</RimHUD.Theme.InspectPaneTabWidth>
+
+  <RimHUD.Theme.OtherOptions>다른 설정</RimHUD.Theme.OtherOptions>
+
+  <RimHUD.Theme.ShowDecimals>소수점 보기</RimHUD.Theme.ShowDecimals>
+  <RimHUD.Theme.LetterPadding>글자 패딩</RimHUD.Theme.LetterPadding>
+  <RimHUD.Theme.LetterPaddingDesc>화면 오른쪽에 나타나는 문자 알림간 간격을 조정합니다. 바닐라: 12</RimHUD.Theme.LetterPaddingDesc>
+  <RimHUD.Theme.LetterCompress>축약된 알림s</RimHUD.Theme.LetterCompress>
+  <RimHUD.Theme.LetterCompressDesc>화면 오른쪽의 알림이 HUD와 겹친다면 축약될 것입니다.</RimHUD.Theme.LetterCompressDesc>
+
+  <RimHUD.Theme.HudColors>HUD 색상</RimHUD.Theme.HudColors>
+
+  <RimHUD.Theme.MainTextColor>본문</RimHUD.Theme.MainTextColor>
+  <RimHUD.Theme.DisabledColor>비활성화 된 글자</RimHUD.Theme.DisabledColor>
+  <RimHUD.Theme.CriticalColor>긴급한 글자</RimHUD.Theme.CriticalColor>
+  <RimHUD.Theme.WarningColor>경고문</RimHUD.Theme.WarningColor>
+  <RimHUD.Theme.InfoColor>알림문</RimHUD.Theme.InfoColor>
+  <RimHUD.Theme.GoodColor>좋은 상태 글자</RimHUD.Theme.GoodColor>
+  <RimHUD.Theme.ExcellentColor>아주 좋은 상태 글자</RimHUD.Theme.ExcellentColor>
+  <RimHUD.Theme.BarBackgroundColor>바 배경</RimHUD.Theme.BarBackgroundColor>
+  <RimHUD.Theme.BarMainColor>바 메인</RimHUD.Theme.BarMainColor>
+  <RimHUD.Theme.BarLowColor>바 낮은값</RimHUD.Theme.BarLowColor>
+  <RimHUD.Theme.BarThresholdColor>바 임계값</RimHUD.Theme.BarThresholdColor>
+  <RimHUD.Theme.SelectorBackgroundColor>선택기 배경</RimHUD.Theme.SelectorBackgroundColor>
+  <RimHUD.Theme.SelectorTextColor>선택기 글자</RimHUD.Theme.SelectorTextColor>
+  <RimHUD.Theme.LineColor>선</RimHUD.Theme.LineColor>
+
+  <RimHUD.Theme.FactionColors>세력 색상</RimHUD.Theme.FactionColors>
+  <RimHUD.Theme.FactionOwnColor>자신</RimHUD.Theme.FactionOwnColor>
+  <RimHUD.Theme.FactionAlliedColor>동맹</RimHUD.Theme.FactionAlliedColor>
+  <RimHUD.Theme.FactionIndependentColor>독립적</RimHUD.Theme.FactionIndependentColor>
+  <RimHUD.Theme.FactionHostileColor>적대적</RimHUD.Theme.FactionHostileColor>
+  <RimHUD.Theme.FactionWildColor>야생</RimHUD.Theme.FactionWildColor>
+
+  <RimHUD.Theme.SkillColors>기술 색상</RimHUD.Theme.SkillColors>
+  <RimHUD.Theme.SkillMinorPassionColor>열정: 관심</RimHUD.Theme.SkillMinorPassionColor>
+  <RimHUD.Theme.SkillMajorPassionColor>열정: 열정적</RimHUD.Theme.SkillMajorPassionColor>
+
+  <RimHUD.TextStyle.Size>크기</RimHUD.TextStyle.Size>
+  <RimHUD.TextStyle.Height>높이</RimHUD.TextStyle.Height>
+
+</LanguageData>

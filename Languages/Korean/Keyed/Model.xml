@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<LanguageData>
+
+  <RimHUD.Model.RelationKindAndFaction>{0}{1}{2}</RimHUD.Model.RelationKindAndFaction>
+  <RimHUD.Model.OfFaction> {0}</RimHUD.Model.OfFaction>
+
+  <RimHUD.Model.Faction.Own>자신</RimHUD.Model.Faction.Own>
+  <RimHUD.Model.Faction.Wild>야생</RimHUD.Model.Faction.Wild>
+  <RimHUD.Model.Faction.Allied>동맹</RimHUD.Model.Faction.Allied>
+  <RimHUD.Model.Faction.Enemy>적</RimHUD.Model.Faction.Enemy>
+  <RimHUD.Model.Faction.Hostile>적대적</RimHUD.Model.Faction.Hostile>
+  <RimHUD.Model.Faction.Independent>독립적</RimHUD.Model.Faction.Independent>
+
+  <RimHUD.Model.Creature.Wild>생물</RimHUD.Model.Creature.Wild>
+  <RimHUD.Model.Creature.Tame>길들인 동물</RimHUD.Model.Creature.Tame>
+  <RimHUD.Model.Creature.Stray>길잃은</RimHUD.Model.Creature.Stray>
+  <RimHUD.Model.Creature.Pet>애완 동물</RimHUD.Model.Creature.Pet>
+  <RimHUD.Model.Creature.ExoticPet>희귀 애완 동물</RimHUD.Model.Creature.ExoticPet>
+  <RimHUD.Model.Creature.Predator>포식자</RimHUD.Model.Creature.Predator>
+  <RimHUD.Model.Creature.Hunt>hunting animal</RimHUD.Model.Creature.Hunt>
+  <RimHUD.Model.Creature.Pack>pack animal</RimHUD.Model.Creature.Pack>
+  <RimHUD.Model.Creature.Farm>가축</RimHUD.Model.Creature.Farm>
+  <RimHUD.Model.Creature.Herd>무리 동물</RimHUD.Model.Creature.Herd>
+  <RimHUD.Model.Creature.Insect>곤충</RimHUD.Model.Creature.Insect>
+
+  <RimHUD.Model.GenderAndAge>{0}{1}({2})세</RimHUD.Model.GenderAndAge>
+  <RimHUD.Model.Age.Birthday> (생일)</RimHUD.Model.Age.Birthday>
+  <RimHUD.Model.Age.Day>1일째</RimHUD.Model.Age.Day>
+  <RimHUD.Model.Age.Days>{0}일째</RimHUD.Model.Age.Days>
+
+  <RimHUD.Model.Health.Dead>죽음</RimHUD.Model.Health.Dead>
+  <RimHUD.Model.Health.Incapacitated>무력화됨</RimHUD.Model.Health.Incapacitated>
+  <RimHUD.Model.Health.Bleed>{0} 이후 사망</RimHUD.Model.Health.Bleed>
+  <RimHUD.Model.Health.Tend>{0}로 인해 간호가 필요함</RimHUD.Model.Health.Tend>
+  <RimHUD.Model.Health.TendPlural>간호가 필요한 {0}의 상태</RimHUD.Model.Health.TendPlural>
+  <RimHUD.Model.Health.Threat>{0}로 인해 생명이 위협받고 있습니다</RimHUD.Model.Health.Threat>
+  <RimHUD.Model.Health.ThreatPlural>Has {0} life threatening conditions</RimHUD.Model.Health.ThreatPlural>
+  <RimHUD.Model.Health.Sick>{0}로 인해 고통 받음</RimHUD.Model.Health.Sick>
+  <RimHUD.Model.Health.SickPlural>Suffers from {0} and {1} other conditions</RimHUD.Model.Health.SickPlural>
+  <RimHUD.Model.Health.Stable>건강 이상 없음</RimHUD.Model.Health.Stable>
+  <RimHUD.Model.Health.IsTended> (간호됨)</RimHUD.Model.Health.IsTended>
+
+  <RimHUD.Model.Mood.ExtremeBreakImminent>우울함</RimHUD.Model.Mood.ExtremeBreakImminent>
+  <RimHUD.Model.Mood.MajorBreakImminent>행복하지 않음</RimHUD.Model.Mood.MajorBreakImminent>
+  <RimHUD.Model.Mood.MinorBreakImminent>스트레스 받음</RimHUD.Model.Mood.MinorBreakImminent>
+  <RimHUD.Model.Mood.Happy>행복함</RimHUD.Model.Mood.Happy>
+  <RimHUD.Model.Mood.Content>편안한 느낌</RimHUD.Model.Mood.Content>
+  <RimHUD.Model.Mood.Indifferent>무관심</RimHUD.Model.Mood.Indifferent>
+
+  <RimHUD.Model.Info.Activity>행동: {0}</RimHUD.Model.Info.Activity>
+  <RimHUD.Model.Info.Attacking>{0} 공격중</RimHUD.Model.Info.Attacking>
+  <RimHUD.Model.Info.Queued>대기열: {0}</RimHUD.Model.Info.Queued>
+  <RimHUD.Model.Info.Equipped>장비됨: {0}</RimHUD.Model.Info.Equipped>
+  <RimHUD.Model.Info.Carrying>운반중: {0}</RimHUD.Model.Info.Carrying>
+
+  <RimHUD.Model.Bio.Title>직업: {0}</RimHUD.Model.Bio.Title>
+  <RimHUD.Model.Bio.Faction>세력: {0}</RimHUD.Model.Bio.Faction>
+  <RimHUD.Model.Bio.Master>주인: {0}</RimHUD.Model.Bio.Master>
+  <RimHUD.Model.Bio.Diet>식성: {0}</RimHUD.Model.Bio.Diet>
+  <RimHUD.Model.Bio.Trainability>훈련 가능성: {0}</RimHUD.Model.Bio.Trainability>
+  <RimHUD.Model.Bio.Wildness>야생성: {0}</RimHUD.Model.Bio.Wildness>
+  <RimHUD.Model.Bio.Petness>가축성: {0}</RimHUD.Model.Bio.Petness>
+
+  <RimHUD.Model.Selector.OutfitFormat>복장: {0}</RimHUD.Model.Selector.OutfitFormat>
+  <RimHUD.Model.Selector.FoodFormat>음식: {0}</RimHUD.Model.Selector.FoodFormat>
+  <RimHUD.Model.Selector.TimetableFormat>스케쥴: {0}</RimHUD.Model.Selector.TimetableFormat>
+  <RimHUD.Model.Selector.SetTimeAssignment>{0}시간 동안 {1}로 설정</RimHUD.Model.Selector.SetTimeAssignment>
+  <RimHUD.Model.Selector.AreaFormat>구역: {0}</RimHUD.Model.Selector.AreaFormat>
+  <RimHUD.Model.Selector.Manage>관리...</RimHUD.Model.Selector.Manage>
+
+</LanguageData>
