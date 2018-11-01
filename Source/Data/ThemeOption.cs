@@ -13,7 +13,7 @@ namespace RimHUD.Data
             get => _object;
             protected set
             {
-                if (Equals(_object, value)) { return; }
+                if (Persistent.IsLoaded && Equals(_object, value)) { return; }
 
                 _object = value;
                 _onChange?.Invoke(this);
