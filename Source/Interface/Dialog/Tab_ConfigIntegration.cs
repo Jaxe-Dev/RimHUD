@@ -46,7 +46,14 @@ namespace RimHUD.Interface.Dialog
             l.RangeSlider(Bubbles.FontSize, bubblesActive);
             l.RangeSlider(Bubbles.PaddingX, bubblesActive);
             l.RangeSlider(Bubbles.PaddingY, bubblesActive);
-            l.GapLine();
+            l.End();
+
+            l.Begin(hGrid[2]);
+            l.Label(Lang.Get("Integration.PawnRules").Bold(), PawnRules.Description);
+            var hasPawnRules = PawnRules.Instance.IsActive;
+            if (!hasPawnRules) { l.LinkLabel(Lang.Get("Integration.GetMod"), PawnRules.Url, PawnRules.Url); }
+            l.BoolToggle(PawnRules.ReplaceFoodSelector, hasPawnRules);
+            l.BoolToggle(PawnRules.HideGizmo, hasPawnRules);
 
             l.End();
         }

@@ -4,8 +4,8 @@
 
   <RimHUD.Integration.GetMod>Link to mod</RimHUD.Integration.GetMod>
 
-  <RimHUD.Integration.Bubbles>Interaction Bubbles</RimHUD.Integration.Bubbles>
   <RimHUD.Integration.General>General Settings</RimHUD.Integration.General>
+  <RimHUD.Integration.Bubbles>Interaction Bubbles</RimHUD.Integration.Bubbles>
 
   <RimHUD.Integration.Bubbles.Activated>Activated</RimHUD.Integration.Bubbles.Activated>
   <RimHUD.Integration.Bubbles.DoNonPlayer>Show for non-player faction</RimHUD.Integration.Bubbles.DoNonPlayer>
@@ -35,5 +35,11 @@
   <RimHUD.Integration.Bubbles.BackColor>Back color</RimHUD.Integration.Bubbles.BackColor>
   <RimHUD.Integration.Bubbles.SelectedForeColor>Selected text color</RimHUD.Integration.Bubbles.SelectedForeColor>
   <RimHUD.Integration.Bubbles.SelectedBackColor>Selected back color</RimHUD.Integration.Bubbles.SelectedBackColor>
+
+  <RimHUD.Integration.PawnRules>Pawn Rules</RimHUD.Integration.PawnRules>
+  <RimHUD.Integration.PawnRules.RuleNameFormat>Rules: {0}</RimHUD.Integration.PawnRules.RuleNameFormat>
+  <RimHUD.Integration.PawnRules.ReplaceFoodSelector>Replace food selector</RimHUD.Integration.PawnRules.ReplaceFoodSelector>
+  <RimHUD.Integration.PawnRules.HideGizmo>Hide Gizmo</RimHUD.Integration.PawnRules.HideGizmo>
+  <RimHUD.Integration.PawnRules.HideGizmoDesc>Disables the rules gizmo that appears next to the draft button as RimHUD adds a rules button in the inspect pane.</RimHUD.Integration.PawnRules.HideGizmoDesc>
 
 </LanguageData>

@@ -21,6 +21,7 @@ namespace RimHUD.Data.Models
 
                     { "Outfit", model => HudSelector.FromModel(model.OutfitSelector, Theme.SmallTextStyle) },
                     { "Food", model => HudSelector.FromModel(model.FoodSelector, Theme.SmallTextStyle) },
+                    { "Rules", model => HudSelector.FromModel(model.RulesSelector, Theme.SmallTextStyle) },
                     { "Timetable", model => HudSelector.FromModel(model.TimetableSelector, Theme.SmallTextStyle) },
                     { "Area", model => HudSelector.FromModel(model.AreaSelector, Theme.SmallTextStyle) },
 
@@ -89,7 +90,7 @@ namespace RimHUD.Data.Models
         private static HudWidget GetSkillWidget(PawnModel model, string defName)
         {
             var def = DefDatabase<SkillDef>.GetNamed(defName, false);
-            if (def != null) { return (HudWidget) HudValue.FromValueModel(new SkillModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty;  }
+            if (def != null) { return (HudWidget) HudValue.FromValueModel(new SkillModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty; }
 
             Mod.ErrorOnce($"Invalid HUD Widget, Skill def '{defName}' not found", "InvalidSkillDefName" + defName);
             return HudBlank.GetEmpty;
