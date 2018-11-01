@@ -18,6 +18,7 @@ namespace RimHUD.Data
         private const string ConfigFileName = "Config.xml";
 
         private static bool VersionNeedsNewConfig { get; } = false;
+        public static bool IsLoaded { get; private set; }
         private static bool _configWasReset;
 
         private static readonly FileInfo ConfigFile = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, ConfigFileName));
@@ -80,6 +81,12 @@ namespace RimHUD.Data
         private static string GetIntegrationName(object subject) => "Integration." + GetSubjectType(subject).Name;
 
         public static void Load()
+        {
+            LoadAll();
+            IsLoaded = true;
+        }
+
+        private static void LoadAll()
         {
             if (!HasConfigFile())
             {
