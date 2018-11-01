@@ -66,6 +66,7 @@
     <Compile Include="Data\Models\PawnHealthModel.cs" />
     <Compile Include="Data\Models\PawnMindModel.cs" />
     <Compile Include="Data\Models\PawnModel.cs" />
+    <Compile Include="Data\Models\RulesModel.cs" />
     <Compile Include="Data\Models\SelectorModel.cs" />
     <Compile Include="Data\Models\SkillModel.cs" />
     <Compile Include="Data\Models\TextModel.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Integration\HugsLib.cs" />
     <Compile Include="Integration\IntegratedMod.cs" />
     <Compile Include="Integration\LayoutPresets.cs" />
+    <Compile Include="Integration\PawnRules.cs" />
     <Compile Include="Interface\GUIPlus.cs" />
     <Compile Include="Interface\InspectPanePlus.cs" />
     <Compile Include="Interface\LetterStackPlus.cs" />

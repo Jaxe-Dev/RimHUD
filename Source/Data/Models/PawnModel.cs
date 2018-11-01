@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RimHUD.Integration;
 using RimHUD.Interface;
 using RimHUD.Interface.HUD;
 using RimHUD.Patch;
@@ -78,7 +79,8 @@ namespace RimHUD.Data.Models
         public TipSignal? AnimalTooltip => GetAnimalTooltip();
 
         public SelectorModel OutfitSelector => new OutfitModel(this);
-        public SelectorModel FoodSelector => new FoodModel(this);
+        public SelectorModel FoodSelector => PawnRules.Instance.IsActive && PawnRules.ReplaceFoodSelector.Value ? RulesSelector : new FoodModel(this);
+        public SelectorModel RulesSelector => PawnRules.Instance.IsActive ? new RulesModel(this) : null;
         public SelectorModel TimetableSelector => new TimetableModel(this);
         public SelectorModel AreaSelector => new AreaModel(this);
 
