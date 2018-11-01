@@ -32,14 +32,17 @@ namespace RimHUD
             FirstTimeUser = !ConfigDirectory.Exists;
             ConfigDirectory.Create();
 
-            Persistent.Load();
-
             if (!FirstTimeUser) { HugsLib.RegisterUpdateFeature(); }
 
             Log("Initialized");
         }
 
-        public static void OnStartup() => CompatibilityManager.OnStartup();
+        public static void OnStartup()
+        {
+            Persistent.Load();
+            CompatibilityManager.OnStartup();
+        }
+
         public static void OnEnteredGame() => Persistent.CheckAlerts();
 
         public static void Log(string message) => Verse.Log.Message(PrefixMessage(message));
