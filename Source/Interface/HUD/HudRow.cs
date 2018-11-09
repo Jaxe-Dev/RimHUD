@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
 using RimHUD.Data.Models;
+using RimHUD.Interface.Dialog;
 using RimHUD.Patch;
 using UnityEngine;
 using Verse;
@@ -11,11 +12,12 @@ namespace RimHUD.Interface.HUD
     {
         public const string Name = "Row";
 
+        public override string ElementName => "Row";
         private readonly HudElement[] _elements;
         public bool HasElements => _elements.Length > 0;
         private bool _visible;
 
-        protected override HudTarget Targets { get; }
+        public override HudTarget Targets { get; }
 
         public HudRow(XElement xe)
         {
@@ -55,6 +57,11 @@ namespace RimHUD.Interface.HUD
             return index > 1;
         }
 
+        public void Flush()
+        {
+            foreach (var element in _elements) { element.Flush(); }
+        }
+
         public override XElement ToXml()
         {
             var xml = new XElement(Name);
@@ -64,6 +71,14 @@ namespace RimHUD.Interface.HUD
 
             foreach (var element in _elements) { xml.Add(element.ToXml()); }
             return xml;
+        }
+
+        public override LayoutItem GetWidget(LayoutDesign design, LayoutItem parent)
+        {
+            var item = new LayoutItem(design, parent, this);
+            foreach (var element in _elements) { item.Contents.Add(element.GetWidget(design, item)); }
+
+            return item;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace RimHUD.Data
     {
         private const string ConfigFileName = "Config.xml";
 
-        private static bool VersionNeedsNewConfig { get; } = false;
+        private static bool VersionNeedsNewConfig { get; } = true;
         public static bool IsLoaded { get; private set; }
         private static bool _configWasReset;
 
@@ -99,7 +99,9 @@ namespace RimHUD.Data
             var loadedVersion = versionAttribute?.Value;
             if (NeedsNewConfig(loadedVersion))
             {
+                AllToDefault();
                 Save();
+                LoadLayouts(true);
                 Mod.Warning($"Updating to version {Mod.Version} required your RimHUD config to be reset to default.");
                 _configWasReset = true;
                 return;
@@ -112,7 +114,7 @@ namespace RimHUD.Data
 
             foreach (var integration in GetIntegrations()) { LoadClassElements(integration, doc.Root); }
 
-            LoadLayouts();
+            LoadLayouts(false);
 
             doc.Save(ConfigFile.FullName);
         }
@@ -216,15 +218,15 @@ namespace RimHUD.Data
             if (categories.Count > 0) { current.Add(categories.Values); }
         }
 
-        private static void LoadLayouts()
+        private static void LoadLayouts(bool reset)
         {
             var docked = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.DockedFileName));
             var floating = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.FloatingFileName));
 
-            if (docked.Exists) { HudLayout.Docked = HudLayout.FromXml(XDocument.Load(docked.FullName)); }
+            if (!reset && docked.Exists) { HudLayout.Docked = HudLayout.FromXml(XDocument.Load(docked.FullName)); }
             else { HudLayout.Docked.AsXDocument().Save(docked.FullName); }
 
-            if (floating.Exists) { HudLayout.Floating = HudLayout.FromXml(XDocument.Load(floating.FullName)); }
+            if (!reset && floating.Exists) { HudLayout.Floating = HudLayout.FromXml(XDocument.Load(floating.FullName)); }
             else { HudLayout.Floating.AsXDocument().Save(floating.FullName); }
         }
 

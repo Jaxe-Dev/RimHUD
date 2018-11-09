@@ -4,5 +4,5 @@
   <name>RimHUD</name>
   <author>Jaxe</author>
   <targetVersion>1.0.0</targetVersion>
-  <description>Mod Version: 1.2.9.4\n\n\nRimHUD is a UI mod that displays a detailed information about a selected character or creature. The HUD display is integrated into the inspect pane which can be resized to fit the additional information. Alternatively the HUD can a separate floating window and docked to any position on the screen.\n\nVisual warnings will appear if a pawn has any life threatening conditions, has wounds that need tending or is close to a mental breakdown.</description>
+  <description>Mod Version: 1.2.9.5\n\n\nRimHUD is a UI mod that displays a detailed information about a selected character or creature. The HUD display is integrated into the inspect pane which can be resized to fit the additional information. Alternatively the HUD can a separate floating window and docked to any position on the screen.\n\nVisual warnings will appear if a pawn has any life threatening conditions, has wounds that need tending or is close to a mental breakdown.</description>
 </ModMetaData>

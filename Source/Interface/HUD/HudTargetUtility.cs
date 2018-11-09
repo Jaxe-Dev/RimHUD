@@ -10,10 +10,10 @@
 
         public static string GetId(this HudTarget self)
         {
-            if (self == HudTarget.PlayerColonist) { return "C"; }
-            if (self == HudTarget.PlayerAnimal) { return "N"; }
-            if (self == HudTarget.OtherColonist) { return "c"; }
-            if (self == HudTarget.OtherAnimal) { return "n"; }
+            if (self == HudTarget.PlayerHumanlike) { return "H"; }
+            if (self == HudTarget.PlayerCreature) { return "C"; }
+            if (self == HudTarget.OtherHumanlike) { return "h"; }
+            if (self == HudTarget.OtherCreature) { return "c"; }
             if (self == HudTarget.All) { return null; }
 
             throw new Mod.Exception("Invalid HUD target type");
@@ -24,10 +24,10 @@
             if (value == null) { return HudTarget.All; }
 
             var targets = HudTarget.Invalid;
-            if (value.Contains(HudTarget.PlayerColonist.GetId())) { targets |= HudTarget.PlayerColonist; }
-            if (value.Contains(HudTarget.PlayerAnimal.GetId())) { targets |= HudTarget.PlayerAnimal; }
-            if (value.Contains(HudTarget.OtherColonist.GetId())) { targets |= HudTarget.OtherColonist; }
-            if (value.Contains(HudTarget.OtherAnimal.GetId())) { targets |= HudTarget.OtherAnimal; }
+            if (value.Contains(HudTarget.PlayerHumanlike.GetId())) { targets |= HudTarget.PlayerHumanlike; }
+            if (value.Contains(HudTarget.PlayerCreature.GetId())) { targets |= HudTarget.PlayerCreature; }
+            if (value.Contains(HudTarget.OtherHumanlike.GetId())) { targets |= HudTarget.OtherHumanlike; }
+            if (value.Contains(HudTarget.OtherCreature.GetId())) { targets |= HudTarget.OtherCreature; }
 
             return targets;
         }
@@ -37,10 +37,10 @@
             if (self == HudTarget.All) { return null; }
 
             var value = "";
-            if (self.HasTarget(HudTarget.PlayerColonist)) { value += HudTarget.PlayerColonist.GetId(); }
-            if (self.HasTarget(HudTarget.PlayerAnimal)) { value += HudTarget.PlayerAnimal.GetId(); }
-            if (self.HasTarget(HudTarget.OtherColonist)) { value += HudTarget.OtherColonist.GetId(); }
-            if (self.HasTarget(HudTarget.OtherAnimal)) { value += HudTarget.OtherAnimal.GetId(); }
+            if (self.HasTarget(HudTarget.PlayerHumanlike)) { value += HudTarget.PlayerHumanlike.GetId(); }
+            if (self.HasTarget(HudTarget.PlayerCreature)) { value += HudTarget.PlayerCreature.GetId(); }
+            if (self.HasTarget(HudTarget.OtherHumanlike)) { value += HudTarget.OtherHumanlike.GetId(); }
+            if (self.HasTarget(HudTarget.OtherCreature)) { value += HudTarget.OtherCreature.GetId(); }
 
             return value.Length > 0 ? value : null;
         }
