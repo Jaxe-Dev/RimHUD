@@ -20,6 +20,9 @@ namespace RimHUD.Interface
         private static readonly Stack SavedColors = new Stack();
         private static readonly Stack SavedFonts = new Stack();
 
+        public static readonly Color ButtonSelectedColor = new Color(0.5f, 1f, 0.5f);
+        public static readonly Color ItemSelectedColor = new Color(0.25f, 0.4f, 0.1f);
+
         public static void SetColor(Color? color)
         {
             if (color == null)

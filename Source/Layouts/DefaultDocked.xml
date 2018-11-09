@@ -12,12 +12,12 @@
     </Panel>
     <Panel>
       <Row>
-        <Outfit Targets="C" />
-        <Food Targets="CN" />
+        <Outfit Targets="H" />
+        <Food Targets="HC" />
       </Row>
       <Row>
-        <Timetable Targets="C" />
-        <Area Targets="CN" />
+        <Timetable Targets="H" />
+        <Area Targets="HC" />
       </Row>
     </Panel>
   </HStack>
@@ -34,10 +34,10 @@
       <Row>
         <HealthCondition />
       </Row>
-      <Row Targets="Cc">
+      <Row Targets="Hh">
         <NeedMood />
       </Row>
-      <Row Targets="Cc">
+      <Row Targets="Hh">
         <MindCondition />
       </Row>
       <Row>
@@ -46,47 +46,47 @@
       <Row>
         <NeedRest />
       </Row>
-      <Row Targets="Cc">
+      <Row Targets="Hh">
         <NeedRecreation />
       </Row>
-      <Row Targets="Nn">
+      <Row Targets="Cc">
         <MindCondition />
       </Row>
     </Panel>
     <Panel>
-      <Row Targets="Cc">
+      <Row Targets="Hh">
         <SkillShooting />
         <SkillMelee />
       </Row>
-      <Row Targets="Cc">
+      <Row Targets="Hh">
         <SkillConstruction />
         <SkillMining />
       </Row>
-      <Row Targets="Cc">
+      <Row Targets="Hh">
         <SkillCooking />
         <SkillPlants />
       </Row>
-      <Row Targets="Cc">
+      <Row Targets="Hh">
         <SkillAnimals />
         <SkillCrafting />
       </Row>
-      <Row Targets="Cc">
+      <Row Targets="Hh">
         <SkillArtistic />
         <SkillMedicine />
       </Row>
-      <Row Targets="Cc">
+      <Row Targets="Hh">
         <SkillSocial />
         <SkillIntellectual />
       </Row>
-      <Row Targets="N">
+      <Row Targets="C">
         <TrainingTameness />
         <Master />
       </Row>
-      <Row Targets="N">
+      <Row Targets="C">
         <TrainingObedience />
         <TrainingRelease />
       </Row>
-      <Row Targets="N">
+      <Row Targets="C">
         <TrainingRescue />
         <TrainingHaul />
       </Row>

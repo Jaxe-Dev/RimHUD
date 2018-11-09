@@ -51,15 +51,15 @@ namespace RimHUD.Data.Models
             return TextModel.Create(text, GetHealthTooltip(), Theme.CriticalColor.Value);
         }
 
-        private TextModel GetSicknessWarning()
+        private TextModel GetAffectedWarning()
         {
-            var sicknesses = Model.Base.health.hediffSet.hediffs.Where(hediff => hediff.def.makesSickThought).ToArray();
-            var count = sicknesses.Count();
+            var affected = VisibleHediffs(Model.Base, false).Where(hediff => !hediff.IsPermanent() && !hediff.FullyImmune() && !hediff.IsTended() && hediff.def.isBad && hediff.Visible).ToArray();
+            var count = affected.Count();
             if (count == 0) { return null; }
 
-            var worst = sicknesses.MaxBy(hediff => hediff.PainFactor);
+            var worst = affected.MaxBy(hediff => hediff.PainFactor);
 
-            var text = count == 1 ? Lang.Get("Model.Health.Sick", worst.LabelCap) : Lang.Get("Model.Health.SickPlural", worst.LabelCap, count);
+            var text = count == 1 ? Lang.Get("Model.Health.Affected", worst.LabelCap) : Lang.Get("Model.Health.AffectedPlural", worst.LabelCap, count - 1);
             return TextModel.Create(text, GetHealthTooltip(), Theme.WarningColor.Value);
         }
 
@@ -70,10 +70,11 @@ namespace RimHUD.Data.Models
             if (Model.Base.health?.hediffSet?.hediffs == null) { return null; }
             if (Model.Base.Dead) { return TextModel.Create(Lang.Get("Model.Health.Dead"), GetHealthTooltip(), Theme.InfoColor.Value); }
 
-            return GetBleedWarning() ?? GetTendWarning() ?? GetLifeThreateningWarning() ?? GetSicknessWarning() ?? GetIncapacitatedWarning() ?? TextModel.Create(Lang.Get("Model.Health.Stable"), GetHealthTooltip(), Theme.GoodColor.Value);
+            return GetBleedWarning() ?? GetTendWarning() ?? GetLifeThreateningWarning() ?? GetAffectedWarning() ?? GetIncapacitatedWarning() ?? TextModel.Create(Lang.Get("Model.Health.Stable"), GetHealthTooltip(), Theme.GoodColor.Value);
         }
 
         private static IEnumerable<IGrouping<BodyPartRecord, Hediff>> VisibleHediffGroupsInOrder(Pawn pawn, bool showBloodLoss) => (IEnumerable<IGrouping<BodyPartRecord, Hediff>>) Access.Method_RimWorld_HealthCardUtility_VisibleHediffGroupsInOrder.Invoke(null, new object[] { pawn, showBloodLoss });
+        private static IEnumerable<Hediff> VisibleHediffs(Pawn pawn, bool showBloodLoss) => (IEnumerable<Hediff>) Access.Method_RimWorld_HealthCardUtility_VisibleHediffs.Invoke(null, new object[] { pawn, showBloodLoss });
 
         private TipSignal? GetHealthTooltip()
         {
@@ -83,7 +84,7 @@ namespace RimHUD.Data.Models
 
             foreach (var hediffs in VisibleHediffGroupsInOrder(Model.Base, true))
             {
-                foreach (var hediff in hediffs) { builder.AppendLine(GetHealthTooltipLine(hediff)); }
+                foreach (var hediff in hediffs.Where(hediff => hediff.Visible)) { builder.AppendLine(GetHealthTooltipLine(hediff)); }
             }
 
             if (builder.Length == 0) { builder.AppendLine("NoHealthConditions".Translate().CapitalizeFirst().Color(Theme.DisabledColor.Value)); }

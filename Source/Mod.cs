@@ -4,6 +4,8 @@ using Harmony;
 using RimHUD.Compatibility;
 using RimHUD.Data;
 using RimHUD.Integration;
+using RimHUD.Interface;
+using RimHUD.Interface.HUD;
 using RimWorld;
 using Verse;
 
@@ -14,8 +16,8 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.2.9.4";
-        public const string LastVersion = "1.2.9.3";
+        public const string Version = "1.2.9.5";
+        public const string LastVersion = "1.2.9.4";
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
         public static bool FirstTimeUser { get; }
@@ -51,6 +53,13 @@ namespace RimHUD
         public static void ErrorOnce(string message, string key) => Verse.Log.ErrorOnce(PrefixMessage(message), key.GetHashCode());
         public static void Message(string message) => Messages.Message(message, MessageTypeDefOf.TaskCompletion, false);
         private static string PrefixMessage(string message) => $"[{Name} v{Version}] {message}";
+
+        public static void ClearCache()
+        {
+            InspectPanePlus.ClearCache();
+            HudLayout.Docked.Flush();
+            HudLayout.Floating.Flush();
+        }
 
         public class Exception : System.Exception
         {
