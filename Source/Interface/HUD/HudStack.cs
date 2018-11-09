@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+using RimHUD.Interface.Dialog;
 using RimHUD.Patch;
 
 namespace RimHUD.Interface.HUD
@@ -8,12 +9,15 @@ namespace RimHUD.Interface.HUD
     {
         private const string FillAttributeName = "FillHeight";
 
+        public override HudTarget Targets { get; }
         public override bool FillHeight { get; }
 
         protected readonly HudContainer[] Containers;
 
         protected HudStack(XElement xe, bool? fillHeight)
         {
+            Targets = TargetsFromXml(xe);
+
             var containers = new List<HudContainer>();
             foreach (var element in xe.Elements())
             {
@@ -30,6 +34,11 @@ namespace RimHUD.Interface.HUD
             Containers = containers.ToArray();
         }
 
+        public override void Flush()
+        {
+            foreach (var container in Containers) { container.Flush(); }
+        }
+
         private static HudStack FromXml(XElement xml, bool? fillHeight)
         {
             if (xml.Name == HudHStack.Name) { return new HudHStack(xml, fillHeight); }
@@ -44,6 +53,14 @@ namespace RimHUD.Interface.HUD
 
             foreach (var container in Containers) { xml.Add(container.ToXml()); }
             return xml;
+        }
+
+        public override LayoutItem GetWidget(LayoutDesign design, LayoutItem parent)
+        {
+            var item = new LayoutItem(design, parent, this);
+            foreach (var container in Containers) { item.Contents.Add(container.GetWidget(design, item)); }
+
+            return item;
         }
     }
 }

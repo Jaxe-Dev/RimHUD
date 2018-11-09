@@ -9,7 +9,7 @@ namespace RimHUD.Interface.HUD
     internal class HudHStack : HudStack
     {
         public const string Name = "HStack";
-        protected override string ElementName { get; } = Name;
+        public override string ElementName { get; } = Name;
 
         public HudHStack(XElement xe, bool? fillHeight) : base(xe, fillHeight)
         { }

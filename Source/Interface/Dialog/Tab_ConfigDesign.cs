@@ -25,6 +25,10 @@ namespace RimHUD.Interface.Dialog
             var l = new ListingPlus();
             l.Begin(hGrid[1]);
 
+            l.RangeSlider(Theme.RefreshRate);
+            l.GapLine();
+            l.Gap();
+
             l.Label(Lang.Get("Theme.HudPosition").Bold());
             l.BoolToggle(Theme.HudDocked);
             l.RangeSlider(Theme.HudAnchor, !Theme.HudDocked.Value);

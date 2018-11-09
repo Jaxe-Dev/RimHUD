@@ -12,6 +12,8 @@ namespace RimHUD.Interface
 
         public static GUIStyle BaseGUIStyle => new GUIStyle(Text.fontStyles[(int) GameFont.Medium]) { fontSize = DefaultBaseFontSize, alignment = TextAnchor.MiddleLeft, wordWrap = false, padding = new RectOffset(0, 0, 0, 0) };
 
+        [Persistent.Option("HudOptions", "RefreshRate")] public static RangeOption RefreshRate { get; } = new RangeOption(2, 0, 10, Lang.Get("Theme.RefreshRate"), value => (value * 100) + Lang.Get("Theme.RefreshRateUnits"), Lang.Get("Theme.RefreshRateDesc"));
+
         [Persistent.Option("HudPosition", "Docked")] public static BoolOption HudDocked { get; } = new BoolOption(true, Lang.Get("Theme.HudDocked"), Lang.Get("Theme.HudDockedDesc"), EnsureInspectPaneModify);
         [Persistent.Option("HudPosition", "Anchor")] public static RangeOption HudAnchor { get; } = new RangeOption(2, 0, 8, Lang.Get("Theme.HudAnchor"), value => Lang.GetIndexed("Theme.HudAnchors", value), onChange: _ => SetOffsetBounds());
         [Persistent.Option("HudPosition", "OffsetX")] public static RangeOption HudOffsetX { get; } = new RangeOption(0, -Screen.width, Screen.width, Lang.Get("Theme.HudOffsetX"));

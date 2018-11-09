@@ -31,6 +31,9 @@
   <RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Default>Default</RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Default>
   <RimHUD.Dialog_Config.Tab.Content.Layout.Preset.DefaultLoaded>Layouts reset to default.</RimHUD.Dialog_Config.Tab.Content.Layout.Preset.DefaultLoaded>
   <RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Loaded>Layout preset for mod '{0}' loaded.</RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Loaded>
+  <RimHUD.Dialog_Config.Tab.Content.Layout.Mode>Mode</RimHUD.Dialog_Config.Tab.Content.Layout.Mode>
+  <RimHUD.Dialog_Config.Tab.Content.Layout.Mode.Docked>Docked</RimHUD.Dialog_Config.Tab.Content.Layout.Mode.Docked>
+  <RimHUD.Dialog_Config.Tab.Content.Layout.Mode.Floating>Floating</RimHUD.Dialog_Config.Tab.Content.Layout.Mode.Floating>
   
   <RimHUD.Dialog_Config.Tab.Integration>Integration</RimHUD.Dialog_Config.Tab.Integration>
 

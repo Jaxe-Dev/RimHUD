@@ -5,7 +5,7 @@ using UnityEngine;
 using Verse;
 using ColorOption = RimHUD.Data.ColorOption;
 
-namespace RimHUD.Interface
+namespace RimHUD.Interface.Dialog
 {
     internal class ListingPlus : Listing_Standard
     {

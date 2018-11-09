@@ -1,8 +1,10 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using System.Xml.Linq;
 using RimHUD.Data;
 using RimHUD.Data.Models;
 using UnityEngine;
+using Verse;
 
 namespace RimHUD.Interface.HUD
 {
@@ -17,6 +19,9 @@ namespace RimHUD.Interface.HUD
 
         public static HudLayout Docked { get; set; } = DefaultDocked;
         public static HudLayout Floating { get; set; } = DefaultFloating;
+
+        private DateTime _lastDraw;
+        private Pawn _lastPawn;
 
         private HudLayout(XElement xe) : base(xe, true)
         { }
@@ -62,8 +67,14 @@ namespace RimHUD.Interface.HUD
 
         public void Draw(Rect rect, PawnModel model)
         {
-            Prepare(model);
+            if ((model.Base != _lastPawn) || (_lastDraw == default(DateTime)) || ((DateTime.Now - _lastDraw).TotalMilliseconds > Theme.RefreshRate.Value * 100))
+            {
+                Prepare(model);
+                _lastPawn = model.Base;
+                _lastDraw = DateTime.Now;
+            }
+
             Draw(rect);
-        }
+       }
     }
 }

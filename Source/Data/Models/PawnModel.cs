@@ -99,8 +99,8 @@ namespace RimHUD.Data.Models
 
         private HudTarget GetTargetType()
         {
-            if (IsPlayerManaged) { return Base.RaceProps.Humanlike ? HudTarget.PlayerColonist : HudTarget.PlayerAnimal; }
-            return Base.RaceProps.Humanlike ? HudTarget.OtherColonist : HudTarget.OtherAnimal;
+            if (IsPlayerManaged) { return Base.RaceProps.Humanlike ? HudTarget.PlayerHumanlike : HudTarget.PlayerCreature; }
+            return Base.RaceProps.Humanlike ? HudTarget.OtherHumanlike : HudTarget.OtherCreature;
         }
 
         private NeedModel GetNeedModel(NeedDef def) => new NeedModel(this, def);
