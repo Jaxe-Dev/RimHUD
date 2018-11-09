@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using RimHUD.Data.Models;
+using RimHUD.Interface.Dialog;
 using RimHUD.Patch;
 using UnityEngine;
 
@@ -10,15 +11,18 @@ namespace RimHUD.Interface.HUD
     internal class HudPanel : HudContainer
     {
         public const string Name = "Panel";
-        protected override string ElementName { get; } = Name;
+        public override string ElementName { get; } = Name;
 
         public override bool FillHeight { get; }
+        public override HudTarget Targets { get; }
 
         private readonly HudRow[] _rows;
         private float[] _heights;
 
         public HudPanel(XElement xe, bool? fillHeight)
         {
+            Targets = TargetsFromXml(xe);
+
             var rows = new List<HudRow>();
             foreach (var element in xe.Elements())
             {
@@ -59,11 +63,24 @@ namespace RimHUD.Interface.HUD
             return true;
         }
 
+        public override void Flush()
+        {
+            foreach (var row in _rows) { row.Flush(); }
+        }
+
         public override XElement ToXml()
         {
             var xml = new XElement(ElementName);
             foreach (var row in _rows) { xml.Add(row.ToXml()); }
             return xml;
+        }
+
+        public override LayoutItem GetWidget(LayoutDesign design, LayoutItem parent)
+        {
+            var item = new LayoutItem(design, parent, this);
+            foreach (var row in _rows) { item.Contents.Add(row.GetWidget(design, item)); }
+
+            return item;
         }
     }
 }

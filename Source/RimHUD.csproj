@@ -81,12 +81,14 @@
     <Compile Include="Interface\GUIPlus.cs" />
     <Compile Include="Interface\InspectPanePlus.cs" />
     <Compile Include="Interface\LetterStackPlus.cs" />
-    <Compile Include="Interface\ListingPlus.cs" />
     <Compile Include="Interface\TextStyle.cs" />
     <Compile Include="Interface\Textures.cs" />
     <Compile Include="Interface\Theme.cs" />
     <Compile Include="Interface\Dialog\Dialog_Alert.cs" />
     <Compile Include="Interface\Dialog\Dialog_Config.cs" />
+    <Compile Include="Interface\Dialog\LayoutDesign.cs" />
+    <Compile Include="Interface\Dialog\LayoutItem.cs" />
+    <Compile Include="Interface\Dialog\ListingPlus.cs" />
     <Compile Include="Interface\Dialog\Tab.cs" />
     <Compile Include="Interface\Dialog\Tab_ConfigColors.cs" />
     <Compile Include="Interface\Dialog\Tab_ConfigContent.cs" />

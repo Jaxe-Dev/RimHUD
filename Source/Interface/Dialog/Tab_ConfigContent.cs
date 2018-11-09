@@ -13,12 +13,14 @@ namespace RimHUD.Interface.Dialog
         public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Content");
         public override TipSignal? Tooltip { get; } = null;
 
-        public override void Reset()
-        { }
+        private bool _dockedMode = true;
+        private LayoutDesign _design = new LayoutDesign(HudLayout.Docked);
+
+        public override void Reset() => RefreshDesign();
 
         public override void Draw(Rect rect)
         {
-            var hGrid = rect.GetHGrid(GUIPlus.LargePadding, -1f, -1f);
+            var hGrid = rect.GetHGrid(GUIPlus.LargePadding, -1f, 200f);
             var l = new ListingPlus();
             l.Begin(hGrid[1]);
 
@@ -36,27 +38,48 @@ namespace RimHUD.Interface.Dialog
                 Find.WindowStack.Add(new FloatMenu(presets));
             }
 
+            l.Label(Lang.Get("Dialog_Config.Tab.Content.Layout.Mode").Bold());
+            if (l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Layout.Mode." + (_dockedMode ? "Docked" : "Floating"))))
+            {
+                var presets = new List<FloatMenuOption>
+                {
+                            new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Layout.Mode.Docked"), () => SetDockedMode(true)),
+                            new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Layout.Mode.Floating"), () => SetDockedMode(false))
+                };
+
+                Find.WindowStack.Add(new FloatMenu(presets));
+            }
+
             l.GapLine();
             l.Gap();
 
-            l.Label(Lang.Get("Alert.MoreComingSoon").Italic());
+            _design.Draw(l.GetRect(200f));
+
+            l.GapLine();
             l.Gap();
             l.Gap();
-            var wrap = Text.WordWrap;
-            Text.WordWrap = true;
-            l.Label("A GUI for editing the layout and content is being developed but in the meanwhile advanced users can edit the layout in Docked/Floating.xml files found in the config folder.\n\nFor custom needs use <Need DefName=\"someNeed\">\nFor custom skills use <Skill DefName=\"someSkill\">");
-            Text.WordWrap = wrap;
+
+            l.Label("This tab is incomplete but should be available in the next update.".Italic(), color: Color.yellow);
 
             l.End();
         }
 
-        private static void LoadDefaultPreset()
+        private void SetDockedMode(bool value)
+        {
+            _dockedMode = value;
+            RefreshDesign();
+        }
+
+        private void RefreshDesign() => _design = new LayoutDesign(_dockedMode ? HudLayout.Docked : HudLayout.Floating);
+
+        private void LoadDefaultPreset()
         {
             HudLayout.LoadDefault();
             Dialog_Alert.Open(Lang.Get("Dialog_Config.Tab.Content.Layout.Preset.DefaultLoaded"));
+            RefreshDesign();
         }
 
-        private static void TryLoadPreset(ExternalMod mod, string id)
+        private void TryLoadPreset(ExternalMod mod, string id)
         {
             if (!mod.IsActive)
             {
@@ -66,6 +89,7 @@ namespace RimHUD.Interface.Dialog
 
             HudLayout.LoadPreset(id);
             Dialog_Alert.Open(Lang.Get("Dialog_Config.Tab.Content.Layout.Preset.Loaded", mod.Name));
+            RefreshDesign();
         }
     }
 }

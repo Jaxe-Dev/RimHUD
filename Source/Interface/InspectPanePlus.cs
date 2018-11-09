@@ -46,7 +46,7 @@ namespace RimHUD.Interface
             if (pane.ShouldShowSelectNextInCellButton)
             {
                 var selectOverlappingNextRect = new Rect(rect.width - ButtonSize, 0f, ButtonSize, ButtonSize);
-                if (Widgets.ButtonImage(selectOverlappingNextRect, Textures.SelectOverlappingNextTex)) { pane.SelectNextInCell(); }
+                if (Widgets.ButtonImage(selectOverlappingNextRect, Textures.SelectOverlappingNext)) { pane.SelectNextInCell(); }
                 lineEndWidth += ButtonSize;
                 TooltipHandler.TipRegion(selectOverlappingNextRect, "SelectNextInSquareTip".Translate(KeyBindingDefOf.SelectNextInCell.MainKeyLabel));
             }
@@ -127,7 +127,7 @@ namespace RimHUD.Interface
                 }
                 if (!isSelected) { return false; }
 
-                GUI.DrawTexture(new Rect(0.0f, y, width, 30f), Textures.InspectTabButtonFillTex);
+                GUI.DrawTexture(new Rect(0.0f, y, width, 30f), Textures.InspectTabButtonFill);
             }
             catch (Exception ex) { Log.ErrorOnce(ex.ToString(), 742783); }
 

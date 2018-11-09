@@ -1,5 +1,6 @@
 ﻿using System.Xml.Linq;
 using RimHUD.Data.Models;
+using RimHUD.Interface.Dialog;
 using UnityEngine;
 using Verse;
 
@@ -10,15 +11,16 @@ namespace RimHUD.Interface.HUD
         private const string DefNameAttribute = "DefName";
 
         private readonly string _type;
-        private readonly string _defName;
-        protected override HudTarget Targets { get; }
+        public override string ElementName => _type;
+        public string DefName { get; }
+        public override HudTarget Targets { get; }
 
         public HudWidget Widget;
 
         private HudElement(string type, string defName, HudTarget target)
         {
             _type = type;
-            _defName = defName;
+            DefName = defName;
             Targets = target;
         }
 
@@ -41,25 +43,28 @@ namespace RimHUD.Interface.HUD
 
         public void Build(PawnModel model)
         {
-            var widget = HudModel.GetWidget(model, _type, _defName);
+            var widget = HudModel.GetWidget(model, _type, DefName);
             Widget = IsTargetted(model) ? widget : HudBlank.Get(widget.Height);
         }
 
         public override bool Draw(Rect rect)
         {
             var result = Widget?.Draw(rect) ?? false;
-            Widget = null;
             return result;
         }
+
+        public void Flush() => Widget = null;
 
         public override XElement ToXml()
         {
             var xml = new XElement(_type);
-            if (!_defName.NullOrEmpty()) { xml.Add(new XAttribute(DefNameAttribute, _defName)); }
+            if (!DefName.NullOrEmpty()) { xml.Add(new XAttribute(DefNameAttribute, DefName)); }
 
             var targets = Targets.ToId();
             if (!targets.NullOrEmpty()) { xml.Add(new XAttribute(TargetAttribute, targets)); }
             return xml;
         }
+
+        public override LayoutItem GetWidget(LayoutDesign design, LayoutItem parent) => new LayoutItem(design, parent, this);
     }
 }

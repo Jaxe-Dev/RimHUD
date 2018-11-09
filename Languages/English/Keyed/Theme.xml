@@ -10,6 +10,10 @@
   <RimHUD.Theme.HudOffsetX>X</RimHUD.Theme.HudOffsetX>
   <RimHUD.Theme.HudOffsetY>Y</RimHUD.Theme.HudOffsetY>
 
+  <RimHUD.Theme.RefreshRate>Refresh rate</RimHUD.Theme.RefreshRate>
+  <RimHUD.Theme.RefreshRateDesc>How often the HUD will refresh. Set this higher if experiencing any frame rate drop.</RimHUD.Theme.RefreshRateDesc>
+  <RimHUD.Theme.RefreshRateUnits>ms</RimHUD.Theme.RefreshRateUnits>
+
   <RimHUD.Theme.HudDimensions>HUD Dimensions</RimHUD.Theme.HudDimensions>
   <RimHUD.Theme.HudWidth>Width</RimHUD.Theme.HudWidth>
   <RimHUD.Theme.HudHeight>Height</RimHUD.Theme.HudHeight>

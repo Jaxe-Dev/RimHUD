@@ -12,8 +12,11 @@ namespace RimHUD.Interface
         public static readonly Texture2D SelfTendOnIcon = LoadTexture("SelfTendOnIcon");
         public static readonly Texture2D SelfTendOffIcon = LoadTexture("SelfTendOffIcon");
 
-        public static readonly Texture2D InspectTabButtonFillTex = (Texture2D) Access.Field_RimWorld_InspectPaneUtility_InspectTabButtonFillTex.GetValue(null);
-        public static readonly Texture2D SelectOverlappingNextTex = ContentFinder<Texture2D>.Get("UI/Buttons/SelectNextOverlapping");
+        public static readonly Texture2D InspectTabButtonFill = (Texture2D) Access.Field_RimWorld_InspectPaneUtility_InspectTabButtonFillTex.GetValue(null);
+        public static readonly Texture2D SelectOverlappingNext = ContentFinder<Texture2D>.Get("UI/Buttons/SelectNextOverlapping");
+
+        public static readonly Texture2D Reveal = ContentFinder<Texture2D>.Get("UI/Buttons/Dev/Reveal");
+        public static readonly Texture2D Collapse = ContentFinder<Texture2D>.Get("UI/Buttons/Dev/Collapse");
 
         private static Texture2D LoadTexture(string key) => ContentFinder<Texture2D>.Get(Mod.Id + "/" + key);
     }

@@ -9,7 +9,7 @@ namespace RimHUD.Interface.HUD
     internal class HudVStack : HudStack
     {
         public const string Name = "VStack";
-        protected override string ElementName { get; } = Name;
+        public override string ElementName { get; } = Name;
 
         private float[] _heights;
 

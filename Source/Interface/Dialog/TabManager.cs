@@ -8,8 +8,6 @@ namespace RimHUD.Interface.Dialog
     {
         private const float TabPadding = 4f;
 
-        private static readonly Color SelectedColor = new Color(0.5f, 1f, 0.5f);
-
         private readonly Tab[] _tabs;
         private Tab _selected;
 
@@ -40,7 +38,7 @@ namespace RimHUD.Interface.Dialog
             for (var index = 0; index < _tabs.Length; index++)
             {
                 var tab = _tabs[index];
-                GUIPlus.SetColor(tab == _selected ? SelectedColor : (Color?) null);
+                GUIPlus.SetColor(tab == _selected ? GUIPlus.ButtonSelectedColor : (Color?) null);
                 if (GUIPlus.DrawButton(hGrid[index + 1], tab.Label, tab.Tooltip, tab.Enabled)) { _selected = tab; }
                 GUIPlus.ResetColor();
             }
