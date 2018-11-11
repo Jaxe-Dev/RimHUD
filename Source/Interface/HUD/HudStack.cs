@@ -55,10 +55,10 @@ namespace RimHUD.Interface.HUD
             return xml;
         }
 
-        public override LayoutItem GetWidget(LayoutDesign design, LayoutItem parent)
+        public override LayoutItem GetLayoutItem(LayoutView view, LayoutItem parent)
         {
-            var item = new LayoutItem(design, parent, this);
-            foreach (var container in Containers) { item.Contents.Add(container.GetWidget(design, item)); }
+            var item = new LayoutItem(view, parent, this);
+            foreach (var container in Containers) { item.Contents.Add(container.GetLayoutItem(view, item)); }
 
             return item;
         }
