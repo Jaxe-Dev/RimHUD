@@ -53,7 +53,7 @@ namespace RimHUD.Data.Models
 
         private TextModel GetAffectedWarning()
         {
-            var affected = VisibleHediffs(Model.Base, false).Where(hediff => !hediff.IsPermanent() && !hediff.FullyImmune() && !hediff.IsTended() && hediff.def.isBad && hediff.Visible).ToArray();
+            var affected = VisibleHediffs(Model.Base, false).Where(hediff => !hediff.IsPermanent() && !hediff.FullyImmune() && !hediff.IsTended() && hediff.def.isBad && hediff.def.displayWound && hediff.Visible).ToArray();
             var count = affected.Count();
             if (count == 0) { return null; }
 

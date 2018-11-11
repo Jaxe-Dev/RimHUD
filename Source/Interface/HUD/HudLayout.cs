@@ -75,6 +75,6 @@ namespace RimHUD.Interface.HUD
             }
 
             Draw(rect);
-       }
+        }
     }
 }
