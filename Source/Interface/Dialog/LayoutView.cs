@@ -4,7 +4,7 @@ using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
-    internal class LayoutDesign
+    internal class LayoutView
     {
         public LayoutItem Root { get; }
         public LayoutItem Selected { get; set; }
@@ -12,7 +12,7 @@ namespace RimHUD.Interface.Dialog
         private float _lastHeight = -1f;
         private Vector2 _scrollPosition;
 
-        public LayoutDesign(HudContainer root) => Root = root.GetWidget(this, null);
+        public LayoutView(HudContainer root) => Root = root.GetLayoutItem(this, null);
 
         public void Draw(Rect rect)
         {

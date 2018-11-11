@@ -17,9 +17,10 @@ namespace RimHUD.Interface.HUD
 
         public abstract XElement ToXml();
 
+        public abstract LayoutItem GetLayoutItem(LayoutView view, LayoutItem parent);
+
         protected static HudTarget TargetsFromXml(XElement xe) => HudTargetUtility.FromId(xe.Attribute(TargetAttribute)?.Value);
         protected bool IsTargetted(PawnModel model) => Targets.HasTarget(model.Target);
 
-        public abstract LayoutItem GetWidget(LayoutDesign design, LayoutItem parent);
     }
 }

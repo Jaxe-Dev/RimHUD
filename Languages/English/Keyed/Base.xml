@@ -25,16 +25,21 @@
   <RimHUD.Dialog_Config.Tab.Colors.Hex>Hex</RimHUD.Dialog_Config.Tab.Colors.Hex>
 
   <RimHUD.Dialog_Config.Tab.Content>Content</RimHUD.Dialog_Config.Tab.Content>
-  <RimHUD.Dialog_Config.Tab.Content.Layout>Layout</RimHUD.Dialog_Config.Tab.Content.Layout>
-  <RimHUD.Dialog_Config.Tab.Content.Layout.Preset>Choose Preset</RimHUD.Dialog_Config.Tab.Content.Layout.Preset>
-  <RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Invalid>The mod '{0}' is not found, this preset will not work.</RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Invalid>
-  <RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Default>Default</RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Default>
-  <RimHUD.Dialog_Config.Tab.Content.Layout.Preset.DefaultLoaded>Layouts reset to default.</RimHUD.Dialog_Config.Tab.Content.Layout.Preset.DefaultLoaded>
-  <RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Loaded>Layout preset for mod '{0}' loaded.</RimHUD.Dialog_Config.Tab.Content.Layout.Preset.Loaded>
-  <RimHUD.Dialog_Config.Tab.Content.Layout.Mode>Mode</RimHUD.Dialog_Config.Tab.Content.Layout.Mode>
-  <RimHUD.Dialog_Config.Tab.Content.Layout.Mode.Docked>Docked</RimHUD.Dialog_Config.Tab.Content.Layout.Mode.Docked>
-  <RimHUD.Dialog_Config.Tab.Content.Layout.Mode.Floating>Floating</RimHUD.Dialog_Config.Tab.Content.Layout.Mode.Floating>
-  
+  <RimHUD.Dialog_Config.Tab.Content.Preset>Choose Preset</RimHUD.Dialog_Config.Tab.Content.Preset>
+  <RimHUD.Dialog_Config.Tab.Content.Preset.Invalid>The mod '{0}' is not found, this preset will not work.</RimHUD.Dialog_Config.Tab.Content.Preset.Invalid>
+  <RimHUD.Dialog_Config.Tab.Content.Preset.Default>Default</RimHUD.Dialog_Config.Tab.Content.Preset.Default>
+  <RimHUD.Dialog_Config.Tab.Content.Preset.DefaultLoaded>Layouts reset to default.</RimHUD.Dialog_Config.Tab.Content.Preset.DefaultLoaded>
+  <RimHUD.Dialog_Config.Tab.Content.Preset.Loaded>Layout preset for mod '{0}' loaded.</RimHUD.Dialog_Config.Tab.Content.Preset.Loaded>
+  <RimHUD.Dialog_Config.Tab.Content.Mode>Choose Mode</RimHUD.Dialog_Config.Tab.Content.Mode>
+  <RimHUD.Dialog_Config.Tab.Content.Mode.Docked>Docked</RimHUD.Dialog_Config.Tab.Content.Mode.Docked>
+  <RimHUD.Dialog_Config.Tab.Content.Mode.Floating>Floating</RimHUD.Dialog_Config.Tab.Content.Mode.Floating>
+  <RimHUD.Dialog_Config.Tab.Content.Layout>Layout ({0})</RimHUD.Dialog_Config.Tab.Content.Layout>
+  <RimHUD.Dialog_Config.Tab.Content.Components>Components</RimHUD.Dialog_Config.Tab.Content.Components>
+  <RimHUD.Dialog_Config.Tab.Content.AddContainer>Add container</RimHUD.Dialog_Config.Tab.Content.AddContainer>
+  <RimHUD.Dialog_Config.Tab.Content.AddElement>Add element</RimHUD.Dialog_Config.Tab.Content.AddElement>
+  <RimHUD.Dialog_Config.Tab.Content.AddNeed>Add custom need</RimHUD.Dialog_Config.Tab.Content.AddNeed>
+  <RimHUD.Dialog_Config.Tab.Content.AddSkill>Add custom skill</RimHUD.Dialog_Config.Tab.Content.AddSkill>
+
   <RimHUD.Dialog_Config.Tab.Integration>Integration</RimHUD.Dialog_Config.Tab.Integration>
 
   <RimHUD.Alert.ConfigReset>RimHUD updated to version {0} and required that its configuration to be reset to default.</RimHUD.Alert.ConfigReset>

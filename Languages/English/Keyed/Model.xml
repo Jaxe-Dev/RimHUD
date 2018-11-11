@@ -76,7 +76,7 @@
   <RimHUD.Model.Component.Panel>Panel</RimHUD.Model.Component.Panel>
   <RimHUD.Model.Component.PanelFilled>Panel (filled)</RimHUD.Model.Component.PanelFilled>
   <RimHUD.Model.Component.Row>Row</RimHUD.Model.Component.Row>
-  
+
   <RimHUD.Model.Component.Blank>Blank</RimHUD.Model.Component.Blank>
   <RimHUD.Model.Component.Separator>Line separator</RimHUD.Model.Component.Separator>
   <RimHUD.Model.Component.NameHeader>Name as header</RimHUD.Model.Component.NameHeader>
@@ -108,13 +108,14 @@
   <RimHUD.Model.Component.SkillMedicine>Medicine skill</RimHUD.Model.Component.SkillMedicine>
   <RimHUD.Model.Component.SkillSocial>Social skill</RimHUD.Model.Component.SkillSocial>
   <RimHUD.Model.Component.SkillIntellectual>Intellectual skill</RimHUD.Model.Component.SkillIntellectual>
+  <RimHUD.Model.Component.Skill>{0} skill</RimHUD.Model.Component.Skill>
 
   <RimHUD.Model.Component.TrainingTameness>Tameness training</RimHUD.Model.Component.TrainingTameness>
   <RimHUD.Model.Component.TrainingObedience>Obedience training</RimHUD.Model.Component.TrainingObedience>
   <RimHUD.Model.Component.TrainingRelease>Release training</RimHUD.Model.Component.TrainingRelease>
   <RimHUD.Model.Component.TrainingRescue>Rescue training</RimHUD.Model.Component.TrainingRescue>
   <RimHUD.Model.Component.TrainingHaul>Haul training</RimHUD.Model.Component.TrainingHaul>
-  
+
   <RimHUD.Model.Component.Master>Master</RimHUD.Model.Component.Master>
   <RimHUD.Model.Component.Activity>Activity</RimHUD.Model.Component.Activity>
   <RimHUD.Model.Component.Queued>Queued</RimHUD.Model.Component.Queued>
@@ -122,9 +123,11 @@
   <RimHUD.Model.Component.Carrying>Carrying</RimHUD.Model.Component.Carrying>
   <RimHUD.Model.Component.CompInfo>Extra information</RimHUD.Model.Component.CompInfo>
   
+  <RimHUD.Model.Component.Container.Filled>Fill height</RimHUD.Model.Component.Container.Filled>
+
   <RimHUD.Model.Target.PlayerHumanlike>Player Humanlike</RimHUD.Model.Target.PlayerHumanlike>
   <RimHUD.Model.Target.OtherHumanlike>Other Humanlike</RimHUD.Model.Target.OtherHumanlike>
   <RimHUD.Model.Target.PlayerCreature>Player Creature</RimHUD.Model.Target.PlayerCreature>
   <RimHUD.Model.Target.OtherCreature>Other Creature</RimHUD.Model.Target.OtherCreature>
-  
+
 </LanguageData>

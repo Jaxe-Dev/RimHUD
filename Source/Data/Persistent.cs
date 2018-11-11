@@ -17,25 +17,11 @@ namespace RimHUD.Data
     {
         private const string ConfigFileName = "Config.xml";
 
-        private static bool VersionNeedsNewConfig { get; } = true;
+        private static bool VersionNeedsNewConfig { get; } = Mod.VersionNeedsNewConfig;
         public static bool IsLoaded { get; private set; }
         private static bool _configWasReset;
 
         private static readonly FileInfo ConfigFile = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, ConfigFileName));
-
-        private static bool HasConfigFile()
-        {
-            ConfigFile.Refresh();
-            return ConfigFile.Exists;
-        }
-
-        private static bool NeedsNewConfig(string version)
-        {
-            if (version == Mod.Version) { return false; }
-            Mod.Warning($"Loaded config version ({version ?? "NULL"}) is different from the current mod version");
-
-            return VersionNeedsNewConfig || (version != Mod.LastVersion);
-        }
 
         public static void CheckAlerts()
         {
@@ -79,6 +65,20 @@ namespace RimHUD.Data
         }
 
         private static string GetIntegrationName(object subject) => "Integration." + GetSubjectType(subject).Name;
+
+        private static bool HasConfigFile()
+        {
+            ConfigFile.Refresh();
+            return ConfigFile.Exists;
+        }
+
+        private static bool NeedsNewConfig(string version)
+        {
+            if (version == Mod.Version) { return false; }
+            Mod.Warning($"Loaded config version ({version ?? "NULL"}) is different from the current mod version");
+
+            return VersionNeedsNewConfig || (version != Mod.LastVersion);
+        }
 
         public static void Load()
         {

@@ -13,8 +13,8 @@ namespace RimHUD.Interface.HUD
         public const string Name = "Row";
 
         public override string ElementName => "Row";
+
         private readonly HudElement[] _elements;
-        public bool HasElements => _elements.Length > 0;
         private bool _visible;
 
         public override HudTarget Targets { get; }
@@ -28,7 +28,7 @@ namespace RimHUD.Interface.HUD
         public override float Prepare(PawnModel model)
         {
             _visible = false;
-            if (!HasElements || !IsTargetted(model)) { return 0f; }
+            if ((_elements.Length == 0) || !IsTargetted(model)) { return 0f; }
 
             var maxHeight = 0f;
             foreach (var element in _elements)
@@ -73,10 +73,10 @@ namespace RimHUD.Interface.HUD
             return xml;
         }
 
-        public override LayoutItem GetWidget(LayoutDesign design, LayoutItem parent)
+        public override LayoutItem GetLayoutItem(LayoutView view, LayoutItem parent)
         {
-            var item = new LayoutItem(design, parent, this);
-            foreach (var element in _elements) { item.Contents.Add(element.GetWidget(design, item)); }
+            var item = new LayoutItem(view, parent, this);
+            foreach (var element in _elements) { item.Contents.Add(element.GetLayoutItem(view, item)); }
 
             return item;
         }
