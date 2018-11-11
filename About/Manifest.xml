@@ -2,7 +2,7 @@
 
 <Manifest>
   <identifier>RimHUD</identifier>
-  <version>1.2.9.5</version>
+  <version>1.2.9.6</version>
   <manifestUri>https://raw.githubusercontent.com/Jaxe-Dev/RimHUD/master/About/Manifest.xml</manifestUri>
   <downloadUri>https://github.com/Jaxe-Dev/RimHUD/releases/latest</downloadUri>
 </Manifest>

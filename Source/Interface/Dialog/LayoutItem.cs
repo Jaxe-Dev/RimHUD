@@ -17,31 +17,54 @@ namespace RimHUD.Interface.Dialog
         private static readonly Color RowColor = new Color(0.75f, 0.75f, 0.75f);
         private static readonly Color ElementColor = new Color(1f, 1f, 1f);
 
-        private readonly LayoutDesign _design;
+        private readonly LayoutView _view;
         private readonly LayoutItem _parent;
-        private readonly HudComponent _component;
+        public string Id { get; }
         private readonly LayoutItemType _type;
+        public Color Color => GetColor();
+        private readonly Def _def;
+        private readonly HudTarget _targets;
+        private readonly bool _fillHeight;
 
         public List<LayoutItem> Contents { get; } = new List<LayoutItem>();
 
         private bool _collapsed;
-        private bool Selected { get => Equals(_design.Selected); set => _design.Selected = this; }
+        private bool Selected => Equals(_view.Selected);
 
         public bool CanMoveUp => (_parent != null) && (_parent.Contents.IndexOf(this) > 0);
         public bool CanMoveDown => (_parent != null) && (_parent.Contents.IndexOf(this) < _parent.Contents.LastIndex());
 
-        public LayoutItem(LayoutDesign design, LayoutItem parent, HudComponent component)
+        public LayoutItem(LayoutItemType type, string id, Def def = null)
         {
-            _component = component;
-            _design = design;
+            _view = null;
+            _parent = null;
+            _type = type;
+            Id = id;
+            _def = def;
+        }
+
+        public LayoutItem(LayoutView view, LayoutItem parent, HudComponent component)
+        {
+            _view = view;
             _parent = parent;
 
             var type = component.GetType();
-            if (type.IsSubclassOf(typeof(HudStack))) { _type = LayoutItemType.Stack; }
-            else if (type == typeof(HudPanel)) { _type = LayoutItemType.Panel; }
+            if (type.IsSubclassOf(typeof(HudContainer)))
+            {
+                _fillHeight = ((HudContainer) component).FillHeight;
+                if (type.IsSubclassOf(typeof(HudStack))) { _type = LayoutItemType.Stack; }
+                else if (type == typeof(HudPanel)) { _type = LayoutItemType.Panel; }
+            }
             else if (type == typeof(HudRow)) { _type = LayoutItemType.Row; }
-            else if (type == typeof(HudElement)) { _type = LayoutItemType.Element; }
+            else if (component is HudElement element)
+            {
+                _type = element.DefName == null ? LayoutItemType.Element : LayoutItemType.CustomElement;
+                if (element.DefName != null) { _def = DefDatabase<Def>.GetNamed(element.DefName); }
+            }
             else { throw new Mod.Exception($"Invalid {nameof(LayoutItem)} type"); }
+
+            Id = component.ElementName;
+            _targets = component.Targets;
         }
 
         public void MoveUp()
@@ -68,20 +91,12 @@ namespace RimHUD.Interface.Dialog
 
         public void Remove() => _parent?.Contents.RemoveAt(_parent.Contents.IndexOf(this));
 
-        private Color GetColor()
-        {
-            if (_type == LayoutItemType.Stack) { return StackColor; }
-            if (_type == LayoutItemType.Panel) { return PanelColor; }
-            if (_type == LayoutItemType.Row) { return RowColor; }
-            if (_type == LayoutItemType.Element) { return ElementColor; }
-
-            throw new Mod.Exception($"Invalid {nameof(LayoutItemType)}");
-        }
+        public void Select() => _view.Selected = this;
 
         public float Draw(float x, float y, float width)
         {
             var labelRect = new Rect(x + ButtonSize, y, width, Text.LineHeight);
-            if (Widgets.ButtonInvisible(labelRect)) { Selected = true; }
+            if (Widgets.ButtonInvisible(labelRect)) { Select(); }
             if (Selected) { Widgets.DrawBoxSolid(labelRect, GUIPlus.ItemSelectedColor); }
 
             if (_type != LayoutItemType.Element)
@@ -90,8 +105,8 @@ namespace RimHUD.Interface.Dialog
                 if (Widgets.ButtonImage(buttonRect, _collapsed ? Textures.Reveal : Textures.Collapse)) { _collapsed = !_collapsed; }
             }
 
-            var label = GetLabel() + GetTargets();
-            GUIPlus.DrawText(labelRect, _type == LayoutItemType.Element ? label.Bold() : label, GetColor());
+            var label = GetLabel() + GetAttributes().Size(Theme.SmallTextStyle.ActualSize);
+            GUIPlus.DrawText(labelRect, _type == LayoutItemType.Element ? label.Bold() : label, Color);
             Widgets.DrawHighlightIfMouseover(labelRect);
             var curY = y + Text.LineHeight;
 
@@ -102,26 +117,29 @@ namespace RimHUD.Interface.Dialog
             return curY;
         }
 
-        private string GetLabel() => _component is HudElement element ? Lang.Get("Model.Component." + _component.ElementName, element.DefName) : Lang.Get("Model.Component." + _component.ElementName);
+        private string GetLabel() => _def != null ? Lang.Get("Model.Component." + Id, _def.LabelCap) : Lang.Get("Model.Component." + Id);
+        private string GetAttributes() => (_fillHeight ? $" {Lang.Get("Model.Component.Container.Filled")}" : null) + GetTargets();
         private string GetTargets()
         {
-            if (_component.Targets == HudTarget.All) { return null; }
+            if (_targets == HudTarget.All) { return null; }
 
             var targets = new List<string>();
-            if (_component.Targets.HasTarget(HudTarget.PlayerHumanlike)) { targets.Add(Lang.Get("Model.Target.PlayerHumanlike")); }
-            if (_component.Targets.HasTarget(HudTarget.PlayerCreature)) { targets.Add(Lang.Get("Model.Target.PlayerCreature")); }
-            if (_component.Targets.HasTarget(HudTarget.OtherHumanlike)) { targets.Add(Lang.Get("Model.Target.OtherHumanlike")); }
-            if (_component.Targets.HasTarget(HudTarget.OtherCreature)) { targets.Add(Lang.Get("Model.Target.OtherCreature")); }
+            if (_targets.HasTarget(HudTarget.PlayerHumanlike)) { targets.Add(Lang.Get("Model.Target.PlayerHumanlike")); }
+            if (_targets.HasTarget(HudTarget.PlayerCreature)) { targets.Add(Lang.Get("Model.Target.PlayerCreature")); }
+            if (_targets.HasTarget(HudTarget.OtherHumanlike)) { targets.Add(Lang.Get("Model.Target.OtherHumanlike")); }
+            if (_targets.HasTarget(HudTarget.OtherCreature)) { targets.Add(Lang.Get("Model.Target.OtherCreature")); }
 
-            return $" ({targets.ToCommaList()})".Italic().Size(Theme.SmallTextStyle.ActualSize);
+            return $" ({targets.ToCommaList()})".Italic();
         }
-    }
 
-    public enum LayoutItemType
-    {
-        Stack,
-        Panel,
-        Row,
-        Element
+        private Color GetColor()
+        {
+            if (_type == LayoutItemType.Stack) { return StackColor; }
+            if (_type == LayoutItemType.Panel) { return PanelColor; }
+            if (_type == LayoutItemType.Row) { return RowColor; }
+            if ((_type == LayoutItemType.Element) || (_type == LayoutItemType.CustomElement)) { return ElementColor; }
+
+            throw new Mod.Exception($"Invalid {nameof(LayoutItemType)}");
+        }
     }
 }

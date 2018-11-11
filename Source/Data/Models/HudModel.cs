@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimHUD.Interface;
+using RimHUD.Interface.Dialog;
 using RimHUD.Interface.HUD;
 using RimWorld;
 using Verse;
@@ -66,6 +68,22 @@ namespace RimHUD.Data.Models
         };
 
         public static bool IsValidType(string id) => Widgets.ContainsKey(id) || (id == CustomNeedType) || (id == CustomSkillType);
+
+        public static LayoutItem[] GetLayoutItems()
+        {
+            var list = new List<LayoutItem>
+            {
+                        new LayoutItem(LayoutItemType.Stack, HudVStack.Name),
+                        new LayoutItem(LayoutItemType.Stack, HudHStack.Name),
+                        new LayoutItem(LayoutItemType.Panel, HudPanel.Name),
+                        new LayoutItem(LayoutItemType.Row, HudRow.Name)
+            };
+            list.AddRange(Widgets.Select(widget => new LayoutItem(LayoutItemType.Element, widget.Key)));
+            list.AddRange(DefDatabase<SkillDef>.AllDefs.Select(skill => new LayoutItem(LayoutItemType.Element, CustomSkillType, skill)));
+            list.AddRange(DefDatabase<NeedDef>.AllDefs.Select(need => new LayoutItem(LayoutItemType.Element, CustomSkillType, need)));
+
+            return list.ToArray();
+        }
 
         public static HudWidget GetWidget(PawnModel model, string id, string defName)
         {

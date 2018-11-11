@@ -14,23 +14,20 @@ namespace RimHUD.Interface.Dialog
         public override TipSignal? Tooltip { get; } = null;
 
         private bool _dockedMode = true;
-        private LayoutDesign _design = new LayoutDesign(HudLayout.Docked);
+        private LayoutView _layout = new LayoutView(HudLayout.Docked);
 
         public override void Reset() => RefreshDesign();
 
         public override void Draw(Rect rect)
         {
-            var hGrid = rect.GetHGrid(GUIPlus.LargePadding, -1f, 200f);
+            var topGrid = rect.GetHGrid(GUIPlus.LargePadding, -1f, -1f);
             var l = new ListingPlus();
-            l.Begin(hGrid[1]);
-
-            l.Label(Lang.Get("Dialog_Config.Tab.Content.Layout").Bold());
-
-            if (l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Layout.Preset")))
+            l.Begin(topGrid[1]);
+            if (l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Preset")))
             {
                 var presets = new List<FloatMenuOption>
                 {
-                            new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Layout.Preset.Default"), LoadDefaultPreset),
+                            new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Preset.Default"), LoadDefaultPreset),
                             new FloatMenuOption("Dubs Bad Hygiene", () => TryLoadPreset(LayoutPresets.DubsBadHygiene, "DBH")),
                             new FloatMenuOption("A RimWorld of Magic", () => TryLoadPreset(LayoutPresets.RimWorldOfMagic, "RoM"))
                 };
@@ -38,30 +35,48 @@ namespace RimHUD.Interface.Dialog
                 Find.WindowStack.Add(new FloatMenu(presets));
             }
 
-            l.Label(Lang.Get("Dialog_Config.Tab.Content.Layout.Mode").Bold());
-            if (l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Layout.Mode." + (_dockedMode ? "Docked" : "Floating"))))
+            l.End();
+
+            l.Begin(topGrid[2]);
+            if (l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Mode")))
             {
                 var presets = new List<FloatMenuOption>
                 {
-                            new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Layout.Mode.Docked"), () => SetDockedMode(true)),
-                            new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Layout.Mode.Floating"), () => SetDockedMode(false))
+                            new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Mode.Docked"), () => SetDockedMode(true)),
+                            new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Mode.Floating"), () => SetDockedMode(false))
                 };
 
                 Find.WindowStack.Add(new FloatMenu(presets));
             }
 
-            l.GapLine();
-            l.Gap();
+            var topHeight = l.CurHeight;
+            l.End();
 
-            _design.Draw(l.GetRect(200f));
+            var hGrid = rect.GetVGrid(GUIPlus.LargePadding, topHeight, -1f)[2].GetHGrid(GUIPlus.LargePadding, -1f, 300f);
 
-            l.GapLine();
+            l.Begin(hGrid[1]);
+            l.Label(Lang.Get("Dialog_Config.Tab.Content.Layout", Lang.Get("Dialog_Config.Tab.Content.Mode." + (_dockedMode ? "Docked" : "Floating"))));
+            _layout.Draw(l.GetRect(200f));
+
             l.Gap();
             l.Gap();
 
             l.Label("This tab is incomplete but should be available in the next update.".Italic(), color: Color.yellow);
 
             l.End();
+
+            /*
+            l.Begin(hGrid[2]);
+            l.Label(Lang.Get("Dialog_Config.Tab.Content.Components"));
+            if (l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.AddContainer")))
+            {
+                var containers = new List<FloatMenuOption>
+                {
+                            new FloatMenuOption()
+                }
+            }
+            l.End();
+        */
         }
 
         private void SetDockedMode(bool value)
@@ -70,7 +85,7 @@ namespace RimHUD.Interface.Dialog
             RefreshDesign();
         }
 
-        private void RefreshDesign() => _design = new LayoutDesign(_dockedMode ? HudLayout.Docked : HudLayout.Floating);
+        private void RefreshDesign() => _layout = new LayoutView(_dockedMode ? HudLayout.Docked : HudLayout.Floating);
 
         private void LoadDefaultPreset()
         {

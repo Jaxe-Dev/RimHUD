@@ -10,18 +10,18 @@ namespace RimHUD.Interface.HUD
     {
         private const string DefNameAttribute = "DefName";
 
-        private readonly string _type;
-        public override string ElementName => _type;
+        private readonly string _elementType;
+        public override string ElementName => _elementType;
         public string DefName { get; }
         public override HudTarget Targets { get; }
 
         public HudWidget Widget;
 
-        private HudElement(string type, string defName, HudTarget target)
+        private HudElement(string elementType, string defName, HudTarget targets)
         {
-            _type = type;
+            _elementType = elementType;
             DefName = defName;
-            Targets = target;
+            Targets = targets;
         }
 
         public override float Prepare(PawnModel model) => Widget?.Height ?? 0f;
@@ -43,7 +43,7 @@ namespace RimHUD.Interface.HUD
 
         public void Build(PawnModel model)
         {
-            var widget = HudModel.GetWidget(model, _type, DefName);
+            var widget = HudModel.GetWidget(model, _elementType, DefName);
             Widget = IsTargetted(model) ? widget : HudBlank.Get(widget.Height);
         }
 
@@ -57,7 +57,7 @@ namespace RimHUD.Interface.HUD
 
         public override XElement ToXml()
         {
-            var xml = new XElement(_type);
+            var xml = new XElement(_elementType);
             if (!DefName.NullOrEmpty()) { xml.Add(new XAttribute(DefNameAttribute, DefName)); }
 
             var targets = Targets.ToId();
@@ -65,6 +65,6 @@ namespace RimHUD.Interface.HUD
             return xml;
         }
 
-        public override LayoutItem GetWidget(LayoutDesign design, LayoutItem parent) => new LayoutItem(design, parent, this);
+        public override LayoutItem GetLayoutItem(LayoutView view, LayoutItem parent) => new LayoutItem(view, parent, this);
     }
 }
