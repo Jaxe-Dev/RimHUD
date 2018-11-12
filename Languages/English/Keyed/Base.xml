@@ -33,12 +33,25 @@
   <RimHUD.Dialog_Config.Tab.Content.Mode>Choose Mode</RimHUD.Dialog_Config.Tab.Content.Mode>
   <RimHUD.Dialog_Config.Tab.Content.Mode.Docked>Docked</RimHUD.Dialog_Config.Tab.Content.Mode.Docked>
   <RimHUD.Dialog_Config.Tab.Content.Mode.Floating>Floating</RimHUD.Dialog_Config.Tab.Content.Mode.Floating>
-  <RimHUD.Dialog_Config.Tab.Content.Layout>Layout ({0})</RimHUD.Dialog_Config.Tab.Content.Layout>
-  <RimHUD.Dialog_Config.Tab.Content.Components>Components</RimHUD.Dialog_Config.Tab.Content.Components>
-  <RimHUD.Dialog_Config.Tab.Content.AddContainer>Add container</RimHUD.Dialog_Config.Tab.Content.AddContainer>
-  <RimHUD.Dialog_Config.Tab.Content.AddElement>Add element</RimHUD.Dialog_Config.Tab.Content.AddElement>
-  <RimHUD.Dialog_Config.Tab.Content.AddNeed>Add custom need</RimHUD.Dialog_Config.Tab.Content.AddNeed>
-  <RimHUD.Dialog_Config.Tab.Content.AddSkill>Add custom skill</RimHUD.Dialog_Config.Tab.Content.AddSkill>
+  <RimHUD.Dialog_Config.Tab.Content.Editor>HUD Editor ({0})</RimHUD.Dialog_Config.Tab.Content.Editor>
+  <RimHUD.Dialog_Config.Tab.Content.Layout>Layout</RimHUD.Dialog_Config.Tab.Content.Layout>
+  <RimHUD.Dialog_Config.Tab.Content.Component>Component</RimHUD.Dialog_Config.Tab.Content.Component>
+  <RimHUD.Dialog_Config.Tab.Content.Component.MoveUp>Move up</RimHUD.Dialog_Config.Tab.Content.Component.MoveUp>
+  <RimHUD.Dialog_Config.Tab.Content.Component.MoveDown>Move down</RimHUD.Dialog_Config.Tab.Content.Component.MoveDown>
+  <RimHUD.Dialog_Config.Tab.Content.Component.Remove>Remove</RimHUD.Dialog_Config.Tab.Content.Component.Remove>
+  <RimHUD.Dialog_Config.Tab.Content.Component.Stack>Add stack</RimHUD.Dialog_Config.Tab.Content.Component.Stack>
+  <RimHUD.Dialog_Config.Tab.Content.Component.StackDesc>A stack can contain other stacks or panels. The contents of the stack will be evenly distributed horizontally or vertically depending on the stack type chosen.</RimHUD.Dialog_Config.Tab.Content.Component.StackDesc>
+  <RimHUD.Dialog_Config.Tab.Content.Component.Panel>Add panel</RimHUD.Dialog_Config.Tab.Content.Component.Panel>
+  <RimHUD.Dialog_Config.Tab.Content.Component.PanelDesc>A panel evenly displays rows of elements vertically.</RimHUD.Dialog_Config.Tab.Content.Component.PanelDesc>
+  <RimHUD.Dialog_Config.Tab.Content.Component.Row>Add row</RimHUD.Dialog_Config.Tab.Content.Component.Row>
+  <RimHUD.Dialog_Config.Tab.Content.Component.RowDesc>A row holds elements and if contains more than one they will be displayed evenly horizontally.</RimHUD.Dialog_Config.Tab.Content.Component.RowDesc>
+  <RimHUD.Dialog_Config.Tab.Content.Component.Element>Add element</RimHUD.Dialog_Config.Tab.Content.Component.Element>
+  <RimHUD.Dialog_Config.Tab.Content.Component.ElementDesc>An element displays data on the HUD.</RimHUD.Dialog_Config.Tab.Content.Component.ElementDesc>
+  <RimHUD.Dialog_Config.Tab.Content.Component.CustomNeed>Add custom need</RimHUD.Dialog_Config.Tab.Content.Component.CustomNeed>
+  <RimHUD.Dialog_Config.Tab.Content.Component.CustomSkill>Add custom skill</RimHUD.Dialog_Config.Tab.Content.Component.CustomSkill>
+  <RimHUD.Dialog_Config.Tab.Content.Selected>Selected: </RimHUD.Dialog_Config.Tab.Content.Selected>
+  <RimHUD.Dialog_Config.Tab.Content.Selected.Filled>Fill height</RimHUD.Dialog_Config.Tab.Content.Selected.Filled>
+  <RimHUD.Dialog_Config.Tab.Content.Selected.FilledDesc>If checked the panel or stack will stetch to fill the remaining vertical space.\n\nIf unchecked it will size the height to its content</RimHUD.Dialog_Config.Tab.Content.Selected.FilledDesc>
 
   <RimHUD.Dialog_Config.Tab.Integration>Integration</RimHUD.Dialog_Config.Tab.Integration>
 

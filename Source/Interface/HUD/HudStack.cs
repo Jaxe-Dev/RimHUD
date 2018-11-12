@@ -7,7 +7,7 @@ namespace RimHUD.Interface.HUD
 {
     internal abstract class HudStack : HudContainer
     {
-        private const string FillAttributeName = "FillHeight";
+        public const string FillAttributeName = "FillHeight";
 
         public override HudTarget Targets { get; }
         public override bool FillHeight { get; }
@@ -55,10 +55,10 @@ namespace RimHUD.Interface.HUD
             return xml;
         }
 
-        public override LayoutItem GetLayoutItem(LayoutView view, LayoutItem parent)
+        public override LayoutItem GetLayoutItem(LayoutEditor editor, LayoutItem parent)
         {
-            var item = new LayoutItem(view, parent, this);
-            foreach (var container in Containers) { item.Contents.Add(container.GetLayoutItem(view, item)); }
+            var item = new LayoutItem(editor, parent, this);
+            foreach (var container in Containers) { item.Contents.Add(container.GetLayoutItem(editor, item)); }
 
             return item;
         }

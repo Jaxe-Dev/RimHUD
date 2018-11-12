@@ -3,6 +3,7 @@ using System.Xml;
 using System.Xml.Linq;
 using RimHUD.Data;
 using RimHUD.Data.Models;
+using RimHUD.Interface.Dialog;
 using UnityEngine;
 using Verse;
 
@@ -10,6 +11,7 @@ namespace RimHUD.Interface.HUD
 {
     internal class HudLayout : HudVStack
     {
+        public const string RootName = "Layout";
         public const string DockedFileName = "Docked.xml";
         public const string FloatingFileName = "Floating.xml";
         public const float Padding = GUIPlus.TinyPadding;
@@ -36,10 +38,11 @@ namespace RimHUD.Interface.HUD
         }
 
         public static HudLayout FromXml(XDocument doc) => new HudLayout(doc.Root);
+        public static HudLayout FromLayoutView(LayoutEditor editor) => new HudLayout(editor.Root.ToXml());
 
         public override XElement ToXml()
         {
-            var xml = new XElement("Layout");
+            var xml = new XElement(RootName);
             foreach (var container in Containers) { xml.Add(container.ToXml()); }
             return xml;
         }

@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Linq;
 using RimHUD.Data;
+using RimHUD.Data.Models;
 using RimHUD.Interface.HUD;
 using RimHUD.Patch;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -17,49 +20,79 @@ namespace RimHUD.Interface.Dialog
         private static readonly Color RowColor = new Color(0.75f, 0.75f, 0.75f);
         private static readonly Color ElementColor = new Color(1f, 1f, 1f);
 
-        private readonly LayoutView _view;
+        private readonly LayoutEditor _editor;
         private readonly LayoutItem _parent;
         public string Id { get; }
-        private readonly LayoutItemType _type;
+        public string Label => GetLabel();
+        public LayoutItemType Type { get; }
         public Color Color => GetColor();
-        private readonly Def _def;
-        private readonly HudTarget _targets;
-        private readonly bool _fillHeight;
+        public Def Def { get; }
+        private HudTarget _targets;
+        public HudTarget Targets
+        {
+            get => _targets;
+            set
+            {
+                if ((int) _targets == (int) value) { return; }
+                _targets = value;
+                _editor.Update();
+            }
+        }
+
+        private bool _fillHeight;
+        public bool FillHeight
+        {
+            get => _fillHeight;
+            set
+            {
+                if (_fillHeight == value) { return; }
+                _fillHeight = value;
+                _editor.Update();
+            }
+        }
 
         public List<LayoutItem> Contents { get; } = new List<LayoutItem>();
 
         private bool _collapsed;
-        private bool Selected => Equals(_view.Selected);
+        private bool Selected => Equals(_editor.Selected);
 
         public bool CanMoveUp => (_parent != null) && (_parent.Contents.IndexOf(this) > 0);
         public bool CanMoveDown => (_parent != null) && (_parent.Contents.IndexOf(this) < _parent.Contents.LastIndex());
+        public bool CanRemove => _parent != null;
+        public bool IsRoot => (_editor != null) && (_parent == null);
 
-        public LayoutItem(LayoutItemType type, string id, Def def = null)
+        public LayoutItem(LayoutItemType type, string id, Def def = null, LayoutEditor editor = null, LayoutItem parent = null)
         {
-            _view = null;
-            _parent = null;
-            _type = type;
+            _editor = editor;
+            _parent = parent;
+            Type = type;
             Id = id;
-            _def = def;
+            Def = def;
+            _targets = HudTarget.All;
         }
 
-        public LayoutItem(LayoutView view, LayoutItem parent, HudComponent component)
+        public LayoutItem(LayoutEditor editor, LayoutItem parent, HudComponent component)
         {
-            _view = view;
+            _editor = editor;
             _parent = parent;
 
             var type = component.GetType();
             if (type.IsSubclassOf(typeof(HudContainer)))
             {
                 _fillHeight = ((HudContainer) component).FillHeight;
-                if (type.IsSubclassOf(typeof(HudStack))) { _type = LayoutItemType.Stack; }
-                else if (type == typeof(HudPanel)) { _type = LayoutItemType.Panel; }
+                if (type.IsSubclassOf(typeof(HudStack))) { Type = LayoutItemType.Stack; }
+                else if (type == typeof(HudPanel)) { Type = LayoutItemType.Panel; }
             }
-            else if (type == typeof(HudRow)) { _type = LayoutItemType.Row; }
+            else if (type == typeof(HudRow)) { Type = LayoutItemType.Row; }
             else if (component is HudElement element)
             {
-                _type = element.DefName == null ? LayoutItemType.Element : LayoutItemType.CustomElement;
-                if (element.DefName != null) { _def = DefDatabase<Def>.GetNamed(element.DefName); }
+                Type = element.DefName == null ? LayoutItemType.Element : LayoutItemType.CustomElement;
+                if (element.DefName != null)
+                {
+                    if (element.ElementName == HudModel.CustomNeedType) { Def = DefDatabase<NeedDef>.GetNamed(element.DefName); }
+                    else if (element.ElementName == HudModel.CustomSkillType) { Def = DefDatabase<SkillDef>.GetNamed(element.DefName); }
+                    else { Mod.Error($"Unexpected DefName for {element.ElementName}"); }
+                }
             }
             else { throw new Mod.Exception($"Invalid {nameof(LayoutItem)} type"); }
 
@@ -76,6 +109,7 @@ namespace RimHUD.Interface.Dialog
 
             _parent.Contents.RemoveAt(oldIndex);
             _parent.Contents.Insert(oldIndex - 1, this);
+            _editor.Update();
         }
 
         public void MoveDown()
@@ -85,13 +119,19 @@ namespace RimHUD.Interface.Dialog
             var oldIndex = _parent.Contents.IndexOf(this);
             if (oldIndex == _parent.Contents.LastIndex()) { return; }
 
-            _parent.Contents.Insert(oldIndex + 1, this);
             _parent.Contents.RemoveAt(oldIndex);
+            _parent.Contents.Insert(oldIndex + 1, this);
+            _editor.Update();
         }
 
-        public void Remove() => _parent?.Contents.RemoveAt(_parent.Contents.IndexOf(this));
+        public void Remove()
+        {
+            _parent?.Contents.RemoveAt(_parent.Contents.IndexOf(this));
+            _editor.Selected = null;
+            _editor.Update();
+        }
 
-        public void Select() => _view.Selected = this;
+        public void Select() => _editor.Selected = this;
 
         public float Draw(float x, float y, float width)
         {
@@ -99,14 +139,14 @@ namespace RimHUD.Interface.Dialog
             if (Widgets.ButtonInvisible(labelRect)) { Select(); }
             if (Selected) { Widgets.DrawBoxSolid(labelRect, GUIPlus.ItemSelectedColor); }
 
-            if (_type != LayoutItemType.Element)
+            if (!IsRoot && (Type != LayoutItemType.Element))
             {
                 var buttonRect = new Rect(x, y, ButtonSize, ButtonSize);
                 if (Widgets.ButtonImage(buttonRect, _collapsed ? Textures.Reveal : Textures.Collapse)) { _collapsed = !_collapsed; }
             }
 
-            var label = GetLabel() + GetAttributes().Size(Theme.SmallTextStyle.ActualSize);
-            GUIPlus.DrawText(labelRect, _type == LayoutItemType.Element ? label.Bold() : label, Color);
+            var label = IsRoot ? Lang.Get("Model.Component.Root").Bold() : GetLabel() + GetAttributes().Size(Theme.SmallTextStyle.ActualSize);
+            GUIPlus.DrawText(labelRect, Type == LayoutItemType.Element ? label.Bold() : label, Color);
             Widgets.DrawHighlightIfMouseover(labelRect);
             var curY = y + Text.LineHeight;
 
@@ -117,29 +157,41 @@ namespace RimHUD.Interface.Dialog
             return curY;
         }
 
-        private string GetLabel() => _def != null ? Lang.Get("Model.Component." + Id, _def.LabelCap) : Lang.Get("Model.Component." + Id);
-        private string GetAttributes() => (_fillHeight ? $" {Lang.Get("Model.Component.Container.Filled")}" : null) + GetTargets();
+        private string GetLabel() => Def != null ? Lang.Get("Model.Component." + Id, Def.LabelCap) : Lang.Get("Model.Component." + Id);
+        private string GetAttributes() => (FillHeight ? $" {Lang.Get("Model.Component.Container.Filled")}" : null) + GetTargets();
         private string GetTargets()
         {
-            if (_targets == HudTarget.All) { return null; }
+            if (Targets == HudTarget.All) { return null; }
 
             var targets = new List<string>();
-            if (_targets.HasTarget(HudTarget.PlayerHumanlike)) { targets.Add(Lang.Get("Model.Target.PlayerHumanlike")); }
-            if (_targets.HasTarget(HudTarget.PlayerCreature)) { targets.Add(Lang.Get("Model.Target.PlayerCreature")); }
-            if (_targets.HasTarget(HudTarget.OtherHumanlike)) { targets.Add(Lang.Get("Model.Target.OtherHumanlike")); }
-            if (_targets.HasTarget(HudTarget.OtherCreature)) { targets.Add(Lang.Get("Model.Target.OtherCreature")); }
+            if (Targets.HasTarget(HudTarget.PlayerHumanlike)) { targets.Add(Lang.Get("Model.Target.PlayerHumanlike")); }
+            if (Targets.HasTarget(HudTarget.PlayerCreature)) { targets.Add(Lang.Get("Model.Target.PlayerCreature")); }
+            if (Targets.HasTarget(HudTarget.OtherHumanlike)) { targets.Add(Lang.Get("Model.Target.OtherHumanlike")); }
+            if (Targets.HasTarget(HudTarget.OtherCreature)) { targets.Add(Lang.Get("Model.Target.OtherCreature")); }
 
-            return $" ({targets.ToCommaList()})".Italic();
+            return targets.Count > 0 ? $" ({targets.ToCommaList()})".Italic() : null;
         }
 
         private Color GetColor()
         {
-            if (_type == LayoutItemType.Stack) { return StackColor; }
-            if (_type == LayoutItemType.Panel) { return PanelColor; }
-            if (_type == LayoutItemType.Row) { return RowColor; }
-            if ((_type == LayoutItemType.Element) || (_type == LayoutItemType.CustomElement)) { return ElementColor; }
+            if (Type == LayoutItemType.Stack) { return StackColor; }
+            if (Type == LayoutItemType.Panel) { return PanelColor; }
+            if (Type == LayoutItemType.Row) { return RowColor; }
+            if ((Type == LayoutItemType.Element) || (Type == LayoutItemType.CustomElement)) { return ElementColor; }
 
             throw new Mod.Exception($"Invalid {nameof(LayoutItemType)}");
+        }
+
+        public XElement ToXml()
+        {
+            var xml = new XElement(_parent == null ? HudLayout.RootName : Id);
+            if (FillHeight) { xml.Add(new XAttribute(HudStack.FillAttributeName, true)); }
+            if (Targets != HudTarget.All) { xml.Add(new XAttribute(HudComponent.TargetAttribute, Targets.ToId())); }
+            if (Def != null) { xml.Add(new XAttribute(HudElement.DefNameAttribute, Def.defName)); }
+
+            foreach (var item in Contents) { xml.Add(item.ToXml()); }
+
+            return xml;
         }
     }
 }
