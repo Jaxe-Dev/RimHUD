@@ -73,10 +73,10 @@ namespace RimHUD.Interface.HUD
             return xml;
         }
 
-        public override LayoutItem GetLayoutItem(LayoutView view, LayoutItem parent)
+        public override LayoutItem GetLayoutItem(LayoutEditor editor, LayoutItem parent)
         {
-            var item = new LayoutItem(view, parent, this);
-            foreach (var element in _elements) { item.Contents.Add(element.GetLayoutItem(view, item)); }
+            var item = new LayoutItem(editor, parent, this);
+            foreach (var element in _elements) { item.Contents.Add(element.GetLayoutItem(editor, item)); }
 
             return item;
         }

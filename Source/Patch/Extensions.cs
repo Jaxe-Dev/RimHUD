@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using RimHUD.Interface;
 using UnityEngine;
@@ -19,9 +20,7 @@ namespace RimHUD.Patch
             if (text != null) { self.AppendLine(text); }
         }
         public static string ToStringTrimmed(this StringBuilder self) => self.ToString().TrimEnd('\n');
-
         public static int LastIndex(this IList self) => self.Count - 1;
-
         public static string ToHex(this Color color) => ColorUtility.ToHtmlStringRGBA(color);
         public static int? ToInt(this string self) => int.TryParse(self, out var result) ? result : (int?) null;
         public static bool? ToBool(this string self) => bool.TryParse(self, out var result) ? result : (bool?) null;
@@ -136,5 +135,6 @@ namespace RimHUD.Patch
         }
 
         public static string GetName(this Pawn self) => self.Name?.ToStringFull.CapitalizeFirst() ?? self.LabelCap;
+        public static void ShowMenu(this IEnumerable<FloatMenuOption> self) => Find.WindowStack.Add(new FloatMenu(self.ToList()));
     }
 }

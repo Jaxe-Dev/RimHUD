@@ -152,5 +152,22 @@ namespace RimHUD.Interface.Dialog
 
             return enabled ? value : previous;
         }
+
+        public bool ButtonText(string label, string tooltip = null, bool enabled = true)
+        {
+            var result = GUIPlus.DrawButton(GetRect(GUIPlus.ButtonHeight), label, tooltip, enabled);
+            Gap(verticalSpacing);
+            return result;
+        }
+
+        public Rect GetRemaining()
+        {
+            var height = listingRect.height - curY;
+
+            NewColumnIfNeeded(height);
+            var result = new Rect(curX, curY, ColumnWidth, height);
+            curY += height;
+            return result;
+        }
     }
 }

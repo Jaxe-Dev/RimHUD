@@ -8,7 +8,7 @@ namespace RimHUD.Interface.HUD
 {
     internal class HudElement : HudComponent
     {
-        private const string DefNameAttribute = "DefName";
+        public const string DefNameAttribute = "DefName";
 
         private readonly string _elementType;
         public override string ElementName => _elementType;
@@ -65,6 +65,6 @@ namespace RimHUD.Interface.HUD
             return xml;
         }
 
-        public override LayoutItem GetLayoutItem(LayoutView view, LayoutItem parent) => new LayoutItem(view, parent, this);
+        public override LayoutItem GetLayoutItem(LayoutEditor editor, LayoutItem parent) => new LayoutItem(editor, parent, this);
     }
 }

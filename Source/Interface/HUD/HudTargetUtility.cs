@@ -23,7 +23,7 @@
         {
             if (value == null) { return HudTarget.All; }
 
-            var targets = HudTarget.Invalid;
+            var targets = HudTarget.None;
             if (value.Contains(HudTarget.PlayerHumanlike.GetId())) { targets |= HudTarget.PlayerHumanlike; }
             if (value.Contains(HudTarget.PlayerCreature.GetId())) { targets |= HudTarget.PlayerCreature; }
             if (value.Contains(HudTarget.OtherHumanlike.GetId())) { targets |= HudTarget.OtherHumanlike; }
