@@ -42,7 +42,7 @@ namespace RimHUD.Interface.HUD
 
         public override float Prepare(PawnModel model)
         {
-            if (_rows.Length == 0) { return 0f; }
+            if ((_rows.Length == 0) || !IsTargetted(model)) { return 0f; }
             _heights = _rows.Select(row => row.Prepare(model)).ToArray();
 
             return FillHeight ? -1f : _heights.Sum() + (HudLayout.Padding * (_rows.Length - 1));
@@ -75,10 +75,10 @@ namespace RimHUD.Interface.HUD
             return xml;
         }
 
-        public override LayoutItem GetLayoutItem(LayoutView view, LayoutItem parent)
+        public override LayoutItem GetLayoutItem(LayoutEditor editor, LayoutItem parent)
         {
-            var item = new LayoutItem(view, parent, this);
-            foreach (var row in _rows) { item.Contents.Add(row.GetLayoutItem(view, item)); }
+            var item = new LayoutItem(editor, parent, this);
+            foreach (var row in _rows) { item.Contents.Add(row.GetLayoutItem(editor, item)); }
 
             return item;
         }

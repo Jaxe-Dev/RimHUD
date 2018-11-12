@@ -41,7 +41,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\Dialog\LayoutItemType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Compatibility\CompatibilityManager.cs" />
@@ -87,8 +86,9 @@
     <Compile Include="Interface\Theme.cs" />
     <Compile Include="Interface\Dialog\Dialog_Alert.cs" />
     <Compile Include="Interface\Dialog\Dialog_Config.cs" />
-    <Compile Include="Interface\Dialog\LayoutView.cs" />
+    <Compile Include="Interface\Dialog\LayoutEditor.cs" />
     <Compile Include="Interface\Dialog\LayoutItem.cs" />
+    <Compile Include="Interface\Dialog\LayoutItemType.cs" />
     <Compile Include="Interface\Dialog\ListingPlus.cs" />
     <Compile Include="Interface\Dialog\Tab.cs" />
     <Compile Include="Interface\Dialog\Tab_ConfigColors.cs" />

@@ -12,6 +12,7 @@ namespace RimHUD.Interface
     {
         public const int TooltipId = 10001000;
         public const float ScrollbarWidth = 20f;
+        public const float ButtonHeight = 30f;
         public const float TinyPadding = 2f;
         public const float SmallPadding = 4f;
         public const float MediumPadding = 8f;

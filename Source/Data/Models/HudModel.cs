@@ -11,8 +11,8 @@ namespace RimHUD.Data.Models
 {
     internal static class HudModel
     {
-        private const string CustomNeedType = "Need";
-        private const string CustomSkillType = "Skill";
+        public const string CustomNeedType = "Need";
+        public const string CustomSkillType = "Skill";
 
         private static readonly Dictionary<string, Func<PawnModel, HudWidget>> Widgets = new Dictionary<string, Func<PawnModel, HudWidget>>
         {
@@ -67,23 +67,42 @@ namespace RimHUD.Data.Models
                     { "CompInfo", model => HudValue.FromText(model.CompInfo, null, Theme.SmallTextStyle) }
         };
 
-        public static bool IsValidType(string id) => Widgets.ContainsKey(id) || (id == CustomNeedType) || (id == CustomSkillType);
-
-        public static LayoutItem[] GetLayoutItems()
+        private static readonly string[] StandardNeeds =
         {
-            var list = new List<LayoutItem>
-            {
-                        new LayoutItem(LayoutItemType.Stack, HudVStack.Name),
-                        new LayoutItem(LayoutItemType.Stack, HudHStack.Name),
-                        new LayoutItem(LayoutItemType.Panel, HudPanel.Name),
-                        new LayoutItem(LayoutItemType.Row, HudRow.Name)
-            };
-            list.AddRange(Widgets.Select(widget => new LayoutItem(LayoutItemType.Element, widget.Key)));
-            list.AddRange(DefDatabase<SkillDef>.AllDefs.Select(skill => new LayoutItem(LayoutItemType.Element, CustomSkillType, skill)));
-            list.AddRange(DefDatabase<NeedDef>.AllDefs.Select(need => new LayoutItem(LayoutItemType.Element, CustomSkillType, need)));
+                    "Food",
+                    "Joy",
+                    "Mood",
+                    "Rest"
+        };
 
-            return list.ToArray();
-        }
+        private static readonly string[] StandardSkills =
+        {
+                    "Shooting",
+                    "Melee",
+                    "Construction",
+                    "Mining",
+                    "Cooking",
+                    "Plants",
+                    "Animals",
+                    "Crafting",
+                    "Artistic",
+                    "Medicine",
+                    "Social",
+                    "Intellectual"
+        };
+
+        public static readonly LayoutItem[] StackComponents =
+        {
+                    new LayoutItem(LayoutItemType.Stack, HudVStack.Name),
+                    new LayoutItem(LayoutItemType.Stack, HudHStack.Name)
+        };
+        public static readonly LayoutItem PanelComponent = new LayoutItem(LayoutItemType.Panel, HudPanel.Name);
+        public static readonly LayoutItem RowComponent = new LayoutItem(LayoutItemType.Row, HudRow.Name);
+        public static readonly LayoutItem[] ElementComponents = Widgets.Select(widget => new LayoutItem(LayoutItemType.Element, widget.Key)).ToArray();
+        public static readonly LayoutItem[] CustomNeedComponents = DefDatabase<NeedDef>.AllDefs.Where(skill => !StandardNeeds.Contains(skill.defName)).Select(need => new LayoutItem(LayoutItemType.Element, CustomNeedType, need)).ToArray();
+        public static readonly LayoutItem[] CustomSkillComponents = DefDatabase<SkillDef>.AllDefs.Where(skill => !StandardSkills.Contains(skill.defName)).Select(skill => new LayoutItem(LayoutItemType.Element, CustomSkillType, skill)).ToArray();
+
+        public static bool IsValidType(string id) => Widgets.ContainsKey(id) || (id == CustomNeedType) || (id == CustomSkillType);
 
         public static HudWidget GetWidget(PawnModel model, string id, string defName)
         {
