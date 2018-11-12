@@ -18,7 +18,7 @@ namespace RimHUD.Interface.HUD
 
         public override float Prepare(PawnModel model)
         {
-            if (Containers.Length == 0) { return 0f; }
+            if ((Containers.Length == 0) || !IsTargetted(model)) { return 0f; }
 
             var list = new List<float>();
             var totalFixedHeight = 0f;

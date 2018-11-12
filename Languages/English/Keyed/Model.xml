@@ -69,6 +69,7 @@
   <RimHUD.Model.Selector.AreaFormat>Area: {0}</RimHUD.Model.Selector.AreaFormat>
   <RimHUD.Model.Selector.Manage>Manage...</RimHUD.Model.Selector.Manage>
 
+  <RimHUD.Model.Component.Root>Root</RimHUD.Model.Component.Root>
   <RimHUD.Model.Component.VStack>Vertical stack</RimHUD.Model.Component.VStack>
   <RimHUD.Model.Component.VStackFilled>Vertical stack (filled)</RimHUD.Model.Component.VStackFilled>
   <RimHUD.Model.Component.HStack>Horizontal stack</RimHUD.Model.Component.HStack>
@@ -94,8 +95,8 @@
   <RimHUD.Model.Component.NeedFood>Food bar</RimHUD.Model.Component.NeedFood>
   <RimHUD.Model.Component.NeedRest>Rest bar</RimHUD.Model.Component.NeedRest>
   <RimHUD.Model.Component.NeedRecreation>Recreation bar</RimHUD.Model.Component.NeedRecreation>
-  <RimHUD.Model.Component.Need>{0} bar</RimHUD.Model.Component.Need>
-  
+  <RimHUD.Model.Component.Need>{0} need</RimHUD.Model.Component.Need>
+
   <RimHUD.Model.Component.SkillShooting>Shooting skill</RimHUD.Model.Component.SkillShooting>
   <RimHUD.Model.Component.SkillMelee>Melee skill</RimHUD.Model.Component.SkillMelee>
   <RimHUD.Model.Component.SkillConstruction>Construction skill</RimHUD.Model.Component.SkillConstruction>
@@ -122,8 +123,8 @@
   <RimHUD.Model.Component.Equipped>Equipped</RimHUD.Model.Component.Equipped>
   <RimHUD.Model.Component.Carrying>Carrying</RimHUD.Model.Component.Carrying>
   <RimHUD.Model.Component.CompInfo>Extra information</RimHUD.Model.Component.CompInfo>
-  
-  <RimHUD.Model.Component.Container.Filled>Fill height</RimHUD.Model.Component.Container.Filled>
+
+  <RimHUD.Model.Component.Container.Filled>Filled</RimHUD.Model.Component.Container.Filled>
 
   <RimHUD.Model.Target.PlayerHumanlike>Player Humanlike</RimHUD.Model.Target.PlayerHumanlike>
   <RimHUD.Model.Target.OtherHumanlike>Other Humanlike</RimHUD.Model.Target.OtherHumanlike>
