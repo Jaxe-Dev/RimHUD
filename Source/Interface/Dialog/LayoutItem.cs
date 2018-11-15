@@ -91,8 +91,10 @@ namespace RimHUD.Interface.Dialog
                 Type = element.DefName == null ? LayoutItemType.Element : LayoutItemType.CustomElement;
                 if (element.DefName != null)
                 {
-                    if (element.ElementName == HudModel.CustomNeedType) { Def = DefDatabase<NeedDef>.GetNamed(element.DefName, false); }
-                    else if (element.ElementName == HudModel.CustomSkillType) { Def = DefDatabase<SkillDef>.GetNamed(element.DefName, false); }
+                    if (element.ElementName == HudModel.StatTypeName) { Def = DefDatabase<StatDef>.GetNamed(element.DefName, false); }
+                    else if (element.ElementName == HudModel.RecordTypeName) { Def = DefDatabase<RecordDef>.GetNamed(element.DefName, false); }
+                    else if (element.ElementName == HudModel.CustomNeedTypeName) { Def = DefDatabase<NeedDef>.GetNamed(element.DefName, false); }
+                    else if (element.ElementName == HudModel.CustomSkillTypeName) { Def = DefDatabase<SkillDef>.GetNamed(element.DefName, false); }
 
                     if (Def == null)
                     {

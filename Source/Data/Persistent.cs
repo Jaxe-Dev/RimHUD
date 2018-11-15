@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using RimHUD.Extensions;
 using RimHUD.Integration;
@@ -16,7 +17,8 @@ namespace RimHUD.Data
     internal static class Persistent
     {
         private const string ConfigFileName = "Config.xml";
-        private const string PresetsDirectoryName = "rIMHUD\\Presets";
+        private const string FixedPresetsDirectoryName = "RimHUD\\Presets";
+        private const string UserPresetsDirectoryName = "Presets";
         private const string PresetExtension = ".xml";
 
         private static bool VersionNeedsNewConfig { get; } = Mod.VersionNeedsNewConfig;
@@ -25,6 +27,10 @@ namespace RimHUD.Data
         private static bool _configWasReset;
 
         private static readonly FileInfo ConfigFile = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, ConfigFileName));
+        private static readonly DirectoryInfo UserPresetDirectory = new DirectoryInfo(Path.Combine(Mod.ConfigDirectory.FullName, UserPresetsDirectoryName));
+
+        private static readonly Regex ValidFilenameRegex = new Regex("^(?:[\\p{L}\\p{N}_\\-]|[\\p{L}\\p{N}_\\-]+[\\p{L}\\p{N}_\\- ]*[\\p{L}\\p{N}_\\-]+)$");
+        public static bool IsValidFilename(string name) => !name.NullOrEmpty() && (name.Length <= 250 - UserPresetDirectory.FullName.Length) && ValidFilenameRegex.IsMatch(name);
 
         public static void CheckAlerts()
         {
@@ -237,18 +243,24 @@ namespace RimHUD.Data
             if (categories.Count > 0) { current.Add(categories.Values); }
         }
 
-        public static LayoutPreset[] BuildPresetsList()
+        public static LayoutPreset[] BuildFixedPresetsList()
         {
             var list = new List<LayoutPreset>();
             foreach (var mod in LoadedModManager.RunningMods)
             {
-                var directory = new DirectoryInfo(Path.Combine(mod.RootDir, PresetsDirectoryName));
+                var directory = new DirectoryInfo(Path.Combine(mod.RootDir, FixedPresetsDirectoryName));
                 if (!directory.Exists) { continue; }
 
                 list.AddRange(directory.GetFiles("*" + PresetExtension).Select(file => LayoutPreset.Prepare(mod, file)).Where(preset => preset != null));
             }
 
             return list.ToArray();
+        }
+
+        public static LayoutPreset[] BuildUserPresetsList()
+        {
+            var directory = new DirectoryInfo(Path.Combine(Mod.ConfigDirectory.FullName, UserPresetsDirectoryName));
+            return directory.Exists ? directory.GetFiles("*" + PresetExtension).Select(file => LayoutPreset.Prepare(null, file)).Where(preset => preset != null).ToArray() : new LayoutPreset[] { };
         }
 
         private static void LoadLayouts(bool reset)
@@ -270,6 +282,18 @@ namespace RimHUD.Data
 
             HudLayout.Docked.ToXml().Save(docked.FullName);
             HudLayout.Floating.ToXml().Save(floating.FullName);
+        }
+
+        public static void SaveLayoutPreset(string name, XElement xe)
+        {
+            if (!UserPresetDirectory.ExistsNow()) { UserPresetDirectory.Create(); }
+            xe.Save(Path.Combine(UserPresetDirectory.FullName, name + PresetExtension));
+        }
+
+        public static void DeleteLayoutPreset(LayoutPreset preset)
+        {
+            if (!preset.File.ExistsNow()) { return; }
+            preset.File.Delete();
         }
 
         public static void OpenConfigFolder() => Process.Start(Mod.ConfigDirectory.FullName);

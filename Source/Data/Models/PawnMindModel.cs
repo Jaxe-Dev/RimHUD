@@ -65,8 +65,8 @@ namespace RimHUD.Data.Models
                 Model.Base.needs.mood.thoughts.GetMoodThoughts(thought, similar);
 
                 var thoughtLabel = thought.LabelCap;
-                if (similar.Count > 1) { thoughtLabel += " x" + similar.Count;}
-                
+                if (similar.Count > 1) { thoughtLabel += " x" + similar.Count; }
+
                 var line = $"{thoughtLabel}: {offset * similar.Count}".Color(color);
                 builder.AppendLine(line);
             }

@@ -91,6 +91,10 @@
   <RimHUD.Model.Component.Health>Health bar</RimHUD.Model.Component.Health>
   <RimHUD.Model.Component.HealthCondition>Health condition</RimHUD.Model.Component.HealthCondition>
   <RimHUD.Model.Component.MindCondition>Mind condition</RimHUD.Model.Component.MindCondition>
+
+  <RimHUD.Model.Component.Stat>{0} stat</RimHUD.Model.Component.Stat>
+  <RimHUD.Model.Component.Record>{0} record</RimHUD.Model.Component.Record>
+
   <RimHUD.Model.Component.NeedMood>Mood bar</RimHUD.Model.Component.NeedMood>
   <RimHUD.Model.Component.NeedFood>Food bar</RimHUD.Model.Component.NeedFood>
   <RimHUD.Model.Component.NeedRest>Rest bar</RimHUD.Model.Component.NeedRest>

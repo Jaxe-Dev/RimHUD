@@ -92,6 +92,7 @@
     <Compile Include="Interface\Dialog\Dialog_Alert.cs" />
     <Compile Include="Interface\Dialog\Dialog_Config.cs" />
     <Compile Include="Interface\Dialog\Dialog_Presets.cs" />
+    <Compile Include="Interface\Dialog\Dialog_SavePreset.cs" />
     <Compile Include="Interface\Dialog\LayoutEditor.cs" />
     <Compile Include="Interface\Dialog\LayoutItem.cs" />
     <Compile Include="Interface\Dialog\LayoutItemType.cs" />

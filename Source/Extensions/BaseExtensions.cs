@@ -2,6 +2,7 @@
 using System.Text;
 using RimHUD.Interface;
 using UnityEngine;
+using Verse;
 
 namespace RimHUD.Extensions
 {
@@ -15,7 +16,7 @@ namespace RimHUD.Extensions
         {
             if (text != null) { self.AppendLine(text); }
         }
-        public static string ToStringTrimmed(this StringBuilder self) => self.ToString().TrimEnd('\n');
+        public static string ToStringTrimmed(this StringBuilder self) => self.ToString().TrimEndNewlines();
         public static int LastIndex(this IList self) => self.Count - 1;
         public static int? ToInt(this string self) => int.TryParse(self, out var result) ? result : (int?) null;
         public static bool? ToBool(this string self) => bool.TryParse(self, out var result) ? result : (bool?) null;
