@@ -9,6 +9,7 @@
   <RimHUD.Button.No>No</RimHUD.Button.No>
   <RimHUD.Button.Cancel>Cancel</RimHUD.Button.Cancel>
   <RimHUD.Button.Close>Close</RimHUD.Button.Close>
+  <RimHUD.Button.Save>Save</RimHUD.Button.Save>
 
   <RimHUD.Dialog_Config.Title>RimHUD</RimHUD.Dialog_Config.Title>
   <RimHUD.Dialog_Config.SetToDefault>Use Default</RimHUD.Dialog_Config.SetToDefault>
@@ -29,7 +30,7 @@
   <RimHUD.Dialog_Config.Tab.Content.Preset.Default>Default</RimHUD.Dialog_Config.Tab.Content.Preset.Default>
   <RimHUD.Dialog_Config.Tab.Content.Preset.DefaultLoaded>Layouts reset to default.</RimHUD.Dialog_Config.Tab.Content.Preset.DefaultLoaded>
   <RimHUD.Dialog_Config.Tab.Content.Preset.Loaded>Layout preset for mod '{0}' loaded.</RimHUD.Dialog_Config.Tab.Content.Preset.Loaded>
-  <RimHUD.Dialog_Config.Tab.Content.Mode>Choose Mode</RimHUD.Dialog_Config.Tab.Content.Mode>
+  <RimHUD.Dialog_Config.Tab.Content.Mode>{0} mode</RimHUD.Dialog_Config.Tab.Content.Mode>
   <RimHUD.Dialog_Config.Tab.Content.Mode.Docked>Docked</RimHUD.Dialog_Config.Tab.Content.Mode.Docked>
   <RimHUD.Dialog_Config.Tab.Content.Mode.Floating>Floating</RimHUD.Dialog_Config.Tab.Content.Mode.Floating>
   <RimHUD.Dialog_Config.Tab.Content.Editor>HUD Editor ({0})</RimHUD.Dialog_Config.Tab.Content.Editor>
@@ -48,6 +49,8 @@
   <RimHUD.Dialog_Config.Tab.Content.Component.RowDesc>A row holds elements and if contains more than one they will be displayed evenly horizontally.</RimHUD.Dialog_Config.Tab.Content.Component.RowDesc>
   <RimHUD.Dialog_Config.Tab.Content.Component.Element>Add element</RimHUD.Dialog_Config.Tab.Content.Component.Element>
   <RimHUD.Dialog_Config.Tab.Content.Component.ElementDesc>An element displays data on the HUD.</RimHUD.Dialog_Config.Tab.Content.Component.ElementDesc>
+  <RimHUD.Dialog_Config.Tab.Content.Component.Stat>Add stat</RimHUD.Dialog_Config.Tab.Content.Component.Stat>
+  <RimHUD.Dialog_Config.Tab.Content.Component.Record>Add record</RimHUD.Dialog_Config.Tab.Content.Component.Record>
   <RimHUD.Dialog_Config.Tab.Content.Component.CustomNeed>Add custom need</RimHUD.Dialog_Config.Tab.Content.Component.CustomNeed>
   <RimHUD.Dialog_Config.Tab.Content.Component.CustomSkill>Add custom skill</RimHUD.Dialog_Config.Tab.Content.Component.CustomSkill>
   <RimHUD.Dialog_Config.Tab.Content.Selected>Selected: </RimHUD.Dialog_Config.Tab.Content.Selected>
@@ -56,9 +59,16 @@
 
   <RimHUD.Dialog_Config.Tab.Integration>Integration</RimHUD.Dialog_Config.Tab.Integration>
 
-  <RimHUD.Dialog_Preset.Title>Presets</RimHUD.Dialog_Preset.Title>
-  <RimHUD.Dialog_Preset.Overwrite>Overwrite selected</RimHUD.Dialog_Preset.Overwrite>
-  <RimHUD.Dialog_Preset.Delete>Delete selected</RimHUD.Dialog_Preset.Delete>
+  <RimHUD.Dialog_Presets.Title>User Presets</RimHUD.Dialog_Presets.Title>
+  <RimHUD.Dialog_Presets.Delete>Delete selected</RimHUD.Dialog_Presets.Delete>
+
+  <RimHUD.Dialog_SavePreset.Title>Save Preset</RimHUD.Dialog_SavePreset.Title>
+  <RimHUD.Dialog_SavePreset.Name>Name</RimHUD.Dialog_SavePreset.Name>
+  <RimHUD.Dialog_SavePreset.IncludeDocked>Include docked</RimHUD.Dialog_SavePreset.IncludeDocked>
+  <RimHUD.Dialog_SavePreset.IncludeFloating>Include floating</RimHUD.Dialog_SavePreset.IncludeFloating>
+  <RimHUD.Dialog_SavePreset.IncludeHeight>Include height</RimHUD.Dialog_SavePreset.IncludeHeight>
+  <RimHUD.Dialog_SavePreset.IncludeWidth>Include width</RimHUD.Dialog_SavePreset.IncludeWidth>
+  <RimHUD.Dialog_SavePreset.IncludeTabs>Include minimum tabs</RimHUD.Dialog_SavePreset.IncludeTabs>
 
   <RimHUD.Layout.UserPreset>[User preset]</RimHUD.Layout.UserPreset>
   <RimHUD.Layout.BuiltIn>[Built-in]</RimHUD.Layout.BuiltIn>
@@ -66,6 +76,8 @@
   <RimHUD.Alert.ConfigReset>RimHUD updated to version {0} and required that its configuration to be reset to default.</RimHUD.Alert.ConfigReset>
   <RimHUD.Alert.SetToDefault>Are you sure you want to revert these settings to default?</RimHUD.Alert.SetToDefault>
   <RimHUD.Alert.InvalidLayout>This layout for RimHUD contained invalid elements or elements from other mods that are no longer active.\n\nThe HUD layout has been reset to default.</RimHUD.Alert.InvalidLayout>
+  <RimHUD.Alert.Saved>Preset '{0}' saved.</RimHUD.Alert.Saved>
+  <RimHUD.Alert.ConfirmDelete>Are you sure you want to delete the preset '{0}' saved.</RimHUD.Alert.ConfirmDelete>
   <RimHUD.Alert.NotImplemented>This feature is not yet implemented</RimHUD.Alert.NotImplemented>
   <RimHUD.Alert.MoreComingSoon>More features coming soon™</RimHUD.Alert.MoreComingSoon>
 

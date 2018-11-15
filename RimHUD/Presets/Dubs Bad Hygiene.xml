@@ -26,7 +26,7 @@
         <Separator />
       </Row>
     </Panel>
-    <HStack FillHeight="True">
+    <HStack FillHeight="true">
       <Panel>
         <Row>
           <Health />
@@ -129,7 +129,7 @@
     </HStack>
   </Docked>
   <Floating>
-    <Panel FillHeight="True">
+    <Panel FillHeight="true">
       <Row>
         <NameHeader />
       </Row>

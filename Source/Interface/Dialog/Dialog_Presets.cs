@@ -13,10 +13,10 @@ namespace RimHUD.Interface.Dialog
 
         private LayoutPreset _selected;
 
-        private Dialog_Presets() : base(Lang.Get("Dialog_Preset.Title").Bold(), new Vector2(400f, 450f))
+        private Dialog_Presets() : base(Lang.Get("Dialog_Presets.Title").Bold(), new Vector2(400f, 450f))
         {
             onlyOneOfTypeAllowed = true;
-            absorbInputAroundWindow = false;
+            absorbInputAroundWindow = true;
             preventCameraMotion = false;
             doCloseButton = false;
         }
@@ -25,11 +25,11 @@ namespace RimHUD.Interface.Dialog
 
         protected override void DrawContent(Rect rect)
         {
-            var vGrid = rect.GetVGrid(GUIPlus.LargePadding, -1f, 100f);
+            var vGrid = rect.GetVGrid(GUIPlus.LargePadding, -1f, 70f);
             var l = new ListingPlus();
             l.BeginScrollView(vGrid[1], ref _scrollPosition, ref _scrollView);
 
-            foreach (var preset in LayoutPreset.List)
+            foreach (var preset in LayoutPreset.UserList)
             {
                 if (_selected == null) { _selected = preset; }
                 if (l.RadioButton(preset.Label, _selected == preset)) { _selected = preset; }
@@ -39,11 +39,20 @@ namespace RimHUD.Interface.Dialog
 
             l.Begin(vGrid[2]);
 
-            if (l.ButtonText(Lang.Get("Dialog_Preset.Overwrite"), enabled: _selected.IsUserMade)) { }
-            if (l.ButtonText(Lang.Get("Dialog_Preset.Delete"), enabled: _selected.IsUserMade)) { }
-            if (l.ButtonText(Lang.Get("Button.Close"))) { Close(); }
+            var buttonGrid = l.GetButtonGrid(-1f, -1f);
+            if (GUIPlus.DrawButton(buttonGrid[1], Lang.Get("Dialog_Presets.Delete"), enabled: _selected?.IsUserMade ?? false)) { ConfirmDelete(); }
+            if (GUIPlus.DrawButton(buttonGrid[2], Lang.Get("Button.Close"))) { Close(); }
 
             l.End();
+        }
+
+        private void ConfirmDelete() => Dialog_Alert.Open(Lang.Get("Alert.ConfirmDelete", _selected.Name), Dialog_Alert.Buttons.YesNo, Delete);
+
+        private void Delete()
+        {
+            Persistent.DeleteLayoutPreset(_selected);
+            _selected = null;
+            LayoutPreset.RefreshUserPresets();
         }
     }
 }
