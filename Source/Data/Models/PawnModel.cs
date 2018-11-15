@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RimHUD.Extensions;
 using RimHUD.Integration;
 using RimHUD.Interface;
 using RimHUD.Interface.HUD;

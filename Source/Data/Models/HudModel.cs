@@ -16,85 +16,85 @@ namespace RimHUD.Data.Models
 
         private static readonly Dictionary<string, Func<PawnModel, HudWidget>> Widgets = new Dictionary<string, Func<PawnModel, HudWidget>>
         {
-                    { HudBlank.Name, _ => HudBlank.GetEmpty },
-                    { HudSeparator.Name, _ => HudSeparator.Get() },
+            { HudBlank.Name, _ => HudBlank.GetEmpty },
+            { HudSeparator.Name, _ => HudSeparator.Get() },
 
-                    { "NameHeader", model => HudValue.FromText(model.Name, model.BioTooltip, Theme.LargeTextStyle) },
+            { "NameHeader", model => HudValue.FromText(model.Name, model.BioTooltip, Theme.LargeTextStyle) },
 
-                    { "Outfit", model => HudSelector.FromModel(model.OutfitSelector, Theme.SmallTextStyle) },
-                    { "Food", model => HudSelector.FromModel(model.FoodSelector, Theme.SmallTextStyle) },
-                    { "Rules", model => HudSelector.FromModel(model.RulesSelector, Theme.SmallTextStyle) },
-                    { "Timetable", model => HudSelector.FromModel(model.TimetableSelector, Theme.SmallTextStyle) },
-                    { "Area", model => HudSelector.FromModel(model.AreaSelector, Theme.SmallTextStyle) },
+            { "Outfit", model => HudSelector.FromModel(model.OutfitSelector, Theme.SmallTextStyle) },
+            { "Food", model => HudSelector.FromModel(model.FoodSelector, Theme.SmallTextStyle) },
+            { "Rules", model => HudSelector.FromModel(model.RulesSelector, Theme.SmallTextStyle) },
+            { "Timetable", model => HudSelector.FromModel(model.TimetableSelector, Theme.SmallTextStyle) },
+            { "Area", model => HudSelector.FromModel(model.AreaSelector, Theme.SmallTextStyle) },
 
-                    { "RelationKindAndFaction", model => HudValue.FromTextModel(model.RelationKindAndFaction, Theme.SmallTextStyle) },
-                    { "GenderAndAge", model => HudValue.FromTextModel(model.GenderAndAge, Theme.SmallTextStyle) },
+            { "RelationKindAndFaction", model => HudValue.FromTextModel(model.RelationKindAndFaction, Theme.SmallTextStyle) },
+            { "GenderAndAge", model => HudValue.FromTextModel(model.GenderAndAge, Theme.SmallTextStyle) },
 
-                    { "Health", model => HudBar.FromModel(model.Health.Bar, Theme.RegularTextStyle) },
-                    { "HealthCondition", model => HudValue.FromTextModel(model.Health.Condition, Theme.SmallTextStyle) },
-                    { "MindCondition", model => HudValue.FromTextModel(model.Mind.Condition, Theme.SmallTextStyle) },
+            { "Health", model => HudBar.FromModel(model.Health.Bar, Theme.RegularTextStyle) },
+            { "HealthCondition", model => HudValue.FromTextModel(model.Health.Condition, Theme.SmallTextStyle) },
+            { "MindCondition", model => HudValue.FromTextModel(model.Mind.Condition, Theme.SmallTextStyle) },
 
-                    { "NeedMood", model => HudBar.FromModel(model.Mood, Theme.RegularTextStyle) },
-                    { "NeedFood", model => HudBar.FromModel(model.Food, Theme.RegularTextStyle) },
-                    { "NeedRest", model => HudBar.FromModel(model.Rest, Theme.RegularTextStyle) },
-                    { "NeedRecreation", model => HudBar.FromModel(model.Recreation, Theme.RegularTextStyle) },
+            { "NeedMood", model => HudBar.FromModel(model.Mood, Theme.RegularTextStyle) },
+            { "NeedFood", model => HudBar.FromModel(model.Food, Theme.RegularTextStyle) },
+            { "NeedRest", model => HudBar.FromModel(model.Rest, Theme.RegularTextStyle) },
+            { "NeedRecreation", model => HudBar.FromModel(model.Recreation, Theme.RegularTextStyle) },
 
-                    { "SkillShooting", model => HudValue.FromValueModel(model.Shooting, Theme.RegularTextStyle) },
-                    { "SkillMelee", model => HudValue.FromValueModel(model.Melee, Theme.RegularTextStyle) },
-                    { "SkillConstruction", model => HudValue.FromValueModel(model.Construction, Theme.RegularTextStyle) },
-                    { "SkillMining", model => HudValue.FromValueModel(model.Mining, Theme.RegularTextStyle) },
-                    { "SkillCooking", model => HudValue.FromValueModel(model.Cooking, Theme.RegularTextStyle) },
-                    { "SkillPlants", model => HudValue.FromValueModel(model.Plants, Theme.RegularTextStyle) },
-                    { "SkillAnimals", model => HudValue.FromValueModel(model.Animals, Theme.RegularTextStyle) },
-                    { "SkillCrafting", model => HudValue.FromValueModel(model.Crafting, Theme.RegularTextStyle) },
-                    { "SkillArtistic", model => HudValue.FromValueModel(model.Artistic, Theme.RegularTextStyle) },
-                    { "SkillMedicine", model => HudValue.FromValueModel(model.Medicine, Theme.RegularTextStyle) },
-                    { "SkillSocial", model => HudValue.FromValueModel(model.Social, Theme.RegularTextStyle) },
-                    { "SkillIntellectual", model => HudValue.FromValueModel(model.Intellectual, Theme.RegularTextStyle) },
+            { "SkillShooting", model => HudValue.FromValueModel(model.Shooting, Theme.RegularTextStyle) },
+            { "SkillMelee", model => HudValue.FromValueModel(model.Melee, Theme.RegularTextStyle) },
+            { "SkillConstruction", model => HudValue.FromValueModel(model.Construction, Theme.RegularTextStyle) },
+            { "SkillMining", model => HudValue.FromValueModel(model.Mining, Theme.RegularTextStyle) },
+            { "SkillCooking", model => HudValue.FromValueModel(model.Cooking, Theme.RegularTextStyle) },
+            { "SkillPlants", model => HudValue.FromValueModel(model.Plants, Theme.RegularTextStyle) },
+            { "SkillAnimals", model => HudValue.FromValueModel(model.Animals, Theme.RegularTextStyle) },
+            { "SkillCrafting", model => HudValue.FromValueModel(model.Crafting, Theme.RegularTextStyle) },
+            { "SkillArtistic", model => HudValue.FromValueModel(model.Artistic, Theme.RegularTextStyle) },
+            { "SkillMedicine", model => HudValue.FromValueModel(model.Medicine, Theme.RegularTextStyle) },
+            { "SkillSocial", model => HudValue.FromValueModel(model.Social, Theme.RegularTextStyle) },
+            { "SkillIntellectual", model => HudValue.FromValueModel(model.Intellectual, Theme.RegularTextStyle) },
 
-                    { "TrainingTameness", model => HudValue.FromValueModel(model.Tameness, Theme.RegularTextStyle) },
-                    { "TrainingObedience", model => HudValue.FromValueModel(model.Obedience, Theme.RegularTextStyle) },
-                    { "TrainingRelease", model => HudValue.FromValueModel(model.Release, Theme.RegularTextStyle) },
-                    { "TrainingRescue", model => HudValue.FromValueModel(model.Rescue, Theme.RegularTextStyle) },
-                    { "TrainingHaul", model => HudValue.FromValueModel(model.Haul, Theme.RegularTextStyle) },
+            { "TrainingTameness", model => HudValue.FromValueModel(model.Tameness, Theme.RegularTextStyle) },
+            { "TrainingObedience", model => HudValue.FromValueModel(model.Obedience, Theme.RegularTextStyle) },
+            { "TrainingRelease", model => HudValue.FromValueModel(model.Release, Theme.RegularTextStyle) },
+            { "TrainingRescue", model => HudValue.FromValueModel(model.Rescue, Theme.RegularTextStyle) },
+            { "TrainingHaul", model => HudValue.FromValueModel(model.Haul, Theme.RegularTextStyle) },
 
-                    { "Master", model => HudValue.FromTextModel(model.Master, Theme.RegularTextStyle) },
+            { "Master", model => HudValue.FromTextModel(model.Master, Theme.RegularTextStyle) },
 
-                    { "Activity", model => HudValue.FromText(model.Activity, null, Theme.SmallTextStyle) },
-                    { "Queued", model => HudValue.FromText(model.Queued, null, Theme.SmallTextStyle) },
-                    { "Equipped", model => HudValue.FromText(model.Equipped, null, Theme.SmallTextStyle) },
-                    { "Carrying", model => HudValue.FromText(model.Carrying, null, Theme.SmallTextStyle) },
-                    { "CompInfo", model => HudValue.FromText(model.CompInfo, null, Theme.SmallTextStyle) }
+            { "Activity", model => HudValue.FromText(model.Activity, null, Theme.SmallTextStyle) },
+            { "Queued", model => HudValue.FromText(model.Queued, null, Theme.SmallTextStyle) },
+            { "Equipped", model => HudValue.FromText(model.Equipped, null, Theme.SmallTextStyle) },
+            { "Carrying", model => HudValue.FromText(model.Carrying, null, Theme.SmallTextStyle) },
+            { "CompInfo", model => HudValue.FromText(model.CompInfo, null, Theme.SmallTextStyle) }
         };
 
         private static readonly string[] StandardNeeds =
         {
-                    "Food",
-                    "Joy",
-                    "Mood",
-                    "Rest"
+            "Food",
+            "Joy",
+            "Mood",
+            "Rest"
         };
 
         private static readonly string[] StandardSkills =
         {
-                    "Shooting",
-                    "Melee",
-                    "Construction",
-                    "Mining",
-                    "Cooking",
-                    "Plants",
-                    "Animals",
-                    "Crafting",
-                    "Artistic",
-                    "Medicine",
-                    "Social",
-                    "Intellectual"
+            "Shooting",
+            "Melee",
+            "Construction",
+            "Mining",
+            "Cooking",
+            "Plants",
+            "Animals",
+            "Crafting",
+            "Artistic",
+            "Medicine",
+            "Social",
+            "Intellectual"
         };
 
         public static readonly LayoutItem[] StackComponents =
         {
-                    new LayoutItem(LayoutItemType.Stack, HudVStack.Name),
-                    new LayoutItem(LayoutItemType.Stack, HudHStack.Name)
+            new LayoutItem(LayoutItemType.Stack, HudVStack.Name),
+            new LayoutItem(LayoutItemType.Stack, HudHStack.Name)
         };
         public static readonly LayoutItem PanelComponent = new LayoutItem(LayoutItemType.Panel, HudPanel.Name);
         public static readonly LayoutItem RowComponent = new LayoutItem(LayoutItemType.Row, HudRow.Name);
@@ -120,7 +120,8 @@ namespace RimHUD.Data.Models
             var def = DefDatabase<NeedDef>.GetNamed(defName, false);
             if (def != null) { return (HudWidget) HudBar.FromModel(new NeedModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty; }
 
-            Mod.ErrorOnce($"Invalid HUD Widget, Need def '{defName}' not found", "InvalidNeedDefName" + defName);
+            Mod.Warning($"Invalid HUD Widget, Need def '{defName}' not found, resetting layout to default");
+            RequiredReset();
             return HudBlank.GetEmpty;
         }
 
@@ -129,8 +130,15 @@ namespace RimHUD.Data.Models
             var def = DefDatabase<SkillDef>.GetNamed(defName, false);
             if (def != null) { return (HudWidget) HudValue.FromValueModel(new SkillModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty; }
 
-            Mod.ErrorOnce($"Invalid HUD Widget, Skill def '{defName}' not found", "InvalidSkillDefName" + defName);
+            Mod.Warning($"Invalid HUD Widget, Skill def '{defName}' not found, resetting layout to default");
+            RequiredReset();
             return HudBlank.GetEmpty;
+        }
+
+        private static void RequiredReset()
+        {
+            Dialog_Alert.Open(Lang.Get("Alert.InvalidLayout"));
+            HudLayout.LoadDefaultAndSave();
         }
     }
 }

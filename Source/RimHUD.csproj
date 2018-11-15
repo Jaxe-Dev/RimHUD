@@ -46,6 +46,7 @@
     <Compile Include="Compatibility\CompatibilityManager.cs" />
     <Compile Include="Compatibility\CompatibilityPatch.cs" />
     <Compile Include="Compatibility\ExtendedInspectData.cs" />
+    <Compile Include="Data\Attributes.cs" />
     <Compile Include="Data\BoolOption.cs" />
     <Compile Include="Data\ColorOption.cs" />
     <Compile Include="Data\ExternalMod.cs" />
@@ -73,10 +74,14 @@
     <Compile Include="Data\Models\TimetableModel.cs" />
     <Compile Include="Data\Models\TrainingModel.cs" />
     <Compile Include="Data\Models\ValueModel.cs" />
+    <Compile Include="Extensions\BaseExtensions.cs" />
+    <Compile Include="Extensions\DataExtensions.cs" />
+    <Compile Include="Extensions\GUIExtensions.cs" />
+    <Compile Include="Extensions\IOExtensions.cs" />
     <Compile Include="Integration\Bubbles.cs" />
     <Compile Include="Integration\HugsLib.cs" />
     <Compile Include="Integration\IntegratedMod.cs" />
-    <Compile Include="Integration\LayoutPresets.cs" />
+    <Compile Include="Integration\LayoutPreset.cs" />
     <Compile Include="Integration\PawnRules.cs" />
     <Compile Include="Interface\GUIPlus.cs" />
     <Compile Include="Interface\InspectPanePlus.cs" />
@@ -86,6 +91,7 @@
     <Compile Include="Interface\Theme.cs" />
     <Compile Include="Interface\Dialog\Dialog_Alert.cs" />
     <Compile Include="Interface\Dialog\Dialog_Config.cs" />
+    <Compile Include="Interface\Dialog\Dialog_Presets.cs" />
     <Compile Include="Interface\Dialog\LayoutEditor.cs" />
     <Compile Include="Interface\Dialog\LayoutItem.cs" />
     <Compile Include="Interface\Dialog\LayoutItemType.cs" />
@@ -117,7 +123,6 @@
     <Compile Include="Interface\HUD\HudVStack.cs" />
     <Compile Include="Interface\HUD\HudWidget.cs" />
     <Compile Include="Patch\Access.cs" />
-    <Compile Include="Patch\Extensions.cs" />
     <Compile Include="Patch\RimWorld_InspectPaneFiller_DoPaneContentsFor.cs" />
     <Compile Include="Patch\RimWorld_InspectPaneUtility_DoTabs.cs" />
     <Compile Include="Patch\RimWorld_InspectPaneUtility_InspectPaneOnGUI.cs" />
@@ -168,18 +173,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Layouts\DefaultFloating.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Layouts\Presets\DBH\Docked.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Layouts\Presets\DBH\Floating.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Layouts\Presets\RoM\Docked.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Layouts\Presets\RoM\Floating.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
