@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Harmony;
 using RimHUD.Compatibility;
@@ -16,11 +17,13 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.3.0";
+        public const string Version = "1.3.1";
         public const string LastVersion = "1.2.9.6";
         public const bool VersionNeedsNewConfig = true;
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
+        public static readonly ModContentPack ContentPack;
+
         public static bool FirstTimeUser { get; }
 
         public static readonly Assembly Assembly;
@@ -33,6 +36,7 @@ namespace RimHUD
             Harmony.PatchAll();
 
             FirstTimeUser = !ConfigDirectory.Exists;
+            ContentPack = LoadedModManager.RunningMods.FirstOrDefault(mod => mod.assemblies.loadedAssemblies.Contains(Assembly));
             ConfigDirectory.Create();
 
             if (!FirstTimeUser) { HugsLib.RegisterUpdateFeature(); }

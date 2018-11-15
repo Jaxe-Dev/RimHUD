@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Preset Version="1.3.1">
+  <Docked Height="302">
+    <HStack>
+      <Panel>
+        <Row>
+          <RelationKindAndFaction />
+        </Row>
+        <Row>
+          <GenderAndAge />
+        </Row>
+      </Panel>
+      <Panel>
+        <Row>
+          <Outfit Targets="H" />
+          <Food Targets="HC" />
+        </Row>
+        <Row>
+          <Timetable Targets="H" />
+          <Area Targets="HC" />
+        </Row>
+      </Panel>
+    </HStack>
+    <Panel>
+      <Row>
+        <Separator />
+      </Row>
+    </Panel>
+    <HStack FillHeight="True">
+      <Panel>
+        <Row>
+          <Health />
+        </Row>
+        <Row>
+          <HealthCondition />
+        </Row>
+        <Row Targets="Hh">
+          <NeedMood />
+        </Row>
+        <Row Targets="Hh">
+          <MindCondition />
+        </Row>
+        <Row>
+          <NeedFood />
+        </Row>
+        <Row>
+          <Need DefName="DBHThirst" />
+        </Row>
+        <Row>
+          <Need DefName="Bladder" />
+        </Row>
+        <Row>
+          <Need DefName="Hygiene" />
+        </Row>
+        <Row>
+          <NeedRest />
+        </Row>
+        <Row Targets="Hh">
+          <NeedRecreation />
+        </Row>
+        <Row Targets="Cc">
+          <MindCondition />
+        </Row>
+      </Panel>
+      <Panel>
+        <Row Targets="Hh">
+          <SkillShooting />
+          <SkillMelee />
+        </Row>
+        <Row Targets="Hh">
+          <SkillConstruction />
+          <SkillMining />
+        </Row>
+        <Row Targets="Hh">
+          <SkillCooking />
+          <SkillPlants />
+        </Row>
+        <Row Targets="Hh">
+          <SkillAnimals />
+          <SkillCrafting />
+        </Row>
+        <Row Targets="Hh">
+          <SkillArtistic />
+          <SkillMedicine />
+        </Row>
+        <Row Targets="Hh">
+          <SkillSocial />
+          <SkillIntellectual />
+        </Row>
+        <Row Targets="C">
+          <TrainingTameness />
+          <Master />
+        </Row>
+        <Row Targets="C">
+          <TrainingObedience />
+          <TrainingRelease />
+        </Row>
+        <Row Targets="C">
+          <TrainingRescue />
+          <TrainingHaul />
+        </Row>
+        <Row>
+          <CompInfo />
+        </Row>
+      </Panel>
+    </HStack>
+    <Panel>
+      <Row>
+        <Separator />
+      </Row>
+    </Panel>
+    <HStack>
+      <Panel>
+        <Row>
+          <Activity />
+        </Row>
+        <Row>
+          <Queued />
+        </Row>
+      </Panel>
+      <Panel>
+        <Row>
+          <Equipped />
+        </Row>
+        <Row>
+          <Carrying />
+        </Row>
+      </Panel>
+    </HStack>
+  </Docked>
+  <Floating>
+    <Panel FillHeight="True">
+      <Row>
+        <NameHeader />
+      </Row>
+      <Row>
+        <Separator />
+      </Row>
+      <Row>
+        <RelationKindAndFaction />
+      </Row>
+      <Row>
+        <GenderAndAge />
+      </Row>
+      <Row>
+        <Separator />
+      </Row>
+      <Row>
+        <Outfit Targets="H" />
+        <Food Targets="HC" />
+      </Row>
+      <Row>
+        <Timetable Targets="H" />
+        <Area Targets="HC" />
+      </Row>
+      <Row Targets="HC">
+        <Separator />
+      </Row>
+      <Row>
+        <Health />
+      </Row>
+      <Row>
+        <HealthCondition />
+      </Row>
+      <Row Targets="Hh">
+        <NeedMood />
+      </Row>
+      <Row Targets="Hh">
+        <MindCondition />
+      </Row>
+      <Row>
+        <NeedFood />
+      </Row>
+      <Row>
+        <Need DefName="DBHThirst" />
+      </Row>
+      <Row>
+        <Need DefName="Bladder" />
+      </Row>
+      <Row>
+        <Need DefName="Hygiene" />
+      </Row>
+      <Row>
+        <NeedRest />
+      </Row>
+      <Row Targets="Hh">
+        <NeedRecreation />
+      </Row>
+      <Row Targets="Cc">
+        <MindCondition />
+      </Row>
+      <Row>
+        <Separator />
+      </Row>
+      <Row Targets="Hh">
+        <SkillShooting />
+        <SkillMelee />
+      </Row>
+      <Row Targets="Hh">
+        <SkillConstruction />
+        <SkillMining />
+      </Row>
+      <Row Targets="Hh">
+        <SkillCooking />
+        <SkillPlants />
+      </Row>
+      <Row Targets="Hh">
+        <SkillAnimals />
+        <SkillCrafting />
+      </Row>
+      <Row Targets="Hh">
+        <SkillArtistic />
+        <SkillMedicine />
+      </Row>
+      <Row Targets="Hh">
+        <SkillSocial />
+        <SkillIntellectual />
+      </Row>
+      <Row Targets="C">
+        <TrainingTameness />
+        <Master />
+      </Row>
+      <Row Targets="C">
+        <TrainingObedience />
+        <TrainingRelease />
+      </Row>
+      <Row Targets="C">
+        <TrainingRescue />
+        <TrainingHaul />
+      </Row>
+      <Row>
+        <CompInfo />
+      </Row>
+    </Panel>
+    <Panel>
+      <Row>
+        <Separator />
+      </Row>
+      <Row>
+        <Activity />
+      </Row>
+      <Row>
+        <Queued />
+      </Row>
+      <Row>
+        <Equipped />
+      </Row>
+      <Row>
+        <Carrying />
+      </Row>
+    </Panel>
+  </Floating>
+</Preset>

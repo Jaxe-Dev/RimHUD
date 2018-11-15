@@ -4,7 +4,7 @@ using Verse;
 
 namespace RimHUD.Integration
 {
-    [Persistent.IntegratedOptions]
+    [Attributes.IntegratedOptions]
     internal static class PawnRules
     {
         public const string Url = "https://steamcommunity.com/sharedfiles/filedetails/?id=1499843448";
@@ -13,8 +13,8 @@ namespace RimHUD.Integration
 
         public static IntegratedMod Instance { get; } = new IntegratedMod("Pawn Rules", "PawnRules", "Integration.RimHUD", new Version(VersionExpected));
 
-        [Persistent.Option("Options", "ReplaceFoodSelector")] public static BoolOption ReplaceFoodSelector { get; } = new BoolOption(true, Lang.Get("Integration.PawnRules.ReplaceFoodSelector"), Lang.Get("Integration.PawnRules.ReplaceFoodSelector"), option => Instance.SetValue("ReplaceFoodSelector", option.Object));
-        [Persistent.Option("Options", "HideGizmo")] public static BoolOption HideGizmo { get; } = new BoolOption(true, Lang.Get("Integration.PawnRules.HideGizmo"), Lang.Get("Integration.PawnRules.HideGizmoDesc"), option => Instance.SetValue("HideGizmo", option.Object));
+        [Attributes.Option("Options", "ReplaceFoodSelector")] public static BoolOption ReplaceFoodSelector { get; } = new BoolOption(true, Lang.Get("Integration.PawnRules.ReplaceFoodSelector"), Lang.Get("Integration.PawnRules.ReplaceFoodSelector"), option => Instance.SetValue("ReplaceFoodSelector", option.Object));
+        [Attributes.Option("Options", "HideGizmo")] public static BoolOption HideGizmo { get; } = new BoolOption(true, Lang.Get("Integration.PawnRules.HideGizmo"), Lang.Get("Integration.PawnRules.HideGizmoDesc"), option => Instance.SetValue("HideGizmo", option.Object));
 
         public static string GetRules(Pawn pawn) => Instance.InvokeMethod<string>("GetRules", pawn);
 

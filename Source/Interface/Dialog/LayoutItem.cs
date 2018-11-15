@@ -2,8 +2,8 @@
 using System.Xml.Linq;
 using RimHUD.Data;
 using RimHUD.Data.Models;
+using RimHUD.Extensions;
 using RimHUD.Interface.HUD;
-using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -76,6 +76,8 @@ namespace RimHUD.Interface.Dialog
             _editor = editor;
             _parent = parent;
 
+            Id = component.ElementName;
+
             var type = component.GetType();
             if (type.IsSubclassOf(typeof(HudContainer)))
             {
@@ -89,14 +91,19 @@ namespace RimHUD.Interface.Dialog
                 Type = element.DefName == null ? LayoutItemType.Element : LayoutItemType.CustomElement;
                 if (element.DefName != null)
                 {
-                    if (element.ElementName == HudModel.CustomNeedType) { Def = DefDatabase<NeedDef>.GetNamed(element.DefName); }
-                    else if (element.ElementName == HudModel.CustomSkillType) { Def = DefDatabase<SkillDef>.GetNamed(element.DefName); }
-                    else { Mod.Error($"Unexpected DefName for {element.ElementName}"); }
+                    if (element.ElementName == HudModel.CustomNeedType) { Def = DefDatabase<NeedDef>.GetNamed(element.DefName, false); }
+                    else if (element.ElementName == HudModel.CustomSkillType) { Def = DefDatabase<SkillDef>.GetNamed(element.DefName, false); }
+
+                    if (Def == null)
+                    {
+                        Mod.Error($"Unexpected DefName for {element.ElementName}, using blank instead");
+                        Type = LayoutItemType.Element;
+                        Id = HudBlank.Name;
+                    }
                 }
             }
             else { throw new Mod.Exception($"Invalid {nameof(LayoutItem)} type"); }
 
-            Id = component.ElementName;
             _targets = component.Targets;
         }
 
@@ -139,14 +146,14 @@ namespace RimHUD.Interface.Dialog
             if (Widgets.ButtonInvisible(labelRect)) { Select(); }
             if (Selected) { Widgets.DrawBoxSolid(labelRect, GUIPlus.ItemSelectedColor); }
 
-            if (!IsRoot && (Type != LayoutItemType.Element))
+            if (!IsRoot && (Type != LayoutItemType.Element) && (Type != LayoutItemType.CustomElement))
             {
                 var buttonRect = new Rect(x, y, ButtonSize, ButtonSize);
                 if (Widgets.ButtonImage(buttonRect, _collapsed ? Textures.Reveal : Textures.Collapse)) { _collapsed = !_collapsed; }
             }
 
             var label = IsRoot ? Lang.Get("Model.Component.Root").Bold() : GetLabel() + GetAttributes().Size(Theme.SmallTextStyle.ActualSize);
-            GUIPlus.DrawText(labelRect, Type == LayoutItemType.Element ? label.Bold() : label, Color);
+            GUIPlus.DrawText(labelRect, (Type == LayoutItemType.Element) || (Type == LayoutItemType.CustomElement) ? label.Bold() : label, Color);
             Widgets.DrawHighlightIfMouseover(labelRect);
             var curY = y + Text.LineHeight;
 

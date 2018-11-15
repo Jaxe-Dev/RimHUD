@@ -5,10 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using RimHUD.Extensions;
+using RimHUD.Integration;
 using RimHUD.Interface;
 using RimHUD.Interface.HUD;
-using RimHUD.Patch;
-using UnityEngine;
 using Verse;
 
 namespace RimHUD.Data
@@ -16,9 +16,12 @@ namespace RimHUD.Data
     internal static class Persistent
     {
         private const string ConfigFileName = "Config.xml";
+        private const string PresetsDirectoryName = "rIMHUD\\Presets";
+        private const string PresetExtension = ".xml";
 
         private static bool VersionNeedsNewConfig { get; } = Mod.VersionNeedsNewConfig;
         public static bool IsLoaded { get; private set; }
+
         private static bool _configWasReset;
 
         private static readonly FileInfo ConfigFile = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, ConfigFileName));
@@ -31,7 +34,7 @@ namespace RimHUD.Data
             Mod.Message(alert);
         }
 
-        private static IEnumerable<Type> GetIntegrations() => Assembly.GetExecutingAssembly().GetTypes().Where(type => type.HasAttribute<IntegratedOptions>());
+        private static IEnumerable<Type> GetIntegrations() => Assembly.GetExecutingAssembly().GetTypes().Where(type => type.HasAttribute<Attributes.IntegratedOptions>());
 
         public static void AllToDefault()
         {
@@ -39,7 +42,7 @@ namespace RimHUD.Data
 
             foreach (var integration in GetIntegrations()) { SetToDefault(integration); }
 
-            HudLayout.LoadDefault();
+            HudLayout.LoadDefaultAndSave();
         }
 
         private static void SetToDefault(object subject)
@@ -47,7 +50,7 @@ namespace RimHUD.Data
             var type = GetSubjectType(subject);
             foreach (var property in type.GetProperties())
             {
-                var attribute = property.TryGetAttribute<Option>();
+                var attribute = property.TryGetAttribute<Attributes.Option>();
                 if (attribute == null) { continue; }
 
                 var propertyValue = property.GetValue(null, null);
@@ -66,18 +69,28 @@ namespace RimHUD.Data
 
         private static string GetIntegrationName(object subject) => "Integration." + GetSubjectType(subject).Name;
 
-        private static bool HasConfigFile()
-        {
-            ConfigFile.Refresh();
-            return ConfigFile.Exists;
-        }
-
         private static bool NeedsNewConfig(string version)
         {
             if (version == Mod.Version) { return false; }
             Mod.Warning($"Loaded config version ({version ?? "NULL"}) is different from the current mod version");
 
             return VersionNeedsNewConfig || (version != Mod.LastVersion);
+        }
+
+        public static XElement LoadXml(FileInfo file, bool errorOnFail = false)
+        {
+            try
+            {
+                return XDocument.Load(file.FullName).Root;
+            }
+            catch (Exception ex)
+            {
+                var message = $"Failed to load xml file '{file.FullName}' due to exception '{ex.Message}'";
+                if (errorOnFail) { Mod.Error(message); }
+                else { Mod.Warning(message); }
+
+                return null;
+            }
         }
 
         public static void Load()
@@ -88,14 +101,20 @@ namespace RimHUD.Data
 
         private static void LoadAll()
         {
-            if (!HasConfigFile())
+            if (!ConfigFile.ExistsNow())
             {
                 Save();
                 return;
             }
 
-            var doc = XDocument.Load(ConfigFile.FullName);
-            var versionAttribute = doc.Root?.Attribute("Version");
+            var xml = LoadXml(ConfigFile);
+            if (xml == null)
+            {
+                Save();
+                return;
+            }
+
+            var versionAttribute = xml.Attribute("Version");
             var loadedVersion = versionAttribute?.Value;
             if (NeedsNewConfig(loadedVersion))
             {
@@ -107,16 +126,16 @@ namespace RimHUD.Data
                 return;
             }
 
-            if (versionAttribute == null) { doc.Root?.Add(new XAttribute("Version", Mod.Version)); }
+            if (versionAttribute == null) { xml.Add(new XAttribute("Version", Mod.Version)); }
             else { versionAttribute.Value = Mod.Version; }
 
-            LoadElements(typeof(Theme), doc.Root);
+            LoadElements(typeof(Theme), xml);
 
-            foreach (var integration in GetIntegrations()) { LoadClassElements(integration, doc.Root); }
+            foreach (var integration in GetIntegrations()) { LoadClassElements(integration, xml); }
 
             LoadLayouts(false);
 
-            doc.Save(ConfigFile.FullName);
+            xml.Save(ConfigFile.FullName);
         }
 
         private static void LoadClassElements(object subject, XElement root)
@@ -134,7 +153,7 @@ namespace RimHUD.Data
 
             foreach (var propertyInfo in type.GetProperties())
             {
-                var option = propertyInfo.TryGetAttribute<Option>();
+                var option = propertyInfo.TryGetAttribute<Attributes.Option>();
                 if (option == null) { continue; }
 
                 var propertyValue = propertyInfo.GetValue(instance, null);
@@ -190,7 +209,7 @@ namespace RimHUD.Data
 
             foreach (var propertyInfo in type.GetProperties())
             {
-                var option = propertyInfo.TryGetAttribute<Option>();
+                var option = propertyInfo.TryGetAttribute<Attributes.Option>();
                 if (option == null) { continue; }
 
                 var propertyValue = propertyInfo.GetValue(instance, null);
@@ -218,16 +237,30 @@ namespace RimHUD.Data
             if (categories.Count > 0) { current.Add(categories.Values); }
         }
 
+        public static LayoutPreset[] BuildPresetsList()
+        {
+            var list = new List<LayoutPreset>();
+            foreach (var mod in LoadedModManager.RunningMods)
+            {
+                var directory = new DirectoryInfo(Path.Combine(mod.RootDir, PresetsDirectoryName));
+                if (!directory.Exists) { continue; }
+
+                list.AddRange(directory.GetFiles("*" + PresetExtension).Select(file => LayoutPreset.Prepare(mod, file)).Where(preset => preset != null));
+            }
+
+            return list.ToArray();
+        }
+
         private static void LoadLayouts(bool reset)
         {
             var docked = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.DockedFileName));
             var floating = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.FloatingFileName));
 
-            if (!reset && docked.Exists) { HudLayout.Docked = HudLayout.FromXml(XDocument.Load(docked.FullName)); }
-            else { HudLayout.Docked.AsXDocument().Save(docked.FullName); }
+            if (!reset && docked.Exists && LoadXml(docked) is XElement dockedXe) { HudLayout.Docked = HudLayout.FromXml(dockedXe); }
+            else { HudLayout.Docked.ToXml().Save(docked.FullName); }
 
-            if (!reset && floating.Exists) { HudLayout.Floating = HudLayout.FromXml(XDocument.Load(floating.FullName)); }
-            else { HudLayout.Floating.AsXDocument().Save(floating.FullName); }
+            if (!reset && floating.Exists && LoadXml(floating) is XElement floatingXe) { HudLayout.Floating = HudLayout.FromXml(floatingXe); }
+            else { HudLayout.Floating.ToXml().Save(floating.FullName); }
         }
 
         public static void SaveLayouts()
@@ -235,54 +268,10 @@ namespace RimHUD.Data
             var docked = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.DockedFileName));
             var floating = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.FloatingFileName));
 
-            HudLayout.Docked.AsXDocument().Save(docked.FullName);
-            HudLayout.Floating.AsXDocument().Save(floating.FullName);
+            HudLayout.Docked.ToXml().Save(docked.FullName);
+            HudLayout.Floating.ToXml().Save(floating.FullName);
         }
 
         public static void OpenConfigFolder() => Process.Start(Mod.ConfigDirectory.FullName);
-
-        [AttributeUsage(AttributeTargets.Class)]
-        public class IntegratedOptions : Attribute
-        { }
-
-        [AttributeUsage(AttributeTargets.Property)]
-        public class Option : Attribute
-        {
-            public Type Type { get; }
-            public string Category { get; }
-            public string Label { get; }
-
-            public Option(string label, Type type = null) : this(null, label, type)
-            { }
-            public Option(Type type) : this(null, null, type)
-            { }
-            public Option(string category, string label, Type type = null)
-            {
-                Category = category;
-                Label = label;
-                Type = type;
-            }
-
-            public string ConvertToXml(object value)
-            {
-                if (Type == null) { return null; }
-
-                return Type == typeof(Color) ? ((Color) value).ToHex() : value.ToString();
-            }
-
-            public object ConvertFromXml(string text)
-            {
-                if (Type == null) { return null; }
-
-                object value;
-                if (Type == typeof(string)) { value = text; }
-                else if (Type == typeof(bool)) { value = text.ToBool(); }
-                else if (Type == typeof(int)) { value = text.ToInt(); }
-                else if (Type == typeof(Color)) { value = GUIPlus.HexToColor(text); }
-                else { return null; }
-
-                return value;
-            }
-        }
     }
 }

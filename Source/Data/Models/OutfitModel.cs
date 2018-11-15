@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using RimHUD.Patch;
+using RimHUD.Extensions;
 using RimWorld;
 using UnityEngine;
 using Verse;

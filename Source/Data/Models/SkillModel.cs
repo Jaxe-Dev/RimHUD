@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using RimHUD.Extensions;
 using RimHUD.Interface;
 using RimHUD.Patch;
 using RimWorld;
