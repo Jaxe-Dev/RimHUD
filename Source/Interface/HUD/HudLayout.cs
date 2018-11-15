@@ -69,14 +69,20 @@ namespace RimHUD.Interface.HUD
         public static HudLayout FromXml(XElement xe) => new HudLayout(xe);
         public static HudLayout FromLayoutView(LayoutEditor editor) => new HudLayout(editor.Root.ToXml());
 
-        public override XElement ToXml()
+        public override XElement ToXml() => ToXml(null);
+
+        public XElement ToXml(string name, bool includeHeight = false, bool includeWidth = false, bool includeTabs = false)
         {
-            var xml = new XElement(RootName);
+            var xml = new XElement(name ?? RootName);
+            if (includeHeight) { xml.Add(new XAttribute(HeightAttributeName, true)); }
+            if (includeWidth) { xml.Add(new XAttribute(WidthAttributeName, true)); }
+            if (includeTabs) { xml.Add(new XAttribute(TabsAttributeName, true)); }
+
             foreach (var container in Containers) { xml.Add(container.ToXml()); }
             return xml;
         }
 
-        public static void LoadDefault()
+        private static void LoadDefault()
         {
             Docked = DefaultDocked;
             Floating = DefaultFloating;
@@ -93,14 +99,6 @@ namespace RimHUD.Interface.HUD
         public static void LoadDefaultAndSave()
         {
             LoadDefault();
-            Persistent.SaveLayouts();
-        }
-
-        public static void LoadPreset(string id)
-        {
-            Docked = FromEmbedded($"Presets.{id}.Docked.xml");
-            Floating = FromEmbedded($"Presets.{id}.Floating.xml");
-
             Persistent.SaveLayouts();
         }
 

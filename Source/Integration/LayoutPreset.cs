@@ -10,11 +10,13 @@ namespace RimHUD.Integration
 {
     internal class LayoutPreset
     {
-        private const string VersionAttributeName = "Version";
+        public const string RootElementName = "Preset";
+        public const string VersionAttributeName = "Version";
 
-        public static LayoutPreset[] List { get; private set; } = Persistent.BuildPresetsList();
+        public static LayoutPreset[] FixedList { get; } = Persistent.BuildFixedPresetsList();
+        public static LayoutPreset[] UserList { get; private set; } = Persistent.BuildUserPresetsList();
 
-        private readonly FileInfo _file;
+        public FileInfo File { get; }
         public string Name { get; }
         public string Mod { get; }
         public string Label => Name + " " + Mod.Size(Theme.SmallTextStyle.ActualSize).Italic();
@@ -22,7 +24,7 @@ namespace RimHUD.Integration
 
         private LayoutPreset(string name, string mod, FileInfo file)
         {
-            _file = file;
+            File = file;
             Name = name;
             IsUserMade = mod == null;
             Mod = mod ?? Lang.Get("Layout.UserPreset");
@@ -52,22 +54,22 @@ namespace RimHUD.Integration
                 return preset;
             }
             var version = new Version(versionText);
-            if (new Version(RimHUD.Mod.Version).ComparePartial(version) == 1) { RimHUD.Mod.Warning($"{name} ({modName}) was built for a lower version of RimHUD ({versionText})"); }
+            if (new Version(RimHUD.Mod.Version).ComparePartial(version) == 1) { RimHUD.Mod.Warning($"{name} {(modName == null ? null : "(" + modName + ")")} was built for a lower version of RimHUD ({versionText})"); }
 
             return preset;
         }
 
-        public static void RefreshList() => List = Persistent.BuildPresetsList();
+        public static void RefreshUserPresets() => UserList = Persistent.BuildUserPresetsList();
 
         public bool Load()
         {
-            if (!_file.ExistsNow())
+            if (!File.ExistsNow())
             {
-                RefreshList();
+                RefreshUserPresets();
                 return false;
             }
 
-            var xml = Persistent.LoadXml(_file);
+            var xml = Persistent.LoadXml(File);
             if (xml == null)
             {
                 RimHUD.Mod.Error($"Unable to load preset '{Label}'");

@@ -11,8 +11,10 @@ namespace RimHUD.Data.Models
 {
     internal static class HudModel
     {
-        public const string CustomNeedType = "Need";
-        public const string CustomSkillType = "Skill";
+        public const string StatTypeName = "Stat";
+        public const string RecordTypeName = "Record";
+        public const string CustomNeedTypeName = "Need";
+        public const string CustomSkillTypeName = "Skill";
 
         private static readonly Dictionary<string, Func<PawnModel, HudWidget>> Widgets = new Dictionary<string, Func<PawnModel, HudWidget>>
         {
@@ -99,13 +101,17 @@ namespace RimHUD.Data.Models
         public static readonly LayoutItem PanelComponent = new LayoutItem(LayoutItemType.Panel, HudPanel.Name);
         public static readonly LayoutItem RowComponent = new LayoutItem(LayoutItemType.Row, HudRow.Name);
         public static readonly LayoutItem[] ElementComponents = Widgets.Select(widget => new LayoutItem(LayoutItemType.Element, widget.Key)).ToArray();
-        public static readonly LayoutItem[] CustomNeedComponents = DefDatabase<NeedDef>.AllDefs.Where(skill => !StandardNeeds.Contains(skill.defName)).Select(need => new LayoutItem(LayoutItemType.Element, CustomNeedType, need)).ToArray();
-        public static readonly LayoutItem[] CustomSkillComponents = DefDatabase<SkillDef>.AllDefs.Where(skill => !StandardSkills.Contains(skill.defName)).Select(skill => new LayoutItem(LayoutItemType.Element, CustomSkillType, skill)).ToArray();
+        public static readonly LayoutItem[] StatComponents = DefDatabase<StatDef>.AllDefs.Select(stat => new LayoutItem(LayoutItemType.Element, StatTypeName, stat)).ToArray();
+        public static readonly LayoutItem[] RecordComponents = DefDatabase<RecordDef>.AllDefs.Select(record => new LayoutItem(LayoutItemType.Element, RecordTypeName, record)).ToArray();
+        public static readonly LayoutItem[] CustomNeedComponents = DefDatabase<NeedDef>.AllDefs.Where(skill => !StandardNeeds.Contains(skill.defName)).Select(need => new LayoutItem(LayoutItemType.CustomElement, CustomNeedTypeName, need)).ToArray();
+        public static readonly LayoutItem[] CustomSkillComponents = DefDatabase<SkillDef>.AllDefs.Where(skill => !StandardSkills.Contains(skill.defName)).Select(skill => new LayoutItem(LayoutItemType.CustomElement, CustomSkillTypeName, skill)).ToArray();
 
-        public static bool IsValidType(string id) => Widgets.ContainsKey(id) || (id == CustomNeedType) || (id == CustomSkillType);
+        public static bool IsValidType(string id) => Widgets.ContainsKey(id) || (id == StatTypeName) || (id == RecordTypeName) || (id == CustomNeedTypeName) || (id == CustomSkillTypeName);
 
         public static HudWidget GetWidget(PawnModel model, string id, string defName)
         {
+            if (id == "Stat") { return GetStatWidget(model, defName); }
+            if (id == "Record") { return GetRecordWidget(model, defName); }
             if (id == "Need") { return GetNeedWidget(model, defName); }
             if (id == "Skill") { return GetSkillWidget(model, defName); }
 
@@ -113,6 +119,35 @@ namespace RimHUD.Data.Models
             if (widget == null) { throw new Mod.Exception($"Invalid HUD Widget, type '{id}' is not recognized"); }
 
             return widget.Invoke(model) ?? HudBlank.GetEmpty;
+        }
+
+        private static HudWidget GetStatWidget(PawnModel model, string defName)
+        {
+            var def = DefDatabase<StatDef>.GetNamed(defName, false);
+            if (def != null)
+            {
+                if (def.Worker.IsDisabledFor(model.Base)) { return HudBlank.GetEmpty; }
+                var text = $"{def.LabelCap}: {def.ValueToString(model.Base.GetStatValue(def))}";
+                return (HudWidget) HudValue.FromText(text, null, Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
+            }
+
+            Mod.Warning($"Invalid HUD Widget, Stat def '{defName}' not found, resetting layout to default");
+            RequiredReset();
+            return HudBlank.GetEmpty;
+        }
+
+        private static HudWidget GetRecordWidget(PawnModel model, string defName)
+        {
+            var def = DefDatabase<RecordDef>.GetNamed(defName, false);
+            if (def != null)
+            {
+                var text = $"{def.LabelCap}: {(def.type == RecordType.Time ? model.Base.records.GetAsInt(def).ToStringTicksToPeriod() : model.Base.records.GetValue(def).ToString("0.##"))}";
+                return (HudWidget) HudValue.FromText(text, null, Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
+            }
+
+            Mod.Warning($"Invalid HUD Widget, Record def '{defName}' not found, resetting layout to default");
+            RequiredReset();
+            return HudBlank.GetEmpty;
         }
 
         private static HudWidget GetNeedWidget(PawnModel model, string defName)
