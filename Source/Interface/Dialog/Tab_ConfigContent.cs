@@ -2,9 +2,9 @@
 using System.Linq;
 using RimHUD.Data;
 using RimHUD.Data.Models;
+using RimHUD.Extensions;
 using RimHUD.Integration;
 using RimHUD.Interface.HUD;
-using RimHUD.Patch;
 using UnityEngine;
 using Verse;
 
@@ -27,8 +27,8 @@ namespace RimHUD.Interface.Dialog
             if (!l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Mode"))) { return; }
             var presets = new List<FloatMenuOption>
             {
-                        new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Mode.Docked"), () => RefreshEditor(true)),
-                        new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Mode.Floating"), () => RefreshEditor(false))
+                new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Mode.Docked"), () => RefreshEditor(true)),
+                new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Mode.Floating"), () => RefreshEditor(false))
             };
 
             Find.WindowStack.Add(new FloatMenu(presets));
@@ -38,14 +38,10 @@ namespace RimHUD.Interface.Dialog
         {
             if (!l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Preset"))) { return; }
 
-            var presets = new List<FloatMenuOption>
-            {
-                        new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Preset.Default"), LoadDefaultPreset),
-                        new FloatMenuOption("Dubs Bad Hygiene", () => TryLoadPreset(LayoutPresets.DubsBadHygiene, "DBH")),
-                        new FloatMenuOption("A RimWorld of Magic", () => TryLoadPreset(LayoutPresets.RimWorldOfMagic, "RoM"))
-            };
+            var presets = new List<FloatMenuOption> { new FloatMenuOption(Lang.Get("Dialog_Config.Tab.Content.Preset.Default"), LoadDefaultPreset) };
+            presets.AddRange(LayoutPreset.List.Select(preset => new FloatMenuOption(preset.Label, () => LoadPreset(preset))));
 
-            Find.WindowStack.Add(new FloatMenu(presets));
+            presets.ShowMenu();
         }
 
         public override void Draw(Rect rect)
@@ -64,6 +60,11 @@ namespace RimHUD.Interface.Dialog
             l.Label(Lang.Get("Dialog_Config.Tab.Content.Layout").Bold());
             DrawModeSelector(l);
             DrawPresetSelector(l);
+            /*
+            var importExportGrid = l.GetButtonGrid(-1f, -1f);
+            if (GUIPlus.DrawButton(importExportGrid[1], Lang.Get("Dialog_Config.Tab.Content.Layout.SavePreset"))) { }
+            if (GUIPlus.DrawButton(importExportGrid[2], Lang.Get("Dialog_Config.Tab.Content.Layout.ManagePresets"))) { Dialog_Presets.Open(); }
+            */
             l.Gap();
 
             var canAddContainer = _editor.CanAddContainer;
@@ -72,8 +73,10 @@ namespace RimHUD.Interface.Dialog
             var hasSelected = _editor.HasSelected;
 
             l.Label(Lang.Get("Dialog_Config.Tab.Content.Component").Bold());
-            if (l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.MoveUp"), enabled: hasSelected && _editor.Selected.CanMoveUp)) { _editor.Selected.MoveUp(); }
-            if (l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.MoveDown"), enabled: hasSelected && _editor.Selected.CanMoveDown)) { _editor.Selected.MoveDown(); }
+            var moveButtonsGrid = l.GetButtonGrid(-1f, -1f);
+            if (GUIPlus.DrawButton(moveButtonsGrid[1], Lang.Get("Dialog_Config.Tab.Content.Component.MoveUp"), enabled: hasSelected && _editor.Selected.CanMoveUp)) { _editor.Selected.MoveUp(); }
+            if (GUIPlus.DrawButton(moveButtonsGrid[2], Lang.Get("Dialog_Config.Tab.Content.Component.MoveDown"), enabled: hasSelected && _editor.Selected.CanMoveDown)) { _editor.Selected.MoveDown(); }
+
             if (l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.Remove"), enabled: hasSelected && _editor.Selected.CanRemove))
             {
                 _editor.Selected.Remove();
@@ -84,8 +87,10 @@ namespace RimHUD.Interface.Dialog
             if (canAddContainer && l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.Panel"), Lang.Get("Dialog_Config.Tab.Content.Component.PanelDesc"))) { _editor.Add(HudModel.PanelComponent); }
             if (canAddRow && l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.Row"), Lang.Get("Dialog_Config.Tab.Content.Component.RowDesc"))) { _editor.Add(HudModel.RowComponent); }
             if (canAddElement && l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.Element"), Lang.Get("Dialog_Config.Tab.Content.Component.ElementDesc"))) { HudModel.ElementComponents.Select(container => new FloatMenuOption(container.Label, () => _editor.Add(container))).ShowMenu(); }
-            if (canAddElement && l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.CustomNeed"), enabled: HudModel.CustomNeedComponents.Length > 0)) { HudModel.CustomNeedComponents.Select(container => new FloatMenuOption(container.Label, () => _editor.Add(container))).ShowMenu(); }
-            if (canAddElement && l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.CustomSkill"), enabled: HudModel.CustomSkillComponents.Length > 0)) { HudModel.CustomSkillComponents.Select(container => new FloatMenuOption(container.Label, () => _editor.Add(container))).ShowMenu(); }
+
+            var customButtonsGrid = l.GetButtonGrid(-1f, -1f);
+            if (canAddElement && GUIPlus.DrawButton(customButtonsGrid[1], Lang.Get("Dialog_Config.Tab.Content.Component.CustomNeed"), enabled: HudModel.CustomNeedComponents.Length > 0)) { HudModel.CustomNeedComponents.Select(container => new FloatMenuOption(container.Label, () => _editor.Add(container))).ShowMenu(); }
+            if (canAddElement && GUIPlus.DrawButton(customButtonsGrid[2], Lang.Get("Dialog_Config.Tab.Content.Component.CustomSkill"), enabled: HudModel.CustomSkillComponents.Length > 0)) { HudModel.CustomSkillComponents.Select(container => new FloatMenuOption(container.Label, () => _editor.Add(container))).ShowMenu(); }
 
             l.End();
 
@@ -112,21 +117,19 @@ namespace RimHUD.Interface.Dialog
 
         private void LoadDefaultPreset()
         {
-            HudLayout.LoadDefault();
+            HudLayout.LoadDefaultAndSave();
             Dialog_Alert.Open(Lang.Get("Dialog_Config.Tab.Content.Preset.DefaultLoaded"));
             RefreshEditor();
         }
 
-        private void TryLoadPreset(ExternalMod mod, string id)
+        private void LoadPreset(LayoutPreset preset)
         {
-            if (!mod.IsActive)
+            if (!preset.Load())
             {
-                Dialog_Alert.Open(Lang.Get("Dialog_Config.Tab.Content.Preset.Invalid", mod.Name));
+                Dialog_Alert.Open(Lang.Get("Dialog_Config.Tab.Content.Preset.Invalid", preset.Label));
                 return;
             }
-
-            HudLayout.LoadPreset(id);
-            Dialog_Alert.Open(Lang.Get("Dialog_Config.Tab.Content.Preset.Loaded", mod.Name));
+            Dialog_Alert.Open(Lang.Get("Dialog_Config.Tab.Content.Preset.Loaded", preset.Label));
             RefreshEditor();
         }
     }

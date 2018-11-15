@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using RimHUD.Data;
-using RimHUD.Patch;
+using RimHUD.Extensions;
 using UnityEngine;
 using Verse;
 using ColorOption = RimHUD.Data.ColorOption;
@@ -168,6 +168,14 @@ namespace RimHUD.Interface.Dialog
             var result = new Rect(curX, curY, ColumnWidth, height);
             curY += height;
             return result;
+        }
+
+        public Rect[] GetButtonGrid(params float[] widths)
+        {
+            var rect = GetRect(GUIPlus.ButtonHeight);
+            Gap(verticalSpacing);
+
+            return rect.GetHGrid(GUIPlus.SmallPadding, widths);
         }
     }
 }

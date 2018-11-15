@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Xml.Linq;
 using RimHUD.Data.Models;
+using RimHUD.Extensions;
 using RimHUD.Interface.Dialog;
-using RimHUD.Patch;
 using UnityEngine;
 
 namespace RimHUD.Interface.HUD

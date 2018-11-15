@@ -39,42 +39,51 @@ namespace RimHUD.Interface
             rect.yMin -= 4f;
             rect.yMax += 6f;
 
-            GUI.BeginGroup(rect.ExpandedBy(1f));
-
-            var lineEndWidth = 0f;
-
-            if (pane.ShouldShowSelectNextInCellButton)
+            try
             {
-                var selectOverlappingNextRect = new Rect(rect.width - ButtonSize, 0f, ButtonSize, ButtonSize);
-                if (Widgets.ButtonImage(selectOverlappingNextRect, Textures.SelectOverlappingNext)) { pane.SelectNextInCell(); }
-                lineEndWidth += ButtonSize;
-                TooltipHandler.TipRegion(selectOverlappingNextRect, "SelectNextInSquareTip".Translate(KeyBindingDefOf.SelectNextInCell.MainKeyLabel));
+                GUI.BeginGroup(rect.ExpandedBy(1f));
+
+                var lineEndWidth = 0f;
+
+                if (pane.ShouldShowSelectNextInCellButton)
+                {
+                    var selectOverlappingNextRect = new Rect(rect.width - ButtonSize, 0f, ButtonSize, ButtonSize);
+                    if (Widgets.ButtonImage(selectOverlappingNextRect, Textures.SelectOverlappingNext)) { pane.SelectNextInCell(); }
+                    lineEndWidth += ButtonSize;
+                    TooltipHandler.TipRegion(selectOverlappingNextRect, "SelectNextInSquareTip".Translate(KeyBindingDefOf.SelectNextInCell.MainKeyLabel));
+                }
+
+                DrawButtons(rect, ref lineEndWidth);
+
+                var previousAnchor = Text.Anchor;
+                Text.Anchor = TextAnchor.UpperLeft;
+                GUIPlus.SetFont(GameFont.Medium);
+                GUIPlus.SetColor(model.FactionRelationColor);
+
+                var labelRect = new Rect(0f, 0f, rect.width - lineEndWidth, Text.LineHeight);
+                var label = model.Name;
+
+                Widgets.Label(labelRect, label);
+
+                GUIPlus.ResetFont();
+                GUIPlus.ResetColor();
+                Text.Anchor = previousAnchor;
+                GUIPlus.DrawTooltip(labelRect, model.BioTooltip, false);
+
+                if (!pane.ShouldShowPaneContents) { return; }
+
+                var contentRect = rect.AtZero();
+                contentRect.yMin += 26f;
+                DrawContent(contentRect, model, null);
             }
-
-            DrawButtons(rect, ref lineEndWidth);
-
-            var previousAnchor = Text.Anchor;
-            Text.Anchor = TextAnchor.UpperLeft;
-            GUIPlus.SetFont(GameFont.Medium);
-            GUIPlus.SetColor(model.FactionRelationColor);
-
-            var labelRect = new Rect(0f, 0f, rect.width - lineEndWidth, Text.LineHeight);
-            var label = model.Name;
-
-            Widgets.Label(labelRect, label);
-
-            GUIPlus.ResetFont();
-            GUIPlus.ResetColor();
-            Text.Anchor = previousAnchor;
-            GUIPlus.DrawTooltip(labelRect, model.BioTooltip, false);
-
-            if (!pane.ShouldShowPaneContents) { return; }
-
-            var contentRect = rect.AtZero();
-            contentRect.yMin += 26f;
-            DrawContent(contentRect, model, null);
-
-            GUI.EndGroup();
+            catch (Exception ex)
+            {
+                Mod.Error(ex.Message);
+            }
+            finally
+            {
+                GUI.EndGroup();
+            }
         }
 
         public static void DrawContent(Rect rect, PawnModel model, Pawn pawn)
@@ -129,7 +138,7 @@ namespace RimHUD.Interface
 
                 GUI.DrawTexture(new Rect(0.0f, y, width, 30f), Textures.InspectTabButtonFill);
             }
-            catch (Exception ex) { Log.ErrorOnce(ex.ToString(), 742783); }
+            catch (Exception ex) { Mod.ErrorOnce(ex.ToString(), "DrawTabs error"); }
 
             return false;
         }
