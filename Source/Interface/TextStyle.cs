@@ -1,6 +1,6 @@
 ﻿using System;
 using RimHUD.Data;
-using RimHUD.Patch;
+using RimHUD.Extensions;
 using UnityEngine;
 
 namespace RimHUD.Interface
@@ -12,8 +12,8 @@ namespace RimHUD.Interface
         public GUIStyle GUIStyle { get; private set; }
         public int ActualSize => GUIStyle.fontSize;
 
-        [Persistent.Option("Size")] public RangeOption Size { get; }
-        [Persistent.Option("Height")] public RangeOption Height { get; }
+        [Attributes.Option("Size")] public RangeOption Size { get; }
+        [Attributes.Option("Height")] public RangeOption Height { get; }
 
         private readonly Action<TextStyle> _onChange;
         public float LineHeight;

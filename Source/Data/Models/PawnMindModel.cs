@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using RimHUD.Extensions;
 using RimHUD.Interface;
-using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -61,7 +61,13 @@ namespace RimHUD.Data.Models
                 else if (offset > 0) { color = Theme.GoodColor.Value; }
                 else { color = Theme.InfoColor.Value; }
 
-                var line = $"{thought.LabelCap}: {offset}".Color(color);
+                var similar = new List<Thought>();
+                Model.Base.needs.mood.thoughts.GetMoodThoughts(thought, similar);
+
+                var thoughtLabel = thought.LabelCap;
+                if (similar.Count > 1) { thoughtLabel += " x" + similar.Count;}
+                
+                var line = $"{thoughtLabel}: {offset * similar.Count}".Color(color);
                 builder.AppendLine(line);
             }
 

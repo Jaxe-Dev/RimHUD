@@ -1,4 +1,5 @@
-﻿using RimHUD.Interface;
+﻿using RimHUD.Extensions;
+using RimHUD.Interface;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;

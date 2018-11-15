@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using RimHUD.Patch;
+using RimHUD.Extensions;
 using UnityEngine;
 
 namespace RimHUD.Interface.Dialog

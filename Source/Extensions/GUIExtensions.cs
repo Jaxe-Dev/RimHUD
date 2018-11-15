@@ -1,33 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using RimHUD.Interface;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Patch
+namespace RimHUD.Extensions
 {
-    internal static class Extensions
+    internal static class GUIExtensions
     {
-        public static string Italic(this string self) => "<i>" + self + "</i>";
-        public static string Bold(this string self) => "<b>" + self + "</b>";
-        public static string Color(this string self, Color color) => $"<color=#{color.ToHex()}>{self}</color>";
-        public static string Size(this string self, int size) => $"<size={size}>{self}</size>";
-        public static void TryAppendLine(this StringBuilder self, string text)
-        {
-            if (text != null) { self.AppendLine(text); }
-        }
-        public static string ToStringTrimmed(this StringBuilder self) => self.ToString().TrimEnd('\n');
-        public static int LastIndex(this IList self) => self.Count - 1;
         public static string ToHex(this Color color) => ColorUtility.ToHtmlStringRGBA(color);
-        public static int? ToInt(this string self) => int.TryParse(self, out var result) ? result : (int?) null;
-        public static bool? ToBool(this string self) => bool.TryParse(self, out var result) ? result : (bool?) null;
-        public static string ToDecimalString(this int self, int remainder) => !Theme.ShowDecimals.Value ? self.ToString().Bold() : $"{self.ToString().Bold()}.{(remainder >= 100 ? "99" : remainder.ToString("D2")).Size(Theme.SmallTextStyle.ActualSize)}";
-        public static int ToPercentageInt(this float self) => Mathf.RoundToInt(self * 100f);
-        public static float ToPercentageFloat(this int self) => self / 100f;
-
         public static GUIStyle SetTo(this GUIStyle self, int? size = null, TextAnchor? alignment = null, bool? wrap = null) => new GUIStyle(self) { fontSize = size ?? self.fontSize, alignment = alignment ?? self.alignment, wordWrap = wrap ?? self.wordWrap };
         public static GUIStyle ResizedBy(this GUIStyle self, int size = 0) => new GUIStyle(self) { fontSize = self.fontSize + size };
 
@@ -111,30 +91,6 @@ namespace RimHUD.Patch
 
             return rects.ToArray();
         }
-
-        public static int ComparePartial(this Version self, Version other)
-        {
-            if (other == null) { return 1; }
-
-            if (self.Major > other.Major) { return 1; }
-            if (self.Major < other.Major) { return -1; }
-
-            if ((self.Minor == -1) || (other.Minor == -1)) { return 0; }
-            if (self.Minor > other.Minor) { return 1; }
-            if (self.Minor < other.Minor) { return -1; }
-
-            if ((self.Build == -1) || (other.Build == -1)) { return 0; }
-            if (self.Build > other.Build) { return 1; }
-            if (self.Build < other.Build) { return -1; }
-
-            if ((self.Revision == -1) || (other.Revision == -1)) { return 0; }
-            if (self.Revision > other.Revision) { return 1; }
-            if (self.Revision < other.Revision) { return -1; }
-
-            return 0;
-        }
-
-        public static string GetName(this Pawn self) => self.Name?.ToStringFull.CapitalizeFirst() ?? self.LabelCap;
         public static void ShowMenu(this IEnumerable<FloatMenuOption> self) => Find.WindowStack.Add(new FloatMenu(self.ToList()));
     }
 }

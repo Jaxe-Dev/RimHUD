@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using RimHUD.Patch;
+using RimHUD.Extensions;
 using Verse;
 
 namespace RimHUD.Data

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+using RimHUD.Extensions;
 using RimHUD.Interface.Dialog;
-using RimHUD.Patch;
 
 namespace RimHUD.Interface.HUD
 {

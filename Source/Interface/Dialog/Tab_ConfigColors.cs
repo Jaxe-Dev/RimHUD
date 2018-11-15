@@ -1,6 +1,6 @@
 ﻿using RimHUD.Data;
+using RimHUD.Extensions;
 using RimHUD.Integration;
-using RimHUD.Patch;
 using UnityEngine;
 using Verse;
 using ColorOption = RimHUD.Data.ColorOption;
