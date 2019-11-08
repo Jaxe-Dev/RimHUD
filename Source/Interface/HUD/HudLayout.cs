@@ -2,8 +2,10 @@
 using System.Xml;
 using System.Xml.Linq;
 using RimHUD.Data;
+using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
-using RimHUD.Extensions;
+using RimHUD.Data.Storage;
+using RimHUD.Data.Theme;
 using RimHUD.Interface.Dialog;
 using UnityEngine;
 using Verse;
@@ -24,8 +26,8 @@ namespace RimHUD.Interface.HUD
         private const string TabsAttributeName = "Tabs";
         private const string WidthAttributeName = "Width";
 
-        private static readonly HudLayout DefaultDocked = FromEmbedded("DefaultDocked.xml");
-        private static readonly HudLayout DefaultFloating = FromEmbedded("DefaultFloating.xml");
+        private static readonly HudLayout DefaultDocked = FromEmbedded("Defaults.Docked.xml");
+        private static readonly HudLayout DefaultFloating = FromEmbedded("Defaults.Floating.xml");
 
         public static HudLayout Docked { get; set; } = DefaultDocked;
         public static HudLayout Floating { get; set; } = DefaultFloating;
@@ -59,7 +61,7 @@ namespace RimHUD.Interface.HUD
 
         private static HudLayout FromEmbedded(string id)
         {
-            using (var stream = Mod.Assembly.GetManifestResourceStream("RimHUD.Layouts." + id))
+            using (var stream = Mod.Assembly.GetManifestResourceStream("RimHUD.Interface.Layout.Presets." + id))
             {
                 if (stream == null) { throw new Mod.Exception($"Cannot find embedded HUD layout '{id}'"); }
                 using (var reader = XmlReader.Create(stream)) { return FromXml(XDocument.Load(reader).Root) ?? throw new Mod.Exception($"Error reading embedded HUD layout '{id}'"); }
@@ -71,12 +73,13 @@ namespace RimHUD.Interface.HUD
 
         public override XElement ToXml() => ToXml(null);
 
-        public XElement ToXml(string name, bool includeHeight = false, bool includeWidth = false, bool includeTabs = false)
+        public XElement ToXml(string name, int height = -1, int width = -1, int tabs = -1)
         {
             var xml = new XElement(name ?? RootName);
-            if (includeHeight) { xml.Add(new XAttribute(HeightAttributeName, true)); }
-            if (includeWidth) { xml.Add(new XAttribute(WidthAttributeName, true)); }
-            if (includeTabs) { xml.Add(new XAttribute(TabsAttributeName, true)); }
+
+            if (height > 0) { xml.Add(new XAttribute(HeightAttributeName, height)); }
+            if (width > 0) { xml.Add(new XAttribute(WidthAttributeName, width)); }
+            if (tabs > 0) { xml.Add(new XAttribute(TabsAttributeName, tabs)); }
 
             foreach (var container in Containers) { xml.Add(container.ToXml()); }
             return xml;
@@ -106,7 +109,7 @@ namespace RimHUD.Interface.HUD
         {
             try
             {
-                if ((model.Base != _lastPawn) || (_lastDraw == default(DateTime)) || ((DateTime.Now - _lastDraw).TotalMilliseconds > Theme.RefreshRate.Value * 100))
+                if ((model.Base != _lastPawn) || (_lastDraw == default) || ((DateTime.Now - _lastDraw).TotalMilliseconds > (Theme.RefreshRate.Value * 100)))
                 {
                     Prepare(model);
                     _lastPawn = model.Base;
@@ -115,10 +118,11 @@ namespace RimHUD.Interface.HUD
 
                 Draw(rect);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
                 State.Activated = false;
-                Dialog_Alert.Open("RimHUD has automatically deactivated due to the following error:\n\n" + ex.Message.Italic());
+                Dialog_Error.Open(exception);
+                Mod.Warning("RimHUD Auto-deactivation reason:\n" + exception.Message + "\n\nStacktrace:\n" + exception.StackTrace);
             }
         }
     }

@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <LanguageData>
-
   <RimHUD.Theme.HudPosition>HUD Position</RimHUD.Theme.HudPosition>
   <RimHUD.Theme.HudDocked>Dock to Inspect Pane</RimHUD.Theme.HudDocked>
   <RimHUD.Theme.HudDockedDesc>Requires Inspect Pane to be modified, see below.</RimHUD.Theme.HudDockedDesc>
@@ -73,5 +71,4 @@
 
   <RimHUD.TextStyle.Size>Size</RimHUD.TextStyle.Size>
   <RimHUD.TextStyle.Height>Height</RimHUD.TextStyle.Height>
-
 </LanguageData>

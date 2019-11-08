@@ -1,7 +1,6 @@
 ﻿using System;
-using RimHUD.Data;
 
-namespace RimHUD.Compatibility
+namespace RimHUD.Data.Compatibility
 {
     internal abstract class CompatibilityPatch : ExternalMod
     {

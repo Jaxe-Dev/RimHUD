@@ -1,6 +1,6 @@
 ﻿using Harmony;
 using RimHUD.Data;
-using RimHUD.Interface;
+using RimHUD.Data.Theme;
 using RimWorld;
 using UnityEngine;
 

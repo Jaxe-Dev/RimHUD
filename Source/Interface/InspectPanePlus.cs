@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimHUD.Data;
 using RimHUD.Data.Models;
+using RimHUD.Data.Theme;
 using RimHUD.Interface.HUD;
 using RimHUD.Patch;
 using RimWorld;
@@ -23,8 +24,6 @@ namespace RimHUD.Interface
         private static int _lastBattleTick = -1;
         private static int _lastPlayTick = -1;
         private static Pawn _pawn;
-
-        private static void InterfaceToggleTab(InspectTabBase tab, IInspectPane pane) => Access.Method_RimWorld_InspectPaneUtility_InterfaceToggleTab.Invoke(null, new object[] { tab, pane });
 
         public static void OnGUI(Rect inRect, IInspectPane pane)
         {
@@ -64,6 +63,7 @@ namespace RimHUD.Interface
                 var label = model.Name;
 
                 Widgets.Label(labelRect, label);
+                if(Widgets.ButtonInvisible(labelRect)) { ToggleSocialTab(); }
 
                 GUIPlus.ResetFont();
                 GUIPlus.ResetColor();
@@ -76,14 +76,8 @@ namespace RimHUD.Interface
                 contentRect.yMin += 26f;
                 DrawContent(contentRect, model, null);
             }
-            catch (Exception ex)
-            {
-                Mod.Error(ex.Message);
-            }
-            finally
-            {
-                GUI.EndGroup();
-            }
+            catch (Exception ex) { Mod.Error(ex.Message); }
+            finally { GUI.EndGroup(); }
         }
 
         public static void DrawContent(Rect rect, PawnModel model, Pawn pawn)
@@ -212,10 +206,8 @@ namespace RimHUD.Interface
             Widgets.BeginScrollView(rect, ref _scrollPosition, viewRect);
 
             var y = 0f;
-            foreach (var line in _log)
+            foreach (var line in _log.OfType<ITab_Pawn_Log_Utility.LogLineDisplayableLog>())
             {
-                if (!(line is ITab_Pawn_Log_Utility.LogLineDisplayableLog)) { continue; }
-
                 line.Draw(y, width, _logDrawData);
                 y += line.GetHeight(width);
             }
@@ -232,5 +224,25 @@ namespace RimHUD.Interface
             _logDrawData = new ITab_Pawn_Log_Utility.LogDrawData();
             _scrollPosition = Vector2.zero;
         }
+
+        private static void InterfaceToggleTab(InspectTabBase tab, IInspectPane pane) => Access.Method_RimWorld_InspectPaneUtility_InterfaceToggleTab.Invoke(null, new object[] { tab, pane });
+
+        private static void ToggleTab(Type tabType)
+        {
+            var pane = (MainTabWindow_Inspect) MainButtonDefOf.Inspect.TabWindow;
+            var tab = (from t in pane.CurTabs where tabType.IsInstanceOfType(t) select t).FirstOrDefault();
+            if (tab == null) { return; }
+
+            if (Find.MainTabsRoot.OpenTab != MainButtonDefOf.Inspect) { Find.MainTabsRoot.SetCurrentTab(MainButtonDefOf.Inspect); }
+
+            Access.Method_RimWorld_InspectPaneUtility_ToggleTab.Invoke(null, new object[] { tab, pane });
+        }
+
+        public static void ToggleBioTab() => ToggleTab(typeof(ITab_Pawn_Character));
+        public static void ToggleGearTab() => ToggleTab(typeof(ITab_Pawn_Gear));
+        public static void ToggleHealthTab() => ToggleTab(typeof(ITab_Pawn_Health));
+        public static void ToggleNeedsTab() => ToggleTab(typeof(ITab_Pawn_Needs));
+        public static void ToggleSocialTab() => ToggleTab(typeof(ITab_Pawn_Social));
+        public static void ToggleTrainingTab() => ToggleTab(typeof(ITab_Pawn_Training));
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using RimHUD.Extensions;
+using RimHUD.Data.Extensions;
 using UnityEngine;
 
 namespace RimHUD.Interface.Dialog
@@ -23,6 +23,7 @@ namespace RimHUD.Interface.Dialog
             if (tabs.Length == 0) { return; }
             _selected = tabs[0];
         }
+
         public void Reset()
         {
             foreach (var tab in _tabs) { tab.Reset(); }
@@ -39,7 +40,7 @@ namespace RimHUD.Interface.Dialog
             {
                 var tab = _tabs[index];
                 GUIPlus.SetColor(tab == _selected ? GUIPlus.ButtonSelectedColor : (Color?) null);
-                if (GUIPlus.DrawButton(hGrid[index + 1], tab.Label, tab.Tooltip, tab.Enabled)) { _selected = tab; }
+                if (GUIPlus.DrawButton(hGrid[index + 1], tab.Label, tab.Tooltip, enabled: tab.Enabled)) { _selected = tab; }
                 GUIPlus.ResetColor();
             }
 

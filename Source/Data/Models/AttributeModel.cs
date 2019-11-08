@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using System;
+using Verse;
 
 namespace RimHUD.Data.Models
 {
@@ -8,6 +9,7 @@ namespace RimHUD.Data.Models
 
         public abstract string Label { get; }
         public abstract TipSignal? Tooltip { get; }
+        public Action OnClick { get; protected set; }
 
         protected PawnModel Model { get; }
 

@@ -1,4 +1,4 @@
-﻿using RimHUD.Extensions;
+﻿using RimHUD.Data.Extensions;
 using RimHUD.Interface;
 using RimHUD.Patch;
 using RimWorld;
@@ -39,9 +39,11 @@ namespace RimHUD.Data.Models
 
             Tooltip = model.GetAnimalTooltip(def);
 
-            if (disabled) { Color = Theme.DisabledColor.Value; }
-            else if (hasLearned) { Color = Theme.SkillMinorPassionColor.Value; }
-            else { Color = Theme.MainTextColor.Value; }
+            if (disabled) { Color = Theme.Theme.DisabledColor.Value; }
+            else if (hasLearned) { Color = Theme.Theme.SkillMinorPassionColor.Value; }
+            else { Color = Theme.Theme.MainTextColor.Value; }
+
+            OnClick = InspectPanePlus.ToggleTrainingTab;
         }
 
         private static int GetSteps(Pawn pawn, TrainableDef def) => (int) Access.Method_RimWorld_Pawn_TrainingTracker_GetSteps.Invoke(pawn.training, new object[] { def });

@@ -7,7 +7,6 @@ namespace RimHUD.Data.Models
         public abstract string Value { get; }
         public abstract Color? Color { get; }
 
-        protected ValueModel(PawnModel model) : base(model)
-        { }
+        protected ValueModel(PawnModel model) : base(model) { }
     }
 }

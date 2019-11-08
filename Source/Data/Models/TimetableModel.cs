@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using RimHUD.Extensions;
+using RimHUD.Data.Extensions;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
@@ -14,7 +14,6 @@ namespace RimHUD.Data.Models
         public override string Label { get; }
         public override TipSignal? Tooltip { get; }
         public override Color? Color { get; }
-        public override Action OnClick { get; }
         public override Action OnHover { get; }
 
         public TimetableModel(PawnModel model) : base(model)

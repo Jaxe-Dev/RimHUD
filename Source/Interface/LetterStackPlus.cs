@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RimHUD.Data.Theme;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
@@ -31,7 +32,7 @@ namespace RimHUD.Interface
             var regularLettersHeight = letters.Count * (LetterHeight + Theme.LetterPadding.Value);
             var controlsHeight = regularLettersHeight + alertsHeight;
             var controlsRect = new Rect(UI.screenWidth - ControlsWidth, baseY - controlsHeight, ControlsWidth, controlsHeight);
-            var needsCompression = !Theme.HudDocked.Value && hudRect.Overlaps(controlsRect) && (hudRect.yMax < baseY - MinimumCompressedHeight);
+            var needsCompression = !Theme.HudDocked.Value && hudRect.Overlaps(controlsRect) && (hudRect.yMax < (baseY - MinimumCompressedHeight));
 
             var minY = (needsCompression ? hudRect.yMax : 0f) + alertsHeight;
 

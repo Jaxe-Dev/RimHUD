@@ -1,7 +1,9 @@
 ﻿using System.Xml.Linq;
 using RimHUD.Data;
-using RimHUD.Extensions;
-using RimHUD.Integration;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Integration;
+using RimHUD.Data.Storage;
+using RimHUD.Data.Theme;
 using RimHUD.Interface.HUD;
 using UnityEngine;
 using Verse;
@@ -27,6 +29,7 @@ namespace RimHUD.Interface.Dialog
         }
 
         public static void Open() => Find.WindowStack.Add(new Dialog_SavePreset());
+
         protected override void DrawContent(Rect rect)
         {
             var l = new ListingPlus();
@@ -63,10 +66,11 @@ namespace RimHUD.Interface.Dialog
 
             xe.Add(new XAttribute(LayoutPreset.VersionAttributeName, Mod.Version));
 
-            if (_includeDocked) { xe.Add(HudLayout.Docked.ToXml(HudLayout.DockedElementName, _includeHeight, _includeWidth, _includeTabs)); }
-            if (_includeFloating) { xe.Add(HudLayout.Floating.ToXml(HudLayout.FloatingElementName, _includeHeight, _includeWidth, _includeTabs)); }
+            if (_includeDocked) { xe.Add(HudLayout.Docked.ToXml(HudLayout.DockedElementName, _includeHeight ? Theme.InspectPaneHeight.Value : -1, _includeWidth ? Theme.InspectPaneTabWidth.Value : -1, _includeTabs ? Theme.InspectPaneMinTabs.Value : -1)); }
+            if (_includeFloating) { xe.Add(HudLayout.Floating.ToXml(HudLayout.FloatingElementName, _includeHeight ? Theme.HudHeight.Value : -1, _includeWidth ? Theme.HudWidth.Value : -1)); }
 
             Persistent.SaveLayoutPreset(_name, xe);
+            LayoutPreset.RefreshUserPresets();
 
             Dialog_Alert.Open(Lang.Get("Alert.Saved", _name));
             Close();

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using RimHUD.Extensions;
+using RimHUD.Data.Extensions;
 using Verse;
 
 namespace RimHUD.Data
@@ -33,7 +33,7 @@ namespace RimHUD.Data
 
             VersionFound = MainAssembly.GetName().Version;
 
-            if (VersionCompare != 0) { Mod.Warning($"The loaded version of '{Name}' ({VersionFound}) is different from expected ({VersionExpected})"); }
+            if (VersionCompare != 0) { Mod.Log($"The loaded version of '{Name}' ({VersionFound}) is different from expected ({VersionExpected})"); }
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using RimHUD.Integration;
+using RimHUD.Data.Integration;
 using UnityEngine;
 using Verse;
 
@@ -11,12 +11,11 @@ namespace RimHUD.Data.Models
         public override string Label { get; }
         public override TipSignal? Tooltip { get; }
         public override Color? Color { get; }
-        public override Action OnClick { get; }
         public override Action OnHover { get; }
 
         public RulesModel(PawnModel model) : base(model)
         {
-            if (!PawnRules.Instance.IsActive)
+            if (!PawnRules.Instance.IsActive || !PawnRules.CanHaveRules(model.Base))
             {
                 Hidden = true;
                 return;

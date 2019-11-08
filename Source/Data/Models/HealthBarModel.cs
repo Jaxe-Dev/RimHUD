@@ -1,4 +1,5 @@
-﻿using RimHUD.Interface.HUD;
+﻿using RimHUD.Interface;
+using RimHUD.Interface.HUD;
 using Verse;
 
 namespace RimHUD.Data.Models
@@ -29,6 +30,8 @@ namespace RimHUD.Data.Models
 
             Tooltip = model.Health.Tooltip;
             Thresholds = null;
+
+            OnClick = InspectPanePlus.ToggleHealthTab;
         }
     }
 }

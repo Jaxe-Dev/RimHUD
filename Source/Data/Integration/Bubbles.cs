@@ -1,15 +1,15 @@
 ﻿using System;
-using RimHUD.Data;
+using RimHUD.Data.Theme;
 using UnityEngine;
 
-namespace RimHUD.Integration
+namespace RimHUD.Data.Integration
 {
     [Attributes.IntegratedOptions]
     internal static class Bubbles
     {
         public const string Url = "https://steamcommunity.com/sharedfiles/filedetails/?id=1516158345";
         public const string Description = "Shows bubbles when characters perform a social interaction with the text that would normally only be found in the log.";
-        private const string VersionExpected = "1.5";
+        private const string VersionExpected = "1.7";
 
         public static IntegratedMod Instance { get; } = new IntegratedMod("Interaction Bubbles", "Bubbles", "Interface.Theme", new Version(VersionExpected));
 
@@ -35,9 +35,9 @@ namespace RimHUD.Integration
         [Attributes.Option("Text", "PaddingX")] public static RangeOption PaddingX { get; } = new RangeOption(4, 1, 20, Lang.Get("Integration.Bubbles.PaddingX"), onChange: option => Instance.SetValue("PaddingX", option.Object));
         [Attributes.Option("Text", "PaddingY")] public static RangeOption PaddingY { get; } = new RangeOption(2, 1, 20, Lang.Get("Integration.Bubbles.PaddingY"), onChange: option => Instance.SetValue("PaddingY", option.Object));
 
-        [Attributes.Option("Color", "ForeColor")] public static ColorOption ForeColor { get; } = new ColorOption(Color.white, Lang.Get("Integration.Bubbles.ForeColor"));
-        [Attributes.Option("Color", "BackColor")] public static ColorOption BackColor { get; } = new ColorOption(Color.black, Lang.Get("Integration.Bubbles.BackColor"));
-        [Attributes.Option("Color", "SelectedForeColor")] public static ColorOption SelectedForeColor { get; } = new ColorOption(Color.black, Lang.Get("Integration.Bubbles.SelectedForeColor"));
-        [Attributes.Option("Color", "SelectedBackColor")] public static ColorOption SelectedBackColor { get; } = new ColorOption(new Color(1f, 1f, 0.75f), Lang.Get("Integration.Bubbles.SelectedBackColor"));
+        [Attributes.Option("Color", "ForeColor")] public static ColorOption ForeColor { get; } = new ColorOption(Color.black, Lang.Get("Integration.Bubbles.ForeColor"), onChange: option => Instance.SetValue("ForeColor", option.Object));
+        [Attributes.Option("Color", "BackColor")] public static ColorOption BackColor { get; } = new ColorOption(Color.white, Lang.Get("Integration.Bubbles.BackColor"), onChange: option => Instance.SetValue("BackColor", option.Object));
+        [Attributes.Option("Color", "SelectedForeColor")] public static ColorOption SelectedForeColor { get; } = new ColorOption(Color.black, Lang.Get("Integration.Bubbles.SelectedForeColor"), onChange: option => Instance.SetValue("SelectedForeColor", option.Object));
+        [Attributes.Option("Color", "SelectedBackColor")] public static ColorOption SelectedBackColor { get; } = new ColorOption(new Color(1f, 1f, 0.75f), Lang.Get("Integration.Bubbles.SelectedBackColor"), onChange: option => Instance.SetValue("SelectedBackColor", option.Object));
     }
 }

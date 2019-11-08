@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
-using RimHUD.Extensions;
+using RimHUD.Data.Theme;
 using UnityEngine;
 using Verse;
 
@@ -12,17 +14,18 @@ namespace RimHUD.Interface.HUD
         private readonly float _value;
         private readonly ValueStyle _valueStyle;
         private readonly float[] _thresholds;
+        private readonly Action _onClick;
 
-        public HudBar(string label, float value, float max, ValueStyle valueStyle, TextStyle textStyle, TipSignal? tooltip = null, float[] thresholds = null) : base(label, tooltip, textStyle)
+        public HudBar(string label, float value, float max, ValueStyle valueStyle, TextStyle textStyle, TipSignal? tooltip = null, float[] thresholds = null, Action onClick = null) : base(label, tooltip, textStyle)
         {
             _thresholds = thresholds;
             _max = max;
             _value = value;
             _valueStyle = valueStyle;
+            _onClick = onClick;
         }
 
-        private HudBar(BarModel model, TextStyle textStyle) : this(model.Label, model.Value, model.Max, model.ValueStyle, textStyle, model.Tooltip, model.Thresholds)
-        { }
+        private HudBar(BarModel model, TextStyle textStyle) : this(model.Label, model.Value, model.Max, model.ValueStyle, textStyle, model.Tooltip, model.Thresholds, model.OnClick) { }
 
         public static HudBar FromModel(BarModel model, TextStyle textStyle) => (model == null) || model.Hidden ? null : new HudBar(model, textStyle);
 
@@ -42,6 +45,8 @@ namespace RimHUD.Interface.HUD
             DrawValue(grid[3], _value, _max);
 
             GUIPlus.DrawTooltip(grid[0], Tooltip, false);
+
+            if (Widgets.ButtonInvisible(rect.ExpandedBy(GUIPlus.TinyPadding))) { _onClick?.Invoke(); }
             return true;
         }
 
@@ -62,6 +67,7 @@ namespace RimHUD.Interface.HUD
             foreach (var threshold in _thresholds.Where(threshold => threshold > 0f)) { Widgets.DrawLineVertical(Mathf.Round(rect.x + (rect.width * threshold)), rect.y, rect.height); }
             GUIPlus.ResetColor();
         }
+
         private static Color GetBarColor(float percentage) => Color.Lerp(Theme.BarLowColor.Value, Theme.BarMainColor.Value, percentage);
 
         public enum ValueStyle
