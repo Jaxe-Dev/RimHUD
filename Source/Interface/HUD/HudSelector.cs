@@ -1,6 +1,7 @@
 ﻿using System;
+using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
-using RimHUD.Extensions;
+using RimHUD.Data.Theme;
 using UnityEngine;
 using Verse;
 
@@ -12,6 +13,7 @@ namespace RimHUD.Interface.HUD
         private readonly Action _onClick;
         private readonly Action _onHover;
         public override float Height { get; }
+
         public HudSelector(string label, TipSignal? tooltip, TextStyle textStyle, Color? color, Action onClick, Action onHover) : base(label, tooltip, textStyle)
         {
             _color = color;
@@ -20,8 +22,7 @@ namespace RimHUD.Interface.HUD
             Height = textStyle.LineHeight;
         }
 
-        private HudSelector(SelectorModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, textStyle, model.Color, model.OnClick, model.OnHover)
-        { }
+        private HudSelector(SelectorModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, textStyle, model.Color, model.OnClick, model.OnHover) { }
 
         public static HudSelector FromModel(SelectorModel model, TextStyle textStyle) => model == null ? null : new HudSelector(model, textStyle);
 

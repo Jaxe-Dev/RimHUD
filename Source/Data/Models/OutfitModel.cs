@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using RimHUD.Extensions;
+using RimHUD.Data.Extensions;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -13,7 +13,6 @@ namespace RimHUD.Data.Models
         public override string Label { get; }
         public override TipSignal? Tooltip { get; }
         public override Color? Color { get; }
-        public override Action OnClick { get; }
         public override Action OnHover { get; }
 
         public OutfitModel(PawnModel model) : base(model)

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace RimHUD.Data
+namespace RimHUD.Data.Theme
 {
     internal class RangeOption : ThemeOption
     {

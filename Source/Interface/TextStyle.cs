@@ -1,6 +1,7 @@
 ﻿using System;
 using RimHUD.Data;
-using RimHUD.Extensions;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Theme;
 using UnityEngine;
 
 namespace RimHUD.Interface

@@ -1,4 +1,5 @@
-﻿using RimHUD.Interface.HUD;
+﻿using RimHUD.Interface;
+using RimHUD.Interface.HUD;
 using RimHUD.Patch;
 using RimWorld;
 using Verse;
@@ -40,6 +41,8 @@ namespace RimHUD.Data.Models
                 Tooltip = null;
                 Thresholds = null;
             }
+
+            OnClick = InspectPanePlus.ToggleNeedsTab;
         }
     }
 }

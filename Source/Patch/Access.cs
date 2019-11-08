@@ -11,6 +11,7 @@ namespace RimHUD.Patch
         public static readonly MethodInfo Method_RimWorld_HealthCardUtility_VisibleHediffGroupsInOrder = AccessTools.Method(typeof(HealthCardUtility), "VisibleHediffGroupsInOrder", new[] { typeof(Pawn), typeof(bool) });
         public static readonly MethodInfo Method_RimWorld_HealthCardUtility_VisibleHediffs = AccessTools.Method(typeof(HealthCardUtility), "VisibleHediffs", new[] { typeof(Pawn), typeof(bool) });
         public static readonly MethodInfo Method_RimWorld_InspectPaneUtility_InterfaceToggleTab = AccessTools.Method(typeof(InspectPaneUtility), "InterfaceToggleTab", new[] { typeof(InspectTabBase), typeof(IInspectPane) });
+        public static readonly MethodInfo Method_RimWorld_InspectPaneUtility_ToggleTab = AccessTools.Method(typeof(InspectPaneUtility), "ToggleTab", new[] { typeof(InspectTabBase), typeof(IInspectPane) });
         public static readonly MethodInfo Method_RimWorld_Pawn_TrainingTracker_GetSteps = AccessTools.Method(typeof(Pawn_TrainingTracker), "GetSteps", new[] { typeof(TrainableDef) });
         public static readonly MethodInfo Method_RimWorld_SkillUI_GetSkillDescription = AccessTools.Method(typeof(SkillUI), "GetSkillDescription", new[] { typeof(SkillRecord) });
 

@@ -1,16 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <LanguageData>
+  <RimHUD.Model.RelationKindAndFaction>{0} {1}</RimHUD.Model.RelationKindAndFaction>
+  <RimHUD.Model.OfFaction>of {0}</RimHUD.Model.OfFaction>
 
-  <RimHUD.Model.RelationKindAndFaction>{0}{1}{2}</RimHUD.Model.RelationKindAndFaction>
-  <RimHUD.Model.OfFaction> of {0}</RimHUD.Model.OfFaction>
-
-  <RimHUD.Model.Faction.Own>Our </RimHUD.Model.Faction.Own>
-  <RimHUD.Model.Faction.Wild>Wild </RimHUD.Model.Faction.Wild>
-  <RimHUD.Model.Faction.Allied>Allied </RimHUD.Model.Faction.Allied>
-  <RimHUD.Model.Faction.Enemy>Enemy </RimHUD.Model.Faction.Enemy>
-  <RimHUD.Model.Faction.Hostile>Hostile </RimHUD.Model.Faction.Hostile>
-  <RimHUD.Model.Faction.Independent>Independent </RimHUD.Model.Faction.Independent>
+  <RimHUD.Model.Faction.Own>our</RimHUD.Model.Faction.Own>
+  <RimHUD.Model.Faction.Wild>wild</RimHUD.Model.Faction.Wild>
+  <RimHUD.Model.Faction.Allied>allied</RimHUD.Model.Faction.Allied>
+  <RimHUD.Model.Faction.Enemy>enemy</RimHUD.Model.Faction.Enemy>
+  <RimHUD.Model.Faction.Hostile>hostile</RimHUD.Model.Faction.Hostile>
+  <RimHUD.Model.Faction.Independent>independent</RimHUD.Model.Faction.Independent>
 
   <RimHUD.Model.Creature.Wild>creature</RimHUD.Model.Creature.Wild>
   <RimHUD.Model.Creature.Tame>tame critter</RimHUD.Model.Creature.Tame>
@@ -24,22 +22,21 @@
   <RimHUD.Model.Creature.Herd>herd animal</RimHUD.Model.Creature.Herd>
   <RimHUD.Model.Creature.Insect>insect</RimHUD.Model.Creature.Insect>
 
-  <RimHUD.Model.GenderAndAge>{0}{1} aged {2}</RimHUD.Model.GenderAndAge>
-  <RimHUD.Model.Age.Birthday> (Birthday today)</RimHUD.Model.Age.Birthday>
-  <RimHUD.Model.Age.Day> and one day</RimHUD.Model.Age.Day>
-  <RimHUD.Model.Age.Days> and {0} days</RimHUD.Model.Age.Days>
+  <RimHUD.Model.GenderAndAge>{0} aged {1}</RimHUD.Model.GenderAndAge>
+  <RimHUD.Model.Age.Birthday>(Birthday today)</RimHUD.Model.Age.Birthday>
+  <RimHUD.Model.Age.Day>and one day</RimHUD.Model.Age.Day>
+  <RimHUD.Model.Age.Days>and {0} days</RimHUD.Model.Age.Days>
 
   <RimHUD.Model.Health.Dead>Dead</RimHUD.Model.Health.Dead>
   <RimHUD.Model.Health.Incapacitated>Incapacitated</RimHUD.Model.Health.Incapacitated>
   <RimHUD.Model.Health.Bleed>Bleeding out in {0}</RimHUD.Model.Health.Bleed>
   <RimHUD.Model.Health.Tend>{0} condition needs tending</RimHUD.Model.Health.Tend>
   <RimHUD.Model.Health.TendPlural>{0} conditions need tending</RimHUD.Model.Health.TendPlural>
-  <RimHUD.Model.Health.Threat>Has life threatening {0}</RimHUD.Model.Health.Threat>
-  <RimHUD.Model.Health.ThreatPlural>Has {0} life threatening conditions</RimHUD.Model.Health.ThreatPlural>
+  <RimHUD.Model.Health.Threat>Has life-threatening {0}</RimHUD.Model.Health.Threat>
+  <RimHUD.Model.Health.ThreatPlural>Has {0} life-threatening conditions</RimHUD.Model.Health.ThreatPlural>
   <RimHUD.Model.Health.Affected>Affected by {0}</RimHUD.Model.Health.Affected>
   <RimHUD.Model.Health.AffectedPlural>Affected by {0} and {1} other conditions</RimHUD.Model.Health.AffectedPlural>
   <RimHUD.Model.Health.Stable>In stable health</RimHUD.Model.Health.Stable>
-  <RimHUD.Model.Health.IsTended> (tended)</RimHUD.Model.Health.IsTended>
 
   <RimHUD.Model.Mood.ExtremeBreakImminent>Feeling depressed</RimHUD.Model.Mood.ExtremeBreakImminent>
   <RimHUD.Model.Mood.MajorBreakImminent>Feeling unhappy</RimHUD.Model.Mood.MajorBreakImminent>
@@ -134,5 +131,4 @@
   <RimHUD.Model.Target.OtherHumanlike>Other Humanlike</RimHUD.Model.Target.OtherHumanlike>
   <RimHUD.Model.Target.PlayerCreature>Player Creature</RimHUD.Model.Target.PlayerCreature>
   <RimHUD.Model.Target.OtherCreature>Other Creature</RimHUD.Model.Target.OtherCreature>
-
 </LanguageData>

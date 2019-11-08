@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
-using RimHUD.Extensions;
 using UnityEngine;
 
 namespace RimHUD.Interface.HUD
@@ -13,8 +13,7 @@ namespace RimHUD.Interface.HUD
 
         private float[] _heights;
 
-        public HudVStack(XElement xe, bool? fillHeight) : base(xe, fillHeight)
-        { }
+        public HudVStack(XElement xe, bool? fillHeight) : base(xe, fillHeight) { }
 
         public override float Prepare(PawnModel model)
         {

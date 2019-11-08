@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <Defs>
-
   <HugsLib.UpdateFeatureDef Abstract="true" Name="UpdateFeatureBase">
     <modNameReadable>RimHUD</modNameReadable>
     <modIdentifier>RimHUD</modIdentifier>
@@ -9,9 +7,8 @@
   </HugsLib.UpdateFeatureDef>
 
   <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
-    <defName>RimHUD_1_3_0</defName>
-    <assemblyVersion>1.3.0</assemblyVersion>
-    <content>- Content customization has been added\n\n- Both docked and floating layouts can be modified in the Content tab of the HUD settings\n\n- Supports needs and skills added by other mods</content>
+    <defName>RimHUD_1_4_0</defName>
+    <assemblyVersion>1.4.0</assemblyVersion>
+    <content>- Update: Clicking on hud values and bars will toggle the appropiate tab\n\n- Update: Content components now sorted alphabetically\n\n- Update: Auto deactivation on error now provides more detailed information on the cause\n\n- Fixed: Presets now properly save height, width and minimum tabs if enabled\n\n- Fixed: Newly saved presets now showing without restart\n\n- Fixed: Color modification of Interaction Bubbles now working\n\n- Note: Due to new language handling, old translation submods will need updating</content>
   </HugsLib.UpdateFeatureDef>
-
 </Defs>

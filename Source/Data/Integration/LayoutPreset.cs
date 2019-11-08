@@ -1,25 +1,24 @@
 ﻿using System;
 using System.IO;
-using RimHUD.Data;
-using RimHUD.Extensions;
-using RimHUD.Interface;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Storage;
 using RimHUD.Interface.HUD;
 using Verse;
 
-namespace RimHUD.Integration
+namespace RimHUD.Data.Integration
 {
     internal class LayoutPreset
     {
         public const string RootElementName = "Preset";
         public const string VersionAttributeName = "Version";
 
-        public static LayoutPreset[] FixedList { get; } = Persistent.BuildFixedPresetsList();
-        public static LayoutPreset[] UserList { get; private set; } = Persistent.BuildUserPresetsList();
+        public static LayoutPreset[] FixedList { get; } = Persistent.GetFixedPresets();
+        public static LayoutPreset[] UserList { get; private set; } = Persistent.GetUserPresets();
 
         public FileInfo File { get; }
         public string Name { get; }
         public string Mod { get; }
-        public string Label => Name + " " + Mod.Size(Theme.SmallTextStyle.ActualSize).Italic();
+        public string Label => Name + " " + Mod.Size(Theme.Theme.SmallTextStyle.ActualSize).Italic();
         public bool IsUserMade { get; }
 
         private LayoutPreset(string name, string mod, FileInfo file)
@@ -59,7 +58,7 @@ namespace RimHUD.Integration
             return preset;
         }
 
-        public static void RefreshUserPresets() => UserList = Persistent.BuildUserPresetsList();
+        public static void RefreshUserPresets() => UserList = Persistent.GetUserPresets();
 
         public bool Load()
         {

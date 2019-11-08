@@ -1,7 +1,7 @@
 ﻿using System;
 using Verse;
 
-namespace RimHUD.Extensions
+namespace RimHUD.Data.Extensions
 {
     internal static class DataExtensions
     {

@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <LanguageData>
-
   <RimHUD.Integration.GetMod>Link to mod</RimHUD.Integration.GetMod>
 
   <RimHUD.Integration.General>General Settings</RimHUD.Integration.General>
@@ -39,7 +37,7 @@
   <RimHUD.Integration.PawnRules>Pawn Rules</RimHUD.Integration.PawnRules>
   <RimHUD.Integration.PawnRules.RuleNameFormat>Rules: {0}</RimHUD.Integration.PawnRules.RuleNameFormat>
   <RimHUD.Integration.PawnRules.ReplaceFoodSelector>Replace food selector</RimHUD.Integration.PawnRules.ReplaceFoodSelector>
+  <RimHUD.Integration.PawnRules.ReplaceFoodSelectorDesc>If enabled, the food selector will be replaced by the rules selector.</RimHUD.Integration.PawnRules.ReplaceFoodSelectorDesc>
   <RimHUD.Integration.PawnRules.HideGizmo>Hide Gizmo</RimHUD.Integration.PawnRules.HideGizmo>
   <RimHUD.Integration.PawnRules.HideGizmoDesc>Disables the rules gizmo that appears next to the draft button as RimHUD adds a rules button in the inspect pane.</RimHUD.Integration.PawnRules.HideGizmoDesc>
-
 </LanguageData>

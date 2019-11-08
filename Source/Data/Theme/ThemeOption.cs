@@ -1,6 +1,7 @@
 ﻿using System;
+using RimHUD.Data.Storage;
 
-namespace RimHUD.Data
+namespace RimHUD.Data.Theme
 {
     internal abstract class ThemeOption : IDefaultable
     {
