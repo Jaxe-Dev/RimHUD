@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
+using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
-using RimHUD.Extensions;
 using UnityEngine;
 
 namespace RimHUD.Interface.HUD
@@ -11,8 +11,7 @@ namespace RimHUD.Interface.HUD
         public const string Name = "HStack";
         public override string ElementName { get; } = Name;
 
-        public HudHStack(XElement xe, bool? fillHeight) : base(xe, fillHeight)
-        { }
+        public HudHStack(XElement xe, bool? fillHeight) : base(xe, fillHeight) { }
 
         public override float Prepare(PawnModel model)
         {

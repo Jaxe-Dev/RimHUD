@@ -1,16 +1,15 @@
-﻿using RimHUD.Data;
-using RimHUD.Extensions;
+﻿using RimHUD.Data.Extensions;
+using RimHUD.Interface;
 using UnityEngine;
 using Verse;
-using ColorOption = RimHUD.Data.ColorOption;
 
-namespace RimHUD.Interface
+namespace RimHUD.Data.Theme
 {
     internal static class Theme
     {
         private const int DefaultBaseFontSize = 12;
 
-        public static GUIStyle BaseGUIStyle => new GUIStyle(Text.fontStyles[(int) GameFont.Medium]) { fontSize = DefaultBaseFontSize, alignment = TextAnchor.MiddleLeft, wordWrap = false, padding = new RectOffset(0, 0, 0, 0) };
+        public static GUIStyle BaseGUIStyle => new GUIStyle(GUIPlus.GetGameFontStyle(GameFont.Medium)) { fontSize = DefaultBaseFontSize, alignment = TextAnchor.MiddleLeft, wordWrap = false, padding = new RectOffset(0, 0, 0, 0) };
 
         [Attributes.Option("HudOptions", "RefreshRate")] public static RangeOption RefreshRate { get; } = new RangeOption(2, 0, 10, Lang.Get("Theme.RefreshRate"), value => (value * 100) + Lang.Get("Theme.RefreshRateUnits"), Lang.Get("Theme.RefreshRateDesc"));
 
@@ -82,6 +81,7 @@ namespace RimHUD.Interface
             if (!(option is BoolOption inspectPaneModify)) { throw new Mod.Exception("InspectPaneModify is not a BoolOption"); }
             if (HudDocked.Value && !inspectPaneModify.Value) { HudDocked.Value = false; }
         }
+
         private static void EnsureInspectPaneModify(ThemeOption option)
         {
             if ((bool) option.Object) { InspectPaneTabModify.Value = true; }

@@ -1,5 +1,5 @@
 ﻿using System;
-using RimHUD.Extensions;
+using RimHUD.Data.Extensions;
 using RimHUD.Interface;
 using UnityEngine;
 
@@ -8,8 +8,7 @@ namespace RimHUD.Data
     internal static class Attributes
     {
         [AttributeUsage(AttributeTargets.Class)]
-        public class IntegratedOptions : Attribute
-        { }
+        public class IntegratedOptions : Attribute { }
 
         [AttributeUsage(AttributeTargets.Property)]
         public class Option : Attribute
@@ -18,10 +17,10 @@ namespace RimHUD.Data
             public string Category { get; }
             public string Label { get; }
 
-            public Option(string label, Type type = null) : this(null, label, type)
-            { }
-            public Option(Type type) : this(null, null, type)
-            { }
+            public Option(string label, Type type = null) : this(null, label, type) { }
+
+            public Option(Type type) : this(null, null, type) { }
+
             public Option(string category, string label, Type type = null)
             {
                 Category = category;

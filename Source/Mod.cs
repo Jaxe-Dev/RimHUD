@@ -2,9 +2,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Harmony;
-using RimHUD.Compatibility;
-using RimHUD.Data;
-using RimHUD.Integration;
+using RimHUD.Data.Compatibility;
+using RimHUD.Data.Integration;
+using RimHUD.Data.Storage;
 using RimHUD.Interface;
 using RimHUD.Interface.HUD;
 using RimWorld;
@@ -17,8 +17,8 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.3.2";
-        public const string LastVersion = "1.3.1";
+        public const string Version = "1.4.0";
+        public const string LastVersion = "1.3.2";
         public const bool VersionNeedsNewConfig = false;
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
@@ -68,8 +68,7 @@ namespace RimHUD
 
         public class Exception : System.Exception
         {
-            public Exception(string message) : base(PrefixMessage(message))
-            { }
+            public Exception(string message, System.Exception innerException = null) : base(message, innerException) { }
         }
     }
 }

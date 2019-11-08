@@ -1,8 +1,7 @@
 ﻿using System;
 using Harmony;
-using RimHUD.Data;
 
-namespace RimHUD.Integration
+namespace RimHUD.Data.Integration
 {
     internal class IntegratedMod : ExternalMod
     {
@@ -30,20 +29,17 @@ namespace RimHUD.Integration
 
         public T GetValue<T>(string name)
         {
-            if (!IsActive) { return default(T); }
+            if (!IsActive) { return default; }
             return (T) AccessTools.Property(Integrator, name)?.GetValue(null, null);
         }
 
-        public void InvokeMethod(string name, params object[] parameters)
-        {
-            if (!IsActive) { return; }
-            AccessTools.Method(Integrator, name)?.Invoke(null, parameters);
-        }
+        public void InvokeMethod(string name, params object[] parameters) => InvokeMethod<object>(name, parameters);
 
         public T InvokeMethod<T>(string name, params object[] parameters)
         {
-            if (!IsActive) { return default(T); }
-            return (T) AccessTools.Method(Integrator, name)?.Invoke(null, parameters);
+            if (!IsActive) { return default; }
+            try { return (T) AccessTools.Method(Integrator, name)?.Invoke(null, parameters); }
+            catch (Exception exception) { throw new Mod.Exception($"Exception while invoking method '{name}' for external mod '{Name}'", exception); }
         }
     }
 }

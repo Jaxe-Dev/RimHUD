@@ -1,5 +1,6 @@
 ﻿using RimHUD.Data;
-using RimHUD.Extensions;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Storage;
 using UnityEngine;
 using Verse;
 
@@ -21,6 +22,8 @@ namespace RimHUD.Interface.Dialog
             absorbInputAroundWindow = false;
             preventCameraMotion = false;
             doCloseButton = false;
+
+            if (Lang.HasKey("Language.TranslatedBy")) { Subtitle = Lang.Get("Language.TranslatedBy").Italic(); }
         }
 
         public static void Open() => Find.WindowStack.Add(new Dialog_Config());

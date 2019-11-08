@@ -1,6 +1,6 @@
 ﻿using RimHUD.Data;
-using RimHUD.Extensions;
-using RimHUD.Integration;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Integration;
 using UnityEngine;
 using Verse;
 
@@ -11,51 +11,55 @@ namespace RimHUD.Interface.Dialog
         public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Integration");
         public override TipSignal? Tooltip { get; } = null;
 
-        public override void Reset()
-        { }
+        public override void Reset() { }
 
         public override void Draw(Rect rect)
         {
             var hGrid = rect.GetHGrid(GUIPlus.LargePadding, -1f, -1f);
-            var l = new ListingPlus();
-            l.Begin(hGrid[1]);
+
+            var bubbles = new ListingPlus();
+
+            bubbles.Begin(hGrid[1]);
 
             var hasBubbles = Bubbles.Instance.IsActive;
-            l.Label(Lang.Get("Integration.Bubbles").Bold(), Bubbles.Description);
-            if (!hasBubbles) { l.LinkLabel(Lang.Get("Integration.GetMod"), Bubbles.Url, Bubbles.Url); }
+            bubbles.Label(Lang.Get("Integration.Bubbles").Bold(), Bubbles.Description);
+            if (!hasBubbles) { bubbles.LinkLabel(Lang.Get("Integration.GetMod"), Bubbles.Url, Bubbles.Url); }
 
             var bubblesActive = hasBubbles && Bubbles.Activated.Value;
-            l.BoolToggle(Bubbles.Activated, hasBubbles);
-            l.BoolToggle(Bubbles.DoNonPlayer, bubblesActive);
-            l.BoolToggle(Bubbles.DoAnimals, bubblesActive);
-            l.GapLine();
-            l.RangeSlider(Bubbles.ScaleStart, bubblesActive);
-            l.RangeSlider(Bubbles.MinScale, bubblesActive);
-            l.RangeSlider(Bubbles.MaxWidth, bubblesActive);
-            l.RangeSlider(Bubbles.Spacing, bubblesActive);
-            l.RangeSlider(Bubbles.StartOffset, bubblesActive);
-            l.RangeSlider(Bubbles.OffsetDirection, bubblesActive);
-            l.GapLine();
-            l.RangeSlider(Bubbles.StartOpacity, bubblesActive);
-            l.RangeSlider(Bubbles.MouseOverOpacity, bubblesActive);
-            l.RangeSlider(Bubbles.MinTime, bubblesActive);
-            l.RangeSlider(Bubbles.FadeStart, bubblesActive);
-            l.RangeSlider(Bubbles.FadeLength, bubblesActive);
-            l.RangeSlider(Bubbles.MaxPerPawn, bubblesActive);
-            l.GapLine();
-            l.RangeSlider(Bubbles.FontSize, bubblesActive);
-            l.RangeSlider(Bubbles.PaddingX, bubblesActive);
-            l.RangeSlider(Bubbles.PaddingY, bubblesActive);
-            l.End();
+            bubbles.BoolToggle(Bubbles.Activated, hasBubbles);
+            bubbles.BoolToggle(Bubbles.DoNonPlayer, bubblesActive);
+            bubbles.BoolToggle(Bubbles.DoAnimals, bubblesActive);
+            bubbles.GapLine(5f);
+            bubbles.RangeSlider(Bubbles.ScaleStart, bubblesActive);
+            bubbles.RangeSlider(Bubbles.MinScale, bubblesActive);
+            bubbles.RangeSlider(Bubbles.MaxWidth, bubblesActive);
+            bubbles.RangeSlider(Bubbles.Spacing, bubblesActive);
+            bubbles.RangeSlider(Bubbles.StartOffset, bubblesActive);
+            bubbles.RangeSlider(Bubbles.OffsetDirection, bubblesActive);
+            bubbles.GapLine(5f);
+            bubbles.RangeSlider(Bubbles.StartOpacity, bubblesActive);
+            bubbles.RangeSlider(Bubbles.MouseOverOpacity, bubblesActive);
+            bubbles.RangeSlider(Bubbles.MinTime, bubblesActive);
+            bubbles.RangeSlider(Bubbles.FadeStart, bubblesActive);
+            bubbles.RangeSlider(Bubbles.FadeLength, bubblesActive);
+            bubbles.RangeSlider(Bubbles.MaxPerPawn, bubblesActive);
+            bubbles.GapLine(5f);
+            bubbles.RangeSlider(Bubbles.FontSize, bubblesActive);
+            bubbles.RangeSlider(Bubbles.PaddingX, bubblesActive);
+            bubbles.RangeSlider(Bubbles.PaddingY, bubblesActive);
 
-            l.Begin(hGrid[2]);
-            l.Label(Lang.Get("Integration.PawnRules").Bold(), PawnRules.Description);
+            bubbles.End();
+
+            var pawnRules = new ListingPlus();
+
+            pawnRules.Begin(hGrid[2]);
+            pawnRules.Label(Lang.Get("Integration.PawnRules").Bold(), PawnRules.Description);
             var hasPawnRules = PawnRules.Instance.IsActive;
-            if (!hasPawnRules) { l.LinkLabel(Lang.Get("Integration.GetMod"), PawnRules.Url, PawnRules.Url); }
-            l.BoolToggle(PawnRules.ReplaceFoodSelector, hasPawnRules);
-            l.BoolToggle(PawnRules.HideGizmo, hasPawnRules);
+            if (!hasPawnRules) { pawnRules.LinkLabel(Lang.Get("Integration.GetMod"), PawnRules.Url, PawnRules.Url); }
+            pawnRules.BoolToggle(PawnRules.ReplaceFoodSelector, hasPawnRules);
+            pawnRules.BoolToggle(PawnRules.HideGizmo, hasPawnRules);
 
-            l.End();
+            pawnRules.End();
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
 using RimHUD.Data;
+using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
-using RimHUD.Extensions;
+using RimHUD.Data.Theme;
 using RimHUD.Interface.HUD;
 using RimWorld;
 using UnityEngine;
@@ -168,6 +169,7 @@ namespace RimHUD.Interface.Dialog
 
         private string GetLabel() => Def != null ? Lang.Get("Model.Component." + Id, Def.LabelCap) : Lang.Get("Model.Component." + Id);
         private string GetAttributes() => (FillHeight ? $" {Lang.Get("Model.Component.Container.Filled")}" : null) + GetTargets();
+
         private string GetTargets()
         {
             if (Targets == HudTarget.All) { return null; }

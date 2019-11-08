@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
-using RimHUD.Extensions;
 using RimHUD.Interface.Dialog;
 using UnityEngine;
 

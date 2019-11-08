@@ -1,9 +1,9 @@
 ﻿using System.Text.RegularExpressions;
-using RimHUD.Data;
-using RimHUD.Extensions;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Theme;
 using UnityEngine;
 using Verse;
-using ColorOption = RimHUD.Data.ColorOption;
+using ColorOption = RimHUD.Data.Theme.ColorOption;
 
 namespace RimHUD.Interface.Dialog
 {
@@ -18,7 +18,7 @@ namespace RimHUD.Interface.Dialog
 
         public new void BeginScrollView(Rect rect, ref Vector2 scrollPosition, ref Rect viewRect)
         {
-            if (viewRect == default(Rect)) { viewRect = new Rect(0f, 0f, rect.width - GUIPlus.ScrollbarWidth, 100000f); }
+            if (viewRect == default) { viewRect = new Rect(rect.x, rect.y, rect.width - GUIPlus.ScrollbarWidth, 99999f); }
 
             Widgets.BeginScrollView(rect, ref scrollPosition, viewRect);
 
@@ -27,9 +27,9 @@ namespace RimHUD.Interface.Dialog
 
         public new void EndScrollView(ref Rect viewRect)
         {
-            viewRect.height = CurHeight;
-            Widgets.EndScrollView();
             End();
+            Widgets.EndScrollView();
+            viewRect.height = CurHeight;
         }
 
         public bool Label(string label, TipSignal? tooltip = null, GameFont? font = null, Color? color = null, bool highlight = false)
@@ -116,14 +116,8 @@ namespace RimHUD.Interface.Dialog
 
             if (textValue.HasValue)
             {
-                if (textValue.Value < range.Min)
-                {
-                    range.Value = range.Min;
-                }
-                else if (textValue.Value > range.Max)
-                {
-                    range.Value = range.Max;
-                }
+                if (textValue.Value < range.Min) { range.Value = range.Min; }
+                else if (textValue.Value > range.Max) { range.Value = range.Max; }
                 else { range.Value = textValue.Value; }
             }
 
@@ -153,9 +147,9 @@ namespace RimHUD.Interface.Dialog
             return enabled ? value : previous;
         }
 
-        public bool ButtonText(string label, string tooltip = null, bool enabled = true)
+        public bool ButtonText(string label, string tooltip = null, GameFont? font = null, bool enabled = true)
         {
-            var result = GUIPlus.DrawButton(GetRect(GUIPlus.ButtonHeight), label, tooltip, enabled);
+            var result = GUIPlus.DrawButton(GetRect(GUIPlus.ButtonHeight), label, tooltip, font, enabled);
             Gap(verticalSpacing);
             return result;
         }

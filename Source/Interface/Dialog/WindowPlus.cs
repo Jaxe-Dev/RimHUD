@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RimHUD.Data.Theme;
+using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Dialog
@@ -9,11 +10,11 @@ namespace RimHUD.Interface.Dialog
 
         public override Vector2 InitialSize { get; }
         protected string Title { get; set; }
+        protected string Subtitle { get; set; }
 
-        protected WindowPlus(Vector2 size) : this(null, size)
-        { }
+        protected WindowPlus(Vector2 size) : this(null, size) { }
 
-        protected WindowPlus(string title = null, Vector2 size = default(Vector2))
+        protected WindowPlus(string title = null, Vector2 size = default)
         {
             draggable = true;
             doCloseX = true;
@@ -22,7 +23,7 @@ namespace RimHUD.Interface.Dialog
             closeOnClickedOutside = false;
             closeOnAccept = false;
 
-            InitialSize = size == default(Vector2) ? new Vector2(800f, 600f) : size;
+            InitialSize = size == default ? new Vector2(800f, 600f) : size;
             Title = title;
         }
 
@@ -46,9 +47,17 @@ namespace RimHUD.Interface.Dialog
 
             header.Begin(rect);
             header.Label(Title, font: GameFont.Medium);
+
+            if (!string.IsNullOrEmpty(Subtitle))
+            {
+                var titleSize = GUIPlus.GetTextSize(Title, GUIPlus.GetGameFontStyle(GameFont.Medium));
+                var titleOffset = titleSize.x + GUIPlus.MediumPadding;
+                var subtitleRect = new Rect(rect.x + titleOffset, rect.y, rect.width - titleOffset, titleSize.y);
+                GUIPlus.DrawText(subtitleRect, Subtitle, style: Theme.SmallTextStyle);
+            }
+
             header.GapLine();
             header.End();
-
             var contentRect = new Rect(rect.x, rect.y + header.CurHeight, rect.width, rect.height - header.CurHeight);
             if (doCloseButton) { contentRect.height -= CloseButtonOffset; }
 

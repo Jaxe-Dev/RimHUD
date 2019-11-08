@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace RimHUD.Extensions
+namespace RimHUD.Data.Extensions
 {
     internal static class IOExtensions
     {

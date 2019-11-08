@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
-using RimHUD.Extensions;
-using RimHUD.Integration;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Integration;
 using RimHUD.Interface;
 using RimHUD.Interface.HUD;
 using RimHUD.Patch;
@@ -108,21 +107,22 @@ namespace RimHUD.Data.Models
         private SkillModel GetSkillModel(SkillDef def) => new SkillModel(this, def);
         private TrainingModel GetTrainingModel(TrainableDef def) => new TrainingModel(this, def);
 
-        private string GetGender() => Base.gender == Gender.None ? null : Base.GetGenderLabel().CapitalizeFirst() + " ";
+        private string GetGender() => Base.gender == Gender.None ? null : Base.GetGenderLabel();
+
         private TextModel GetGenderAndAge()
         {
             var gender = GetGender();
-            var race = gender == null ? Base.kindDef.race.LabelCap : Base.kindDef.race.label;
 
             Base.ageTracker.AgeBiologicalTicks.TicksToPeriod(out var years, out var quadrums, out var days, out _);
             var ageDays = (quadrums * GenDate.DaysPerQuadrum) + days;
 
             var age = years.ToString().Bold();
-            if ((ageDays == 0) || (ageDays == GenDate.DaysPerYear)) { age += Lang.Get("Model.Age.Birthday"); }
-            else if (ageDays == 1) { age += Lang.Get("Model.Age.Day"); }
-            else { age += Lang.Get("Model.Age.Days", ageDays); }
+            if ((ageDays == 0) || (ageDays == GenDate.DaysPerYear)) { age = Lang.CombineWords(age, Lang.Get("Model.Age.Birthday")); }
+            else if (ageDays == 1) { age = Lang.CombineWords(age, Lang.Get("Model.Age.Day")); }
+            else { age = Lang.CombineWords(age, Lang.Get("Model.Age.Days", ageDays)); }
 
-            return TextModel.Create(Lang.Get("Model.GenderAndAge", gender, race, age), GetBioTooltip(), FactionRelationColor);
+            var genderKind = Lang.AdjectiveNoun(gender, Base.kindDef.race.label);
+            return TextModel.Create(Lang.Get("Model.GenderAndAge", genderKind, age).CapitalizeFirst(), GetBioTooltip(), FactionRelationColor);
         }
 
         private string GetKind()
@@ -150,16 +150,16 @@ namespace RimHUD.Data.Models
 
         private Color GetFactionRelationColor()
         {
-            if (Base.Faction == null) { return IsHumanlike ? Theme.FactionIndependentColor.Value : Theme.FactionWildColor.Value; }
-            if (Base.Faction.IsPlayer) { return Theme.FactionOwnColor.Value; }
+            if (Base.Faction == null) { return IsHumanlike ? Theme.Theme.FactionIndependentColor.Value : Theme.Theme.FactionWildColor.Value; }
+            if (Base.Faction.IsPlayer) { return Theme.Theme.FactionOwnColor.Value; }
 
-            if (Base.Faction.PlayerRelationKind == FactionRelationKind.Hostile) { return Theme.FactionHostileColor.Value; }
-            return Base.Faction.PlayerRelationKind == FactionRelationKind.Ally ? Theme.FactionAlliedColor.Value : Theme.FactionIndependentColor.Value;
+            if (Base.Faction.PlayerRelationKind == FactionRelationKind.Hostile) { return Theme.Theme.FactionHostileColor.Value; }
+            return Base.Faction.PlayerRelationKind == FactionRelationKind.Ally ? Theme.Theme.FactionAlliedColor.Value : Theme.Theme.FactionIndependentColor.Value;
         }
 
         private string GetFactionRelation()
         {
-            if (Base.Faction == null) { return IsHumanlike ? Lang.Get("Model.Faction.Independent") : (Base.kindDef == PawnKindDefOf.WildMan ? null : Lang.Get("Model.Faction.Wild")); }
+            if (Base.Faction == null) { return IsHumanlike ? Lang.Get("Model.Faction.Independent") : Base.kindDef == PawnKindDefOf.WildMan ? null : Lang.Get("Model.Faction.Wild"); }
             if (Base.Faction.IsPlayer) { return null; }
 
             var relation = Base.Faction.PlayerRelationKind;
@@ -170,10 +170,9 @@ namespace RimHUD.Data.Models
         private TextModel GetRelationKindAndFaction()
         {
             var faction = (Base.Faction == null) || !Base.Faction.HasName ? null : Lang.Get("Model.OfFaction", Base.Faction.Name);
-            var relation = GetFactionRelation();
-            var kind = GetKind();
+            var relationKind = Lang.AdjectiveNoun(GetFactionRelation(), GetKind());
 
-            return TextModel.Create(Lang.Get("Model.RelationKindAndFaction", relation, relation == null ? kind.CapitalizeFirst() : kind, faction), GetBioTooltip(), FactionRelationColor);
+            return TextModel.Create(Lang.Get("Model.RelationKindAndFaction", relationKind, faction).Trim().CapitalizeFirst(), GetBioTooltip(), FactionRelationColor);
         }
 
         private string GetActivity()
@@ -213,13 +212,7 @@ namespace RimHUD.Data.Models
 
         private string GetCompInfo()
         {
-            var list = new List<string>();
-            foreach (var comp in Base.AllComps)
-            {
-                var text = comp.CompInspectStringExtra();
-                if (!text.NullOrEmpty()) { list.Add(text.Replace('\n', ' ')); }
-            }
-            var comps = list.ToArray();
+            var comps = (from comp in Base.AllComps select comp.CompInspectStringExtra() into text where !text.NullOrEmpty() select text.Replace('\n', ' ')).ToArray();
             return comps.Length > 0 ? comps.ToCommaList() : null;
         }
 
@@ -256,9 +249,9 @@ namespace RimHUD.Data.Models
             var disabledWork = Base.story.CombinedDisabledWorkTags;
             var incapable = disabledWork == WorkTags.None ? null : "IncapableOf".Translate() + ": " + disabledWork.GetAllSelectedItems<WorkTags>().Where(tag => tag != WorkTags.None).Select(tag => tag.LabelTranslated().CapitalizeFirst()).ToCommaList(true);
 
-            builder.TryAppendLine(incapable?.Color(Theme.CriticalColor.Value));
+            builder.TryAppendLine(incapable?.Color(Theme.Theme.CriticalColor.Value));
 
-            return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
+            return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.Theme.RegularTextStyle.ActualSize) : null;
         }
 
         private TextModel GetMaster()
@@ -268,7 +261,7 @@ namespace RimHUD.Data.Models
 
             var masterName = master.LabelShort;
             var relation = Base.GetMostImportantRelation(master)?.LabelCap;
-            return TextModel.Create(Lang.Get("Model.Bio.Master", masterName), GetAnimalTooltip(), relation == null ? (Color?) null : Theme.SkillMinorPassionColor.Value);
+            return TextModel.Create(Lang.Get("Model.Bio.Master", masterName), GetAnimalTooltip(), relation == null ? (Color?) null : Theme.Theme.SkillMinorPassionColor.Value, InspectPanePlus.ToggleSocialTab);
         }
 
         public TipSignal? GetAnimalTooltip(TrainableDef def = null)
@@ -297,7 +290,7 @@ namespace RimHUD.Data.Models
                 builder.AppendLine(def.description);
             }
 
-            var text = builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize);
+            var text = builder.ToStringTrimmed().Size(Theme.Theme.RegularTextStyle.ActualSize);
             return new TipSignal(() => text, GUIPlus.TooltipId);
         }
     }
