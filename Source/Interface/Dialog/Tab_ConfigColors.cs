@@ -1,9 +1,10 @@
 ﻿using RimHUD.Data;
-using RimHUD.Extensions;
-using RimHUD.Integration;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Integration;
+using RimHUD.Data.Theme;
 using UnityEngine;
 using Verse;
-using ColorOption = RimHUD.Data.ColorOption;
+using ColorOption = RimHUD.Data.Theme.ColorOption;
 
 namespace RimHUD.Interface.Dialog
 {
@@ -13,6 +14,7 @@ namespace RimHUD.Interface.Dialog
         public override TipSignal? Tooltip { get; } = null;
 
         private Vector2 _scrollPosition = Vector2.zero;
+        private Rect _viewRect;
 
         private ColorOption _selected;
 
@@ -24,8 +26,6 @@ namespace RimHUD.Interface.Dialog
         private string _lightnessText;
         private readonly RangeOption _alpha = new RangeOption(0, 0, 100, Lang.Get("Dialog_Config.Tab.Colors.Alpha"));
         private string _alphaText;
-
-        private Rect _viewRect = default(Rect);
 
         private void ParseColor()
         {

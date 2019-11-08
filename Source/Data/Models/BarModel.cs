@@ -9,7 +9,6 @@ namespace RimHUD.Data.Models
         public abstract HudBar.ValueStyle ValueStyle { get; }
         public abstract float[] Thresholds { get; }
 
-        protected BarModel(PawnModel model) : base(model)
-        { }
+        protected BarModel(PawnModel model) : base(model) { }
     }
 }

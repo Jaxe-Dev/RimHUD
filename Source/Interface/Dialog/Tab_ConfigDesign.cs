@@ -1,5 +1,6 @@
 ﻿using RimHUD.Data;
-using RimHUD.Extensions;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Theme;
 using UnityEngine;
 using Verse;
 
@@ -16,8 +17,7 @@ namespace RimHUD.Interface.Dialog
         public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Design");
         public override TipSignal? Tooltip { get; } = null;
 
-        public override void Reset()
-        { }
+        public override void Reset() { }
 
         public override void Draw(Rect rect)
         {

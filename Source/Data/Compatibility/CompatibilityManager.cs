@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RimHUD.Compatibility
+namespace RimHUD.Data.Compatibility
 {
     internal static class CompatibilityManager
     {

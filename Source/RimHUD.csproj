@@ -43,19 +43,21 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mod.cs" />
-    <Compile Include="Compatibility\CompatibilityManager.cs" />
-    <Compile Include="Compatibility\CompatibilityPatch.cs" />
-    <Compile Include="Compatibility\ExtendedInspectData.cs" />
     <Compile Include="Data\Attributes.cs" />
-    <Compile Include="Data\BoolOption.cs" />
-    <Compile Include="Data\ColorOption.cs" />
     <Compile Include="Data\ExternalMod.cs" />
-    <Compile Include="Data\IDefaultable.cs" />
     <Compile Include="Data\Lang.cs" />
-    <Compile Include="Data\Persistent.cs" />
-    <Compile Include="Data\RangeOption.cs" />
     <Compile Include="Data\State.cs" />
-    <Compile Include="Data\ThemeOption.cs" />
+    <Compile Include="Data\Compatibility\CompatibilityManager.cs" />
+    <Compile Include="Data\Compatibility\CompatibilityPatch.cs" />
+    <Compile Include="Data\Extensions\BaseExtensions.cs" />
+    <Compile Include="Data\Extensions\DataExtensions.cs" />
+    <Compile Include="Data\Extensions\GUIExtensions.cs" />
+    <Compile Include="Data\Extensions\IOExtensions.cs" />
+    <Compile Include="Data\Integration\Bubbles.cs" />
+    <Compile Include="Data\Integration\HugsLib.cs" />
+    <Compile Include="Data\Integration\IntegratedMod.cs" />
+    <Compile Include="Data\Integration\LayoutPreset.cs" />
+    <Compile Include="Data\Integration\PawnRules.cs" />
     <Compile Include="Data\Models\AreaModel.cs" />
     <Compile Include="Data\Models\AttributeModel.cs" />
     <Compile Include="Data\Models\BarModel.cs" />
@@ -74,23 +76,21 @@
     <Compile Include="Data\Models\TimetableModel.cs" />
     <Compile Include="Data\Models\TrainingModel.cs" />
     <Compile Include="Data\Models\ValueModel.cs" />
-    <Compile Include="Extensions\BaseExtensions.cs" />
-    <Compile Include="Extensions\DataExtensions.cs" />
-    <Compile Include="Extensions\GUIExtensions.cs" />
-    <Compile Include="Extensions\IOExtensions.cs" />
-    <Compile Include="Integration\Bubbles.cs" />
-    <Compile Include="Integration\HugsLib.cs" />
-    <Compile Include="Integration\IntegratedMod.cs" />
-    <Compile Include="Integration\LayoutPreset.cs" />
-    <Compile Include="Integration\PawnRules.cs" />
+    <Compile Include="Data\Storage\Persistent.cs" />
+    <Compile Include="Data\Theme\BoolOption.cs" />
+    <Compile Include="Data\Theme\ColorOption.cs" />
+    <Compile Include="Data\Theme\IDefaultable.cs" />
+    <Compile Include="Data\Theme\RangeOption.cs" />
+    <Compile Include="Data\Theme\Theme.cs" />
+    <Compile Include="Data\Theme\ThemeOption.cs" />
     <Compile Include="Interface\GUIPlus.cs" />
     <Compile Include="Interface\InspectPanePlus.cs" />
     <Compile Include="Interface\LetterStackPlus.cs" />
     <Compile Include="Interface\TextStyle.cs" />
     <Compile Include="Interface\Textures.cs" />
-    <Compile Include="Interface\Theme.cs" />
     <Compile Include="Interface\Dialog\Dialog_Alert.cs" />
     <Compile Include="Interface\Dialog\Dialog_Config.cs" />
+    <Compile Include="Interface\Dialog\Dialog_Error.cs" />
     <Compile Include="Interface\Dialog\Dialog_Presets.cs" />
     <Compile Include="Interface\Dialog\Dialog_SavePreset.cs" />
     <Compile Include="Interface\Dialog\LayoutEditor.cs" />
@@ -137,8 +137,8 @@
     <Compile Include="Patch\Verse_LetterStack_LettersOnGUI.cs" />
     <Compile Include="Patch\Verse_MapInterface_MapInterfaceOnGUI_AfterMainTabs.cs" />
     <Compile Include="Patch\Verse_MapInterface_Notify_SwitchedMap.cs" />
-    <Compile Include="Patch\Verse_PlayDataLoader_DoPlayLoad.cs" />
     <Compile Include="Patch\Verse_Profile_MemoryUtility_ClearAllMapsAndWorld.cs" />
+    <Compile Include="Patch\Verse_Root_Start.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\.gitignore">
@@ -170,10 +170,16 @@
     <Content Include="..\Languages\English\Keyed\Theme.xml">
       <Link>-\Languages\English\Keyed\Theme.xml</Link>
     </Content>
-    <EmbeddedResource Include="Layouts\DefaultDocked.xml">
+    <Content Include="..\Presets\A RimWorld of Magic.xml">
+      <Link>-\Presets\A RimWorld of Magic.xml</Link>
+    </Content>
+    <Content Include="..\Presets\Dubs Bad Hygiene.xml">
+      <Link>-\Presets\Dubs Bad Hygiene.xml</Link>
+    </Content>
+    <EmbeddedResource Include="Interface\Layout\Presets\Defaults\Docked.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Layouts\DefaultFloating.xml">
+    <EmbeddedResource Include="Interface\Layout\Presets\Defaults\Floating.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

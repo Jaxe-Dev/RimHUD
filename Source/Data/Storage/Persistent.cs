@@ -6,20 +6,23 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using RimHUD.Extensions;
-using RimHUD.Integration;
-using RimHUD.Interface;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Integration;
+using RimHUD.Data.Theme;
 using RimHUD.Interface.HUD;
 using Verse;
 
-namespace RimHUD.Data
+namespace RimHUD.Data.Storage
 {
     internal static class Persistent
     {
         private const string ConfigFileName = "Config.xml";
-        private const string FixedPresetsDirectoryName = "RimHUD\\Presets";
-        private const string UserPresetsDirectoryName = "Presets";
+        private const string ModPresetsDirectoryName = "RimHUD\\Presets";
+        private const string PresetsDirectoryName = "Presets";
         private const string PresetExtension = ".xml";
+
+        private static readonly Regex ValidFilenameRegex = new Regex("^(?:[\\p{L}\\p{N}_\\-]|[\\p{L}\\p{N}_\\-]+[\\p{L}\\p{N}_\\- ]*[\\p{L}\\p{N}_\\-]+)$");
+        private static readonly DirectoryInfo UserPresetDirectory = new DirectoryInfo(Path.Combine(Mod.ConfigDirectory.FullName, PresetsDirectoryName));
 
         private static bool VersionNeedsNewConfig { get; } = Mod.VersionNeedsNewConfig;
         public static bool IsLoaded { get; private set; }
@@ -27,10 +30,17 @@ namespace RimHUD.Data
         private static bool _configWasReset;
 
         private static readonly FileInfo ConfigFile = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, ConfigFileName));
-        private static readonly DirectoryInfo UserPresetDirectory = new DirectoryInfo(Path.Combine(Mod.ConfigDirectory.FullName, UserPresetsDirectoryName));
+        public static bool IsValidFilename(string name) => !name.NullOrEmpty() && (name.Length <= (250 - UserPresetDirectory.FullName.Length)) && ValidFilenameRegex.IsMatch(name);
 
-        private static readonly Regex ValidFilenameRegex = new Regex("^(?:[\\p{L}\\p{N}_\\-]|[\\p{L}\\p{N}_\\-]+[\\p{L}\\p{N}_\\- ]*[\\p{L}\\p{N}_\\-]+)$");
-        public static bool IsValidFilename(string name) => !name.NullOrEmpty() && (name.Length <= 250 - UserPresetDirectory.FullName.Length) && ValidFilenameRegex.IsMatch(name);
+        public static void OpenConfigFolder() => Process.Start(Mod.ConfigDirectory.FullName);
+
+        private static bool NeedsNewConfig(string version)
+        {
+            if (version == Mod.Version) { return false; }
+            Mod.Warning($"Loaded config version ({version ?? "NULL"}) is different from the current mod version");
+
+            return VersionNeedsNewConfig || (version != Mod.LastVersion);
+        }
 
         public static void CheckAlerts()
         {
@@ -40,11 +50,9 @@ namespace RimHUD.Data
             Mod.Message(alert);
         }
 
-        private static IEnumerable<Type> GetIntegrations() => Assembly.GetExecutingAssembly().GetTypes().Where(type => type.HasAttribute<Attributes.IntegratedOptions>());
-
         public static void AllToDefault()
         {
-            SetToDefault(typeof(Theme));
+            SetToDefault(typeof(Theme.Theme));
 
             foreach (var integration in GetIntegrations()) { SetToDefault(integration); }
 
@@ -73,31 +81,9 @@ namespace RimHUD.Data
             return subject.GetType();
         }
 
+        private static IEnumerable<Type> GetIntegrations() => Assembly.GetExecutingAssembly().GetTypes().Where(type => type.HasAttribute<Attributes.IntegratedOptions>());
+
         private static string GetIntegrationName(object subject) => "Integration." + GetSubjectType(subject).Name;
-
-        private static bool NeedsNewConfig(string version)
-        {
-            if (version == Mod.Version) { return false; }
-            Mod.Warning($"Loaded config version ({version ?? "NULL"}) is different from the current mod version");
-
-            return VersionNeedsNewConfig || (version != Mod.LastVersion);
-        }
-
-        public static XElement LoadXml(FileInfo file, bool errorOnFail = false)
-        {
-            try
-            {
-                return XDocument.Load(file.FullName).Root;
-            }
-            catch (Exception ex)
-            {
-                var message = $"Failed to load xml file '{file.FullName}' due to exception '{ex.Message}'";
-                if (errorOnFail) { Mod.Error(message); }
-                else { Mod.Warning(message); }
-
-                return null;
-            }
-        }
 
         public static void Load()
         {
@@ -135,13 +121,26 @@ namespace RimHUD.Data
             if (versionAttribute == null) { xml.Add(new XAttribute("Version", Mod.Version)); }
             else { versionAttribute.Value = Mod.Version; }
 
-            LoadElements(typeof(Theme), xml);
+            LoadElements(typeof(Theme.Theme), xml);
 
             foreach (var integration in GetIntegrations()) { LoadClassElements(integration, xml); }
 
             LoadLayouts(false);
 
             xml.Save(ConfigFile.FullName);
+        }
+
+        public static XElement LoadXml(FileInfo file, bool errorOnFail = false)
+        {
+            try { return XDocument.Load(file.FullName).Root; }
+            catch (Exception ex)
+            {
+                var message = $"Failed to load xml file '{file.FullName}' due to exception '{ex.Message}'";
+                if (errorOnFail) { Mod.Error(message); }
+                else { Mod.Warning(message); }
+
+                return null;
+            }
         }
 
         private static void LoadClassElements(object subject, XElement root)
@@ -187,7 +186,7 @@ namespace RimHUD.Data
         {
             var doc = new XDocument();
 
-            var theme = SaveClassElements(typeof(Theme), "Theme");
+            var theme = SaveClassElements(typeof(Theme.Theme), "Theme");
             theme.Add(new XAttribute("Version", Mod.Version));
 
             foreach (var integration in GetIntegrations()) { theme.Add(SaveClassElements(integration)); }
@@ -243,27 +242,7 @@ namespace RimHUD.Data
             if (categories.Count > 0) { current.Add(categories.Values); }
         }
 
-        public static LayoutPreset[] BuildFixedPresetsList()
-        {
-            var list = new List<LayoutPreset>();
-            foreach (var mod in LoadedModManager.RunningMods)
-            {
-                var directory = new DirectoryInfo(Path.Combine(mod.RootDir, FixedPresetsDirectoryName));
-                if (!directory.Exists) { continue; }
-
-                list.AddRange(directory.GetFiles("*" + PresetExtension).Select(file => LayoutPreset.Prepare(mod, file)).Where(preset => preset != null));
-            }
-
-            return list.ToArray();
-        }
-
-        public static LayoutPreset[] BuildUserPresetsList()
-        {
-            var directory = new DirectoryInfo(Path.Combine(Mod.ConfigDirectory.FullName, UserPresetsDirectoryName));
-            return directory.Exists ? directory.GetFiles("*" + PresetExtension).Select(file => LayoutPreset.Prepare(null, file)).Where(preset => preset != null).ToArray() : new LayoutPreset[] { };
-        }
-
-        private static void LoadLayouts(bool reset)
+        public static void LoadLayouts(bool reset)
         {
             var docked = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.DockedFileName));
             var floating = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, HudLayout.FloatingFileName));
@@ -296,6 +275,24 @@ namespace RimHUD.Data
             preset.File.Delete();
         }
 
-        public static void OpenConfigFolder() => Process.Start(Mod.ConfigDirectory.FullName);
+        public static LayoutPreset[] GetFixedPresets()
+        {
+            var list = new List<LayoutPreset>();
+            foreach (var mod in LoadedModManager.RunningMods)
+            {
+                var directory = new DirectoryInfo(Path.Combine(mod.RootDir, mod == Mod.ContentPack ? PresetsDirectoryName : ModPresetsDirectoryName));
+                if (!directory.Exists) { continue; }
+
+                list.AddRange(directory.GetFiles("*" + PresetExtension).Select(file => LayoutPreset.Prepare(mod, file)).Where(preset => preset != null));
+            }
+
+            return list.ToArray();
+        }
+
+        public static LayoutPreset[] GetUserPresets()
+        {
+            var directory = new DirectoryInfo(Path.Combine(Mod.ConfigDirectory.FullName, PresetsDirectoryName));
+            return directory.Exists ? directory.GetFiles("*" + PresetExtension).Select(file => LayoutPreset.Prepare(null, file)).Where(preset => preset != null).ToArray() : new LayoutPreset[] { };
+        }
     }
 }

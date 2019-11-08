@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Harmony;
 
-namespace RimHUD.Integration
+namespace RimHUD.Data.Integration
 {
     internal static class HugsLib
     {

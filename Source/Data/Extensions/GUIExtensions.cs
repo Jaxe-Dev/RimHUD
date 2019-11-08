@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Extensions
+namespace RimHUD.Data.Extensions
 {
     internal static class GUIExtensions
     {
@@ -13,6 +13,7 @@ namespace RimHUD.Extensions
 
         public static Rect Round(this Rect self) => new Rect(Mathf.Round(self.x), Mathf.Round(self.y), Mathf.Round(self.width), Mathf.Round(self.height));
         public static Rect ContractedBy(this Rect self, float x, float y) => new Rect(self.x + x, self.y + y, self.width - (x * 2f), self.height - (y * 2f));
+
         public static Rect[] GetHGrid(this Rect self, float padding, params float[] widths)
         {
             var unfixedCount = 0;
@@ -52,6 +53,7 @@ namespace RimHUD.Extensions
 
             return rects.ToArray();
         }
+
         public static Rect[] GetVGrid(this Rect self, float padding, params float[] heights)
         {
             var unfixedCount = 0;
@@ -91,6 +93,7 @@ namespace RimHUD.Extensions
 
             return rects.ToArray();
         }
+
         public static void ShowMenu(this IEnumerable<FloatMenuOption> self) => Find.WindowStack.Add(new FloatMenu(self.ToList()));
     }
 }

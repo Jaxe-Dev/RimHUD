@@ -1,13 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-namespace RimHUD.Data
+namespace RimHUD.Data.Theme
 {
     internal class ColorOption : ThemeOption
     {
         [Attributes.Option(typeof(Color))] public Color Value { get => (Color) Object; set => Object = value; }
 
-        public ColorOption(Color @default, string label, string tooltip = null, Action<ThemeOption> onChange = null) : base(@default, label, tooltip, onChange)
-        { }
+        public ColorOption(Color @default, string label, string tooltip = null, Action<ThemeOption> onChange = null) : base(@default, label, tooltip, onChange) { }
     }
 }

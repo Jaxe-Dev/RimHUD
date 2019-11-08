@@ -1,6 +1,7 @@
 ﻿using RimHUD.Data;
-using RimHUD.Extensions;
-using RimHUD.Integration;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Integration;
+using RimHUD.Data.Storage;
 using UnityEngine;
 using Verse;
 
@@ -21,7 +22,11 @@ namespace RimHUD.Interface.Dialog
             doCloseButton = false;
         }
 
-        public static void Open() => Find.WindowStack.Add(new Dialog_Presets());
+        public static void Open()
+        {
+            LayoutPreset.RefreshUserPresets();
+            Find.WindowStack.Add(new Dialog_Presets());
+        }
 
         protected override void DrawContent(Rect rect)
         {

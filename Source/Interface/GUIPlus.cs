@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
-using RimHUD.Extensions;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Theme;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -13,6 +14,7 @@ namespace RimHUD.Interface
         public const int TooltipId = 10001000;
         public const float ScrollbarWidth = 20f;
         public const float ButtonHeight = 30f;
+        public const float SmallButtonHeight = 18f;
         public const float TinyPadding = 2f;
         public const float SmallPadding = 4f;
         public const float MediumPadding = 8f;
@@ -23,6 +25,8 @@ namespace RimHUD.Interface
 
         public static readonly Color ButtonSelectedColor = new Color(0.5f, 1f, 0.5f);
         public static readonly Color ItemSelectedColor = new Color(0.25f, 0.4f, 0.1f);
+
+        private static readonly GUIContent TempContent = new GUIContent();
 
         public static void SetColor(Color? color)
         {
@@ -36,6 +40,7 @@ namespace RimHUD.Interface
 
             GUI.color = color.Value;
         }
+
         public static void ResetColor()
         {
             var color = (Color?) SavedColors.Pop();
@@ -61,6 +66,7 @@ namespace RimHUD.Interface
 
         public static void ResetFont()
         {
+            if (SavedFonts.Count == 0) { return; }
             var font = (GameFont?) SavedFonts.Pop();
             if (font == null) { return; }
 
@@ -101,11 +107,13 @@ namespace RimHUD.Interface
             return result & enabled;
         }
 
-        public static bool DrawButton(Rect rect, string label, TipSignal? tooltip = null, bool enabled = true)
+        public static bool DrawButton(Rect rect, string label, TipSignal? tooltip = null, GameFont? font = null, bool enabled = true)
         {
             SetEnabledColor(enabled);
+            SetFont(font);
             var result = Widgets.ButtonText(rect, label, active: enabled);
             DrawTooltip(rect, tooltip, true);
+            ResetFont();
             ResetColor();
 
             return result & enabled;
@@ -158,6 +166,15 @@ namespace RimHUD.Interface
             TooltipHandler.TipRegion(rect, tooltip.Value);
         }
 
-        public static Color HexToColor(string hex) => ColorUtility.TryParseHtmlString("#" + hex.TrimStart('#'), out var color) ? color : default(Color);
+        public static Color HexToColor(string hex) => ColorUtility.TryParseHtmlString("#" + hex.TrimStart('#'), out var color) ? color : default;
+
+        public static Vector2 GetTextSize(string text, GUIStyle style)
+        {
+            TempContent.text = text;
+            return style.CalcSize(TempContent);
+        }
+
+        public static GUIStyle GetGameFontStyle(GameFont font) => Text.fontStyles[(int) font];
+        public static GUIStyle GetGameReadOnlyFontStyle(GameFont font) => Text.textAreaReadOnlyStyles[(int) font];
     }
 }

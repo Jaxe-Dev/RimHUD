@@ -1,5 +1,7 @@
-﻿using RimHUD.Data.Models;
-using RimHUD.Extensions;
+﻿using System;
+using RimHUD.Data.Extensions;
+using RimHUD.Data.Models;
+using RimHUD.Data.Theme;
 using UnityEngine;
 using Verse;
 
@@ -10,23 +12,23 @@ namespace RimHUD.Interface.HUD
         private readonly string _value;
         private readonly string _fallbackValue;
         private readonly Color? _color;
+        private readonly Action _onClick;
 
-        public HudValue(string label, TipSignal? tooltip, string value, string fallbackValue, Color? color, TextStyle textStyle) : base(label, tooltip, textStyle)
+        private HudValue(string label, TipSignal? tooltip, string value, string fallbackValue, Color? color, TextStyle textStyle, Action onClick) : base(label, tooltip, textStyle)
         {
             _value = value;
             _fallbackValue = fallbackValue;
             _color = color;
+            _onClick = onClick;
         }
 
-        private HudValue(ValueModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, model.Value, null, model.Color, textStyle)
-        { }
+        private HudValue(ValueModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, model.Value, null, model.Color, textStyle, model.OnClick) { }
 
-        private HudValue(TextModel model, TextStyle textStyle) : this(null, model.Tooltip, model.Text, null, model.Color, textStyle)
-        { }
+        private HudValue(TextModel model, TextStyle textStyle, Action onClick) : this(null, model.Tooltip, model.Text, null, model.Color, textStyle, onClick) { }
 
         public static HudValue FromValueModel(ValueModel model, TextStyle textStyle) => (model == null) || model.Hidden ? null : new HudValue(model, textStyle);
-        public static HudValue FromTextModel(TextModel model, TextStyle textStyle) => model == null ? null : new HudValue(model, textStyle);
-        public static HudValue FromText(string text, TipSignal? tooltip, TextStyle textStyle) => new HudValue(null, tooltip, text, null, null, textStyle);
+        public static HudValue FromTextModel(TextModel model, TextStyle textStyle) => model == null ? null : new HudValue(model, textStyle, model.OnClick);
+        public static HudValue FromText(string text, TipSignal? tooltip, TextStyle textStyle, Action onClick = null) => new HudValue(null, tooltip, text, null, null, textStyle, onClick);
 
         public override bool Draw(Rect rect)
         {
@@ -39,6 +41,7 @@ namespace RimHUD.Interface.HUD
             GUIPlus.SetColor(_color);
             if (showLabel) { DrawText(grid[1], Label); }
             DrawText(grid[2], _value, alignment: showLabel ? TextAnchor.MiddleRight : (TextAnchor?) null);
+            if (Widgets.ButtonInvisible(rect.ExpandedBy(GUIPlus.TinyPadding))) { _onClick?.Invoke(); }
             GUIPlus.ResetColor();
 
             GUIPlus.DrawTooltip(grid[0], Tooltip, false);
