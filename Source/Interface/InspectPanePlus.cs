@@ -27,6 +27,8 @@ namespace RimHUD.Interface
 
         public static void OnGUI(Rect inRect, IInspectPane pane)
         {
+            Theme.CheckFontChange();
+
             var model = PawnModel.Selected;
 
             pane.RecentHeight = Theme.InspectPaneHeight.Value - 35f;

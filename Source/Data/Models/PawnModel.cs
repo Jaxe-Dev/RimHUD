@@ -144,8 +144,9 @@ namespace RimHUD.Data.Models
             if (Base.kindDef.race.tradeTags?.Contains("AnimalFarm") ?? false) { return Lang.Get("Model.Creature.Farm"); }
             if (Base.RaceProps.herdAnimal) { return Lang.Get("Model.Creature.Herd"); }
             if (Base.kindDef.race.tradeTags?.Contains("AnimalInsect") ?? false) { return Lang.Get("Model.Creature.Insect"); }
+            if (Base.RaceProps.Animal) { return Lang.Get("Model.Creature.Tame"); }
 
-            return Lang.Get("Model.Creature.Tame");
+            return Lang.Get("Model.Creature.Unit");
         }
 
         private Color GetFactionRelationColor()

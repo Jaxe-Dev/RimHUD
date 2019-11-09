@@ -11,7 +11,7 @@
   <RimHUD.Model.Faction.Independent>independent</RimHUD.Model.Faction.Independent>
 
   <RimHUD.Model.Creature.Wild>creature</RimHUD.Model.Creature.Wild>
-  <RimHUD.Model.Creature.Tame>tame critter</RimHUD.Model.Creature.Tame>
+  <RimHUD.Model.Creature.Tame>animal</RimHUD.Model.Creature.Tame>
   <RimHUD.Model.Creature.Stray>stray</RimHUD.Model.Creature.Stray>
   <RimHUD.Model.Creature.Pet>pet</RimHUD.Model.Creature.Pet>
   <RimHUD.Model.Creature.ExoticPet>exotic pet</RimHUD.Model.Creature.ExoticPet>
@@ -21,6 +21,7 @@
   <RimHUD.Model.Creature.Farm>farm animal</RimHUD.Model.Creature.Farm>
   <RimHUD.Model.Creature.Herd>herd animal</RimHUD.Model.Creature.Herd>
   <RimHUD.Model.Creature.Insect>insect</RimHUD.Model.Creature.Insect>
+  <RimHUD.Model.Creature.Unit>unit</RimHUD.Model.Creature.Unit>
 
   <RimHUD.Model.GenderAndAge>{0} aged {1}</RimHUD.Model.GenderAndAge>
   <RimHUD.Model.Age.Birthday>(Birthday today)</RimHUD.Model.Age.Birthday>
