@@ -122,7 +122,7 @@ namespace RimHUD.Data.Models
             else { age = Lang.CombineWords(age, Lang.Get("Model.Age.Days", ageDays)); }
 
             var genderKind = Lang.AdjectiveNoun(gender, Base.kindDef.race.label);
-            return TextModel.Create(Lang.Get("Model.GenderAndAge", genderKind, age).CapitalizeFirst(), GetBioTooltip(), FactionRelationColor);
+            return TextModel.Create(Lang.Get("Model.GenderAndAge", genderKind, age).CapitalizeFirst(), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab);
         }
 
         private string GetKind()
@@ -172,7 +172,7 @@ namespace RimHUD.Data.Models
             var faction = (Base.Faction == null) || !Base.Faction.HasName ? null : Lang.Get("Model.OfFaction", Base.Faction.Name);
             var relationKind = Lang.AdjectiveNoun(GetFactionRelation(), GetKind());
 
-            return TextModel.Create(Lang.Get("Model.RelationKindAndFaction", relationKind, faction).Trim().CapitalizeFirst(), GetBioTooltip(), FactionRelationColor);
+            return TextModel.Create(Lang.Get("Model.RelationKindAndFaction", relationKind, faction).Trim().CapitalizeFirst(), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab);
         }
 
         private string GetActivity()

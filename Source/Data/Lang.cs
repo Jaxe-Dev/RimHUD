@@ -6,7 +6,11 @@ namespace RimHUD.Data
     {
         public static bool HasKey(string key) => LanguageDatabase.activeLanguage.HaveTextForKey(Mod.Id + "." + key);
 
-        public static string Get(string key, params object[] args) => string.Format((Mod.Id + "." + key).Translate(), args);
+        public static string Get(string key, params object[] args)
+        {
+            try { return string.Format((Mod.Id + "." + key).Translate(), args); }
+            catch { return $"<TranslationError:{key}>"; }
+        }
 
         public static string GetIndexed(string key, int index)
         {

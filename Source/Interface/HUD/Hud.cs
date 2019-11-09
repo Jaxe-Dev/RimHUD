@@ -12,8 +12,10 @@ namespace RimHUD.Interface.HUD
 
         public static void DrawDocked(Rect bounds, PawnModel model)
         {
+            var configRect = GetConfigButtonRect(bounds, false);
+            IsMouseOverConfigButton = Mouse.IsOver(configRect);
             HudLayout.Docked.Draw(bounds, model ?? PawnModel.Selected);
-            DrawConfigButton(bounds, false);
+            if (Mouse.IsOver(bounds)) { DrawConfigButton(configRect); }
         }
 
         public static void DrawFloating()
@@ -22,14 +24,23 @@ namespace RimHUD.Interface.HUD
 
             Widgets.DrawWindowBackground(bounds);
             var inner = bounds.ContractedBy(GUIPlus.MediumPadding);
+            var configRect = GetConfigButtonRect(inner, true);
+            IsMouseOverConfigButton = Mouse.IsOver(configRect);
             HudLayout.Floating.Draw(inner, PawnModel.Selected);
-            DrawConfigButton(inner, true);
+            if(Mouse.IsOver(bounds)) { DrawConfigButton(configRect); }
         }
 
-        private static void DrawConfigButton(Rect bounds, bool top)
+        private static Rect GetConfigButtonRect(Rect bounds, bool top)
         {
             var y = top ? bounds.y : bounds.yMax - ConfigButtonSize;
-            if (Mouse.IsOver(bounds) && Widgets.ButtonImage(new Rect(bounds.xMax - ConfigButtonSize, y, ConfigButtonSize, ConfigButtonSize), Textures.ConfigIcon)) { Dialog_Config.Open(); }
+            return new Rect(bounds.xMax - ConfigButtonSize, y, ConfigButtonSize, ConfigButtonSize);
         }
+
+        private static void DrawConfigButton(Rect rect)
+        {
+            if (Widgets.ButtonImage(rect, Textures.ConfigIcon)) { Dialog_Config.Open(); }
+        }
+
+        public static bool IsMouseOverConfigButton = true;
     }
 }

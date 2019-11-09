@@ -17,7 +17,7 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.4.0";
+        public const string Version = "1.4.1";
         public const string LastVersion = "1.3.2";
         public const bool VersionNeedsNewConfig = false;
 
