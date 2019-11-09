@@ -9,7 +9,7 @@ namespace RimHUD.Data.Theme
     {
         private const int DefaultBaseFontSize = 12;
 
-        public static GUIStyle BaseGUIStyle => new GUIStyle(GUIPlus.GetGameFontStyle(GameFont.Medium)) { fontSize = DefaultBaseFontSize, alignment = TextAnchor.MiddleLeft, wordWrap = false, padding = new RectOffset(0, 0, 0, 0) };
+        public static readonly GUIStyle BaseGUIStyle = new GUIStyle(GUIPlus.GetGameFontStyle(GameFont.Medium)) { font = Text.CurFontStyle.font, fontSize = DefaultBaseFontSize, alignment = TextAnchor.MiddleLeft, wordWrap = false, padding = new RectOffset(0, 0, 0, 0) };
 
         [Attributes.Option("HudOptions", "RefreshRate")] public static RangeOption RefreshRate { get; } = new RangeOption(2, 0, 10, Lang.Get("Theme.RefreshRate"), value => (value * 100) + Lang.Get("Theme.RefreshRateUnits"), Lang.Get("Theme.RefreshRateDesc"));
 
@@ -25,7 +25,7 @@ namespace RimHUD.Data.Theme
         [Attributes.Option("InspectPane", "AddLog")] public static BoolOption InspectPaneTabAddLog { get; } = new BoolOption(true, Lang.Get("Theme.InspectPaneAddLog"), Lang.Get("Theme.InspectPaneAddLogDesc"));
         [Attributes.Option("InspectPane", "Height")] public static RangeOption InspectPaneHeight { get; } = new RangeOption(255, 200, 500, Lang.Get("Theme.InspectPaneHeight"));
         [Attributes.Option("InspectPane", "MinTabs")] public static RangeOption InspectPaneMinTabs { get; } = new RangeOption(7, 6, 12, Lang.Get("Theme.InspectPaneMinTabs"));
-        [Attributes.Option("InspectPane", "TabWidth")] public static RangeOption InspectPaneTabWidth { get; } = new RangeOption(80, 72, 150, Lang.Get("Theme.InspectPaneTabWidth"));
+        [Attributes.Option("InspectPane", "TabWidth")] public static RangeOption InspectPaneTabWidth { get; } = new RangeOption(82, 72, 150, Lang.Get("Theme.InspectPaneTabWidth"));
 
         [Attributes.Option("Text", "Regular")] public static TextStyle RegularTextStyle { get; } = new TextStyle(Lang.Get("Theme.TextStyleRegular"), null, BaseGUIStyle.fontSize, 7, 20, 100, 100, 250, _ => UpdateTextStyles());
         [Attributes.Option("Text", "Large")] public static TextStyle LargeTextStyle { get; } = new TextStyle(Lang.Get("Theme.TextStyleLarge"), RegularTextStyle, 3, 0, 5, 150, 100, 250);
@@ -91,6 +91,13 @@ namespace RimHUD.Data.Theme
         {
             SmallTextStyle?.UpdateStyle();
             LargeTextStyle?.UpdateStyle();
+        }
+
+        public static void CheckFontChange()
+        {
+            if (BaseGUIStyle.font == Text.CurFontStyle.font) { return; }
+            BaseGUIStyle.font = Text.CurFontStyle.font;
+            RegularTextStyle.UpdateStyle();
         }
 
         private static void SetOffsetBounds()
