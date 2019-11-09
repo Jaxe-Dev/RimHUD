@@ -41,10 +41,10 @@ namespace RimHUD.Interface.HUD
             GUIPlus.SetColor(_color);
             if (showLabel) { DrawText(grid[1], Label); }
             DrawText(grid[2], _value, alignment: showLabel ? TextAnchor.MiddleRight : (TextAnchor?) null);
-            if (Widgets.ButtonInvisible(rect.ExpandedBy(GUIPlus.TinyPadding))) { _onClick?.Invoke(); }
+            if (!Hud.IsMouseOverConfigButton && Widgets.ButtonInvisible(rect.ExpandedBy(GUIPlus.TinyPadding))) { _onClick?.Invoke(); }
             GUIPlus.ResetColor();
 
-            GUIPlus.DrawTooltip(grid[0], Tooltip, false);
+            if (!Hud.IsMouseOverConfigButton) { GUIPlus.DrawTooltip(grid[0], Tooltip, false); }
             return true;
         }
     }
