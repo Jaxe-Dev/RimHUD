@@ -155,7 +155,8 @@ namespace RimHUD.Data.Models
         private void BuildStatString(StringBuilder builder, StatDef def)
         {
             if (def.Worker.IsDisabledFor(Model.Base)) { return; }
-            builder.AppendLine($"{def.LabelCap}: {def.ValueToString(Model.Base.GetStatValue(def))}");
+            try { builder.AppendLine($"{def.LabelCap}: {def.ValueToString(Model.Base.GetStatValue(def))}"); }
+            catch { }
         }
     }
 }

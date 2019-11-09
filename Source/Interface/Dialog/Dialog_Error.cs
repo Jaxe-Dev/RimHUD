@@ -1,7 +1,6 @@
 ﻿using System;
 using RimHUD.Data;
 using RimHUD.Data.Extensions;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -72,7 +71,7 @@ namespace RimHUD.Interface.Dialog
             if (GUIPlus.DrawButton(buttonGrid[1], Lang.Get("Dialog_Error.CopyToClipboard"), font: GameFont.Tiny))
             {
                 GUIUtility.systemCopyBuffer = $"[RimHUD Auto-deactivation]\n\nReason:\n{_message}\n\n{_stacktrace}";
-                Messages.Message(new Message("RimHUD Auto-deactivation details copied to clipboard", MessageTypeDefOf.TaskCompletion), false);
+                Mod.Message("RimHUD Auto-deactivation details copied to clipboard");
             }
             if (GUIPlus.DrawButton(buttonGrid[3], Lang.Get("Dialog_Error.Reactivate"), font: GameFont.Tiny))
             {
