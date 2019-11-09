@@ -44,9 +44,9 @@ namespace RimHUD.Interface.HUD
             DrawThresholds(grid[2]);
             DrawValue(grid[3], _value, _max);
 
-            GUIPlus.DrawTooltip(grid[0], Tooltip, false);
+            if (!Hud.IsMouseOverConfigButton && Widgets.ButtonInvisible(rect.ExpandedBy(GUIPlus.TinyPadding))) { _onClick?.Invoke(); }
+            if (!Hud.IsMouseOverConfigButton && Hud.IsMouseOverConfigButton) { GUIPlus.DrawTooltip(grid[0], Tooltip, false); }
 
-            if (Widgets.ButtonInvisible(rect.ExpandedBy(GUIPlus.TinyPadding))) { _onClick?.Invoke(); }
             return true;
         }
 
