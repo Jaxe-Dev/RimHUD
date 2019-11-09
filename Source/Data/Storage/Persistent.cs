@@ -34,12 +34,12 @@ namespace RimHUD.Data.Storage
 
         public static void OpenConfigFolder() => Process.Start(Mod.ConfigDirectory.FullName);
 
-        private static bool NeedsNewConfig(string version)
+        private static bool NeedsNewConfig(string loadedVersion)
         {
-            if (version == Mod.Version) { return false; }
-            Mod.Warning($"Loaded config version ({version ?? "NULL"}) is different from the current mod version");
+            if (loadedVersion == Mod.Version) { return false; }
+            Mod.Warning($"Loaded config version ({loadedVersion ?? "NULL"}) is different from the current mod version");
 
-            return VersionNeedsNewConfig || (version != Mod.LastVersion);
+            return VersionNeedsNewConfig || (loadedVersion != Mod.LastVersion);
         }
 
         public static void CheckAlerts()

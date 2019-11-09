@@ -151,12 +151,5 @@ namespace RimHUD.Data.Models
 
             return builder.Length == 0 ? null : new TipSignal(() => builder.ToStringTrimmed().Size(Theme.Theme.RegularTextStyle.ActualSize), GUIPlus.TooltipId);
         }
-
-        private void BuildStatString(StringBuilder builder, StatDef def)
-        {
-            if (def.Worker.IsDisabledFor(Model.Base)) { return; }
-            try { builder.AppendLine($"{def.LabelCap}: {def.ValueToString(Model.Base.GetStatValue(def))}"); }
-            catch { }
-        }
     }
 }
