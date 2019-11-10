@@ -26,7 +26,27 @@ namespace RimHUD.Interface
         public static readonly Color ButtonSelectedColor = new Color(0.5f, 1f, 0.5f);
         public static readonly Color ItemSelectedColor = new Color(0.25f, 0.4f, 0.1f);
 
-        private static readonly GUIContent TempContent = new GUIContent();
+        public static void SetFont(GameFont? font)
+        {
+            if (font == null)
+            {
+                SavedFonts.Push(null);
+                return;
+            }
+
+            SavedFonts.Push((GameFont?)Text.Font);
+
+            Text.Font = font.Value;
+        }
+
+        public static void ResetFont()
+        {
+            if (SavedFonts.Count == 0) { return; }
+            var font = (GameFont?)SavedFonts.Pop();
+            if (font == null) { return; }
+
+            Text.Font = font.Value;
+        }
 
         public static void SetColor(Color? color)
         {
@@ -50,28 +70,6 @@ namespace RimHUD.Interface
         }
 
         public static void SetEnabledColor(bool enabled) => SetColor(enabled ? (Color?) null : Theme.DisabledColor.Value);
-
-        public static void SetFont(GameFont? font)
-        {
-            if (font == null)
-            {
-                SavedFonts.Push(null);
-                return;
-            }
-
-            SavedFonts.Push((GameFont?) Text.Font);
-
-            Text.Font = font.Value;
-        }
-
-        public static void ResetFont()
-        {
-            if (SavedFonts.Count == 0) { return; }
-            var font = (GameFont?) SavedFonts.Pop();
-            if (font == null) { return; }
-
-            Text.Font = font.Value;
-        }
 
         public static void DrawText(Rect rect, string text, Color? color = null, TextStyle style = null, TextAnchor? alignment = null, TipSignal? tooltip = null)
         {
@@ -168,11 +166,7 @@ namespace RimHUD.Interface
 
         public static Color HexToColor(string hex) => ColorUtility.TryParseHtmlString("#" + hex.TrimStart('#'), out var color) ? color : default;
 
-        public static Vector2 GetTextSize(string text, GUIStyle style)
-        {
-            TempContent.text = text;
-            return style.CalcSize(TempContent);
-        }
+        public static Vector2 GetTextSize(string text, GUIStyle style) => style.CalcSize(new GUIContent(text));
 
         public static GUIStyle GetGameFontStyle(GameFont font) => Text.fontStyles[(int) font];
         public static GUIStyle GetGameReadOnlyFontStyle(GameFont font) => Text.textAreaReadOnlyStyles[(int) font];

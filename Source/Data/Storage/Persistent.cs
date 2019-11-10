@@ -39,7 +39,7 @@ namespace RimHUD.Data.Storage
             if (loadedVersion == Mod.Version) { return false; }
             Mod.Warning($"Loaded config version ({loadedVersion ?? "NULL"}) is different from the current mod version");
 
-            return VersionNeedsNewConfig || (loadedVersion != Mod.LastVersion);
+            return VersionNeedsNewConfig || !Mod.SameConfigVersions.Contains(loadedVersion);
         }
 
         public static void CheckAlerts()
