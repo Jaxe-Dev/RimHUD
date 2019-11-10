@@ -9,7 +9,8 @@ namespace RimHUD.Data.Theme
     {
         private const int DefaultBaseFontSize = 12;
 
-        public static readonly GUIStyle BaseGUIStyle = new GUIStyle(GUIPlus.GetGameFontStyle(GameFont.Medium)) { font = Text.CurFontStyle.font, fontSize = DefaultBaseFontSize, alignment = TextAnchor.MiddleLeft, wordWrap = false, padding = new RectOffset(0, 0, 0, 0) };
+        public static GUIStyle BaseGUIStyle => new GUIStyle(Text.CurFontStyle) { fontSize = DefaultBaseFontSize, alignment = TextAnchor.MiddleLeft, wordWrap = false, padding = new RectOffset(0, 0, 0, 0) };
+        private static Font _baseFont = Text.CurFontStyle.font;
 
         [Attributes.Option("HudOptions", "RefreshRate")] public static RangeOption RefreshRate { get; } = new RangeOption(2, 0, 10, Lang.Get("Theme.RefreshRate"), value => (value * 100) + Lang.Get("Theme.RefreshRateUnits"), Lang.Get("Theme.RefreshRateDesc"));
 
@@ -95,8 +96,13 @@ namespace RimHUD.Data.Theme
 
         public static void CheckFontChange()
         {
-            if (BaseGUIStyle.font == Text.CurFontStyle.font) { return; }
-            BaseGUIStyle.font = Text.CurFontStyle.font;
+            GUIPlus.SetFont(GameFont.Small);
+            var isChanged = _baseFont != Text.CurFontStyle.font;
+            GUIPlus.ResetFont();
+
+            if (!isChanged) { return; }
+
+            _baseFont = Text.CurFontStyle.font;
             RegularTextStyle.UpdateStyle();
         }
 
