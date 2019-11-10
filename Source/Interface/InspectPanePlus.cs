@@ -116,7 +116,12 @@ namespace RimHUD.Interface
 
                     int buttonWidth;
                     if (TabButtonWidths.ContainsKey(tab)) { buttonWidth = TabButtonWidths[tab]; }
-                    else { TabButtonWidths[tab] = buttonWidth = Traverse.Create(tab).Field<int>("tabButtonWidth")?.Value ?? Theme.InspectPaneTabWidth.Value; }
+                    else
+                    {
+                        buttonWidth = Traverse.Create(tab).Field<int>("tabButtonWidth")?.Value ?? 0;
+                        if (buttonWidth <= 0) { buttonWidth = Theme.InspectPaneTabWidth.Value; }
+                        TabButtonWidths[tab] = buttonWidth;
+                    }
 
                     var rect = new Rect(x, y, buttonWidth, 30f);
                     width = x;
