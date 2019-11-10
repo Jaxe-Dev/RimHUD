@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Harmony;
 using RimHUD.Data;
 using RimHUD.Data.Models;
 using RimHUD.Data.Theme;
@@ -24,6 +25,8 @@ namespace RimHUD.Interface
         private static int _lastBattleTick = -1;
         private static int _lastPlayTick = -1;
         private static Pawn _pawn;
+
+        private static readonly Dictionary<InspectTabBase, int> TabButtonWidths = new Dictionary<InspectTabBase, int>();
 
         public static void OnGUI(Rect inRect, IInspectPane pane)
         {
@@ -65,7 +68,7 @@ namespace RimHUD.Interface
                 var label = model.Name;
 
                 Widgets.Label(labelRect, label);
-                if(Widgets.ButtonInvisible(labelRect)) { ToggleSocialTab(); }
+                if (Widgets.ButtonInvisible(labelRect)) { ToggleSocialTab(); }
 
                 GUIPlus.ResetFont();
                 GUIPlus.ResetColor();
@@ -107,23 +110,27 @@ namespace RimHUD.Interface
                 var width = 0f;
                 var isSelected = false;
 
-                foreach (var curTab in pane.CurTabs)
+                foreach (var tab in pane.CurTabs)
                 {
-                    if (!curTab.IsVisible) { continue; }
+                    if (!tab.IsVisible) { continue; }
 
-                    var rect = new Rect(x, y, Theme.InspectPaneTabWidth.Value, 30f);
+                    int buttonWidth;
+                    if (TabButtonWidths.ContainsKey(tab)) { buttonWidth = TabButtonWidths[tab]; }
+                    else { TabButtonWidths[tab] = buttonWidth = Traverse.Create(tab).Field<int>("tabButtonWidth")?.Value ?? Theme.InspectPaneTabWidth.Value; }
+
+                    var rect = new Rect(x, y, buttonWidth, 30f);
                     width = x;
 
                     Text.Font = GameFont.Small;
 
-                    if (Widgets.ButtonText(rect, curTab.labelKey.Translate())) { InterfaceToggleTab(curTab, pane); }
+                    if (Widgets.ButtonText(rect, tab.labelKey.Translate())) { InterfaceToggleTab(tab, pane); }
 
-                    var isOpenTab = curTab.GetType() == pane.OpenTabType;
-                    if (!isOpenTab && !curTab.TutorHighlightTagClosed.NullOrEmpty()) { UIHighlighter.HighlightOpportunity(rect, curTab.TutorHighlightTagClosed); }
+                    var isOpenTab = tab.GetType() == pane.OpenTabType;
+                    if (!isOpenTab && !tab.TutorHighlightTagClosed.NullOrEmpty()) { UIHighlighter.HighlightOpportunity(rect, tab.TutorHighlightTagClosed); }
 
                     if (isOpenTab)
                     {
-                        curTab.DoTabGUI();
+                        tab.DoTabGUI();
                         pane.RecentHeight = 700f;
                         isSelected = true;
                     }
@@ -132,7 +139,7 @@ namespace RimHUD.Interface
                 }
                 if (!isSelected) { return false; }
 
-                GUI.DrawTexture(new Rect(0.0f, y, width, 30f), Textures.InspectTabButtonFill);
+                GUI.DrawTexture(new Rect(0f, y, width, 30f), Textures.InspectTabButtonFill);
             }
             catch (Exception ex) { Mod.ErrorOnce(ex.ToString(), "DrawTabs error"); }
 
@@ -225,6 +232,7 @@ namespace RimHUD.Interface
             _lastPlayTick = -1;
             _logDrawData = new ITab_Pawn_Log_Utility.LogDrawData();
             _scrollPosition = Vector2.zero;
+            TabButtonWidths.Clear();
         }
 
         private static void InterfaceToggleTab(InspectTabBase tab, IInspectPane pane) => Access.Method_RimWorld_InspectPaneUtility_InterfaceToggleTab.Invoke(null, new object[] { tab, pane });
