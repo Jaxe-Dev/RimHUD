@@ -66,8 +66,8 @@
     <Compile Include="Data\Models\HudModel.cs" />
     <Compile Include="Data\Models\NeedModel.cs" />
     <Compile Include="Data\Models\OutfitModel.cs" />
-    <Compile Include="Data\Models\PawnHealthModel.cs" />
-    <Compile Include="Data\Models\PawnMindModel.cs" />
+    <Compile Include="Data\Models\HealthModel.cs" />
+    <Compile Include="Data\Models\MindModel.cs" />
     <Compile Include="Data\Models\PawnModel.cs" />
     <Compile Include="Data\Models\RulesModel.cs" />
     <Compile Include="Data\Models\SelectorModel.cs" />
