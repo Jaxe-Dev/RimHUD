@@ -17,14 +17,15 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.4.3";
+        public const string Version = "1.4.4";
         public const bool VersionNeedsNewConfig = false;
 
         public static readonly string[] SameConfigVersions =
         {
             "1.4.0",
             "1.4.1",
-            "1.4.2"
+            "1.4.2",
+            "1.4.3"
         };
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));

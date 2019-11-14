@@ -10,7 +10,7 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class PawnHealthModel
+    internal class HealthModel
     {
         public PawnModel Model { get; }
 
@@ -19,7 +19,7 @@ namespace RimHUD.Data.Models
         public TextModel Condition => GetHealthCondition();
         public TipSignal? Tooltip => GetHealthTooltip();
 
-        public PawnHealthModel(PawnModel model) => Model = model;
+        public HealthModel(PawnModel model) => Model = model;
 
         private static void OnClick() => InspectPanePlus.ToggleHealthTab();
 

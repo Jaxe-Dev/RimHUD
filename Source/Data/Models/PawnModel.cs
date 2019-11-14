@@ -30,8 +30,8 @@ namespace RimHUD.Data.Models
         public Color FactionRelationColor => _factionRelationColor ?? (_factionRelationColor = GetFactionRelationColor()).Value;
         public TextModel RelationKindAndFaction => GetRelationKindAndFaction();
 
-        public PawnHealthModel Health { get; }
-        public PawnMindModel Mind { get; }
+        public HealthModel Health { get; }
+        public MindModel Mind { get; }
 
         public bool IsHumanlike => Base.RaceProps.Humanlike;
         public bool IsAnimal => Base.RaceProps.Animal;
@@ -87,8 +87,8 @@ namespace RimHUD.Data.Models
         private PawnModel(Pawn pawn)
         {
             Base = pawn;
-            Health = new PawnHealthModel(this);
-            Mind = new PawnMindModel(this);
+            Health = new HealthModel(this);
+            Mind = new MindModel(this);
         }
 
         private static PawnModel GetSelected()
