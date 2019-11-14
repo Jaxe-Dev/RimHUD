@@ -70,7 +70,7 @@ namespace RimHUD.Interface.Dialog
 
             if (GUIPlus.DrawButton(buttonGrid[1], Lang.Get("Dialog_Error.CopyToClipboard"), font: GameFont.Tiny))
             {
-                GUIUtility.systemCopyBuffer = $"[RimHUD Auto-deactivation]\n\nReason:\n{_message}\n\n{_stacktrace}";
+                GUIUtility.systemCopyBuffer = $"[[RimHUD Auto-deactivation report]]\n{_message}\n\n{_stacktrace}";
                 Mod.Message("RimHUD Auto-deactivation details copied to clipboard");
             }
             if (GUIPlus.DrawButton(buttonGrid[3], Lang.Get("Dialog_Error.Reactivate"), font: GameFont.Tiny))
@@ -81,6 +81,6 @@ namespace RimHUD.Interface.Dialog
             if (GUIPlus.DrawButton(buttonGrid[4], Lang.Get("Button.Close"), font: GameFont.Tiny)) { Close(); }
         }
 
-        private static string BuildStacktrace(Exception exception) => $"<{exception.Source}: {exception.Message}>\n{exception.StackTrace}";
+        private static string BuildStacktrace(Exception exception) => $"[{exception.Source}: {exception.Message}]\n{exception.StackTrace}";
     }
 }

@@ -18,11 +18,11 @@ namespace RimHUD.Data.Models
 
         public TrainingModel(PawnModel model, TrainableDef def) : base(model)
         {
-            var trainable = (model.Base.RaceProps?.trainability != null) && (model.Base.training != null);
-            var visible = false;
-            var canTrainNow = model.Base.training?.CanAssignToTrain(def, out visible).Accepted ?? false;
+            bool canTrainNow;
+            try { canTrainNow = (model.Base.RaceProps?.trainability != null) && (model.Base.training != null) && model.Base.training.CanAssignToTrain(def, out var visible).Accepted && visible; }
+            catch { canTrainNow = false; }
 
-            if (!trainable || !visible || !canTrainNow)
+            if (!canTrainNow)
             {
                 Hidden = true;
                 return;

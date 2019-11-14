@@ -8,13 +8,16 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class PawnMindModel
+    internal class MindModel
     {
+        public const float MoodHappyLevel = 0.9f;
+        public const float MoodContentLevel = 0.65f;
+
         public PawnModel Model { get; }
         public TextModel Condition => GetCondition();
         public TipSignal? Tooltip => GetTooltip();
 
-        public PawnMindModel(PawnModel model) => Model = model;
+        public MindModel(PawnModel model) => Model = model;
 
         private static void OnClick() => InspectPanePlus.ToggleNeedsTab();
 
@@ -32,8 +35,8 @@ namespace RimHUD.Data.Models
             var inspiration = GetInspiration();
             if (inspiration != null) { return inspiration; }
 
-            if (Model.Base.needs.mood.CurLevel > 0.9f) { return TextModel.Create(Lang.Get("Model.Mood.Happy"), GetTooltip(), Theme.Theme.ExcellentColor.Value, OnClick); }
-            return Model.Base.needs.mood.CurLevel > 0.65f ? TextModel.Create(Lang.Get("Model.Mood.Content"), GetTooltip(), Theme.Theme.GoodColor.Value, OnClick) : TextModel.Create(Lang.Get("Model.Mood.Indifferent"), GetTooltip(), Theme.Theme.InfoColor.Value, OnClick);
+            if (Model.Base.needs.mood.CurLevel > MoodHappyLevel) { return TextModel.Create(Lang.Get("Model.Mood.Happy"), GetTooltip(), Theme.Theme.ExcellentColor.Value, OnClick); }
+            return Model.Base.needs.mood.CurLevel > MoodContentLevel ? TextModel.Create(Lang.Get("Model.Mood.Content"), GetTooltip(), Theme.Theme.GoodColor.Value, OnClick) : TextModel.Create(Lang.Get("Model.Mood.Indifferent"), GetTooltip(), Theme.Theme.InfoColor.Value, OnClick);
         }
 
         private TextModel GetInspiration()
@@ -49,7 +52,8 @@ namespace RimHUD.Data.Models
             if (Model.Base.needs?.mood?.thoughts == null) { return null; }
 
             var thoughts = new List<Thought>();
-            PawnNeedsUIUtility.GetThoughtGroupsInDisplayOrder(Model.Base.needs.mood, thoughts);
+            try { PawnNeedsUIUtility.GetThoughtGroupsInDisplayOrder(Model.Base.needs.mood, thoughts); }
+            catch { }
 
             var builder = new StringBuilder();
             foreach (var thought in thoughts)
