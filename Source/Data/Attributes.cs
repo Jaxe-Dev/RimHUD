@@ -8,10 +8,10 @@ namespace RimHUD.Data
     internal static class Attributes
     {
         [AttributeUsage(AttributeTargets.Class)]
-        public class IntegratedOptions : Attribute { }
+        internal class IntegratedOptions : Attribute { }
 
         [AttributeUsage(AttributeTargets.Property)]
-        public class Option : Attribute
+        internal class Option : Attribute
         {
             public Type Type { get; }
             public string Category { get; }

@@ -7,7 +7,7 @@ using Verse;
 
 namespace RimHUD.Interface
 {
-    public static class LetterStackPlus
+    internal static class LetterStackPlus
     {
         private const float HudPadding = 8f;
 

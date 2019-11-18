@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Harmony;
+using Multiplayer.API;
 using RimHUD.Data.Compatibility;
 using RimHUD.Data.Integration;
 using RimHUD.Data.Storage;
@@ -13,11 +14,11 @@ using Verse;
 namespace RimHUD
 {
     [StaticConstructorOnStartup]
-    internal static class Mod
+    public static class Mod
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.4.4";
+        public const string Version = "1.5.0";
         public const bool VersionNeedsNewConfig = false;
 
         public static readonly string[] SameConfigVersions =
@@ -25,7 +26,8 @@ namespace RimHUD
             "1.4.0",
             "1.4.1",
             "1.4.2",
-            "1.4.3"
+            "1.4.3",
+            "1.4.4"
         };
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
@@ -49,6 +51,12 @@ namespace RimHUD
             if (!FirstTimeUser) { HugsLib.RegisterUpdateFeature(); }
 
             Log("Initialized");
+
+            if (MP.enabled)
+            {
+                MP.RegisterAll();
+                Log("Multiplayer ready with API " + MP.API);
+            }
         }
 
         public static void OnStartup()

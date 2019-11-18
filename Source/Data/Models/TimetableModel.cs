@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using RimHUD.Data.Compatibility;
 using RimHUD.Data.Extensions;
 using RimHUD.Patch;
 using RimWorld;
@@ -36,7 +37,7 @@ namespace RimHUD.Data.Models
         private void DrawFloatMenu()
         {
             var hour = GenLocalDate.HourOfDay(Model.Base);
-            var options = DefDatabase<TimeAssignmentDef>.AllDefs.Select(timeAssignment => new FloatMenuOption(Lang.Get("Model.Selector.SetTimeAssignment", hour, timeAssignment.LabelCap), () => Model.Base.timetable.SetAssignment(hour, timeAssignment))).ToList();
+            var options = DefDatabase<TimeAssignmentDef>.AllDefs.Select(timeAssignment => new FloatMenuOption(Lang.Get("Model.Selector.SetTimeAssignment", hour, timeAssignment.LabelCap), () => MultiplayerCompatibility.SetAssignment(Model.Base, hour, timeAssignment))).ToList();
             options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.MainTabsRoot.SetCurrentTab(Access.MainButtonDefOfRestrict)));
 
             Find.WindowStack.Add(new FloatMenu(options));
