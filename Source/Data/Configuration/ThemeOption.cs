@@ -1,7 +1,7 @@
 ﻿using System;
 using RimHUD.Data.Storage;
 
-namespace RimHUD.Data.Theme
+namespace RimHUD.Data.Configuration
 {
     internal abstract class ThemeOption : IDefaultable
     {
@@ -36,5 +36,6 @@ namespace RimHUD.Data.Theme
         }
 
         public void ToDefault() => Object = Default;
+        public void Refresh() => _onChange(this);
     }
 }

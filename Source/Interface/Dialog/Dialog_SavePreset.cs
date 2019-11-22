@@ -1,9 +1,9 @@
 ﻿using System.Xml.Linq;
 using RimHUD.Data;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Integration;
 using RimHUD.Data.Storage;
-using RimHUD.Data.Theme;
 using RimHUD.Interface.HUD;
 using UnityEngine;
 using Verse;

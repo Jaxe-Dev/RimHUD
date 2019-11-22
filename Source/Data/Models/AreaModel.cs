@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using RimHUD.Data.Compatibility;
 using RimHUD.Data.Extensions;
+using RimHUD.Data.Integration;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -35,8 +35,8 @@ namespace RimHUD.Data.Models
 
         private void DrawFloatMenu()
         {
-            var options = new List<FloatMenuOption> { new FloatMenuOption("NoAreaAllowed".Translate(), () => MultiplayerCompatibility.SetArea(Model.Base, null)) };
-            options.AddRange(from area in Find.CurrentMap.areaManager.AllAreas.Where(area => area.AssignableAsAllowed()) select new FloatMenuOption(area.Label, () => MultiplayerCompatibility.SetArea(Model.Base, area)));
+            var options = new List<FloatMenuOption> { new FloatMenuOption("NoAreaAllowed".Translate(), () => Mod_Multiplayer.SetArea(Model.Base, null)) };
+            options.AddRange(from area in Find.CurrentMap.areaManager.AllAreas.Where(area => area.AssignableAsAllowed()) select new FloatMenuOption(area.Label, () => Mod_Multiplayer.SetArea(Model.Base, area)));
             options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageAreas(Find.CurrentMap))));
 
             Find.WindowStack.Add(new FloatMenu(options));

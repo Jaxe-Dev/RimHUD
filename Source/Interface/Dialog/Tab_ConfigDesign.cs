@@ -1,6 +1,6 @@
 ﻿using RimHUD.Data;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
-using RimHUD.Data.Theme;
 using UnityEngine;
 using Verse;
 
@@ -60,7 +60,7 @@ namespace RimHUD.Interface.Dialog
             l.GapLine();
             l.Gap();
 
-            l.TextStyleEditor(Theme.LargeTextStyle);
+            l.TextStyleEditor(Theme.LargeTextStyle, !Theme.HudDocked.Value);
             l.GapLine();
             l.Gap();
 
