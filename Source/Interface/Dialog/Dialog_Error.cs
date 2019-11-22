@@ -1,5 +1,4 @@
-﻿using System;
-using RimHUD.Data;
+﻿using RimHUD.Data;
 using RimHUD.Data.Extensions;
 using UnityEngine;
 using Verse;
@@ -12,12 +11,11 @@ namespace RimHUD.Interface.Dialog
         private Vector2 _scrollPosition = Vector2.zero;
         private Rect _scrollView;
 
-        private readonly string _message;
-        private readonly string _stacktrace;
+        private readonly Mod.ExceptionInfo _info;
 
-        public override Vector2 InitialSize { get; } = new Vector2(800f, 300f);
+        public override Vector2 InitialSize { get; } = new Vector2(800f, 360f);
 
-        private Dialog_Error(Exception exception)
+        private Dialog_Error(Mod.ExceptionInfo info)
         {
             doCloseButton = false;
             closeOnAccept = true;
@@ -25,33 +23,22 @@ namespace RimHUD.Interface.Dialog
             absorbInputAroundWindow = true;
             draggable = true;
 
-            _message = exception.Message;
-            _stacktrace = BuildStacktrace(exception);
+            _info = info;
 
-            if (exception.InnerException == null) { return; }
-
-            var innerException = exception.InnerException;
-            var level = 1;
-            do
-            {
-                _message += $"\n{new string('+', level)} [{innerException.Source}] {innerException.Message}";
-                _stacktrace += "\n\n" + BuildStacktrace(innerException);
-                level++;
-                innerException = innerException.InnerException;
-            }
-            while (innerException != null);
+            Mod.Warning("RimHUD Auto-deactivation reason:\n" + _info.Text);
         }
 
-        public static void Open(Exception exception) => Find.WindowStack.Add(new Dialog_Error(exception));
+        public static void Open(Mod.ExceptionInfo info) => Find.WindowStack.Add(new Dialog_Error(info));
 
         public override void DoWindowContents(Rect inRect)
         {
             var listing = new ListingPlus();
             listing.Begin(inRect);
-            listing.Label(Lang.Get("Dialog_Error.AutoDeactivate").Bold());
-            listing.Label(_message);
+            listing.Label("RimHUD has automatically deactivated due to the following error(s):".Bold());
+            listing.Label(_info.Message);
+            if (_info.IsExternalError) { listing.Label(_info.PossibleMod == null ? "The error appears to be from outside RimHUD." : $"The error appears to be have been caused by the mod '{_info.PossibleMod.Bold()}'.", color: Color.yellow); }
             listing.Gap();
-            listing.Label(Lang.Get("Dialog_Error.Stacktrace").Bold(), font: GameFont.Tiny);
+            listing.Label("Stacktrace:".Bold(), font: GameFont.Tiny);
             listing.End();
 
             var grid = inRect.GetVGrid(0f, listing.CurHeight, -1f, GUIPlus.SmallButtonHeight + GUIPlus.MediumPadding);
@@ -62,25 +49,23 @@ namespace RimHUD.Interface.Dialog
             var stacktraceList = new ListingPlus();
 
             stacktraceList.BeginScrollView(stacktraceRect, ref _scrollPosition, ref _scrollView);
-            stacktraceList.Label(_stacktrace, font: GameFont.Tiny);
+            stacktraceList.Label(_info.StackTrace, font: GameFont.Tiny);
             stacktraceList.EndScrollView(ref _scrollView);
 
             grid[3].yMin += GUIPlus.MediumPadding;
             var buttonGrid = grid[3].GetHGrid(GUIPlus.MediumPadding, ButtonWidth, -1f, ButtonWidth, ButtonWidth);
 
-            if (GUIPlus.DrawButton(buttonGrid[1], Lang.Get("Dialog_Error.CopyToClipboard"), font: GameFont.Tiny))
+            if (GUIPlus.DrawButton(buttonGrid[1], "Copy to clipboard", font: GameFont.Tiny))
             {
-                GUIUtility.systemCopyBuffer = $"[[RimHUD Auto-deactivation report]]\n{_message}\n\n{_stacktrace}";
+                GUIUtility.systemCopyBuffer = $"[[RimHUD Auto-deactivation report]]\n{_info.Text}";
                 Mod.Message("RimHUD Auto-deactivation details copied to clipboard");
             }
-            if (GUIPlus.DrawButton(buttonGrid[3], Lang.Get("Dialog_Error.Reactivate"), font: GameFont.Tiny))
+            if (GUIPlus.DrawButton(buttonGrid[3], "Reactivate", font: GameFont.Tiny))
             {
                 Close();
                 State.Activated = true;
             }
-            if (GUIPlus.DrawButton(buttonGrid[4], Lang.Get("Button.Close"), font: GameFont.Tiny)) { Close(); }
+            if (GUIPlus.DrawButton(buttonGrid[4], "Close", font: GameFont.Tiny)) { Close(); }
         }
-
-        private static string BuildStacktrace(Exception exception) => $"[{exception.Source}: {exception.Message}]\n{exception.StackTrace}";
     }
 }

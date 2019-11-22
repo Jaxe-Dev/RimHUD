@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RimHUD.Data.Theme
+namespace RimHUD.Data.Configuration
 {
     internal class BoolOption : ThemeOption
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace RimHUD.Data.Theme
+namespace RimHUD.Data.Configuration
 {
     internal class ColorOption : ThemeOption
     {

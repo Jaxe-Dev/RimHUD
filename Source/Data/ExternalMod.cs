@@ -14,7 +14,8 @@ namespace RimHUD.Data
         public int VersionCompare => VersionExpected?.ComparePartial(VersionFound) ?? 0;
 
         public Assembly MainAssembly { get; }
-        public bool IsActive => MainAssembly != null;
+
+        public virtual bool IsActive => MainAssembly != null;
 
         public ExternalMod(string name, string assemblyName, Version versionExpected = null)
         {

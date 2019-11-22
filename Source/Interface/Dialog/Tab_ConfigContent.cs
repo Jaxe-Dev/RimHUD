@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RimHUD.Data;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Integration;
 using RimHUD.Data.Models;
-using RimHUD.Data.Theme;
 using RimHUD.Interface.HUD;
 using UnityEngine;
 using Verse;
@@ -13,7 +13,7 @@ namespace RimHUD.Interface.Dialog
 {
     internal class Tab_ConfigContent : Tab
     {
-        private const float EditorWidth = 300f;
+        private const float EditorWidth = 280f;
         private const float SelectedHeight = 145f;
 
         public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Content");
@@ -63,6 +63,7 @@ namespace RimHUD.Interface.Dialog
 
             l.Label(Lang.Get("Dialog_Config.Tab.Content.Layout").Bold());
             DrawModeSelector(l);
+            l.Gap();
             DrawPresetSelector(l);
 
             var importExportGrid = l.GetButtonGrid(-1f, -1f);
@@ -93,12 +94,12 @@ namespace RimHUD.Interface.Dialog
             if (canAddElement && l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.Element"), Lang.Get("Dialog_Config.Tab.Content.Component.ElementDesc"))) { HudModel.ElementComponents.Select(item => new FloatMenuOption(item.Label, () => _editor.Add(item))).ShowMenu(); }
 
             var statRecordGrid = l.GetButtonGrid(-1f, -1f);
-            if (canAddElement && GUIPlus.DrawButton(statRecordGrid[1], Lang.Get("Dialog_Config.Tab.Content.Component.Stat"), enabled: HudModel.StatComponents.Length > 0)) { HudModel.StatComponents.OrderBy(item => item.Label).Select(item => new FloatMenuOption(item.Label, () => _editor.Add(item))).ShowMenu(); }
-            if (canAddElement && GUIPlus.DrawButton(statRecordGrid[2], Lang.Get("Dialog_Config.Tab.Content.Component.Record"), enabled: HudModel.RecordComponents.Length > 0)) { HudModel.RecordComponents.OrderBy(item => item.Label).Select(item => new FloatMenuOption(item.Label, () => _editor.Add(item))).ShowMenu(); }
+            if (canAddElement && GUIPlus.DrawButton(statRecordGrid[1], Lang.Get("Dialog_Config.Tab.Content.Component.Stat"), enabled: HudModel.StatComponents.Length > 0)) { HudModel.StatComponents.Select(item => new FloatMenuOption(item.Label, () => _editor.Add(item))).ShowMenu(); }
+            if (canAddElement && GUIPlus.DrawButton(statRecordGrid[2], Lang.Get("Dialog_Config.Tab.Content.Component.Record"), enabled: HudModel.RecordComponents.Length > 0)) { HudModel.RecordComponents.Select(item => new FloatMenuOption(item.Label, () => _editor.Add(item))).ShowMenu(); }
 
             var customButtonsGrid = l.GetButtonGrid(-1f, -1f);
-            if (canAddElement && GUIPlus.DrawButton(customButtonsGrid[1], Lang.Get("Dialog_Config.Tab.Content.Component.CustomNeed"), enabled: HudModel.CustomNeedComponents.Length > 0)) { HudModel.CustomNeedComponents.OrderBy(item => item.Label).Select(item => new FloatMenuOption(item.Label, () => _editor.Add(item))).ShowMenu(); }
-            if (canAddElement && GUIPlus.DrawButton(customButtonsGrid[2], Lang.Get("Dialog_Config.Tab.Content.Component.CustomSkill"), enabled: HudModel.CustomSkillComponents.Length > 0)) { HudModel.CustomSkillComponents.OrderBy(item => item.Label).Select(item => new FloatMenuOption(item.Label, () => _editor.Add(item))).ShowMenu(); }
+            if (canAddElement && GUIPlus.DrawButton(customButtonsGrid[1], Lang.Get("Dialog_Config.Tab.Content.Component.Need"), enabled: HudModel.NeedComponents.Length > 0)) { HudModel.NeedComponents.Select(item => new FloatMenuOption(item.Label, () => _editor.Add(item))).ShowMenu(); }
+            if (canAddElement && GUIPlus.DrawButton(customButtonsGrid[2], Lang.Get("Dialog_Config.Tab.Content.Component.SkillOrTraining"), enabled: HudModel.SkillAndTrainingComponents.Length > 0)) { HudModel.SkillAndTrainingComponents.Select(item => new FloatMenuOption(item.Label, () => _editor.Add(item))).ShowMenu(); }
 
             l.End();
 

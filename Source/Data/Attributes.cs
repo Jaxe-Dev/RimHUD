@@ -7,9 +7,6 @@ namespace RimHUD.Data
 {
     internal static class Attributes
     {
-        [AttributeUsage(AttributeTargets.Class)]
-        internal class IntegratedOptions : Attribute { }
-
         [AttributeUsage(AttributeTargets.Property)]
         internal class Option : Attribute
         {
@@ -49,5 +46,8 @@ namespace RimHUD.Data
                 return value;
             }
         }
+
+        [AttributeUsage(AttributeTargets.Class)]
+        internal class IntegratedOptions : Attribute { }
     }
 }

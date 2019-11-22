@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
 using RimHUD.Data;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
-using RimHUD.Data.Theme;
 using RimHUD.Interface.HUD;
 using RimWorld;
 using UnityEngine;
@@ -94,8 +94,9 @@ namespace RimHUD.Interface.Dialog
                 {
                     if (element.ElementName == HudModel.StatTypeName) { Def = DefDatabase<StatDef>.GetNamed(element.DefName, false); }
                     else if (element.ElementName == HudModel.RecordTypeName) { Def = DefDatabase<RecordDef>.GetNamed(element.DefName, false); }
-                    else if (element.ElementName == HudModel.CustomNeedTypeName) { Def = DefDatabase<NeedDef>.GetNamed(element.DefName, false); }
-                    else if (element.ElementName == HudModel.CustomSkillTypeName) { Def = DefDatabase<SkillDef>.GetNamed(element.DefName, false); }
+                    else if (element.ElementName == HudModel.NeedTypeName) { Def = DefDatabase<NeedDef>.GetNamed(element.DefName, false); }
+                    else if (element.ElementName == HudModel.SkillTypeName) { Def = DefDatabase<SkillDef>.GetNamed(element.DefName, false); }
+                    else if (element.ElementName == HudModel.TrainingTypeName) { Def = DefDatabase<TrainableDef>.GetNamed(element.DefName, false); }
 
                     if (Def == null)
                     {
