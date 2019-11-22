@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
-using RimHUD.Data.Theme;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -34,7 +34,7 @@ namespace RimHUD.Interface
                 return;
             }
 
-            SavedFonts.Push((GameFont?)Text.Font);
+            SavedFonts.Push((GameFont?) Text.Font);
 
             Text.Font = font.Value;
         }
@@ -42,7 +42,7 @@ namespace RimHUD.Interface
         public static void ResetFont()
         {
             if (SavedFonts.Count == 0) { return; }
-            var font = (GameFont?)SavedFonts.Pop();
+            var font = (GameFont?) SavedFonts.Pop();
             if (font == null) { return; }
 
             Text.Font = font.Value;

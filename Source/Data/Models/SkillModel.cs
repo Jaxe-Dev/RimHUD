@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Interface;
 using RimHUD.Patch;
@@ -50,16 +51,16 @@ namespace RimHUD.Data.Models
 
             Label = def.LabelCap + new string('+', (int) skill.passion);
             Value = skill.TotallyDisabled ? "-" : skill.Level.ToDecimalString(skill.XpProgressPercent.ToPercentageInt()) + (skill.LearningSaturatedToday ? "*" : null);
-            Color = skill.TotallyDisabled ? Theme.Theme.DisabledColor.Value : GetSkillPassionColor(skill.passion);
+            Color = skill.TotallyDisabled ? Theme.DisabledColor.Value : GetSkillPassionColor(skill.passion);
 
             OnClick = InspectPanePlus.ToggleBioTab;
         }
 
         private static Color GetSkillPassionColor(Passion passion)
         {
-            if (passion == Passion.None) { return Theme.Theme.MainTextColor.Value; }
-            if (passion == Passion.Minor) { return Theme.Theme.SkillMinorPassionColor.Value; }
-            if (passion == Passion.Major) { return Theme.Theme.SkillMajorPassionColor.Value; }
+            if (passion == Passion.None) { return Theme.MainTextColor.Value; }
+            if (passion == Passion.Minor) { return Theme.SkillMinorPassionColor.Value; }
+            if (passion == Passion.Major) { return Theme.SkillMajorPassionColor.Value; }
 
             throw new Mod.Exception("Invalid skill passion level.");
         }
@@ -71,7 +72,7 @@ namespace RimHUD.Data.Models
             var builder = new StringBuilder();
 
             builder.AppendLine(GetSkillDescription());
-            if (Skill.TotallyDisabled) { return new TipSignal(() => builder.ToStringTrimmed().Size(Theme.Theme.RegularTextStyle.ActualSize), GUIPlus.TooltipId); }
+            if (Skill.TotallyDisabled) { return new TipSignal(() => builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize), GUIPlus.TooltipId); }
             builder.AppendLine();
 
             if (Def == SkillDefOf.Shooting)
@@ -149,7 +150,7 @@ namespace RimHUD.Data.Models
                 else if (Def == SkillDefOf.Intellectual) { BuildStatString(builder, StatDefOf.ResearchSpeedFactor); }
             }
 
-            return builder.Length == 0 ? null : new TipSignal(() => builder.ToStringTrimmed().Size(Theme.Theme.RegularTextStyle.ActualSize), GUIPlus.TooltipId);
+            return builder.Length == 0 ? null : new TipSignal(() => builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize), GUIPlus.TooltipId);
         }
     }
 }

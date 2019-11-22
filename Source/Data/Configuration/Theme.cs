@@ -3,7 +3,7 @@ using RimHUD.Interface;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Data.Theme
+namespace RimHUD.Data.Configuration
 {
     internal static class Theme
     {
@@ -19,8 +19,8 @@ namespace RimHUD.Data.Theme
         [Attributes.Option("HudPosition", "OffsetX")] public static RangeOption HudOffsetX { get; } = new RangeOption(0, -Screen.width, Screen.width, Lang.Get("Theme.HudOffsetX"));
         [Attributes.Option("HudPosition", "OffsetY")] public static RangeOption HudOffsetY { get; } = new RangeOption(0, -Screen.height, Screen.height, Lang.Get("Theme.HudOffsetY"));
 
-        [Attributes.Option("HudDimensions", "Width")] public static RangeOption HudWidth { get; } = new RangeOption(280, 200, 600, Lang.Get("Theme.HudWidth"));
-        [Attributes.Option("HudDimensions", "Height")] public static RangeOption HudHeight { get; } = new RangeOption(420, 300, 500, Lang.Get("Theme.HudHeight"));
+        [Attributes.Option("HudDimensions", "Width")] public static RangeOption HudWidth { get; } = new RangeOption(290, 200, 600, Lang.Get("Theme.HudWidth"));
+        [Attributes.Option("HudDimensions", "Height")] public static RangeOption HudHeight { get; } = new RangeOption(395, 300, 500, Lang.Get("Theme.HudHeight"));
 
         [Attributes.Option("InspectPane", "Modify")] public static BoolOption InspectPaneTabModify { get; } = new BoolOption(true, Lang.Get("Theme.InspectPaneModify"), Lang.Get("Theme.InspectPaneModifyDesc"), EnsureHudNotHidden);
         [Attributes.Option("InspectPane", "AddLog")] public static BoolOption InspectPaneTabAddLog { get; } = new BoolOption(true, Lang.Get("Theme.InspectPaneAddLog"), Lang.Get("Theme.InspectPaneAddLogDesc"));

@@ -1,9 +1,9 @@
 ﻿using System.Text.RegularExpressions;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
-using RimHUD.Data.Theme;
 using UnityEngine;
 using Verse;
-using ColorOption = RimHUD.Data.Theme.ColorOption;
+using ColorOption = RimHUD.Data.Configuration.ColorOption;
 
 namespace RimHUD.Interface.Dialog
 {

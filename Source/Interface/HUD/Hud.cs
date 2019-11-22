@@ -1,5 +1,5 @@
-﻿using RimHUD.Data.Models;
-using RimHUD.Data.Theme;
+﻿using RimHUD.Data.Configuration;
+using RimHUD.Data.Models;
 using RimHUD.Interface.Dialog;
 using UnityEngine;
 using Verse;
@@ -9,6 +9,8 @@ namespace RimHUD.Interface.HUD
     internal static class Hud
     {
         private static readonly float ConfigButtonSize = Mathf.Max(Textures.ConfigIcon.width, Textures.ConfigIcon.height);
+
+        public static bool IsMouseOverConfigButton = true;
 
         public static void DrawDocked(Rect bounds, PawnModel model)
         {
@@ -27,7 +29,7 @@ namespace RimHUD.Interface.HUD
             var configRect = GetConfigButtonRect(inner, true);
             IsMouseOverConfigButton = Mouse.IsOver(configRect);
             HudLayout.Floating.Draw(inner, PawnModel.Selected);
-            if(Mouse.IsOver(bounds)) { DrawConfigButton(configRect); }
+            if (Mouse.IsOver(bounds)) { DrawConfigButton(configRect); }
         }
 
         private static Rect GetConfigButtonRect(Rect bounds, bool top)
@@ -40,7 +42,5 @@ namespace RimHUD.Interface.HUD
         {
             if (Widgets.ButtonImage(rect, Textures.ConfigIcon)) { Dialog_Config.Open(); }
         }
-
-        public static bool IsMouseOverConfigButton = true;
     }
 }
