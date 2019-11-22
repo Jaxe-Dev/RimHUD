@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Integration;
 using RimHUD.Interface;
@@ -79,8 +80,8 @@ namespace RimHUD.Data.Models
         public TipSignal? AnimalTooltip => GetAnimalTooltip();
 
         public SelectorModel OutfitSelector => new OutfitModel(this);
-        public SelectorModel FoodSelector => PawnRules.Instance.IsActive && PawnRules.ReplaceFoodSelector.Value ? RulesSelector : new FoodModel(this);
-        public SelectorModel RulesSelector => PawnRules.Instance.IsActive ? new RulesModel(this) : null;
+        public SelectorModel FoodSelector => Mod_PawnRules.Instance.IsActive && Mod_PawnRules.ReplaceFoodSelector.Value ? RulesSelector : new FoodModel(this);
+        public SelectorModel RulesSelector => Mod_PawnRules.Instance.IsActive ? new RulesModel(this) : null;
         public SelectorModel TimetableSelector => new TimetableModel(this);
         public SelectorModel AreaSelector => new AreaModel(this);
 
@@ -151,11 +152,11 @@ namespace RimHUD.Data.Models
 
         private Color GetFactionRelationColor()
         {
-            if (Base.Faction == null) { return IsHumanlike ? Theme.Theme.FactionIndependentColor.Value : Theme.Theme.FactionWildColor.Value; }
-            if (Base.Faction.IsPlayer) { return Theme.Theme.FactionOwnColor.Value; }
+            if (Base.Faction == null) { return IsHumanlike ? Theme.FactionIndependentColor.Value : Theme.FactionWildColor.Value; }
+            if (Base.Faction.IsPlayer) { return Theme.FactionOwnColor.Value; }
 
-            if (Base.Faction.PlayerRelationKind == FactionRelationKind.Hostile) { return Theme.Theme.FactionHostileColor.Value; }
-            return Base.Faction.PlayerRelationKind == FactionRelationKind.Ally ? Theme.Theme.FactionAlliedColor.Value : Theme.Theme.FactionIndependentColor.Value;
+            if (Base.Faction.PlayerRelationKind == FactionRelationKind.Hostile) { return Theme.FactionHostileColor.Value; }
+            return Base.Faction.PlayerRelationKind == FactionRelationKind.Ally ? Theme.FactionAlliedColor.Value : Theme.FactionIndependentColor.Value;
         }
 
         private string GetFactionRelation()
@@ -178,24 +179,32 @@ namespace RimHUD.Data.Models
 
         private string GetActivity()
         {
-            var lord = Base.GetLord()?.LordJob?.GetReport()?.CapitalizeFirst();
-            var jobText = Base.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst();
+            try
+            {
+                var lord = Base.GetLord()?.LordJob?.GetReport()?.CapitalizeFirst();
+                var jobText = Base.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst();
 
-            var target = (Base.jobs?.curJob?.def == JobDefOf.AttackStatic) || (Base.jobs?.curJob?.def == JobDefOf.Wait_Combat) ? Base.TargetCurrentlyAimingAt.Thing?.LabelCap : null;
-            var activity = target == null ? lord.NullOrEmpty() ? jobText : $"{lord} ({jobText})" : Lang.Get("Model.Info.Attacking", target);
+                var target = (Base.jobs?.curJob?.def == JobDefOf.AttackStatic) || (Base.jobs?.curJob?.def == JobDefOf.Wait_Combat) ? Base.TargetCurrentlyAimingAt.Thing?.LabelCap : null;
+                var activity = target == null ? lord.NullOrEmpty() ? jobText : $"{lord} ({jobText})" : Lang.Get("Model.Info.Attacking", target);
 
-            return activity == null ? null : Lang.Get("Model.Info.Activity", activity.Bold());
+                return activity == null ? null : Lang.Get("Model.Info.Activity", activity.Bold());
+            }
+            catch { return null; }
         }
 
         private string GetQueued()
         {
-            if ((Base.jobs?.curJob == null) || (Base.jobs.jobQueue.Count == 0)) { return null; }
+            try
+            {
+                if ((Base.jobs?.curJob == null) || (Base.jobs.jobQueue.Count == 0)) { return null; }
 
-            var queued = Base.jobs.jobQueue[0].job.GetReport(Base)?.TrimEnd('.').CapitalizeFirst().Bold();
-            var remaining = Base.jobs.jobQueue.Count - 1;
-            if (remaining > 0) { queued += $" (+{remaining})"; }
+                var queued = Base.jobs.jobQueue[0].job.GetReport(Base)?.TrimEnd('.').CapitalizeFirst().Bold();
+                var remaining = Base.jobs.jobQueue.Count - 1;
+                if (remaining > 0) { queued += $" (+{remaining})"; }
 
-            return queued == null ? null : Lang.Get("Model.Info.Queued", queued);
+                return queued == null ? null : Lang.Get("Model.Info.Queued", queued);
+            }
+            catch { return null; }
         }
 
         private string GetCarrying()
@@ -250,9 +259,9 @@ namespace RimHUD.Data.Models
             var disabledWork = Base.story.CombinedDisabledWorkTags;
             var incapable = disabledWork == WorkTags.None ? null : "IncapableOf".Translate() + ": " + disabledWork.GetAllSelectedItems<WorkTags>().Where(tag => tag != WorkTags.None).Select(tag => tag.LabelTranslated().CapitalizeFirst()).ToCommaList(true);
 
-            builder.TryAppendLine(incapable?.Color(Theme.Theme.CriticalColor.Value));
+            builder.TryAppendLine(incapable?.Color(Theme.CriticalColor.Value));
 
-            return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.Theme.RegularTextStyle.ActualSize) : null;
+            return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
         }
 
         private TextModel GetMaster()
@@ -262,7 +271,7 @@ namespace RimHUD.Data.Models
 
             var masterName = master.LabelShort;
             var relation = Base.GetMostImportantRelation(master)?.LabelCap;
-            return TextModel.Create(Lang.Get("Model.Bio.Master", masterName), GetAnimalTooltip(), relation == null ? (Color?) null : Theme.Theme.SkillMinorPassionColor.Value, InspectPanePlus.ToggleSocialTab);
+            return TextModel.Create(Lang.Get("Model.Bio.Master", masterName), GetAnimalTooltip(), relation == null ? (Color?) null : Theme.SkillMinorPassionColor.Value, InspectPanePlus.ToggleSocialTab);
         }
 
         public TipSignal? GetAnimalTooltip(TrainableDef def = null)
@@ -291,7 +300,7 @@ namespace RimHUD.Data.Models
                 builder.AppendLine(def.description);
             }
 
-            var text = builder.ToStringTrimmed().Size(Theme.Theme.RegularTextStyle.ActualSize);
+            var text = builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize);
             return new TipSignal(() => text, GUIPlus.TooltipId);
         }
     }

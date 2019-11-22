@@ -1,4 +1,4 @@
-﻿namespace RimHUD.Data.Theme
+﻿namespace RimHUD.Data.Configuration
 {
     internal interface IDefaultable
     {

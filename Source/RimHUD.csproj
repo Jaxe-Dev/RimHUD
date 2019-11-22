@@ -27,9 +27,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Assemblies\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="0MultiplayerAPI, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\RimWorld.MultiplayerAPI.0.1.0\lib\net35\0MultiplayerAPI.dll</HintPath>
-    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
@@ -44,7 +41,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Compatibility\MultiplayerCompatibility.cs" />
+    <Compile Include="Data\Integration\IntegrationManager.cs" />
+    <Compile Include="Data\Integration\Mod_Multiplayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Data\Attributes.cs" />
@@ -57,11 +55,11 @@
     <Compile Include="Data\Extensions\DataExtensions.cs" />
     <Compile Include="Data\Extensions\GUIExtensions.cs" />
     <Compile Include="Data\Extensions\IOExtensions.cs" />
-    <Compile Include="Data\Integration\Bubbles.cs" />
-    <Compile Include="Data\Integration\HugsLib.cs" />
+    <Compile Include="Data\Integration\Mod_Bubbles.cs" />
+    <Compile Include="Data\Integration\Mod_HugsLib.cs" />
     <Compile Include="Data\Integration\IntegratedMod.cs" />
     <Compile Include="Data\Integration\LayoutPreset.cs" />
-    <Compile Include="Data\Integration\PawnRules.cs" />
+    <Compile Include="Data\Integration\Mod_PawnRules.cs" />
     <Compile Include="Data\Models\AreaModel.cs" />
     <Compile Include="Data\Models\AttributeModel.cs" />
     <Compile Include="Data\Models\BarModel.cs" />
@@ -81,12 +79,12 @@
     <Compile Include="Data\Models\TrainingModel.cs" />
     <Compile Include="Data\Models\ValueModel.cs" />
     <Compile Include="Data\Storage\Persistent.cs" />
-    <Compile Include="Data\Theme\BoolOption.cs" />
-    <Compile Include="Data\Theme\ColorOption.cs" />
-    <Compile Include="Data\Theme\IDefaultable.cs" />
-    <Compile Include="Data\Theme\RangeOption.cs" />
-    <Compile Include="Data\Theme\Theme.cs" />
-    <Compile Include="Data\Theme\ThemeOption.cs" />
+    <Compile Include="Data\Configuration\BoolOption.cs" />
+    <Compile Include="Data\Configuration\ColorOption.cs" />
+    <Compile Include="Data\Configuration\IDefaultable.cs" />
+    <Compile Include="Data\Configuration\RangeOption.cs" />
+    <Compile Include="Data\Configuration\Theme.cs" />
+    <Compile Include="Data\Configuration\ThemeOption.cs" />
     <Compile Include="Interface\GUIPlus.cs" />
     <Compile Include="Interface\InspectPanePlus.cs" />
     <Compile Include="Interface\LetterStackPlus.cs" />
@@ -142,7 +140,6 @@
     <Compile Include="Patch\Verse_MapInterface_MapInterfaceOnGUI_AfterMainTabs.cs" />
     <Compile Include="Patch\Verse_MapInterface_Notify_SwitchedMap.cs" />
     <Compile Include="Patch\Verse_Profile_MemoryUtility_ClearAllMapsAndWorld.cs" />
-    <Compile Include="Patch\Verse_Root_Start.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\.gitignore">
@@ -174,9 +171,6 @@
     <Content Include="..\Languages\English\Keyed\Theme.xml">
       <Link>-\Languages\English\Keyed\Theme.xml</Link>
     </Content>
-    <Content Include="..\Presets\A RimWorld of Magic.xml">
-      <Link>-\Presets\A RimWorld of Magic.xml</Link>
-    </Content>
     <Content Include="..\Presets\Dubs Bad Hygiene.xml">
       <Link>-\Presets\Dubs Bad Hygiene.xml</Link>
     </Content>
@@ -191,7 +185,7 @@
     <None Include="..\README.md">
       <Link>-\README.md</Link>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

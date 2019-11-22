@@ -97,7 +97,7 @@
   <RimHUD.Model.Component.NeedFood>Food bar</RimHUD.Model.Component.NeedFood>
   <RimHUD.Model.Component.NeedRest>Rest bar</RimHUD.Model.Component.NeedRest>
   <RimHUD.Model.Component.NeedRecreation>Recreation bar</RimHUD.Model.Component.NeedRecreation>
-  <RimHUD.Model.Component.Need>{0} need</RimHUD.Model.Component.Need>
+  <RimHUD.Model.Component.Need>{0} bar</RimHUD.Model.Component.Need>
 
   <RimHUD.Model.Component.SkillShooting>Shooting skill</RimHUD.Model.Component.SkillShooting>
   <RimHUD.Model.Component.SkillMelee>Melee skill</RimHUD.Model.Component.SkillMelee>
@@ -118,6 +118,7 @@
   <RimHUD.Model.Component.TrainingRelease>Release training</RimHUD.Model.Component.TrainingRelease>
   <RimHUD.Model.Component.TrainingRescue>Rescue training</RimHUD.Model.Component.TrainingRescue>
   <RimHUD.Model.Component.TrainingHaul>Haul training</RimHUD.Model.Component.TrainingHaul>
+  <RimHUD.Model.Component.Training>{0} training</RimHUD.Model.Component.Training>
 
   <RimHUD.Model.Component.Master>Master</RimHUD.Model.Component.Master>
   <RimHUD.Model.Component.Activity>Activity</RimHUD.Model.Component.Activity>

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Harmony;
 using RimHUD.Data;
-using RimHUD.Data.Compatibility;
+using RimHUD.Data.Configuration;
+using RimHUD.Data.Integration;
 using RimHUD.Data.Models;
-using RimHUD.Data.Theme;
-using RimHUD.Interface.Dialog;
 using RimHUD.Interface.HUD;
 using RimHUD.Patch;
 using RimWorld;
@@ -83,7 +82,7 @@ namespace RimHUD.Interface
                 contentRect.yMin += 26f;
                 DrawContent(contentRect, model, null);
             }
-            catch (Exception exception) { Dialog_Error.Open(exception); }
+            catch (Exception exception) { Mod.HandleError(exception); }
             finally { GUI.EndGroup(); }
         }
 
@@ -148,8 +147,7 @@ namespace RimHUD.Interface
 
                 GUI.DrawTexture(new Rect(0f, y, width, 30f), Textures.InspectTabButtonFill);
             }
-            catch (Exception ex) { Mod.ErrorOnce(ex.ToString(), "DrawTabs error"); }
-
+            catch (Exception exception) { Mod.HandleError(exception); }
             return false;
         }
 
@@ -193,7 +191,7 @@ namespace RimHUD.Interface
             GUIPlus.SetFont(GameFont.Tiny);
             var selfTend = pawn.playerSettings.selfTend;
             selfTend = GUIPlus.DrawToggle(selfTendRect, selfTend, new TipSignal(() => selfTendTip, GUIPlus.TooltipId), canDoctor, Textures.SelfTendOnIcon, Textures.SelfTendOffIcon);
-            if (selfTend != pawn.playerSettings.selfTend) { MultiplayerCompatibility.SetSelfTend(pawn, selfTend); }
+            if (selfTend != pawn.playerSettings.selfTend) { Mod_Multiplayer.SetSelfTend(pawn, selfTend); }
             GUIPlus.ResetFont();
 
             lineEndWidth += GUIPlus.SmallPadding;

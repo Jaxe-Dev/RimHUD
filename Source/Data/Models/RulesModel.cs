@@ -15,17 +15,17 @@ namespace RimHUD.Data.Models
 
         public RulesModel(PawnModel model) : base(model)
         {
-            if (!PawnRules.Instance.IsActive || !PawnRules.CanHaveRules(model.Base))
+            if (!Mod_PawnRules.Instance.IsActive || !Mod_PawnRules.CanHaveRules(model.Base))
             {
                 Hidden = true;
                 return;
             }
 
-            Label = Lang.Get("Integration.PawnRules.RuleNameFormat", PawnRules.GetRules(model.Base));
+            Label = Lang.Get("Integration.PawnRules.RuleNameFormat", Mod_PawnRules.GetRules(model.Base));
             Tooltip = null;
             Color = null;
 
-            OnClick = () => PawnRules.OpenRules(model.Base);
+            OnClick = () => Mod_PawnRules.OpenRules(model.Base);
             OnHover = null;
         }
     }

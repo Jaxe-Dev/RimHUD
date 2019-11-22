@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Xml;
 using System.Xml.Linq;
-using RimHUD.Data;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
 using RimHUD.Data.Storage;
-using RimHUD.Data.Theme;
 using RimHUD.Interface.Dialog;
 using UnityEngine;
 using Verse;
@@ -118,12 +117,7 @@ namespace RimHUD.Interface.HUD
 
                 Draw(rect);
             }
-            catch (Exception exception)
-            {
-                State.Activated = false;
-                Dialog_Error.Open(exception);
-                Mod.Warning("RimHUD Auto-deactivation reason:\n" + exception.Message + "\n\nStacktrace:\n" + exception.StackTrace);
-            }
+            catch (Exception exception) { Mod.HandleError(exception); }
         }
     }
 }

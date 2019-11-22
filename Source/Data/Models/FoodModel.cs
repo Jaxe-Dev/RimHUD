@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using RimHUD.Data.Compatibility;
 using RimHUD.Data.Extensions;
+using RimHUD.Data.Integration;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -34,7 +34,7 @@ namespace RimHUD.Data.Models
 
         private void DrawFloatMenu()
         {
-            var options = (from food in Current.Game.foodRestrictionDatabase.AllFoodRestrictions select new FloatMenuOption(food.label, () => MultiplayerCompatibility.SetFoodRestriction(Model.Base, food))).ToList();
+            var options = (from food in Current.Game.foodRestrictionDatabase.AllFoodRestrictions select new FloatMenuOption(food.label, () => Mod_Multiplayer.SetFoodRestriction(Model.Base, food))).ToList();
             options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageFoodRestrictions(Model.Base.foodRestriction.CurrentFoodRestriction))));
             Find.WindowStack.Add(new FloatMenu(options));
         }

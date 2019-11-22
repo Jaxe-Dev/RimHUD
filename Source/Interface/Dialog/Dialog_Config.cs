@@ -1,4 +1,5 @@
-﻿using RimHUD.Data;
+﻿using System;
+using RimHUD.Data;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Storage;
 using UnityEngine;
@@ -28,18 +29,30 @@ namespace RimHUD.Interface.Dialog
 
         public static void Open() => Find.WindowStack.Add(new Dialog_Config());
 
-        public override void PostClose() => Persistent.Save();
+        public override void PostClose()
+        {
+            if (!State.Activated) { return; }
+            Persistent.Save();
+        }
 
         protected override void DrawContent(Rect rect)
         {
-            var grid = rect.GetVGrid(Padding, -1f, ButtonHeight);
+            try
+            {
+                var grid = rect.GetVGrid(Padding, -1f, ButtonHeight);
 
-            _tabs.Draw(grid[1]);
+                _tabs.Draw(grid[1]);
 
-            var button = GUIPlus.DrawButtonRow(grid[2], ButtonWidth, Padding, Lang.Get("Dialog_Config.SetToDefault"), Lang.Get("Dialog_Config.OpenFolder"), Lang.Get("Button.Close"));
-            if (button == 1) { ConfirmSetToDefault(); }
-            else if (button == 2) { Persistent.OpenConfigFolder(); }
-            else if (button == 3) { Close(); }
+                var button = GUIPlus.DrawButtonRow(grid[2], ButtonWidth, Padding, Lang.Get("Dialog_Config.SetToDefault"), Lang.Get("Dialog_Config.OpenFolder"), Lang.Get("Button.Close"));
+                if (button == 1) { ConfirmSetToDefault(); }
+                else if (button == 2) { Persistent.OpenConfigFolder(); }
+                else if (button == 3) { Close(); }
+            }
+            catch (Exception exception)
+            {
+                Mod.HandleError(exception);
+                Close();
+            }
         }
 
         private void ConfirmSetToDefault() => Dialog_Alert.Open(Lang.Get("Alert.SetToDefault"), Dialog_Alert.Buttons.YesNo, SetToDefault);

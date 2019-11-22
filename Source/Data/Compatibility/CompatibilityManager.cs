@@ -8,7 +8,7 @@ namespace RimHUD.Data.Compatibility
         private static readonly List<CompatibilityPatch> List = new List<CompatibilityPatch>();
         public static CompatibilityPatch[] Patches => List.ToArray();
 
-        public static void OnStartup()
+        public static void Initialize()
         {
             List.Clear();
             foreach (var type in Mod.Assembly.GetTypes())

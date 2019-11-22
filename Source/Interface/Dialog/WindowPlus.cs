@@ -1,4 +1,4 @@
-﻿using RimHUD.Data.Theme;
+﻿using RimHUD.Data.Configuration;
 using UnityEngine;
 using Verse;
 

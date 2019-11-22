@@ -6,9 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Integration;
-using RimHUD.Data.Theme;
 using RimHUD.Interface.HUD;
 using Verse;
 
@@ -30,6 +30,7 @@ namespace RimHUD.Data.Storage
         private static bool _configWasReset;
 
         private static readonly FileInfo ConfigFile = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, ConfigFileName));
+
         public static bool IsValidFilename(string name) => !name.NullOrEmpty() && (name.Length <= (250 - UserPresetDirectory.FullName.Length)) && ValidFilenameRegex.IsMatch(name);
 
         public static void OpenConfigFolder() => Process.Start(Mod.ConfigDirectory.FullName);
@@ -39,7 +40,7 @@ namespace RimHUD.Data.Storage
             if (loadedVersion == Mod.Version) { return false; }
             Mod.Warning($"Loaded config version ({loadedVersion ?? "NULL"}) is different from the current mod version");
 
-            return VersionNeedsNewConfig || !Mod.SameConfigVersions.Contains(loadedVersion);
+            return VersionNeedsNewConfig || string.IsNullOrEmpty(loadedVersion) || Mod.SameConfigVersions.All(version => !loadedVersion.StartsWith(version));
         }
 
         public static void CheckAlerts()
@@ -52,7 +53,7 @@ namespace RimHUD.Data.Storage
 
         public static void AllToDefault()
         {
-            SetToDefault(typeof(Theme.Theme));
+            SetToDefault(typeof(Theme));
 
             foreach (var integration in GetIntegrations()) { SetToDefault(integration); }
 
@@ -82,6 +83,21 @@ namespace RimHUD.Data.Storage
         }
 
         private static IEnumerable<Type> GetIntegrations() => Assembly.GetExecutingAssembly().GetTypes().Where(type => type.HasAttribute<Attributes.IntegratedOptions>());
+
+        public static void FinalizeIntegrations()
+        {
+            foreach (var integration in GetIntegrations())
+            {
+                foreach (var property in integration.GetProperties())
+                {
+                    var attribute = property.TryGetAttribute<Attributes.Option>();
+                    if (attribute == null) { continue; }
+
+                    var option = property.GetValue(integration, null) as ThemeOption;
+                    option?.Refresh();
+                }
+            }
+        }
 
         private static string GetIntegrationName(object subject) => "Integration." + GetSubjectType(subject).Name;
 
@@ -121,7 +137,7 @@ namespace RimHUD.Data.Storage
             if (versionAttribute == null) { xml.Add(new XAttribute("Version", Mod.Version)); }
             else { versionAttribute.Value = Mod.Version; }
 
-            LoadElements(typeof(Theme.Theme), xml);
+            LoadElements(typeof(Theme), xml);
 
             foreach (var integration in GetIntegrations()) { LoadClassElements(integration, xml); }
 
@@ -186,7 +202,7 @@ namespace RimHUD.Data.Storage
         {
             var doc = new XDocument();
 
-            var theme = SaveClassElements(typeof(Theme.Theme), "Theme");
+            var theme = SaveClassElements(typeof(Theme), "Theme");
             theme.Add(new XAttribute("Version", Mod.Version));
 
             foreach (var integration in GetIntegrations()) { theme.Add(SaveClassElements(integration)); }

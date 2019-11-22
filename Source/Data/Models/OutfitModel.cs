@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using RimHUD.Data.Compatibility;
 using RimHUD.Data.Extensions;
+using RimHUD.Data.Integration;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -34,7 +34,7 @@ namespace RimHUD.Data.Models
 
         private void DrawFloatMenu()
         {
-            var options = (from outfit in Current.Game.outfitDatabase.AllOutfits select new FloatMenuOption(outfit.label, () => MultiplayerCompatibility.SetOutfit(Model.Base, outfit))).ToList();
+            var options = (from outfit in Current.Game.outfitDatabase.AllOutfits select new FloatMenuOption(outfit.label, () => Mod_Multiplayer.SetOutfit(Model.Base, outfit))).ToList();
             options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageOutfits(Model.Base.outfits.CurrentOutfit))));
 
             Find.WindowStack.Add(new FloatMenu(options));
