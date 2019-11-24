@@ -179,8 +179,8 @@ namespace RimHUD.Interface
 
             lineEndWidth += ButtonSize;
 
-            var canDoctor = !pawn.story.WorkTypeIsDisabled(WorkTypeDefOf.Doctor);
-            var canDoctorPriority = pawn.workSettings.GetPriority(WorkTypeDefOf.Doctor) > 0;
+            var canDoctor = !pawn.story?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? false;
+            var canDoctorPriority = (pawn.workSettings == null) || (pawn.workSettings?.GetPriority(WorkTypeDefOf.Doctor) > 0);
 
             var selfTendRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
             var selfTendTip = "SelfTendTip".Translate(Faction.OfPlayer.def.pawnsPlural, 0.7f.ToStringPercent()).CapitalizeFirst();
