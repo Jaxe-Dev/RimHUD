@@ -278,14 +278,17 @@ namespace RimHUD.Data.Models
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine(Lang.Get("Model.Bio.Trainability", Base.RaceProps.trainability.LabelCap));
-            builder.AppendLine(Lang.Get("Model.Bio.Wildness", Base.RaceProps.wildness.ToStringPercent()));
+            if (Base.RaceProps != null)
+            {
+                var trainability = Base.RaceProps.trainability?.LabelCap;
+                if (trainability != null) { builder.AppendLine(Lang.Get("Model.Bio.Trainability", trainability)); }
 
-            builder.AppendLine($"{"TrainingDecayInterval".Translate()}: {TrainableUtility.DegradationPeriodTicks(Base.def).ToStringTicksToDays()}");
-            if (!TrainableUtility.TamenessCanDecay(Base.def)) { builder.AppendLine("TamenessWillNotDecay".Translate()); }
+                builder.AppendLine($"{"TrainingDecayInterval".Translate()}: {TrainableUtility.DegradationPeriodTicks(Base.def).ToStringTicksToDays()}");
+                if (!TrainableUtility.TamenessCanDecay(Base.def)) { builder.AppendLine("TamenessWillNotDecay".Translate()); }
 
-            builder.AppendLine(Lang.Get("Model.Bio.Petness", Base.RaceProps.petness.ToStringPercent()));
-            builder.AppendLine(Lang.Get("Model.Bio.Diet", Base.RaceProps.ResolvedDietCategory.ToStringHuman()));
+                builder.AppendLine(Lang.Get("Model.Bio.Petness", Base.RaceProps.petness.ToStringPercent()));
+                builder.AppendLine(Lang.Get("Model.Bio.Diet", Base.RaceProps.ResolvedDietCategory.ToStringHuman()));
+            }
 
             var master = Base.playerSettings?.Master?.LabelShort;
             if (!master.NullOrEmpty())
