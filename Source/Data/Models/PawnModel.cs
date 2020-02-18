@@ -181,7 +181,7 @@ namespace RimHUD.Data.Models
         {
             try
             {
-                var lord = Base.GetLord()?.LordJob?.GetReport()?.CapitalizeFirst();
+                var lord = Base.GetLord()?.LordJob?.GetReport(Base)?.CapitalizeFirst();
                 var jobText = Base.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst();
 
                 var target = (Base.jobs?.curJob?.def == JobDefOf.AttackStatic) || (Base.jobs?.curJob?.def == JobDefOf.Wait_Combat) ? Base.TargetCurrentlyAimingAt.Thing?.LabelCap : null;
@@ -217,7 +217,7 @@ namespace RimHUD.Data.Models
         {
             var equipped = Base.equipment?.Primary?.LabelCap;
 
-            return RestraintsUtility.ShouldShowRestraintsInfo(Base) ? "InRestraints".Translate() : equipped == null ? null : Lang.Get("Model.Info.Equipped", equipped.Bold());
+            return RestraintsUtility.ShouldShowRestraintsInfo(Base) ? (string) "InRestraints".Translate() : equipped == null ? null : Lang.Get("Model.Info.Equipped", equipped.Bold());
         }
 
         private string GetCompInfo()
@@ -256,10 +256,10 @@ namespace RimHUD.Data.Models
 
             builder.AppendLine();
 
-            var disabledWork = Base.story.CombinedDisabledWorkTags;
-            var incapable = disabledWork == WorkTags.None ? null : "IncapableOf".Translate() + ": " + disabledWork.GetAllSelectedItems<WorkTags>().Where(tag => tag != WorkTags.None).Select(tag => tag.LabelTranslated().CapitalizeFirst()).ToCommaList(true);
+            var disabledWork = Base.story.DisabledWorkTagsBackstoryAndTraits;
+            string incapable = disabledWork == WorkTags.None ? null : "IncapableOf".Translate() + ": " + disabledWork.GetAllSelectedItems<WorkTags>().Where(tag => tag != WorkTags.None).Select(tag => tag.LabelTranslated().CapitalizeFirst()).ToCommaList(true);
 
-            builder.TryAppendLine(incapable?.Color(Theme.CriticalColor.Value));
+            builder.TryAppendLine(incapable.NullOrEmpty() ? null : incapable.Color(Theme.CriticalColor.Value));
 
             return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
         }

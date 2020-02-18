@@ -12,12 +12,8 @@ namespace RimHUD.Data.Models
     internal class SkillModel : ValueModel
     {
         private static readonly StatDef SmeltingSpeed = DefDatabase<StatDef>.GetNamed("SmeltingSpeed");
-        private static readonly StatDef SmithingSpeed = DefDatabase<StatDef>.GetNamed("SmithingSpeed");
-        private static readonly StatDef TailoringSpeed = DefDatabase<StatDef>.GetNamed("TailoringSpeed");
         private static readonly StatDef ButcheryMechanoidSpeed = DefDatabase<StatDef>.GetNamed("ButcheryMechanoidSpeed");
         private static readonly StatDef ButcheryMechanoidEfficiency = DefDatabase<StatDef>.GetNamed("ButcheryMechanoidEfficiency");
-
-        private static readonly StatDef SculptingSpeed = DefDatabase<StatDef>.GetNamed("SculptingSpeed");
 
         private static readonly StatDef MedicalOperationSpeed = DefDatabase<StatDef>.GetNamed("MedicalOperationSpeed");
 
@@ -89,7 +85,7 @@ namespace RimHUD.Data.Models
             else if (!Skill.TotallyDisabled)
             {
                 BuildStatString(builder, StatDefOf.WorkSpeedGlobal);
-                BuildStatString(builder, StatDefOf.UnskilledLaborSpeed);
+                BuildStatString(builder, StatDefOf.GeneralLaborSpeed);
                 builder.AppendLine();
 
                 if (Def == SkillDefOf.Construction)
@@ -128,12 +124,10 @@ namespace RimHUD.Data.Models
                 else if (Def == SkillDefOf.Crafting)
                 {
                     BuildStatString(builder, SmeltingSpeed);
-                    BuildStatString(builder, SmithingSpeed);
-                    BuildStatString(builder, TailoringSpeed);
                     BuildStatString(builder, ButcheryMechanoidSpeed);
                     BuildStatString(builder, ButcheryMechanoidEfficiency);
                 }
-                else if (Def == SkillDefOf.Artistic) { BuildStatString(builder, SculptingSpeed); }
+                else if (Def == SkillDefOf.Artistic) { }
                 else if (Def == SkillDefOf.Medicine)
                 {
                     BuildStatString(builder, MedicalOperationSpeed);

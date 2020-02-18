@@ -11,6 +11,7 @@ namespace RimHUD.Data.Extensions
         public static string Italic(this string self) => "<i>" + self + "</i>";
         public static string Bold(this string self) => "<b>" + self + "</b>";
         public static string Color(this string self, Color color) => $"<color=#{color.ToHex()}>{self}</color>";
+        public static TaggedString Color(this TaggedString self, Color color) => $"<color=#{color.ToHex()}>{self}</color>";
         public static string Size(this string self, int size) => $"<size={size}>{self}</size>";
 
         public static void TryAppendLine(this StringBuilder self, string text)

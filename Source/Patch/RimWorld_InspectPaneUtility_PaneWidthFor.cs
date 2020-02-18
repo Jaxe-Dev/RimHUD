@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Harmony;
+using HarmonyLib;
 using RimHUD.Data;
 using RimHUD.Data.Configuration;
 using RimWorld;

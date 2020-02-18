@@ -28,7 +28,6 @@ namespace RimHUD.Data
             public string ConvertToXml(object value)
             {
                 if (Type == null) { return null; }
-
                 return Type == typeof(Color) ? ((Color) value).ToHex() : value.ToString();
             }
 

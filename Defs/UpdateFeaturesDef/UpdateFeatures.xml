@@ -7,8 +7,8 @@
   </HugsLib.UpdateFeatureDef>
 
   <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
-    <defName>RimHUD_1_4_0</defName>
-    <assemblyVersion>1.4.0</assemblyVersion>
-    <content>- Update: Clicking on hud values and bars will toggle the appropiate tab\n\n- Update: Content components now sorted alphabetically\n\n- Update: Auto deactivation on error now provides more detailed information on the cause\n\n- Fixed: Presets now properly save height, width and minimum tabs if enabled\n\n- Fixed: Newly saved presets now showing without restart\n\n- Fixed: Color modification of Interaction Bubbles now working\n\n- Note: Due to new language handling, old translation submods will need updating</content>
+    <defName>RimHUD_1_6_0</defName>
+    <assemblyVersion>1.6.0</assemblyVersion>
+    <content>- Updated for RimWorld version 1.1</content>
   </HugsLib.UpdateFeatureDef>
 </Defs>
