@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Harmony;
+using HarmonyLib;
 using RimHUD.Data;
 using RimHUD.Data.Compatibility;
 using RimHUD.Data.Integration;
@@ -21,13 +21,12 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.5.3";
+        public const string Version = "1.6.0";
         public const bool VersionNeedsNewConfig = false;
 
         public static IEnumerable<string> SameConfigVersions { get; } = new[]
         {
-            "1.4",
-            "1.5"
+            "1.6"
         };
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
@@ -36,12 +35,12 @@ namespace RimHUD
         public static bool FirstTimeUser { get; }
 
         public static readonly Assembly Assembly;
-        public static readonly HarmonyInstance Harmony;
+        public static readonly Harmony Harmony;
 
         static Mod()
         {
             Assembly = Assembly.GetExecutingAssembly();
-            Harmony = HarmonyInstance.Create(Id);
+            Harmony = new Harmony(Id);
             Harmony.PatchAll();
 
             FirstTimeUser = !ConfigDirectory.Exists;

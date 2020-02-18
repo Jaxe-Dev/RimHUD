@@ -1,5 +1,6 @@
 ﻿using System;
 using RimHUD.Data;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Storage;
 using UnityEngine;
@@ -44,6 +45,9 @@ namespace RimHUD.Interface.Dialog
                 _tabs.Draw(grid[1]);
 
                 var button = GUIPlus.DrawButtonRow(grid[2], ButtonWidth, Padding, Lang.Get("Dialog_Config.SetToDefault"), Lang.Get("Dialog_Config.OpenFolder"), Lang.Get("Button.Close"));
+
+                GUIPlus.DrawText(grid[2], "Version " + Mod.Version, style: Theme.SmallTextStyle, alignment: TextAnchor.LowerRight);
+
                 if (button == 1) { ConfirmSetToDefault(); }
                 else if (button == 2) { Persistent.OpenConfigFolder(); }
                 else if (button == 3) { Close(); }
