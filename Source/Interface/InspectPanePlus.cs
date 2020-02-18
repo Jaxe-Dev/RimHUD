@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Harmony;
+using HarmonyLib;
 using RimHUD.Data;
 using RimHUD.Data.Configuration;
 using RimHUD.Data.Integration;
@@ -179,7 +179,7 @@ namespace RimHUD.Interface
 
             lineEndWidth += ButtonSize;
 
-            var canDoctor = !pawn.story?.WorkTypeIsDisabled(WorkTypeDefOf.Doctor) ?? false;
+            var canDoctor = !pawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor);
             var canDoctorPriority = (pawn.workSettings == null) || (pawn.workSettings?.GetPriority(WorkTypeDefOf.Doctor) > 0);
 
             var selfTendRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
