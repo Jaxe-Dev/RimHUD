@@ -19,7 +19,7 @@ namespace RimHUD.Data.Models
 
         protected void BuildStatString(StringBuilder builder, StatDef def)
         {
-            if (def.Worker.IsDisabledFor(Model.Base)) { return; }
+            if (def.Worker?.IsDisabledFor(Model.Base) ?? true) { return; }
             try { builder.AppendLine($"{def.LabelCap}: {def.ValueToString(Model.Base.GetStatValue(def))}"); }
             catch { }
         }
