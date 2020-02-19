@@ -9,7 +9,7 @@ namespace RimHUD.Data.Integration
     {
         public const string Url = "https://steamcommunity.com/sharedfiles/filedetails/?id=1516158345";
         public const string Description = "Shows bubbles when characters perform a social interaction with the text that would normally only be found in the log.";
-        private const string VersionExpected = "1.7";
+        private const string VersionExpected = "1.6";
 
         public static IntegratedMod Instance { get; } = new IntegratedMod("Interaction Bubbles", "Bubbles", "Bubbles.Interface.Theme", new Version(VersionExpected));
 
