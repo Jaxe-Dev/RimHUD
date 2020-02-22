@@ -9,7 +9,7 @@ namespace RimHUD.Data.Integration
     {
         public const string Url = "https://steamcommunity.com/sharedfiles/filedetails/?id=1499843448";
         public const string Description = "Pawn Rules is a mod that allows custom rules to be assigned individually to your colonists, animals, guests and prisoners:\n\n- Disallow certain foods\n- Disallow bonding with certain animals\n- Disallow new romances\n- Disallow constructing items that have a quality level";
-        private const string VersionExpected = "1.3.4";
+        private const string VersionExpected = "1.4";
 
         public static IntegratedMod Instance { get; } = new IntegratedMod("Pawn Rules", "PawnRules", "PawnRules.Integration.RimHUD", new Version(VersionExpected));
 
