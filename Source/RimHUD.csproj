@@ -69,7 +69,6 @@
     <Compile Include="Data\Extensions\GUIExtensions.cs" />
     <Compile Include="Data\Extensions\IOExtensions.cs" />
     <Compile Include="Data\Integration\Mod_Bubbles.cs" />
-    <Compile Include="Data\Integration\Mod_HugsLib.cs" />
     <Compile Include="Data\Integration\IntegratedMod.cs" />
     <Compile Include="Data\Integration\LayoutPreset.cs" />
     <Compile Include="Data\Integration\Mod_PawnRules.cs" />
@@ -160,13 +159,6 @@
     </Content>
     <Content Include="..\About\About.xml">
       <Link>-\About\About.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\About\Manifest.xml">
-      <Link>-\About\Manifest.xml</Link>
-    </Content>
-    <Content Include="..\Defs\UpdateFeaturesDef\UpdateFeatures.xml">
-      <Link>-\Defs\UpdateFeaturesDefs\UpdateFeatures.xml</Link>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\Languages\English\Keyed\Base.xml">
