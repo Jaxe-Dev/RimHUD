@@ -21,7 +21,7 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.6.0";
+        public const string Version = "1.6.1";
         public const bool VersionNeedsNewConfig = false;
 
         public static IEnumerable<string> SameConfigVersions { get; } = new[]
@@ -46,8 +46,6 @@ namespace RimHUD
             FirstTimeUser = !ConfigDirectory.Exists;
             ContentPack = LoadedModManager.RunningMods.FirstOrDefault(mod => mod.assemblies.loadedAssemblies.Contains(Assembly));
             ConfigDirectory.Create();
-
-            if (!FirstTimeUser) { Mod_HugsLib.TryRegisterUpdateFeature(); }
 
             Log("Initialized");
 
