@@ -20,7 +20,7 @@ namespace RimHUD.Patch
                 return false;
             }
 
-            var count = pane.CurTabs.Count(tab => tab.IsVisible);
+            var count = pane.CurTabs.Count(tab => tab?.IsVisible ?? false);
             __result = Theme.InspectPaneTabWidth.Value * (float) Mathf.Max(Theme.InspectPaneMinTabs.Value, count);
             return false;
         }
