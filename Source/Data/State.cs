@@ -1,5 +1,5 @@
 ﻿using RimHUD.Data.Configuration;
-using RimWorld.Planet;
+using RimWorld;
 using Verse;
 
 namespace RimHUD.Data
@@ -7,15 +7,14 @@ namespace RimHUD.Data
     internal static class State
     {
         public static bool Activated { get; set; } = true;
-        public static bool Available => Activated && (Current.ProgramState == ProgramState.Playing) && !IsWorldView;
-        public static bool AltInspectPane => Available && Theme.InspectPaneTabModify.Value;
-        public static bool AltLetters => Available && Theme.LetterCompress.Value;
-        public static bool PawnSelected => SelectedPawn != null;
-        public static bool HudDockedVisible => Theme.HudDocked.Value && Available && PawnSelected;
-        public static bool HudFloatingVisible => !Theme.HudDocked.Value && Available && PawnSelected;
+        public static bool ModifyPane => ShowPane && Theme.InspectPaneTabModify.Value;
+        public static bool CompressLetters => Active && Theme.LetterCompress.Value;
+        public static bool HudFloatingVisible => !Theme.HudDocked.Value && ShowPane;
 
         public static Pawn SelectedPawn => GetSelectedPawn();
-        public static bool IsWorldView => WorldRendererUtility.WorldRenderedNow;
+
+        private static bool Active => Activated && (Current.ProgramState == ProgramState.Playing);
+        private static bool ShowPane => Active && MainButtonDefOf.Inspect.TabWindow.IsOpen && (SelectedPawn != null);
 
         private static Pawn GetSelectedPawn()
         {

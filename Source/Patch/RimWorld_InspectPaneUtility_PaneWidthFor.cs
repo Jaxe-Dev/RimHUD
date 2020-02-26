@@ -12,15 +12,9 @@ namespace RimHUD.Patch
     {
         private static bool Prefix(ref float __result, IInspectPane pane)
         {
-            if (!State.AltInspectPane || !State.PawnSelected) { return true; }
+            if (!State.ModifyPane) { return true; }
 
-            if (pane == null)
-            {
-                __result = 432f;
-                return false;
-            }
-
-            var count = pane.CurTabs.Count(tab => tab?.IsVisible ?? false);
+            var count = pane.CurTabs.Count(tab => tab.IsVisible);
             __result = Theme.InspectPaneTabWidth.Value * (float) Mathf.Max(Theme.InspectPaneMinTabs.Value, count);
             return false;
         }

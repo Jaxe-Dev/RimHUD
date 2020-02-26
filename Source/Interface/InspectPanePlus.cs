@@ -103,6 +103,12 @@ namespace RimHUD.Interface
 
         public static bool DrawTabs(IInspectPane pane)
         {
+            if (pane.CurTabs == null)
+            {
+                Log.Warning("NO CURTABS");
+                return false;
+            }
+
             try
             {
                 var y = pane.PaneTopY - 30f;

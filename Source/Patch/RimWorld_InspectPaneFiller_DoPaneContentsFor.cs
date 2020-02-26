@@ -12,7 +12,7 @@ namespace RimHUD.Patch
     {
         public static bool Prefix(ISelectable sel, Rect rect)
         {
-            if (!State.AltInspectPane || !(sel is Pawn pawn)) { return true; }
+            if (!State.ModifyPane || !(sel is Pawn pawn)) { return true; }
 
             InspectPanePlus.DrawContent(rect, null, pawn);
 

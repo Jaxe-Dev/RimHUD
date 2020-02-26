@@ -11,7 +11,7 @@ namespace RimHUD.Patch
     {
         private static bool Prefix(ref Vector2 __result, IInspectPane pane)
         {
-            if (!State.AltInspectPane || !State.PawnSelected) { return true; }
+            if (!State.ModifyPane) { return true; }
 
             __result = new Vector2(InspectPaneUtility.PaneWidthFor(pane), Theme.InspectPaneHeight.Value - 35f);
             return false;
