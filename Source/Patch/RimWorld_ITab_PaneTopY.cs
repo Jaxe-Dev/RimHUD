@@ -11,7 +11,7 @@ namespace RimHUD.Patch
     {
         public static bool Prefix(ref float __result)
         {
-            if (!State.AltInspectPane || !State.PawnSelected) { return true; }
+            if (!State.ModifyPane) { return true; }
 
             __result = (float) UI.screenHeight - Theme.InspectPaneHeight.Value;
 

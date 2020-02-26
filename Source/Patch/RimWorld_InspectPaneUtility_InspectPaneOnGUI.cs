@@ -11,7 +11,7 @@ namespace RimHUD.Patch
     {
         private static bool Prefix(Rect inRect, IInspectPane pane)
         {
-            if (!State.AltInspectPane || !State.PawnSelected) { return true; }
+            if (!State.ModifyPane) { return true; }
 
             InspectPanePlus.OnGUI(inRect, pane);
             return false;
