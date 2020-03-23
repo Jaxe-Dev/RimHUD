@@ -113,6 +113,9 @@ namespace RimHUD.Data.Models
         private TextModel GetGenderAndAge()
         {
             var gender = GetGender();
+            var genderKind = Lang.AdjectiveNoun(gender, Base.kindDef.race.label);
+
+            if (Base.ageTracker == null) { return TextModel.Create(genderKind.CapitalizeFirst(), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab); }
 
             Base.ageTracker.AgeBiologicalTicks.TicksToPeriod(out var years, out var quadrums, out var days, out _);
             var ageDays = (quadrums * GenDate.DaysPerQuadrum) + days;
@@ -122,7 +125,6 @@ namespace RimHUD.Data.Models
             else if (ageDays == 1) { age = Lang.CombineWords(age, Lang.Get("Model.Age.Day")); }
             else { age = Lang.CombineWords(age, Lang.Get("Model.Age.Days", ageDays)); }
 
-            var genderKind = Lang.AdjectiveNoun(gender, Base.kindDef.race.label);
             return TextModel.Create(Lang.Get("Model.GenderAndAge", genderKind, age).CapitalizeFirst(), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab);
         }
 
