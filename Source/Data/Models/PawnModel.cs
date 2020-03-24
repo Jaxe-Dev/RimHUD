@@ -113,7 +113,7 @@ namespace RimHUD.Data.Models
         private TextModel GetGenderAndAge()
         {
             var gender = GetGender();
-            var genderKind = Lang.AdjectiveNoun(gender, Base.kindDef.race.label);
+            var genderKind = Lang.AdjectiveNoun(gender, Base.kindDef?.race?.label);
 
             if (Base.ageTracker == null) { return TextModel.Create(genderKind.CapitalizeFirst(), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab); }
 
