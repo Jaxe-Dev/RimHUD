@@ -3,33 +3,20 @@
   <packageId>Jaxe.RimHUD</packageId>
   <name>RimHUD</name>
   <author>Jaxe</author>
-  <descriptionsByVersion>
-    <v1.0>Mod Version: 1.5.3
-
-
-RimHUD is a UI mod that displays a detailed information about a selected character or creature. The HUD display is integrated into the inspect pane which can be resized to fit the additional information. Alternatively the HUD can a separate floating window and docked to any position on the screen.\n\nVisual warnings will appear if a pawn has any life threatening conditions, has wounds that need tending or is close to a mental breakdown.</v1.0>
-    <v1.1>Mod Version: 1.6.6
-
-
-RimHUD is a UI mod that displays a detailed information about a selected character or creature. The HUD display is integrated into the inspect pane which can be resized to fit the additional information. Alternatively the HUD can a separate floating window and docked to any position on the screen.\n\nVisual warnings will appear if a pawn has any life threatening conditions, has wounds that need tending or is close to a mental breakdown.</v1.1>
-  </descriptionsByVersion>
+  <description>Mod Version: 1.6.7\n\nRimHUD is a UI mod that displays a detailed information about a selected character or creature. The HUD display is integrated into the inspect pane which can be resized to fit the additional information. Alternatively the HUD can a separate floating window and docked to any position on the screen.\n\nVisual warnings will appear if a pawn has any life threatening conditions, has wounds that need tending or is close to a mental breakdown.</description>
   <supportedVersions>
-    <li>1.0</li>
     <li>1.1</li>
+    <li>1.2</li>
   </supportedVersions>
-  <modDependenciesByVersion>
-    <v1.1>
-      <li>
-        <packageId>brrainz.harmony</packageId>
-        <displayName>Harmony</displayName>
-        <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
-        <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
-      </li>
-    </v1.1>
-  </modDependenciesByVersion>
-  <loadAfterByVersion>
-    <v1.1>
-      <li>brrainz.harmony</li>
-    </v1.1>
-  </loadAfterByVersion>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
 </ModMetaData>
