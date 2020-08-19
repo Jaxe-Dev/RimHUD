@@ -37,7 +37,7 @@ namespace RimHUD.Interface.Dialog
             foreach (var preset in LayoutPreset.UserList)
             {
                 if (_selected == null) { _selected = preset; }
-                if (l.RadioButton(preset.Label, _selected == preset)) { _selected = preset; }
+                if (l.RadioButton_NewTemp(preset.Label, _selected == preset)) { _selected = preset; }
             }
 
             l.EndScrollView(ref _scrollView);

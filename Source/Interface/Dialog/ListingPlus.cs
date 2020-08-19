@@ -56,7 +56,7 @@ namespace RimHUD.Interface.Dialog
         public void ColorOptionSelect(ColorOption colorOption, ref ColorOption selected, bool enabled = true)
         {
             GUIPlus.SetColor(colorOption.Value);
-            if (RadioButton(colorOption.Label, selected == colorOption, tooltip: colorOption.Tooltip)) { selected = colorOption; }
+            if (RadioButton_NewTemp(colorOption.Label, selected == colorOption, tooltip: colorOption.Tooltip)) { selected = colorOption; }
             GUIPlus.ResetColor();
         }
 
