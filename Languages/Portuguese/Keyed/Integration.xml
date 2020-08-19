@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RimHUD.Integration.GetMod>Link para o mod</RimHUD.Integration.GetMod>
+
+  <RimHUD.Integration.General>Configurações gerais</RimHUD.Integration.General>
+  <RimHUD.Integration.Bubbles>Balões de interação</RimHUD.Integration.Bubbles>
+
+  <RimHUD.Integration.Bubbles.Activated>Ativado</RimHUD.Integration.Bubbles.Activated>
+  <RimHUD.Integration.Bubbles.DoNonPlayer>Exibir para facções de não jogadores</RimHUD.Integration.Bubbles.DoNonPlayer>
+  <RimHUD.Integration.Bubbles.DoAnimals>Exibir interações com animais</RimHUD.Integration.Bubbles.DoAnimals>
+
+  <RimHUD.Integration.Bubbles.MinScale>Zoom mínimo visível</RimHUD.Integration.Bubbles.MinScale>
+  <RimHUD.Integration.Bubbles.ScaleStart>Zoom para iniciar a escala</RimHUD.Integration.Bubbles.ScaleStart>
+  <RimHUD.Integration.Bubbles.MaxWidth>Largura máxima</RimHUD.Integration.Bubbles.MaxWidth>
+  <RimHUD.Integration.Bubbles.Spacing>Espaçamento</RimHUD.Integration.Bubbles.Spacing>
+  <RimHUD.Integration.Bubbles.StartOffset>Deslocamento da etiqueta</RimHUD.Integration.Bubbles.StartOffset>
+  <RimHUD.Integration.Bubbles.OffsetDirection>Direção do deslocamento</RimHUD.Integration.Bubbles.OffsetDirection>
+  <RimHUD.Integration.Bubbles.OffsetDirections>Baixo|Esquerda|Cima|Direita</RimHUD.Integration.Bubbles.OffsetDirections>
+  <RimHUD.Integration.Bubbles.StartOpacity>Opacidade inicial</RimHUD.Integration.Bubbles.StartOpacity>
+  <RimHUD.Integration.Bubbles.MouseOverOpacity>Opacidade ao passar o mouse</RimHUD.Integration.Bubbles.MouseOverOpacity>
+
+  <RimHUD.Integration.Bubbles.MinTime>Tempo mínimo para desvanecer</RimHUD.Integration.Bubbles.MinTime>
+  <RimHUD.Integration.Bubbles.FadeStart>Ciclos para iniciar o desvanecimento</RimHUD.Integration.Bubbles.FadeStart>
+  <RimHUD.Integration.Bubbles.FadeLength>Ciclos para desvanecer</RimHUD.Integration.Bubbles.FadeLength>
+  <RimHUD.Integration.Bubbles.MaxPerPawn>Máximo por peão</RimHUD.Integration.Bubbles.MaxPerPawn>
+
+  <RimHUD.Integration.Bubbles.FontSize>Tamanho da fonte</RimHUD.Integration.Bubbles.FontSize>
+  <RimHUD.Integration.Bubbles.PaddingX>Preenchimento de texto X</RimHUD.Integration.Bubbles.PaddingX>
+  <RimHUD.Integration.Bubbles.PaddingY>Preenchimento de texto Y</RimHUD.Integration.Bubbles.PaddingY>
+
+  <RimHUD.Integration.Bubbles.Colors>Cor dos balões</RimHUD.Integration.Bubbles.Colors>
+  <RimHUD.Integration.Bubbles.ForeColor>Cor do texto</RimHUD.Integration.Bubbles.ForeColor>
+  <RimHUD.Integration.Bubbles.BackColor>Cor de fundo</RimHUD.Integration.Bubbles.BackColor>
+  <RimHUD.Integration.Bubbles.SelectedForeColor>Cor de texto selecionado</RimHUD.Integration.Bubbles.SelectedForeColor>
+  <RimHUD.Integration.Bubbles.SelectedBackColor>Cor de fundo para texto selecionado</RimHUD.Integration.Bubbles.SelectedBackColor>
+
+  <RimHUD.Integration.PawnRules>Regras dos peões</RimHUD.Integration.PawnRules>
+  <RimHUD.Integration.PawnRules.RuleNameFormat>Regras: {0}</RimHUD.Integration.PawnRules.RuleNameFormat>
+  <RimHUD.Integration.PawnRules.ReplaceFoodSelector>Substitua o seletor de alimentos</RimHUD.Integration.PawnRules.ReplaceFoodSelector>
+  <RimHUD.Integration.PawnRules.ReplaceFoodSelectorDesc>Se habilitado, o seletor de comida será substituído pelo seletor de regras.</RimHUD.Integration.PawnRules.ReplaceFoodSelectorDesc>
+  <RimHUD.Integration.PawnRules.HideGizmo>Esconder Gizmo</RimHUD.Integration.PawnRules.HideGizmo>
+  <RimHUD.Integration.PawnRules.HideGizmoDesc>Desativa o gizmo de regras que aparece próximo ao botão de rascunho conforme RimHUD adiciona um botão de regras no painel de inspeção.</RimHUD.Integration.PawnRules.HideGizmoDesc>
+</LanguageData>
