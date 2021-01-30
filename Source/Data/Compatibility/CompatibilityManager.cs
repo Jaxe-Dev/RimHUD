@@ -13,7 +13,7 @@ namespace RimHUD.Data.Compatibility
             List.Clear();
             foreach (var type in Mod.Assembly.GetTypes())
             {
-                if ((type.BaseType != typeof(CompatibilityPatch)) || type.IsAbstract) { continue; }
+                if (type.BaseType != typeof(CompatibilityPatch) || type.IsAbstract) { continue; }
 
                 var compatibility = Activator.CreateInstance(type) as CompatibilityPatch;
                 if (!compatibility?.OnStartup() ?? true) { continue; }

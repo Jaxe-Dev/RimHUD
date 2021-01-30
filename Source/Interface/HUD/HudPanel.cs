@@ -42,7 +42,7 @@ namespace RimHUD.Interface.HUD
 
         public override float Prepare(PawnModel model)
         {
-            if ((_rows.Length == 0) || !IsTargetted(model)) { return 0f; }
+            if (_rows.Length == 0 || !IsTargetted(model)) { return 0f; }
             _heights = _rows.Select(row => row.Prepare(model)).ToArray();
 
             return FillHeight ? -1f : _heights.Sum() + (HudLayout.Padding * (_rows.Length - 1));

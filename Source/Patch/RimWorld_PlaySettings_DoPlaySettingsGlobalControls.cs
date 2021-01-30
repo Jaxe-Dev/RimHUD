@@ -11,7 +11,7 @@ namespace RimHUD.Patch
     {
         private static void Postfix(WidgetRow row, bool worldView)
         {
-            if (worldView || (row == null)) { return; }
+            if (worldView || row == null) { return; }
 
             var showHud = State.Activated;
             row.ToggleableIcon(ref showHud, Textures.ToggleIcon, Lang.Get("ToggleHud"), SoundDefOf.Mouseover_ButtonToggle);

@@ -16,7 +16,7 @@ namespace RimHUD.Data
         {
             var strings = Get(key).Split('|');
 
-            if ((index >= strings.Length) || (index < 0)) { return "(INDEX?'" + key + "')"; }
+            if (index >= strings.Length || index < 0) { return "(INDEX?'" + key + "')"; }
             return strings[index];
         }
 
