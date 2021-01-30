@@ -19,7 +19,7 @@ namespace RimHUD.Data.Models
 
         public TimetableModel(PawnModel model) : base(model)
         {
-            if ((!model.Base.Faction?.IsPlayer ?? true) || (model.Base.timetable == null))
+            if ((!model.Base.Faction?.IsPlayer ?? true) || model.Base.timetable == null)
             {
                 Hidden = true;
                 return;

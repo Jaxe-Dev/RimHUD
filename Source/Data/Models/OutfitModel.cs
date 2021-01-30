@@ -18,7 +18,7 @@ namespace RimHUD.Data.Models
 
         public OutfitModel(PawnModel model) : base(model)
         {
-            if (!model.IsPlayerFaction || (model.Base.outfits?.CurrentOutfit == null))
+            if (!model.IsPlayerFaction || model.Base?.outfits?.CurrentOutfit == null)
             {
                 Hidden = true;
                 return;

@@ -25,7 +25,7 @@ namespace RimHUD.Interface
             _onChange = onChange;
             Label = label;
 
-            Size = new RangeOption(size, sizeMin, sizeMax, Lang.Get("TextStyle.Size"), value => ((baseStyle != null) && (Size.Value > 0) ? "+" : null) + value, onChange: _ => UpdateStyle());
+            Size = new RangeOption(size, sizeMin, sizeMax, Lang.Get("TextStyle.Size"), value => (baseStyle != null && Size.Value > 0 ? "+" : null) + value, onChange: _ => UpdateStyle());
             Height = new RangeOption(height, heightMin, heightMax, Lang.Get("TextStyle.Height"), value => value + "%", onChange: _ => UpdateStyle());
 
             UpdateStyle();

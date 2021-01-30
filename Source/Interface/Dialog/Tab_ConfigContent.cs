@@ -117,7 +117,7 @@ namespace RimHUD.Interface.Dialog
 
             _editor.Selected.Targets = targets;
 
-            if ((_editor.Selected.Type == LayoutItemType.Stack) || (_editor.Selected.Type == LayoutItemType.Panel)) { _editor.Selected.FillHeight = l.CheckboxLabeled(Lang.Get("Dialog_Config.Tab.Content.Selected.Filled"), _editor.Selected.FillHeight, Lang.Get("Dialog_Config.Tab.Content.Selected.FilledDesc")); }
+            if (_editor.Selected.Type == LayoutItemType.Stack || _editor.Selected.Type == LayoutItemType.Panel) { _editor.Selected.FillHeight = l.CheckboxLabeled(Lang.Get("Dialog_Config.Tab.Content.Selected.Filled"), _editor.Selected.FillHeight, Lang.Get("Dialog_Config.Tab.Content.Selected.FilledDesc")); }
 
             l.End();
         }

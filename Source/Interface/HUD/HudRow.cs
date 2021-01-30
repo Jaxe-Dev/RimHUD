@@ -28,7 +28,7 @@ namespace RimHUD.Interface.HUD
         public override float Prepare(PawnModel model)
         {
             _visible = false;
-            if ((_elements.Length == 0) || !IsTargetted(model)) { return 0f; }
+            if (_elements.Length == 0 || !IsTargetted(model)) { return 0f; }
 
             var maxHeight = 0f;
             foreach (var element in _elements)
@@ -43,7 +43,7 @@ namespace RimHUD.Interface.HUD
 
         public override bool Draw(Rect rect)
         {
-            if (!_visible || (_elements.Length == 0)) { return false; }
+            if (!_visible || _elements.Length == 0) { return false; }
 
             var grid = rect.GetHGrid(GUIPlus.MediumPadding, Enumerable.Repeat(-1f, _elements.Length).ToArray());
 

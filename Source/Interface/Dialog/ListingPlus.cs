@@ -124,7 +124,7 @@ namespace RimHUD.Interface.Dialog
             var sliderName = "RangeSliderEntry_Slider" + id;
             GUI.SetNextControlName(sliderName);
             var sliderValue = Mathf.RoundToInt(Widgets.HorizontalSlider(grid[3], range.Value, range.Min, range.Max, true));
-            if (enabled && (range.Value != sliderValue))
+            if (enabled && range.Value != sliderValue)
             {
                 range.Value = sliderValue;
                 text = range.Value.ToString();

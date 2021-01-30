@@ -15,7 +15,7 @@ namespace RimHUD.Interface.HUD
 
         public override float Prepare(PawnModel model)
         {
-            if ((Containers.Length == 0) || !IsTargetted(model)) { return 0f; }
+            if (Containers.Length == 0 || !IsTargetted(model)) { return 0f; }
             var maxHeight = Containers.Select(container => container.Prepare(model)).Max();
             return FillHeight ? -1f : maxHeight;
         }

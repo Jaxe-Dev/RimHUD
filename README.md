@@ -1,5 +1,5 @@
 # RimHUD
-![Mod Version](https://img.shields.io/badge/Mod_Version-1.6.7-blue.svg)
+![Mod Version](https://img.shields.io/badge/Mod_Version-1.6.8-blue.svg)
 ![RimWorld Version](https://img.shields.io/badge/Built_for_RimWorld-1.2-blue.svg)
 ![Harmony Version](https://img.shields.io/badge/Powered_by_Harmony-2.x-blue.svg)\
 ![Steam Subscribers](https://img.shields.io/badge/dynamic/xml.svg?label=Steam+Subscribers&query=//table/tr[2]/td[1]&colorB=blue&url=https://steamcommunity.com/sharedfiles/filedetails/%3Fid=1508850027&suffix=+total)

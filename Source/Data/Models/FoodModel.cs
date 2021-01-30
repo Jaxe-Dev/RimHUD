@@ -18,7 +18,7 @@ namespace RimHUD.Data.Models
 
         public FoodModel(PawnModel model) : base(model)
         {
-            if (!model.IsPlayerManaged || (model.Base.foodRestriction == null) || !model.Base.foodRestriction.Configurable)
+            if (!model.IsPlayerManaged || model.Base.foodRestriction == null || !model.Base.foodRestriction.Configurable)
             {
                 Hidden = true;
                 return;

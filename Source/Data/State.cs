@@ -13,8 +13,8 @@ namespace RimHUD.Data
 
         public static Pawn SelectedPawn => GetSelectedPawn();
 
-        private static bool Active => Activated && (Current.ProgramState == ProgramState.Playing);
-        private static bool ShowPane => Active && MainButtonDefOf.Inspect.TabWindow.IsOpen && (SelectedPawn != null);
+        private static bool Active => Activated && Current.ProgramState == ProgramState.Playing;
+        private static bool ShowPane => Active && MainButtonDefOf.Inspect.TabWindow.IsOpen && SelectedPawn != null;
 
         private static Pawn GetSelectedPawn()
         {

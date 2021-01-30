@@ -26,6 +26,8 @@ namespace RimHUD.Interface
         public static readonly Color ButtonSelectedColor = new Color(0.5f, 1f, 0.5f);
         public static readonly Color ItemSelectedColor = new Color(0.25f, 0.4f, 0.1f);
 
+        private static readonly GUIContent TextContent = new GUIContent();
+
         public static void SetFont(GameFont? font)
         {
             if (font == null)
@@ -77,20 +79,26 @@ namespace RimHUD.Interface
 
             SetColor(color);
             var textRect = rect;
-            var textStyle = (style?.GUIStyle ?? Text.CurFontStyle).SetTo(alignment: alignment);
+            var guiStyle = style?.GUIStyle ?? Text.CurFontStyle;
+            var originalAlignment = guiStyle.alignment;
+            if (alignment != null) { guiStyle.alignment = alignment.Value; }
 
-            var content = new GUIContent(text);
-            if (textStyle.CalcSize(content).x > rect.width)
+            TextContent.text = text;
+
+            if (guiStyle.CalcSize(TextContent).x > rect.width)
             {
-                content.text = "...";
-                var ellipsesLength = textStyle.CalcSize(content);
+                TextContent.text = "...";
+                var ellipsesLength = guiStyle.CalcSize(TextContent);
                 textRect.width -= ellipsesLength.x;
-                GUI.Label(new Rect(rect.RightPartPixels(ellipsesLength.x)), content.text, textStyle);
-                if (tooltip == null) { tooltip = new TipSignal(text.Size(textStyle.fontSize)); }
+                GUI.Label(new Rect(rect.RightPartPixels(ellipsesLength.x)), TextContent.text, guiStyle);
+                if (tooltip == null) { tooltip = new TipSignal(text.Size(guiStyle.fontSize)); }
             }
 
-            GUI.Label(textRect, text, textStyle);
+            GUI.Label(textRect, text, guiStyle);
             DrawTooltip(rect, tooltip, false);
+
+            TextContent.text = "";
+            guiStyle.alignment = originalAlignment;
             ResetColor();
         }
 
@@ -158,7 +166,7 @@ namespace RimHUD.Interface
 
         public static void DrawTooltip(Rect rect, TipSignal? tooltip, bool highlight)
         {
-            if ((tooltip == null) || !Mouse.IsOver(rect)) { return; }
+            if (tooltip == null || !Mouse.IsOver(rect)) { return; }
 
             if (highlight) { Widgets.DrawHighlight(rect); }
             TooltipHandler.TipRegion(rect, tooltip.Value);
