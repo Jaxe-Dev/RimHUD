@@ -55,7 +55,7 @@ namespace RimHUD.Interface.HUD
                 if (docked) { Theme.InspectPaneTabWidth.Value = width; }
                 else { Theme.HudWidth.Value = width; }
             }
-            if (docked && (tabs > 0)) { Theme.InspectPaneMinTabs.Value = tabs; }
+            if (docked && tabs > 0) { Theme.InspectPaneMinTabs.Value = tabs; }
         }
 
         private static HudLayout FromEmbedded(string id)
@@ -108,7 +108,7 @@ namespace RimHUD.Interface.HUD
         {
             try
             {
-                if ((model.Base != _lastPawn) || (_lastDraw == default) || ((DateTime.Now - _lastDraw).TotalMilliseconds > (Theme.RefreshRate.Value * 100)))
+                if (model.Base != _lastPawn || _lastDraw == default || (DateTime.Now - _lastDraw).TotalMilliseconds > Theme.RefreshRate.Value * 100)
                 {
                     Prepare(model);
                     _lastPawn = model.Base;

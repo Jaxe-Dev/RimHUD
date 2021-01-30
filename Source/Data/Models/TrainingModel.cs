@@ -20,7 +20,7 @@ namespace RimHUD.Data.Models
         public TrainingModel(PawnModel model, TrainableDef def) : base(model)
         {
             bool canTrainNow;
-            try { canTrainNow = (model.Base.RaceProps?.trainability != null) && (model.Base.training != null) && model.Base.training.CanAssignToTrain(def, out var visible).Accepted && visible; }
+            try { canTrainNow = model.Base.RaceProps?.trainability != null && model.Base.training != null && model.Base.training.CanAssignToTrain(def, out var visible).Accepted && visible; }
             catch { canTrainNow = false; }
 
             if (!canTrainNow)
@@ -47,6 +47,6 @@ namespace RimHUD.Data.Models
             OnClick = InspectPanePlus.ToggleTrainingTab;
         }
 
-        private static int GetSteps(Pawn pawn, TrainableDef def) => (int) Access.Method_RimWorld_Pawn_TrainingTracker_GetSteps.Invoke(pawn.training, new object[] { def });
+        private static int GetSteps(Pawn pawn, TrainableDef def) => (int) Access.Method_RimWorld_Pawn_TrainingTracker_GetSteps.Invoke(pawn.training, def);
     }
 }

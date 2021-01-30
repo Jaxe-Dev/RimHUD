@@ -157,7 +157,7 @@ namespace RimHUD.Data.Models
         public static readonly LayoutItem[] TrainingComponents = StandardTrainingComponents.Concat(DefDatabase<TrainableDef>.AllDefs.Where(def => !StandardTrainingDefs.Contains(def.defName)).Select(def => new LayoutItem(LayoutItemType.CustomElement, TrainingTypeName, def)).OrderBy(item => item.Label)).ToArray();
         public static readonly LayoutItem[] SkillAndTrainingComponents = SkillComponents.Concat(TrainingComponents).ToArray();
 
-        public static bool IsValidType(string id) => Widgets.ContainsKey(id) || (id == StatTypeName) || (id == RecordTypeName) || (id == NeedTypeName) || (id == SkillTypeName) || (id == TrainingTypeName);
+        public static bool IsValidType(string id) => Widgets.ContainsKey(id) || id == StatTypeName || id == RecordTypeName || id == NeedTypeName || id == SkillTypeName || id == TrainingTypeName;
 
         public static HudWidget GetWidget(PawnModel model, string id, string defName)
         {
@@ -178,7 +178,7 @@ namespace RimHUD.Data.Models
             var def = DefDatabase<StatDef>.GetNamed(defName, false);
             if (def != null)
             {
-                if (def.Worker.IsDisabledFor(model.Base)) { return HudBlank.GetEmpty; }
+                if (def.Worker?.IsDisabledFor(model.Base) ?? true) { return HudBlank.GetEmpty; }
                 var text = $"{def.LabelCap}: {def.ValueToString(model.Base.GetStatValue(def))}";
                 return (HudWidget) HudValue.FromText(text, null, Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
             }

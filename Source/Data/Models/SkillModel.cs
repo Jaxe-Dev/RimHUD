@@ -54,14 +54,13 @@ namespace RimHUD.Data.Models
 
         private static Color GetSkillPassionColor(Passion passion)
         {
-            if (passion == Passion.None) { return Theme.MainTextColor.Value; }
             if (passion == Passion.Minor) { return Theme.SkillMinorPassionColor.Value; }
             if (passion == Passion.Major) { return Theme.SkillMajorPassionColor.Value; }
 
-            throw new Mod.Exception("Invalid skill passion level.");
+            return Theme.MainTextColor.Value;
         }
 
-        private string GetSkillDescription() => (string) Access.Method_RimWorld_SkillUI_GetSkillDescription.Invoke(null, new object[] { Skill });
+        private string GetSkillDescription() => (string) Access.Method_RimWorld_SkillUI_GetSkillDescription.Invoke(null, Skill);
 
         private TipSignal? GetTooltip()
         {

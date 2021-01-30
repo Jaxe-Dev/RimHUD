@@ -17,7 +17,7 @@ namespace RimHUD.Data.Integration
             {
                 if (!Instance.GetField<bool>("enabled")) { return; }
 
-                var registerSyncMethod = AccessTools.FirstMethod(Instance.Integrator, method => (method.Name == "RegisterSyncMethod") && (method.GetParameters()[0].ParameterType == typeof(Type)));
+                var registerSyncMethod = AccessTools.FirstMethod(Instance.Integrator, method => method.Name == "RegisterSyncMethod" && method.GetParameters()[0].ParameterType == typeof(Type));
                 registerSyncMethod.Invoke(Instance.MainAssembly, new object[] { typeof(Mod_Multiplayer), nameof(SetSelfTend), null });
                 registerSyncMethod.Invoke(Instance.MainAssembly, new object[] { typeof(Mod_Multiplayer), nameof(SetFoodRestriction), null });
                 registerSyncMethod.Invoke(Instance.MainAssembly, new object[] { typeof(Mod_Multiplayer), nameof(SetAssignment), null });

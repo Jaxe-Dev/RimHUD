@@ -19,7 +19,7 @@ namespace RimHUD.Data.Models
 
         public AreaModel(PawnModel model) : base(model)
         {
-            if ((!model.Base.Faction?.IsPlayer ?? true) || (model.Base.playerSettings == null) || (!model.Base.IsColonist && !model.Base.playerSettings.RespectsAllowedArea))
+            if ((!model.Base.Faction?.IsPlayer ?? true) || model.Base.playerSettings == null || !model.Base.IsColonist && !model.Base.playerSettings.RespectsAllowedArea)
             {
                 Hidden = true;
                 return;

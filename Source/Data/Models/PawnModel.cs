@@ -121,7 +121,7 @@ namespace RimHUD.Data.Models
             var ageDays = (quadrums * GenDate.DaysPerQuadrum) + days;
 
             var age = years.ToString().Bold();
-            if ((ageDays == 0) || (ageDays == GenDate.DaysPerYear)) { age = Lang.CombineWords(age, Lang.Get("Model.Age.Birthday")); }
+            if (ageDays == 0 || ageDays == GenDate.DaysPerYear) { age = Lang.CombineWords(age, Lang.Get("Model.Age.Birthday")); }
             else if (ageDays == 1) { age = Lang.CombineWords(age, Lang.Get("Model.Age.Day")); }
             else { age = Lang.CombineWords(age, Lang.Get("Model.Age.Days", ageDays)); }
 
@@ -173,7 +173,7 @@ namespace RimHUD.Data.Models
 
         private TextModel GetRelationKindAndFaction()
         {
-            var faction = (Base.Faction == null) || !Base.Faction.HasName ? null : Lang.Get("Model.OfFaction", Base.Faction.Name);
+            var faction = Base.Faction == null || !Base.Faction.HasName ? null : Lang.Get("Model.OfFaction", Base.Faction.Name);
             var relationKind = Lang.AdjectiveNoun(GetFactionRelation(), GetKind());
 
             return TextModel.Create(Lang.Get("Model.RelationKindAndFaction", relationKind, faction).Trim().CapitalizeFirst(), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab);
@@ -186,7 +186,7 @@ namespace RimHUD.Data.Models
                 var lord = Base.GetLord()?.LordJob?.GetReport(Base)?.CapitalizeFirst();
                 var jobText = Base.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst();
 
-                var target = (Base.jobs?.curJob?.def == JobDefOf.AttackStatic) || (Base.jobs?.curJob?.def == JobDefOf.Wait_Combat) ? Base.TargetCurrentlyAimingAt.Thing?.LabelCap : null;
+                var target = Base.jobs?.curJob?.def == JobDefOf.AttackStatic || Base.jobs?.curJob?.def == JobDefOf.Wait_Combat ? Base.TargetCurrentlyAimingAt.Thing?.LabelCap : null;
                 var activity = target == null ? lord.NullOrEmpty() ? jobText : $"{lord} ({jobText})" : Lang.Get("Model.Info.Attacking", target);
 
                 return activity == null ? null : Lang.Get("Model.Info.Activity", activity.Bold());
@@ -198,7 +198,7 @@ namespace RimHUD.Data.Models
         {
             try
             {
-                if ((Base.jobs?.curJob == null) || (Base.jobs.jobQueue.Count == 0)) { return null; }
+                if (Base.jobs?.curJob == null || Base.jobs.jobQueue.Count == 0) { return null; }
 
                 var queued = Base.jobs.jobQueue[0].job.GetReport(Base)?.TrimEnd('.').CapitalizeFirst().Bold();
                 var remaining = Base.jobs.jobQueue.Count - 1;

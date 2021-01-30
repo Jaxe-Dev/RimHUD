@@ -31,7 +31,7 @@ namespace RimHUD.Data.Storage
 
         private static readonly FileInfo ConfigFile = new FileInfo(Path.Combine(Mod.ConfigDirectory.FullName, ConfigFileName));
 
-        public static bool IsValidFilename(string name) => !name.NullOrEmpty() && (name.Length <= (250 - UserPresetDirectory.FullName.Length)) && ValidFilenameRegex.IsMatch(name);
+        public static bool IsValidFilename(string name) => !name.NullOrEmpty() && name.Length <= 250 - UserPresetDirectory.FullName.Length && ValidFilenameRegex.IsMatch(name);
 
         public static void OpenConfigFolder() => Process.Start(Mod.ConfigDirectory.FullName);
 
@@ -126,9 +126,7 @@ namespace RimHUD.Data.Storage
             var loadedVersion = versionAttribute?.Value;
             if (NeedsNewConfig(loadedVersion))
             {
-                AllToDefault();
-                Save();
-                LoadLayouts(true);
+                ResetToDefault();
                 Mod.Warning($"Updating to version {Mod.Version} required your RimHUD config to be reset to default.");
                 _configWasReset = true;
                 return;
@@ -146,13 +144,24 @@ namespace RimHUD.Data.Storage
             xml.Save(ConfigFile.FullName);
         }
 
-        public static XElement LoadXml(FileInfo file, bool errorOnFail = false)
+        private static void ResetToDefault()
+        {
+            AllToDefault();
+            Save();
+            LoadLayouts(true);
+        }
+
+        public static XElement LoadXml(FileInfo file, bool resetOnFail = false)
         {
             try { return XDocument.Load(file.FullName).Root; }
             catch (Exception ex)
             {
                 var message = $"Failed to load xml file '{file.FullName}' due to exception '{ex.Message}'";
-                if (errorOnFail) { Mod.Error(message); }
+                if (resetOnFail)
+                {
+                    Mod.Warning(message + " and your config will be reset to default.");
+                    ResetToDefault();
+                }
                 else { Mod.Warning(message); }
 
                 return null;

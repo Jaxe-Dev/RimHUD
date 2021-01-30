@@ -10,7 +10,7 @@ namespace RimHUD.Data.Integration
     {
         public Type Integrator { get; }
 
-        public override bool IsActive => !Disabled && base.IsActive && (Integrator != null);
+        public override bool IsActive => !Disabled && base.IsActive && Integrator != null;
         public bool Disabled { get; set; }
 
         private readonly Dictionary<string, Access.StaticMethodHandler> _methods = new Dictionary<string, Access.StaticMethodHandler>();
