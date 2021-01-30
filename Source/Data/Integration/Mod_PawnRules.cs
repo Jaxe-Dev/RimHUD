@@ -35,6 +35,6 @@ namespace RimHUD.Data.Integration
         public static void OpenRules(Pawn pawn) => Instance.InvokeMethod("OpenRules", pawn);
 
         //public static void CanHaveRules(Pawn pawn) => Instance.InvokeMethod("CanHaveRules", pawn); // TODO Not yet implemented
-        public static bool CanHaveRules(Pawn pawn) => (pawn != null) && !pawn.Dead && (((pawn.Faction != null) && pawn.Faction.IsPlayer && (pawn.IsColonist || pawn.RaceProps.Animal)) || ((pawn.HostFaction != null) && pawn.HostFaction.IsPlayer));
+        public static bool CanHaveRules(Pawn pawn) => pawn != null && !pawn.Dead && (pawn.Faction != null && pawn.Faction.IsPlayer && (pawn.IsColonist || pawn.RaceProps.Animal) || pawn.HostFaction != null && pawn.HostFaction.IsPlayer);
     }
 }

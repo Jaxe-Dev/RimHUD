@@ -57,7 +57,7 @@ namespace RimHUD.Data.Models
 
         private TextModel GetAffectedWarning()
         {
-            var affected = VisibleHediffs(Model.Base, false).Where(hediff => hediff.Visible && !hediff.IsPermanent() && !hediff.FullyImmune() && (hediff.def != null) && ((hediff.CurStage?.lifeThreatening ?? false) || hediff.def.makesSickThought)).ToArray();
+            var affected = VisibleHediffs(Model.Base, false).Where(hediff => hediff.Visible && !hediff.IsPermanent() && !hediff.FullyImmune() && hediff.def != null && ((hediff.CurStage?.lifeThreatening ?? false) || hediff.def.makesSickThought)).ToArray();
             var count = affected.Count();
             if (count == 0) { return null; }
 
@@ -77,8 +77,8 @@ namespace RimHUD.Data.Models
             return GetBleedWarning() ?? GetTendWarning() ?? GetLifeThreateningWarning() ?? GetAffectedWarning() ?? GetIncapacitatedWarning() ?? TextModel.Create(Lang.Get("Model.Health.Stable"), GetHealthTooltip(), Theme.GoodColor.Value, OnClick);
         }
 
-        private static IEnumerable<IGrouping<BodyPartRecord, Hediff>> VisibleHediffGroupsInOrder(Pawn pawn, bool showBloodLoss) => (IEnumerable<IGrouping<BodyPartRecord, Hediff>>) Access.Method_RimWorld_HealthCardUtility_VisibleHediffGroupsInOrder.Invoke(null, new object[] { pawn, showBloodLoss });
-        private static IEnumerable<Hediff> VisibleHediffs(Pawn pawn, bool showBloodLoss) => (IEnumerable<Hediff>) Access.Method_RimWorld_HealthCardUtility_VisibleHediffs.Invoke(null, new object[] { pawn, showBloodLoss });
+        private static IEnumerable<IGrouping<BodyPartRecord, Hediff>> VisibleHediffGroupsInOrder(Pawn pawn, bool showBloodLoss) => (IEnumerable<IGrouping<BodyPartRecord, Hediff>>) Access.Method_RimWorld_HealthCardUtility_VisibleHediffGroupsInOrder.Invoke(null, pawn, showBloodLoss);
+        private static IEnumerable<Hediff> VisibleHediffs(Pawn pawn, bool showBloodLoss) => (IEnumerable<Hediff>) Access.Method_RimWorld_HealthCardUtility_VisibleHediffs.Invoke(null, pawn, showBloodLoss);
 
         private TipSignal? GetHealthTooltip()
         {

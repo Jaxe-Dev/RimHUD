@@ -9,9 +9,9 @@ namespace RimHUD.Interface.Dialog
         public LayoutItem Root { get; }
         public LayoutItem Selected { get; set; }
         public bool HasSelected => Selected != null;
-        public bool CanAddContainer => (Selected != null) && (Selected.Type == LayoutItemType.Stack);
-        public bool CanAddRow => (Selected != null) && (Selected.Type == LayoutItemType.Panel);
-        public bool CanAddElement => (Selected != null) && (Selected.Type == LayoutItemType.Row);
+        public bool CanAddContainer => Selected != null && Selected.Type == LayoutItemType.Stack;
+        public bool CanAddRow => Selected != null && Selected.Type == LayoutItemType.Panel;
+        public bool CanAddElement => Selected != null && Selected.Type == LayoutItemType.Row;
 
         public bool Docked { get; }
 

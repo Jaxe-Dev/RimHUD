@@ -186,7 +186,7 @@ namespace RimHUD.Interface
             lineEndWidth += ButtonSize;
 
             var canDoctor = !pawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor);
-            var canDoctorPriority = (pawn.workSettings == null) || (pawn.workSettings?.GetPriority(WorkTypeDefOf.Doctor) > 0);
+            var canDoctorPriority = pawn.workSettings == null || pawn.workSettings?.GetPriority(WorkTypeDefOf.Doctor) > 0;
 
             var selfTendRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
             var selfTendTip = "SelfTendTip".Translate(Faction.OfPlayer.def.pawnsPlural, 0.7f.ToStringPercent()).CapitalizeFirst();
@@ -203,11 +203,11 @@ namespace RimHUD.Interface
             lineEndWidth += GUIPlus.SmallPadding;
         }
 
-        private static bool PlayerControlled(Pawn pawn) => !pawn.Dead && (pawn.playerSettings != null) && ((pawn.Faction?.IsPlayer ?? false) || (pawn.HostFaction?.IsPlayer ?? false));
+        private static bool PlayerControlled(Pawn pawn) => !pawn.Dead && pawn.playerSettings != null && ((pawn.Faction?.IsPlayer ?? false) || (pawn.HostFaction?.IsPlayer ?? false));
 
         private static void DrawLog(Pawn pawn, Rect rect)
         {
-            if ((_log == null) || (_lastBattleTick != pawn.records.LastBattleTick) || (_lastPlayTick != Find.PlayLog.LastTick) || (_pawn != pawn))
+            if (_log == null || _lastBattleTick != pawn.records.LastBattleTick || _lastPlayTick != Find.PlayLog.LastTick || _pawn != pawn)
             {
                 ClearCache();
                 _log = ITab_Pawn_Log_Utility.GenerateLogLinesFor(pawn, true, true, true).ToList();
@@ -248,7 +248,7 @@ namespace RimHUD.Interface
             TabButtonWidths.Clear();
         }
 
-        private static void InterfaceToggleTab(InspectTabBase tab, IInspectPane pane) => Access.Method_RimWorld_InspectPaneUtility_InterfaceToggleTab.Invoke(null, new object[] { tab, pane });
+        private static void InterfaceToggleTab(InspectTabBase tab, IInspectPane pane) => Access.Method_RimWorld_InspectPaneUtility_InterfaceToggleTab.Invoke(null, tab, pane);
 
         private static void ToggleTab(Type tabType)
         {
@@ -258,7 +258,7 @@ namespace RimHUD.Interface
 
             if (Find.MainTabsRoot.OpenTab != MainButtonDefOf.Inspect) { Find.MainTabsRoot.SetCurrentTab(MainButtonDefOf.Inspect); }
 
-            Access.Method_RimWorld_InspectPaneUtility_ToggleTab.Invoke(null, new object[] { tab, pane });
+            Access.Method_RimWorld_InspectPaneUtility_ToggleTab.Invoke(null, tab, pane);
         }
 
         public static void ToggleBioTab() => ToggleTab(typeof(ITab_Pawn_Character));

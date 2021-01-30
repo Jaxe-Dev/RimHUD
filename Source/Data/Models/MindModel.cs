@@ -27,7 +27,7 @@ namespace RimHUD.Data.Models
             if (Model.Base.mindState?.mentalStateHandler == null) { return null; }
             if (Model.Base.mindState.mentalStateHandler.InMentalState) { return TextModel.Create(Model.Base.mindState.mentalStateHandler.CurState.InspectLine, GetTooltip(), Model.Base.mindState.mentalStateHandler.CurState.def.IsAggro || Model.Base.mindState.mentalStateHandler.CurState.def.IsExtreme ? Theme.CriticalColor.Value : Theme.WarningColor.Value, OnClick); }
 
-            if ((Model.Base.needs?.mood == null) || (Model.Base.mindState?.mentalBreaker == null)) { return null; }
+            if (Model.Base.needs?.mood == null || Model.Base.mindState?.mentalBreaker == null) { return null; }
 
             if (Model.Base.mindState.mentalBreaker.BreakExtremeIsImminent) { return TextModel.Create(Lang.Get("Model.Mood.ExtremeBreakImminent"), GetTooltip(), Theme.CriticalColor.Value, OnClick); }
             if (Model.Base.mindState.mentalBreaker.BreakMajorIsImminent) { return TextModel.Create(Lang.Get("Model.Mood.MajorBreakImminent"), GetTooltip(), Theme.WarningColor.Value, OnClick); }
@@ -59,7 +59,9 @@ namespace RimHUD.Data.Models
             var builder = new StringBuilder();
             foreach (var thought in thoughts)
             {
-                var offset = thought.MoodOffset();
+                float offset;
+                try { offset = thought.MoodOffset(); }
+                catch { offset = 0; }
 
                 Color color;
                 if (offset <= -10) { color = Theme.CriticalColor.Value; }

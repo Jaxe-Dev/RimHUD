@@ -26,13 +26,13 @@ namespace RimHUD.Interface.HUD
 
         private HudValue(TextModel model, TextStyle textStyle, Action onClick) : this(null, model.Tooltip, model.Text, null, model.Color, textStyle, onClick) { }
 
-        public static HudValue FromValueModel(ValueModel model, TextStyle textStyle) => (model == null) || model.Hidden ? null : new HudValue(model, textStyle);
+        public static HudValue FromValueModel(ValueModel model, TextStyle textStyle) => model == null || model.Hidden ? null : new HudValue(model, textStyle);
         public static HudValue FromTextModel(TextModel model, TextStyle textStyle) => model == null ? null : new HudValue(model, textStyle, model.OnClick);
         public static HudValue FromText(string text, TipSignal? tooltip, TextStyle textStyle, Action onClick = null) => new HudValue(null, tooltip, text, null, null, textStyle, onClick);
 
         public override bool Draw(Rect rect)
         {
-            if (_value.NullOrEmpty() && (_fallbackValue == null)) { return false; }
+            if (_value.NullOrEmpty() && _fallbackValue == null) { return false; }
 
             var showLabel = Label != null;
 

@@ -27,7 +27,7 @@ namespace RimHUD.Interface.HUD
 
         private HudBar(BarModel model, TextStyle textStyle) : this(model.Label, model.Value, model.Max, model.ValueStyle, textStyle, model.Tooltip, model.Thresholds, model.OnClick) { }
 
-        public static HudBar FromModel(BarModel model, TextStyle textStyle) => (model == null) || model.Hidden ? null : new HudBar(model, textStyle);
+        public static HudBar FromModel(BarModel model, TextStyle textStyle) => model == null || model.Hidden ? null : new HudBar(model, textStyle);
 
         public override bool Draw(Rect rect)
         {

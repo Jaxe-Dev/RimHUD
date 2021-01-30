@@ -57,10 +57,10 @@ namespace RimHUD.Interface.Dialog
         private bool _collapsed;
         private bool Selected => Equals(_editor.Selected);
 
-        public bool CanMoveUp => (_parent != null) && (_parent.Contents.IndexOf(this) > 0);
-        public bool CanMoveDown => (_parent != null) && (_parent.Contents.IndexOf(this) < _parent.Contents.LastIndex());
+        public bool CanMoveUp => _parent != null && _parent.Contents.IndexOf(this) > 0;
+        public bool CanMoveDown => _parent != null && _parent.Contents.IndexOf(this) < _parent.Contents.LastIndex();
         public bool CanRemove => _parent != null;
-        public bool IsRoot => (_editor != null) && (_parent == null);
+        public bool IsRoot => _editor != null && _parent == null;
 
         public LayoutItem(LayoutItemType type, string id, Def def = null, LayoutEditor editor = null, LayoutItem parent = null)
         {
@@ -150,18 +150,18 @@ namespace RimHUD.Interface.Dialog
             if (Widgets.ButtonInvisible(labelRect)) { Select(); }
             if (Selected) { Widgets.DrawBoxSolid(labelRect, GUIPlus.ItemSelectedColor); }
 
-            if (!IsRoot && (Type != LayoutItemType.Element) && (Type != LayoutItemType.CustomElement))
+            if (!IsRoot && Type != LayoutItemType.Element && Type != LayoutItemType.CustomElement)
             {
                 var buttonRect = new Rect(x, y, ButtonSize, ButtonSize);
                 if (Widgets.ButtonImage(buttonRect, _collapsed ? Textures.Reveal : Textures.Collapse)) { _collapsed = !_collapsed; }
             }
 
             var label = IsRoot ? Lang.Get("Model.Component.Root").Bold() : GetLabel() + GetAttributes().Size(Theme.SmallTextStyle.ActualSize);
-            GUIPlus.DrawText(labelRect, (Type == LayoutItemType.Element) || (Type == LayoutItemType.CustomElement) ? label.Bold() : label, Color);
+            GUIPlus.DrawText(labelRect, Type == LayoutItemType.Element || Type == LayoutItemType.CustomElement ? label.Bold() : label, Color);
             Widgets.DrawHighlightIfMouseover(labelRect);
             var curY = y + Text.LineHeight;
 
-            if (_collapsed || (Contents.Count == 0)) { return curY; }
+            if (_collapsed || Contents.Count == 0) { return curY; }
 
             foreach (var item in Contents) { curY = item.Draw(x + Indent, curY, width - Indent); }
 
@@ -189,7 +189,7 @@ namespace RimHUD.Interface.Dialog
             if (Type == LayoutItemType.Stack) { return StackColor; }
             if (Type == LayoutItemType.Panel) { return PanelColor; }
             if (Type == LayoutItemType.Row) { return RowColor; }
-            if ((Type == LayoutItemType.Element) || (Type == LayoutItemType.CustomElement)) { return ElementColor; }
+            if (Type == LayoutItemType.Element || Type == LayoutItemType.CustomElement) { return ElementColor; }
 
             throw new Mod.Exception($"Invalid {nameof(LayoutItemType)}");
         }
