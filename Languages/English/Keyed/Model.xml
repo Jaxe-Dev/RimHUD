@@ -47,6 +47,9 @@
   <RimHUD.Model.Mood.Indifferent>Feeling indifferent</RimHUD.Model.Mood.Indifferent>
 
   <RimHUD.Model.Info.Activity>Activity: {0}</RimHUD.Model.Info.Activity>
+  <RimHUD.Model.Info.Activity.Tooltip>{0}\n\n{1}\n\n{2}</RimHUD.Model.Info.Activity.Tooltip>
+  <RimHUD.Model.Info.Activity.WorkType>Work type: {0}</RimHUD.Model.Info.Activity.WorkType>
+  <RimHUD.Model.Info.Activity.RelevantSkills>Relevant Skills: {0}</RimHUD.Model.Info.Activity.RelevantSkills>
   <RimHUD.Model.Info.Attacking>Attacking {0}</RimHUD.Model.Info.Attacking>
   <RimHUD.Model.Info.Queued>Queued: {0}</RimHUD.Model.Info.Queued>
   <RimHUD.Model.Info.Equipped>Equipped: {0}</RimHUD.Model.Info.Equipped>
@@ -112,6 +115,7 @@
   <RimHUD.Model.Component.SkillSocial>Social skill</RimHUD.Model.Component.SkillSocial>
   <RimHUD.Model.Component.SkillIntellectual>Intellectual skill</RimHUD.Model.Component.SkillIntellectual>
   <RimHUD.Model.Component.Skill>{0} skill</RimHUD.Model.Component.Skill>
+  <RimHUD.Model.Component.Skill.PassionIndicator>★</RimHUD.Model.Component.Skill.PassionIndicator>
 
   <RimHUD.Model.Component.TrainingTameness>Tameness training</RimHUD.Model.Component.TrainingTameness>
   <RimHUD.Model.Component.TrainingObedience>Obedience training</RimHUD.Model.Component.TrainingObedience>

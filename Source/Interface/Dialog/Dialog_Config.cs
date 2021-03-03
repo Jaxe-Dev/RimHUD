@@ -16,7 +16,7 @@ namespace RimHUD.Interface.Dialog
         private const float ButtonWidth = 120f;
         private const float ButtonHeight = 40f;
 
-        private readonly TabManager _tabs = new TabManager(TabWidth, TabHeight, new Tab_ConfigDesign(), new Tab_ConfigColors(), new Tab_ConfigContent(), new Tab_ConfigIntegration());
+        private readonly TabManager _tabs;
 
         private Dialog_Config() : base(Lang.Get("Dialog_Config.Title").Bold(), new Vector2(800f, 650f))
         {
@@ -26,6 +26,8 @@ namespace RimHUD.Interface.Dialog
             doCloseButton = false;
 
             if (Lang.HasKey("Language.TranslatedBy")) { Subtitle = Lang.Get("Language.TranslatedBy").Italic(); }
+
+            _tabs = Persistent.GetCredits() == null ? new TabManager(TabWidth, TabHeight, new Tab_ConfigDesign(), new Tab_ConfigColors(), new Tab_ConfigContent()) : new TabManager(TabWidth, TabHeight, new Tab_ConfigDesign(), new Tab_ConfigColors(), new Tab_ConfigContent(), new Tab_ConfigCredits());
         }
 
         public static void Open() => Find.WindowStack.Add(new Dialog_Config());

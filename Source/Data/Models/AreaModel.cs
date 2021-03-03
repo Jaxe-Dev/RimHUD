@@ -9,16 +9,22 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class AreaModel : SelectorModel
+    internal struct AreaModel : ISelectorModel
     {
-        public override bool Hidden { get; }
-        public override string Label { get; }
-        public override TipSignal? Tooltip { get; }
-        public override Color? Color { get; }
-        public override Action OnHover { get; }
+        public PawnModel Model { get; }
+        public bool Hidden { get; }
 
-        public AreaModel(PawnModel model) : base(model)
+        public string Label { get; }
+        public Color? Color { get; }
+        public TipSignal? Tooltip { get; }
+
+        public Action OnHover { get; }
+        public Action OnClick { get; }
+
+        public AreaModel(PawnModel model) : this()
         {
+            Model = model;
+
             if ((!model.Base.Faction?.IsPlayer ?? true) || model.Base.playerSettings == null || !model.Base.IsColonist && !model.Base.playerSettings.RespectsAllowedArea)
             {
                 Hidden = true;
@@ -26,17 +32,19 @@ namespace RimHUD.Data.Models
             }
 
             Label = Lang.Get("Model.Selector.AreaFormat", AreaUtility.AreaAllowedLabel(model.Base));
-            Tooltip = null;
             Color = model.Base.playerSettings?.EffectiveAreaRestriction?.Color;
 
             OnClick = DrawFloatMenu;
+
             OnHover = () => model.Base.playerSettings.EffectiveAreaRestriction?.MarkForDraw();
         }
 
         private void DrawFloatMenu()
         {
-            var options = new List<FloatMenuOption> { new FloatMenuOption("NoAreaAllowed".Translate(), () => Mod_Multiplayer.SetArea(Model.Base, null)) };
-            options.AddRange(from area in Find.CurrentMap.areaManager.AllAreas.Where(area => area.AssignableAsAllowed()) select new FloatMenuOption(area.Label, () => Mod_Multiplayer.SetArea(Model.Base, area)));
+            var model = Model;
+
+            var options = new List<FloatMenuOption> { new FloatMenuOption("NoAreaAllowed".Translate(), () => Mod_Multiplayer.SetArea(model.Base, null)) };
+            options.AddRange(from area in Find.CurrentMap.areaManager.AllAreas.Where(area => area.AssignableAsAllowed()) select new FloatMenuOption(area.Label, () => Mod_Multiplayer.SetArea(model.Base, area)));
             options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageAreas(Find.CurrentMap))));
 
             Find.WindowStack.Add(new FloatMenu(options));

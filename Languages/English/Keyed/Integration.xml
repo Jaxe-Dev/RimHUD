@@ -1,43 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <RimHUD.Integration.GetMod>Link to mod</RimHUD.Integration.GetMod>
-
-  <RimHUD.Integration.General>General Settings</RimHUD.Integration.General>
-  <RimHUD.Integration.Bubbles>Interaction Bubbles</RimHUD.Integration.Bubbles>
-
-  <RimHUD.Integration.Bubbles.Activated>Activated</RimHUD.Integration.Bubbles.Activated>
-  <RimHUD.Integration.Bubbles.DoNonPlayer>Show for non-player faction</RimHUD.Integration.Bubbles.DoNonPlayer>
-  <RimHUD.Integration.Bubbles.DoAnimals>Show for animal interactions</RimHUD.Integration.Bubbles.DoAnimals>
-
-  <RimHUD.Integration.Bubbles.MinScale>Minimum zoom visible</RimHUD.Integration.Bubbles.MinScale>
-  <RimHUD.Integration.Bubbles.ScaleStart>Zoom to start scale</RimHUD.Integration.Bubbles.ScaleStart>
-  <RimHUD.Integration.Bubbles.MaxWidth>Maximum width</RimHUD.Integration.Bubbles.MaxWidth>
-  <RimHUD.Integration.Bubbles.Spacing>Spacing</RimHUD.Integration.Bubbles.Spacing>
-  <RimHUD.Integration.Bubbles.StartOffset>Offset from label</RimHUD.Integration.Bubbles.StartOffset>
-  <RimHUD.Integration.Bubbles.OffsetDirection>Offset direction</RimHUD.Integration.Bubbles.OffsetDirection>
-  <RimHUD.Integration.Bubbles.OffsetDirections>Down|Left|Up|Right</RimHUD.Integration.Bubbles.OffsetDirections>
-  <RimHUD.Integration.Bubbles.StartOpacity>Starting opacity</RimHUD.Integration.Bubbles.StartOpacity>
-  <RimHUD.Integration.Bubbles.MouseOverOpacity>Mouse-over opacity</RimHUD.Integration.Bubbles.MouseOverOpacity>
-
-  <RimHUD.Integration.Bubbles.MinTime>Minimum time to fade</RimHUD.Integration.Bubbles.MinTime>
-  <RimHUD.Integration.Bubbles.FadeStart>Ticks to start fade</RimHUD.Integration.Bubbles.FadeStart>
-  <RimHUD.Integration.Bubbles.FadeLength>Ticks to fade</RimHUD.Integration.Bubbles.FadeLength>
-  <RimHUD.Integration.Bubbles.MaxPerPawn>Maximum per pawn</RimHUD.Integration.Bubbles.MaxPerPawn>
-
-  <RimHUD.Integration.Bubbles.FontSize>Font size</RimHUD.Integration.Bubbles.FontSize>
-  <RimHUD.Integration.Bubbles.PaddingX>Text padding X</RimHUD.Integration.Bubbles.PaddingX>
-  <RimHUD.Integration.Bubbles.PaddingY>Text padding Y</RimHUD.Integration.Bubbles.PaddingY>
-
-  <RimHUD.Integration.Bubbles.Colors>Bubble Colors</RimHUD.Integration.Bubbles.Colors>
-  <RimHUD.Integration.Bubbles.ForeColor>Text color</RimHUD.Integration.Bubbles.ForeColor>
-  <RimHUD.Integration.Bubbles.BackColor>Back color</RimHUD.Integration.Bubbles.BackColor>
-  <RimHUD.Integration.Bubbles.SelectedForeColor>Selected text color</RimHUD.Integration.Bubbles.SelectedForeColor>
-  <RimHUD.Integration.Bubbles.SelectedBackColor>Selected back color</RimHUD.Integration.Bubbles.SelectedBackColor>
-
-  <RimHUD.Integration.PawnRules>Pawn Rules</RimHUD.Integration.PawnRules>
   <RimHUD.Integration.PawnRules.RuleNameFormat>Rules: {0}</RimHUD.Integration.PawnRules.RuleNameFormat>
-  <RimHUD.Integration.PawnRules.ReplaceFoodSelector>Replace food selector</RimHUD.Integration.PawnRules.ReplaceFoodSelector>
-  <RimHUD.Integration.PawnRules.ReplaceFoodSelectorDesc>If enabled, the food selector will be replaced by the rules selector.</RimHUD.Integration.PawnRules.ReplaceFoodSelectorDesc>
-  <RimHUD.Integration.PawnRules.HideGizmo>Hide Gizmo</RimHUD.Integration.PawnRules.HideGizmo>
-  <RimHUD.Integration.PawnRules.HideGizmoDesc>Disables the rules gizmo that appears next to the draft button as RimHUD adds a rules button in the inspect pane.</RimHUD.Integration.PawnRules.HideGizmoDesc>
 </LanguageData>

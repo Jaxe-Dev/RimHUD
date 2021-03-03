@@ -11,20 +11,20 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class HealthModel
+    internal struct HealthModel
     {
         public PawnModel Model { get; }
 
         public HealthBarModel Bar => new HealthBarModel(Model);
         public float Percent => Model.Base.health?.summaryHealth?.SummaryHealthPercent ?? -1f;
-        public TextModel Condition => GetHealthCondition();
+        public TextModel? Condition => GetHealthCondition();
         public TipSignal? Tooltip => GetHealthTooltip();
 
         public HealthModel(PawnModel model) => Model = model;
 
         private static void OnClick() => InspectPanePlus.ToggleHealthTab();
 
-        private TextModel GetBleedWarning()
+        private TextModel? GetBleedWarning()
         {
             var bloodLossTicksRemaining = HealthUtility.TicksUntilDeathDueToBloodLoss(Model.Base);
             var text = bloodLossTicksRemaining < GenDate.TicksPerDay ? Lang.Get("Model.Health.Bleed", bloodLossTicksRemaining.ToStringTicksToPeriod()) : null;
@@ -32,7 +32,7 @@ namespace RimHUD.Data.Models
             return TextModel.Create(text, GetHealthTooltip(), Theme.CriticalColor.Value, OnClick);
         }
 
-        private TextModel GetTendWarning()
+        private TextModel? GetTendWarning()
         {
             var count = Model.Base.health.hediffSet.hediffs.Count(hediff => hediff.TendableNow());
             if (count == 0) { return null; }
@@ -43,7 +43,7 @@ namespace RimHUD.Data.Models
             return TextModel.Create(text, GetHealthTooltip(), hasLifeThreateningCondition?.Color ?? Theme.WarningColor.Value, OnClick);
         }
 
-        private TextModel GetLifeThreateningWarning()
+        private TextModel? GetLifeThreateningWarning()
         {
             var threats = Model.Base.health.hediffSet.hediffs.Where(hediff => hediff.CurStage?.lifeThreatening ?? false).ToArray();
             var count = threats.Count();
@@ -55,7 +55,7 @@ namespace RimHUD.Data.Models
             return TextModel.Create(text, GetHealthTooltip(), Theme.CriticalColor.Value, OnClick);
         }
 
-        private TextModel GetAffectedWarning()
+        private TextModel? GetAffectedWarning()
         {
             var affected = VisibleHediffs(Model.Base, false).Where(hediff => hediff.Visible && !hediff.IsPermanent() && !hediff.FullyImmune() && hediff.def != null && ((hediff.CurStage?.lifeThreatening ?? false) || hediff.def.makesSickThought)).ToArray();
             var count = affected.Count();
@@ -67,9 +67,9 @@ namespace RimHUD.Data.Models
             return TextModel.Create(text, GetHealthTooltip(), Theme.WarningColor.Value, OnClick);
         }
 
-        private TextModel GetIncapacitatedWarning() => !Model.Base.health.Downed ? null : TextModel.Create(Lang.Get("Model.Health.Incapacitated"), GetHealthTooltip(), Theme.WarningColor.Value, OnClick);
+        private TextModel? GetIncapacitatedWarning() => !Model.Base.health.Downed ? null : TextModel.Create(Lang.Get("Model.Health.Incapacitated"), GetHealthTooltip(), Theme.WarningColor.Value, OnClick);
 
-        private TextModel GetHealthCondition()
+        private TextModel? GetHealthCondition()
         {
             if (Model.Base.health?.hediffSet?.hediffs == null) { return null; }
             if (Model.Base.Dead) { return TextModel.Create(Lang.Get("Model.Health.Dead"), GetHealthTooltip(), Theme.InfoColor.Value, OnClick); }

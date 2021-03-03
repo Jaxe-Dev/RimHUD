@@ -59,8 +59,6 @@
   <RimHUD.Dialog_Config.Tab.Content.Selected.Filled>Fill height</RimHUD.Dialog_Config.Tab.Content.Selected.Filled>
   <RimHUD.Dialog_Config.Tab.Content.Selected.FilledDesc>If checked the panel or stack will stretch to fill the remaining vertical space.\n\nIf unchecked it will size the height to its content</RimHUD.Dialog_Config.Tab.Content.Selected.FilledDesc>
 
-  <RimHUD.Dialog_Config.Tab.Integration>Integration</RimHUD.Dialog_Config.Tab.Integration>
-
   <RimHUD.Dialog_Presets.Title>User Presets</RimHUD.Dialog_Presets.Title>
   <RimHUD.Dialog_Presets.Delete>Delete selected</RimHUD.Dialog_Presets.Delete>
 

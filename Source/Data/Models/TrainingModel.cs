@@ -1,4 +1,5 @@
-﻿using RimHUD.Data.Configuration;
+﻿using System;
+using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Interface;
 using RimHUD.Patch;
@@ -8,17 +9,24 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class TrainingModel : ValueModel
+    internal struct TrainingModel : IValueModel
     {
-        public override bool Hidden { get; }
+        public PawnModel Model { get; }
+        public bool Hidden { get; }
 
-        public override string Label { get; }
-        public override string Value { get; }
-        public override Color? Color { get; }
-        public override TipSignal? Tooltip { get; }
+        public string Label { get; }
+        public Color? Color { get; }
+        public TipSignal? Tooltip { get; }
 
-        public TrainingModel(PawnModel model, TrainableDef def) : base(model)
+        public Action OnHover { get; }
+        public Action OnClick { get; }
+
+        public string Value { get; }
+
+        public TrainingModel(PawnModel model, TrainableDef def) : this()
         {
+            Model = model;
+
             bool canTrainNow;
             try { canTrainNow = model.Base.RaceProps?.trainability != null && model.Base.training != null && model.Base.training.CanAssignToTrain(def, out var visible).Accepted && visible; }
             catch { canTrainNow = false; }

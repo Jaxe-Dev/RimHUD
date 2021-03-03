@@ -61,6 +61,8 @@ namespace RimHUD.Data.Configuration
 
         [Attributes.Option("SkillColors", "MinorPassion")] public static ColorOption SkillMinorPassionColor { get; } = new ColorOption(new Color(1f, 0.9f, 0.7f), Lang.Get("Theme.SkillMinorPassionColor"));
         [Attributes.Option("SkillColors", "MajorPassion")] public static ColorOption SkillMajorPassionColor { get; } = new ColorOption(new Color(1f, 0.8f, 0.4f), Lang.Get("Theme.SkillMajorPassionColor"));
+        [Attributes.Option("SkillColors", "Saturated")] public static ColorOption SkillSaturatedColor { get; } = new ColorOption(new Color(1f, 0.8f, 0.8f), Lang.Get("Theme.SkillSaturatedColor"));
+        [Attributes.Option("SkillColors", "Active")] public static ColorOption SkillActiveColor { get; } = new ColorOption(new Color(0.9f, 1f, 0.7f), Lang.Get("Theme.SkillActiveColor"));
 
         public static Rect GetHudBounds()
         {

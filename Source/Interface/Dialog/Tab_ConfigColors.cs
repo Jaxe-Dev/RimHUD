@@ -1,7 +1,6 @@
 ﻿using RimHUD.Data;
 using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
-using RimHUD.Data.Integration;
 using UnityEngine;
 using Verse;
 using ColorOption = RimHUD.Data.Configuration.ColorOption;
@@ -81,15 +80,9 @@ namespace RimHUD.Interface.Dialog
             l.GapLine();
             l.ColorOptionSelect(Theme.SkillMinorPassionColor, ref _selected);
             l.ColorOptionSelect(Theme.SkillMajorPassionColor, ref _selected);
+            l.ColorOptionSelect(Theme.SkillSaturatedColor, ref _selected);
+            l.ColorOptionSelect(Theme.SkillActiveColor, ref _selected);
             l.Gap();
-
-            var hasBubbles = Mod_Bubbles.Instance.IsActive;
-            l.Label(Lang.Get("Integration.Bubbles.Colors").Bold());
-            l.GapLine();
-            l.ColorOptionSelect(Mod_Bubbles.ForeColor, ref _selected, hasBubbles);
-            l.ColorOptionSelect(Mod_Bubbles.BackColor, ref _selected, hasBubbles);
-            l.ColorOptionSelect(Mod_Bubbles.SelectedForeColor, ref _selected, hasBubbles);
-            l.ColorOptionSelect(Mod_Bubbles.SelectedBackColor, ref _selected, hasBubbles);
 
             l.EndScrollView(ref _viewRect);
 
