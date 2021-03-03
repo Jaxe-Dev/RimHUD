@@ -22,6 +22,8 @@ namespace RimHUD.Patch
         public static FieldInfo Field_Verse_LetterStack_Letters { get; private set; }
 
         public static MainButtonDef MainButtonDefOfRestrict { get; private set; }
+        public static MainButtonDef MainButtonDefOfWork { get; private set; }
+
         public static NeedDef NeedDefOfMood { get; private set; }
         public static NeedDef NeedDefOfBeauty { get; private set; }
         public static NeedDef NeedDefOfComfort { get; private set; }
@@ -46,6 +48,8 @@ namespace RimHUD.Patch
             Field_Verse_LetterStack_Letters = AccessTools.Field(typeof(LetterStack), "letters");
 
             MainButtonDefOfRestrict = DefDatabase<MainButtonDef>.GetNamed("Restrict");
+            MainButtonDefOfWork = DefDatabase<MainButtonDef>.GetNamed("Work");
+
             NeedDefOfMood = DefDatabase<NeedDef>.GetNamed("Mood");
             NeedDefOfBeauty = DefDatabase<NeedDef>.GetNamed("Beauty");
             NeedDefOfComfort = DefDatabase<NeedDef>.GetNamed("Comfort");

@@ -5,16 +5,22 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class RulesModel : SelectorModel
+    internal struct RulesModel : ISelectorModel
     {
-        public override bool Hidden { get; }
-        public override string Label { get; }
-        public override TipSignal? Tooltip { get; }
-        public override Color? Color { get; }
-        public override Action OnHover { get; }
+        public PawnModel Model { get; }
+        public bool Hidden { get; }
 
-        public RulesModel(PawnModel model) : base(model)
+        public string Label { get; }
+        public Color? Color { get; }
+        public TipSignal? Tooltip { get; }
+
+        public Action OnHover { get; }
+        public Action OnClick { get; }
+
+        public RulesModel(PawnModel model) : this()
         {
+            Model = model;
+
             if (!Mod_PawnRules.Instance.IsActive || !Mod_PawnRules.CanHaveRules(model.Base))
             {
                 Hidden = true;
@@ -22,11 +28,8 @@ namespace RimHUD.Data.Models
             }
 
             Label = Lang.Get("Integration.PawnRules.RuleNameFormat", Mod_PawnRules.GetRules(model.Base));
-            Tooltip = null;
-            Color = null;
 
             OnClick = () => Mod_PawnRules.OpenRules(model.Base);
-            OnHover = null;
         }
     }
 }

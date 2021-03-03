@@ -1,21 +1,32 @@
-﻿using RimHUD.Interface;
+﻿using System;
+using RimHUD.Interface;
 using RimHUD.Interface.HUD;
+using UnityEngine;
 using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class HealthBarModel : BarModel
+    internal struct HealthBarModel : IBarModel
     {
-        public override bool Hidden { get; }
-        public override string Label { get; }
-        public override float Max { get; }
-        public override float Value { get; }
-        public override HudBar.ValueStyle ValueStyle { get; }
-        public override float[] Thresholds { get; }
-        public override TipSignal? Tooltip { get; }
+        public PawnModel Model { get; }
+        public bool Hidden { get; }
 
-        public HealthBarModel(PawnModel model) : base(model)
+        public string Label { get; }
+        public Color? Color { get; }
+        public TipSignal? Tooltip { get; }
+
+        public Action OnHover { get; }
+        public Action OnClick { get; }
+
+        public float Max { get; }
+        public float Value { get; }
+        public HudBar.ValueStyle ValueStyle { get; }
+        public float[] Thresholds { get; }
+
+        public HealthBarModel(PawnModel model) : this()
         {
+            Model = model;
+
             if (model.Base.health == null)
             {
                 Hidden = true;
@@ -29,7 +40,6 @@ namespace RimHUD.Data.Models
             ValueStyle = HudBar.ValueStyle.Percentage;
 
             Tooltip = model.Health.Tooltip;
-            Thresholds = null;
 
             OnClick = InspectPanePlus.ToggleHealthTab;
         }
