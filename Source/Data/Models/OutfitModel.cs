@@ -8,16 +8,22 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class OutfitModel : SelectorModel
+    internal struct OutfitModel : ISelectorModel
     {
-        public override bool Hidden { get; }
-        public override string Label { get; }
-        public override TipSignal? Tooltip { get; }
-        public override Color? Color { get; }
-        public override Action OnHover { get; }
+        public PawnModel Model { get; }
+        public bool Hidden { get; }
 
-        public OutfitModel(PawnModel model) : base(model)
+        public string Label { get; }
+        public TipSignal? Tooltip { get; }
+        public Color? Color { get; }
+
+        public Action OnHover { get; }
+        public Action OnClick { get; }
+
+        public OutfitModel(PawnModel model) : this()
         {
+            Model = model;
+
             if (!model.IsPlayerFaction || model.Base?.outfits?.CurrentOutfit == null)
             {
                 Hidden = true;
@@ -25,17 +31,16 @@ namespace RimHUD.Data.Models
             }
 
             Label = Lang.Get("Model.Selector.OutfitFormat", model.Base.outfits?.CurrentOutfit.label);
-            Tooltip = null;
-            Color = null;
 
             OnClick = DrawFloatMenu;
-            OnHover = null;
         }
 
         private void DrawFloatMenu()
         {
-            var options = (from outfit in Current.Game.outfitDatabase.AllOutfits select new FloatMenuOption(outfit.label, () => Mod_Multiplayer.SetOutfit(Model.Base, outfit))).ToList();
-            options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageOutfits(Model.Base.outfits.CurrentOutfit))));
+            var model = Model;
+
+            var options = (from outfit in Current.Game.outfitDatabase.AllOutfits select new FloatMenuOption(outfit.label, () => Mod_Multiplayer.SetOutfit(model.Base, outfit))).ToList();
+            options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageOutfits(model.Base.outfits.CurrentOutfit))));
 
             Find.WindowStack.Add(new FloatMenu(options));
         }

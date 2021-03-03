@@ -8,16 +8,22 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class FoodModel : SelectorModel
+    internal struct FoodModel : ISelectorModel
     {
-        public override bool Hidden { get; }
-        public override string Label { get; }
-        public override TipSignal? Tooltip { get; }
-        public override Color? Color { get; }
-        public override Action OnHover { get; }
+        public PawnModel Model { get; }
+        public bool Hidden { get; }
 
-        public FoodModel(PawnModel model) : base(model)
+        public string Label { get; }
+        public Color? Color { get; }
+        public TipSignal? Tooltip { get; }
+
+        public Action OnHover { get; }
+        public Action OnClick { get; }
+
+        public FoodModel(PawnModel model) : this()
         {
+            Model = model;
+
             if (!model.IsPlayerManaged || model.Base.foodRestriction == null || !model.Base.foodRestriction.Configurable)
             {
                 Hidden = true;
@@ -25,17 +31,17 @@ namespace RimHUD.Data.Models
             }
 
             Label = Lang.Get("Model.Selector.FoodFormat", model.Base.foodRestriction.CurrentFoodRestriction?.label);
-            Tooltip = null;
-            Color = null;
 
             OnClick = DrawFloatMenu;
-            OnHover = null;
         }
 
         private void DrawFloatMenu()
         {
-            var options = (from food in Current.Game.foodRestrictionDatabase.AllFoodRestrictions select new FloatMenuOption(food.label, () => Mod_Multiplayer.SetFoodRestriction(Model.Base, food))).ToList();
-            options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageFoodRestrictions(Model.Base.foodRestriction.CurrentFoodRestriction))));
+            var model = Model;
+
+            var options = (from food in Current.Game.foodRestrictionDatabase.AllFoodRestrictions select new FloatMenuOption(food.label, () => Mod_Multiplayer.SetFoodRestriction(model.Base, food))).ToList();
+            options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), () => Find.WindowStack.Add(new Dialog_ManageFoodRestrictions(model.Base.foodRestriction.CurrentFoodRestriction))));
+
             Find.WindowStack.Add(new FloatMenu(options));
         }
     }

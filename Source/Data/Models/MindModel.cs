@@ -9,20 +9,20 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal class MindModel
+    internal struct MindModel
     {
         public const float MoodHappyLevel = 0.9f;
         public const float MoodContentLevel = 0.65f;
 
         public PawnModel Model { get; }
-        public TextModel Condition => GetCondition();
+        public TextModel? Condition => GetCondition();
         public TipSignal? Tooltip => GetTooltip();
 
         public MindModel(PawnModel model) => Model = model;
 
         private static void OnClick() => InspectPanePlus.ToggleNeedsTab();
 
-        private TextModel GetCondition()
+        private TextModel? GetCondition()
         {
             if (Model.Base.mindState?.mentalStateHandler == null) { return null; }
             if (Model.Base.mindState.mentalStateHandler.InMentalState) { return TextModel.Create(Model.Base.mindState.mentalStateHandler.CurState.InspectLine, GetTooltip(), Model.Base.mindState.mentalStateHandler.CurState.def.IsAggro || Model.Base.mindState.mentalStateHandler.CurState.def.IsExtreme ? Theme.CriticalColor.Value : Theme.WarningColor.Value, OnClick); }
@@ -40,7 +40,7 @@ namespace RimHUD.Data.Models
             return Model.Base.needs.mood.CurLevel > MoodContentLevel ? TextModel.Create(Lang.Get("Model.Mood.Content"), GetTooltip(), Theme.GoodColor.Value, OnClick) : TextModel.Create(Lang.Get("Model.Mood.Indifferent"), GetTooltip(), Theme.InfoColor.Value, OnClick);
         }
 
-        private TextModel GetInspiration()
+        private TextModel? GetInspiration()
         {
             if (!Model.Base.Inspired) { return null; }
 
@@ -70,14 +70,18 @@ namespace RimHUD.Data.Models
                 else if (offset > 0) { color = Theme.GoodColor.Value; }
                 else { color = Theme.InfoColor.Value; }
 
-                var similar = new List<Thought>();
-                Model.Base.needs.mood.thoughts.GetMoodThoughts(thought, similar);
+                try
+                {
+                    var similar = new List<Thought>();
+                    Model.Base.needs.mood.thoughts.GetMoodThoughts(thought, similar);
 
-                var thoughtLabel = thought.LabelCap;
-                if (similar.Count > 1) { thoughtLabel += " x" + similar.Count; }
+                    var thoughtLabel = thought.LabelCap;
+                    if (similar.Count > 1) { thoughtLabel += " x" + similar.Count; }
 
-                var line = $"{thoughtLabel}: {offset * similar.Count}".Color(color);
-                builder.AppendLine(line);
+                    var line = $"{thoughtLabel}: {offset * similar.Count}".Color(color);
+                    builder.AppendLine(line);
+                }
+                catch { }
             }
 
             builder.AppendLine();
