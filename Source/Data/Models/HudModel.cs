@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using RimHUD.Data.Configuration;
 using RimHUD.Interface;
 using RimHUD.Interface.Dialog;
 using RimHUD.Interface.HUD;
+using RimHUD.Patch;
 using RimWorld;
 using Verse;
 
@@ -31,11 +33,11 @@ namespace RimHUD.Data.Models
 
             { "NameHeader", model => HudValue.FromText(model.Name, model.BioTooltip, Theme.LargeTextStyle, InspectPanePlus.ToggleSocialTab) },
 
-            { "Outfit", model => HudSelector.FromModel(model.OutfitSelector, Theme.SmallTextStyle) },
-            { "Food", model => HudSelector.FromModel(model.FoodSelector, Theme.SmallTextStyle) },
-            { "Rules", model => HudSelector.FromModel(model.RulesSelector, Theme.SmallTextStyle) },
-            { "Timetable", model => HudSelector.FromModel(model.TimetableSelector, Theme.SmallTextStyle) },
-            { "Area", model => HudSelector.FromModel(model.AreaSelector, Theme.SmallTextStyle) },
+            { "Outfit", model => HudSelector.FromSelectorModel(model.OutfitSelector, Theme.SmallTextStyle) },
+            { "Food", model => HudSelector.FromSelectorModel(model.FoodSelector, Theme.SmallTextStyle) },
+            { "Rules", model => HudSelector.FromSelectorModel(model.RulesSelector, Theme.SmallTextStyle) },
+            { "Timetable", model => HudSelector.FromSelectorModel(model.TimetableSelector, Theme.SmallTextStyle) },
+            { "Area", model => HudSelector.FromSelectorModel(model.AreaSelector, Theme.SmallTextStyle) },
 
             { "RelationKindAndFaction", model => HudValue.FromTextModel(model.RelationKindAndFaction, Theme.SmallTextStyle) },
             { "GenderAndAge", model => HudValue.FromTextModel(model.GenderAndAge, Theme.SmallTextStyle) },
@@ -46,7 +48,7 @@ namespace RimHUD.Data.Models
 
             { "Master", model => HudValue.FromTextModel(model.Master, Theme.RegularTextStyle) },
 
-            { "Activity", model => HudValue.FromText(model.Activity, null, Theme.SmallTextStyle) },
+            { "Activity", model => HudValue.FromText(model.Activity, model.ActivityTooltip, Theme.SmallTextStyle, () => Find.MainTabsRoot.SetCurrentTab(Access.MainButtonDefOfWork)) },
             { "Queued", model => HudValue.FromText(model.Queued, null, Theme.SmallTextStyle) },
             { "Equipped", model => HudValue.FromText(model.Equipped, null, Theme.SmallTextStyle, InspectPanePlus.ToggleGearTab) },
             { "Carrying", model => HudValue.FromText(model.Carrying, null, Theme.SmallTextStyle, InspectPanePlus.ToggleGearTab) },
@@ -236,6 +238,13 @@ namespace RimHUD.Data.Models
         {
             Dialog_Alert.Open(Lang.Get("Alert.InvalidLayout"));
             HudLayout.LoadDefaultAndSave();
+        }
+
+        public static void BuildStatString(IAttributeModel attribute, StringBuilder builder, StatDef def)
+        {
+            if (def.Worker?.IsDisabledFor(attribute.Model.Base) ?? true) { return; }
+            try { builder.AppendLine($"{def.LabelCap}: {def.ValueToString(attribute.Model.Base.GetStatValue(def))}"); }
+            catch { }
         }
     }
 }

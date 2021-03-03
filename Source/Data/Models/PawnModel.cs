@@ -22,23 +22,22 @@ namespace RimHUD.Data.Models
         public HudTarget Target => GetTargetType();
 
         public string Name => Base.GetName();
-        public TextModel GenderAndAge => GetGenderAndAge();
+        public TextModel? GenderAndAge => GetGenderAndAge();
 
         public bool IsPlayerFaction => Base.Faction?.IsPlayer ?? false;
         public bool IsPlayerManaged => (Base.Faction?.IsPlayer ?? false) || (Base.HostFaction?.IsPlayer ?? false);
 
         private Color? _factionRelationColor;
         public Color FactionRelationColor => _factionRelationColor ?? (_factionRelationColor = GetFactionRelationColor()).Value;
-        public TextModel RelationKindAndFaction => GetRelationKindAndFaction();
+        public TextModel? RelationKindAndFaction => GetRelationKindAndFaction();
 
         public HealthModel Health { get; }
         public MindModel Mind { get; }
 
         public bool IsHumanlike => Base.RaceProps.Humanlike;
         public bool IsAnimal => Base.RaceProps.Animal;
-        public TextModel Master => GetMaster();
+        public TextModel? Master => GetMaster();
 
-        public bool HasNeeds => Base.needs != null;
         public NeedModel Rest => GetNeedModel(NeedDefOf.Rest);
         public NeedModel Food => GetNeedModel(NeedDefOf.Food);
         public NeedModel Recreation => GetNeedModel(NeedDefOf.Joy);
@@ -47,7 +46,6 @@ namespace RimHUD.Data.Models
         public float MoodThresholdMajor => Base.mindState?.mentalBreaker?.BreakThresholdMajor ?? -1f;
         public float MoodThresholdExtreme => Base.mindState?.mentalBreaker?.BreakThresholdExtreme ?? -1f;
 
-        public bool HasSkills => Base.skills != null;
         public SkillModel Shooting => GetSkillModel(SkillDefOf.Shooting);
         public SkillModel Melee => GetSkillModel(SkillDefOf.Melee);
         public SkillModel Construction => GetSkillModel(SkillDefOf.Construction);
@@ -61,7 +59,6 @@ namespace RimHUD.Data.Models
         public SkillModel Social => GetSkillModel(SkillDefOf.Social);
         public SkillModel Intellectual => GetSkillModel(SkillDefOf.Intellectual);
 
-        public bool HasTraining => Base.training != null;
         public TrainingModel Tameness => GetTrainingModel(TrainableDefOf.Tameness);
         public TrainingModel Obedience => GetTrainingModel(TrainableDefOf.Obedience);
         public TrainingModel Release => GetTrainingModel(TrainableDefOf.Release);
@@ -69,6 +66,7 @@ namespace RimHUD.Data.Models
         public TrainingModel Haul => GetTrainingModel(Access.TrainableDefOfHaul);
 
         public string Activity => GetActivity();
+        public TipSignal? ActivityTooltip => GetActivityTooltip();
         public string Queued => GetQueued();
 
         public string Equipped => GetEquipped();
@@ -77,13 +75,12 @@ namespace RimHUD.Data.Models
         public string CompInfo => GetCompInfo();
 
         public TipSignal? BioTooltip => GetBioTooltip();
-        public TipSignal? AnimalTooltip => GetAnimalTooltip();
 
-        public SelectorModel OutfitSelector => new OutfitModel(this);
-        public SelectorModel FoodSelector => Mod_PawnRules.Instance.IsActive && Mod_PawnRules.ReplaceFoodSelector.Value ? RulesSelector : new FoodModel(this);
-        public SelectorModel RulesSelector => Mod_PawnRules.Instance.IsActive ? new RulesModel(this) : null;
-        public SelectorModel TimetableSelector => new TimetableModel(this);
-        public SelectorModel AreaSelector => new AreaModel(this);
+        public ISelectorModel OutfitSelector => new OutfitModel(this);
+        public ISelectorModel FoodSelector => Mod_PawnRules.Instance.IsActive ? RulesSelector : new FoodModel(this);
+        public ISelectorModel RulesSelector => Mod_PawnRules.Instance.IsActive ? new RulesModel(this) : (ISelectorModel) null;
+        public ISelectorModel TimetableSelector => new TimetableModel(this);
+        public ISelectorModel AreaSelector => new AreaModel(this);
 
         private PawnModel(Pawn pawn)
         {
@@ -110,7 +107,7 @@ namespace RimHUD.Data.Models
 
         private string GetGender() => Base.gender == Gender.None ? null : Base.GetGenderLabel();
 
-        private TextModel GetGenderAndAge()
+        private TextModel? GetGenderAndAge()
         {
             var gender = GetGender();
             var genderKind = Lang.AdjectiveNoun(gender, Base.kindDef?.race?.label);
@@ -171,7 +168,7 @@ namespace RimHUD.Data.Models
             return relation == FactionRelationKind.Ally ? Lang.Get("Model.Faction.Allied") : null;
         }
 
-        private TextModel GetRelationKindAndFaction()
+        private TextModel? GetRelationKindAndFaction()
         {
             var faction = Base.Faction == null || !Base.Faction.HasName ? null : Lang.Get("Model.OfFaction", Base.Faction.Name);
             var relationKind = Lang.AdjectiveNoun(GetFactionRelation(), GetKind());
@@ -185,11 +182,26 @@ namespace RimHUD.Data.Models
             {
                 var lord = Base.GetLord()?.LordJob?.GetReport(Base)?.CapitalizeFirst();
                 var jobText = Base.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst();
-
                 var target = Base.jobs?.curJob?.def == JobDefOf.AttackStatic || Base.jobs?.curJob?.def == JobDefOf.Wait_Combat ? Base.TargetCurrentlyAimingAt.Thing?.LabelCap : null;
                 var activity = target == null ? lord.NullOrEmpty() ? jobText : $"{lord} ({jobText})" : Lang.Get("Model.Info.Attacking", target);
 
                 return activity == null ? null : Lang.Get("Model.Info.Activity", activity.Bold());
+            }
+            catch { return null; }
+        }
+
+        private TipSignal? GetActivityTooltip()
+        {
+            try
+            {
+                var work = Base.CurJob?.workGiverDef?.Worker?.def?.workType?.gerundLabel.CapitalizeFirst();
+                if (work == null) { return null; }
+
+                var builder = new StringBuilder();
+                builder.AppendLine(Lang.Get("Model.Info.Activity.WorkType", work));
+                builder.AppendLine(Lang.Get("Model.Info.Activity.RelevantSkills", Base.CurJob?.workGiverDef?.Worker?.def?.workType?.relevantSkills?.Select(p => p.LabelCap.ToString()).ToCommaList()));
+
+                return new TipSignal(() => builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize), GUIPlus.TooltipId);
             }
             catch { return null; }
         }
@@ -266,7 +278,7 @@ namespace RimHUD.Data.Models
             return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
         }
 
-        private TextModel GetMaster()
+        private TextModel? GetMaster()
         {
             var master = Base.playerSettings?.Master;
             if (master == null) { return null; }

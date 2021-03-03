@@ -108,6 +108,8 @@ namespace RimHUD.Interface.HUD
         {
             try
             {
+                if (model == null) { return; }
+
                 if (model.Base != _lastPawn || _lastDraw == default || (DateTime.Now - _lastDraw).TotalMilliseconds > Theme.RefreshRate.Value * 100)
                 {
                     Prepare(model);

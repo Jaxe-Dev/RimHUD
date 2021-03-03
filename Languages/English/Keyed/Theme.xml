@@ -68,6 +68,8 @@
   <RimHUD.Theme.SkillColors>Skill Colors</RimHUD.Theme.SkillColors>
   <RimHUD.Theme.SkillMinorPassionColor>Minor passion</RimHUD.Theme.SkillMinorPassionColor>
   <RimHUD.Theme.SkillMajorPassionColor>Major passion</RimHUD.Theme.SkillMajorPassionColor>
+  <RimHUD.Theme.SkillSaturatedColor>Learning saturated</RimHUD.Theme.SkillSaturatedColor>
+  <RimHUD.Theme.SkillActiveColor>Currently active</RimHUD.Theme.SkillActiveColor>
 
   <RimHUD.TextStyle.Size>Size</RimHUD.TextStyle.Size>
   <RimHUD.TextStyle.Height>Height</RimHUD.TextStyle.Height>

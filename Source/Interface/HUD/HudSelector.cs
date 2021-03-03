@@ -22,9 +22,9 @@ namespace RimHUD.Interface.HUD
             Height = textStyle.LineHeight;
         }
 
-        private HudSelector(SelectorModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, textStyle, model.Color, model.OnClick, model.OnHover) { }
+        private HudSelector(ISelectorModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, textStyle, model.Color, model.OnClick, model.OnHover) { }
 
-        public static HudSelector FromModel(SelectorModel model, TextStyle textStyle) => model == null ? null : new HudSelector(model, textStyle);
+        public static HudSelector FromSelectorModel(ISelectorModel model, TextStyle textStyle) => model == null ? null : new HudSelector(model, textStyle);
 
         public override bool Draw(Rect rect)
         {
