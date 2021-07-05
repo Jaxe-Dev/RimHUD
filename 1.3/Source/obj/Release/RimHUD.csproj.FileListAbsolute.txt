@@ -1,0 +1,6 @@
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimHUD\Source\obj\Release\RimHUD.AssemblyInfoInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimHUD\Source\obj\Release\RimHUD.AssemblyInfo.cs
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimHUD\Source\obj\Release\RimHUD.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimHUD\Assemblies\RimHUD.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimHUD\Source\obj\Release\RimHUD.csproj.CopyComplete
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimHUD\Source\obj\Release\RimHUD.dll
