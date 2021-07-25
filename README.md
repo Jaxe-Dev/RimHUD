@@ -50,5 +50,7 @@ Prefix* : Verse.LetterStack.LettersOnGUI
 Prefix  : Verse.MapInterface.MapInterfaceOnGUI_AfterMainTabs
 Postfix : Verse.MapInterface.Notify_SwitchedMap
 Prefix  : Verse.Profile.MemoryUtility.ClearAllMapsAndWorld
+Prefix  : RimWorld.MainTabWindow.InitialSize
+Postfix : RimWorld.MainTabWindow.InitialSize
 ```
 *A prefix marked by a \* denotes that in some circumstances the original method will be bypassed*
