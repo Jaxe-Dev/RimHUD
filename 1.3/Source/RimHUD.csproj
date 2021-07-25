@@ -116,6 +116,7 @@
     <Compile Include="Patch\RimWorld_InspectPaneUtility_PaneWidthFor.cs" />
     <Compile Include="Patch\RimWorld_ITab_PaneTopY.cs" />
     <Compile Include="Patch\RimWorld_MainTabWindow_Inspect_PaneTopY.cs" />
+    <Compile Include="Patch\RimWorld_MainTabWindow_InitialSize.cs" />
     <Compile Include="Patch\RimWorld_PlaySettings_DoPlaySettingsGlobalControls.cs" />
     <Compile Include="Patch\RimWorld_Tutor_TutorOnGUI.cs" />
     <Compile Include="Patch\Verse_Game_FinalizeInit.cs" />
