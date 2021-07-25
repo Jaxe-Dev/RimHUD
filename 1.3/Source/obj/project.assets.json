@@ -2,12 +2,11 @@
   "version": 3,
   "targets": {
     ".NETFramework,Version=v4.7.2": {
-      "Krafs.Rimworld.Ref/1.3.0": {
+      "Krafs.Rimworld.Ref/1.3.3067-beta": {
         "type": "package",
         "compile": {
           "ref/net472/Assembly-CSharp-firstpass.dll": {},
           "ref/net472/Assembly-CSharp.dll": {},
-          "ref/net472/Assembly-CSharp_publicised.dll": {},
           "ref/net472/ISharpZipLib.dll": {},
           "ref/net472/Mono.Posix.dll": {},
           "ref/net472/Mono.Security.dll": {},
@@ -86,7 +85,7 @@
           "ref/net472/mscorlib.dll": {}
         }
       },
-      "Lib.Harmony/2.0.4": {
+      "Lib.Harmony/2.1.0": {
         "type": "package",
         "compile": {
           "lib/net472/0Harmony.dll": {}
@@ -205,10 +204,10 @@
           "build/TaskPubliciser.props": {}
         }
       },
-      "UnlimitedHugs.Rimworld.HugsLib/8.0.0": {
+      "UnlimitedHugs.Rimworld.HugsLib/9.0.0": {
         "type": "package",
         "dependencies": {
-          "Lib.Harmony": "2.0.0.8"
+          "Lib.Harmony": "2.1.0"
         },
         "compile": {
           "lib/net472/HugsLib.dll": {}
@@ -220,20 +219,19 @@
     }
   },
   "libraries": {
-    "Krafs.Rimworld.Ref/1.3.0": {
-      "sha512": "dVSFHnhtJLenxVvW3SQrjm5ZUyECAMRnyK39d4Jg1yErZLZof1LxJz4ok5vBu9OBOsmkKzuuqg1ZEv7SzS+TeQ==",
+    "Krafs.Rimworld.Ref/1.3.3067-beta": {
+      "sha512": "cKDf4qfd/K0YGj/wYMAnqxd0Oadp/iuF7xHz+qI2yoAkGb041nXtOla3gVdypxdpcaj/8bBX1Xho+GyX+RXYhA==",
       "type": "package",
-      "path": "krafs.rimworld.ref/1.3.0",
+      "path": "krafs.rimworld.ref/1.3.3067-beta",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "LICENSE.txt",
         "icon.png",
-        "krafs.rimworld.ref.1.3.0.nupkg.sha512",
+        "krafs.rimworld.ref.1.3.3067-beta.nupkg.sha512",
         "krafs.rimworld.ref.nuspec",
         "ref/net472/Assembly-CSharp-firstpass.dll",
         "ref/net472/Assembly-CSharp.dll",
-        "ref/net472/Assembly-CSharp_hash.hash",
-        "ref/net472/Assembly-CSharp_publicised.dll",
         "ref/net472/ISharpZipLib.dll",
         "ref/net472/Mono.Posix.dll",
         "ref/net472/Mono.Security.dll",
@@ -312,16 +310,16 @@
         "ref/net472/mscorlib.dll"
       ]
     },
-    "Lib.Harmony/2.0.4": {
-      "sha512": "m4Lm5W2pYU6+aTJpeUzHsX12chKXynIZPlsM5tV6O+WQxs3xa+teQHBjCNFXePDB1HXiiuAmtjyCo/E9fRuSIg==",
+    "Lib.Harmony/2.1.0": {
+      "sha512": "Fp/Ky297MdU+iBQ44xFnJP1RwgDz/RrWaQBDqkqFlWMxDJrmuIkr2DCiiojGnTDf4Qz0YjXepDj0bChHgU1/vQ==",
       "type": "package",
-      "path": "lib.harmony/2.0.4",
+      "path": "lib.harmony/2.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "HarmonyLogo.png",
         "LICENSE",
-        "lib.harmony.2.0.4.nupkg.sha512",
+        "lib.harmony.2.1.0.nupkg.sha512",
         "lib.harmony.nuspec",
         "lib/net35/0Harmony.dll",
         "lib/net35/0Harmony.xml",
@@ -331,6 +329,8 @@
         "lib/net472/0Harmony.xml",
         "lib/net48/0Harmony.dll",
         "lib/net48/0Harmony.xml",
+        "lib/net5.0/0Harmony.dll",
+        "lib/net5.0/0Harmony.xml",
         "lib/netcoreapp3.0/0Harmony.dll",
         "lib/netcoreapp3.0/0Harmony.xml",
         "lib/netcoreapp3.1/0Harmony.dll",
@@ -874,27 +874,27 @@
         "tasks/net472/TaskPubliciser.dll"
       ]
     },
-    "UnlimitedHugs.Rimworld.HugsLib/8.0.0": {
-      "sha512": "6hQkFBcEsFmmjQ00aHcD89DoowmED0QyAeSA+ozLlIpilwcQTTYfMb6Ytv6G/tNma9A8411Faw2Z6DzS0Gf09Q==",
+    "UnlimitedHugs.Rimworld.HugsLib/9.0.0": {
+      "sha512": "1FVmWCr2n9JPxwy//Q8pkPX22TEV7/mAlK0s+xTusDrtM5kGcTnF4WJtsyz9hNDPHahqP85TQ2M1ZFRzEJUniA==",
       "type": "package",
-      "path": "unlimitedhugs.rimworld.hugslib/8.0.0",
+      "path": "unlimitedhugs.rimworld.hugslib/9.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "images/icon.png",
         "lib/net472/HugsLib.dll",
         "lib/net472/HugsLib.xml",
-        "unlimitedhugs.rimworld.hugslib.8.0.0.nupkg.sha512",
+        "unlimitedhugs.rimworld.hugslib.9.0.0.nupkg.sha512",
         "unlimitedhugs.rimworld.hugslib.nuspec"
       ]
     }
   },
   "projectFileDependencyGroups": {
     ".NETFramework,Version=v4.7.2": [
-      "Krafs.Rimworld.Ref >= 1.3.0",
-      "Lib.Harmony >= 2.0.4",
+      "Krafs.Rimworld.Ref >= 1.3.3067-beta",
+      "Lib.Harmony >= 2.1.0",
       "TaskPubliciser >= 1.0.3",
-      "UnlimitedHugs.Rimworld.HugsLib >= 8.0.0"
+      "UnlimitedHugs.Rimworld.HugsLib >= 9.0.0"
     ]
   },
   "packageFolders": {
@@ -944,12 +944,12 @@
         "dependencies": {
           "Krafs.Rimworld.Ref": {
             "target": "Package",
-            "version": "[1.3.0, )",
+            "version": "[1.3.3067-beta, )",
             "generatePathProperty": true
           },
           "Lib.Harmony": {
             "target": "Package",
-            "version": "[2.0.4, )"
+            "version": "[2.1.0, )"
           },
           "TaskPubliciser": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -960,10 +960,10 @@
           "UnlimitedHugs.Rimworld.HugsLib": {
             "include": "Compile, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "target": "Package",
-            "version": "[8.0.0, )"
+            "version": "[9.0.0, )"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.410\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.411\\RuntimeIdentifierGraph.json"
       }
     }
   }

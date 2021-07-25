@@ -16,7 +16,7 @@ namespace RimHUD.Interface.Dialog
         private static readonly Color LinkColor = new Color(0.3f, 0.7f, 1f);
         private static readonly Regex RangeSliderEntryRegex = new Regex(@"^[-]?\d{0,4}$");
 
-        public new void BeginScrollView(Rect rect, ref Vector2 scrollPosition, ref Rect viewRect)
+        public void BeginScrollView(Rect rect, ref Vector2 scrollPosition, ref Rect viewRect)
         {
             if (viewRect == default) { viewRect = new Rect(rect.x, rect.y, rect.width - GUIPlus.ScrollbarWidth, 99999f); }
 
@@ -25,7 +25,7 @@ namespace RimHUD.Interface.Dialog
             Begin(viewRect);
         }
 
-        public new void EndScrollView(ref Rect viewRect)
+        public void EndScrollView(ref Rect viewRect)
         {
             End();
             Widgets.EndScrollView();

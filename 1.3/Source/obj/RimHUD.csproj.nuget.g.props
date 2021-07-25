@@ -19,6 +19,6 @@
     <Import Project="$(NuGetPackageRoot)taskpubliciser\1.0.3\build\TaskPubliciser.props" Condition="Exists('$(NuGetPackageRoot)taskpubliciser\1.0.3\build\TaskPubliciser.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgKrafs_Rimworld_Ref Condition=" '$(PkgKrafs_Rimworld_Ref)' == '' ">C:\Users\User\.nuget\packages\krafs.rimworld.ref\1.3.0</PkgKrafs_Rimworld_Ref>
+    <PkgKrafs_Rimworld_Ref Condition=" '$(PkgKrafs_Rimworld_Ref)' == '' ">C:\Users\User\.nuget\packages\krafs.rimworld.ref\1.3.3067-beta</PkgKrafs_Rimworld_Ref>
   </PropertyGroup>
 </Project>

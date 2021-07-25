@@ -248,7 +248,7 @@ namespace RimHUD.Interface
             TabButtonWidths.Clear();
         }
 
-        private static void InterfaceToggleTab(InspectTabBase tab, IInspectPane pane) => Access.Method_RimWorld_InspectPaneUtility_InterfaceToggleTab.Invoke(null, tab, pane);
+        private static void InterfaceToggleTab(InspectTabBase tab, IInspectPane pane) => InspectPaneUtility.InterfaceToggleTab(tab, pane);// Access.Method_RimWorld_InspectPaneUtility_InterfaceToggleTab.Invoke(null, tab, pane);
 
         private static void ToggleTab(Type tabType)
         {
@@ -258,7 +258,8 @@ namespace RimHUD.Interface
 
             if (Find.MainTabsRoot.OpenTab != MainButtonDefOf.Inspect) { Find.MainTabsRoot.SetCurrentTab(MainButtonDefOf.Inspect); }
 
-            Access.Method_RimWorld_InspectPaneUtility_ToggleTab.Invoke(null, tab, pane);
+            InspectPaneUtility.ToggleTab(tab, pane);
+            //Access.Method_RimWorld_InspectPaneUtility_ToggleTab.Invoke(null, tab, pane);
         }
 
         public static void ToggleBioTab() => ToggleTab(typeof(ITab_Pawn_Character));
