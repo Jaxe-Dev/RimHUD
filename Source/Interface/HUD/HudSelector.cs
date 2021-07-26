@@ -1,6 +1,5 @@
 ﻿using System;
 using RimHUD.Data.Configuration;
-using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
 using UnityEngine;
 using Verse;
