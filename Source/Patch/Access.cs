@@ -47,7 +47,7 @@ namespace RimHUD.Patch
             Field_Verse_LetterStack_LastTopYInt = AccessTools.Field(typeof(LetterStack), "lastTopYInt");
             Field_Verse_LetterStack_Letters = AccessTools.Field(typeof(LetterStack), "letters");
 
-            MainButtonDefOfRestrict = DefDatabase<MainButtonDef>.GetNamed("Restrict");
+            MainButtonDefOfRestrict = DefDatabase<MainButtonDef>.GetNamed("Schedule");
             MainButtonDefOfWork = DefDatabase<MainButtonDef>.GetNamed("Work");
 
             NeedDefOfMood = DefDatabase<NeedDef>.GetNamed("Mood");
