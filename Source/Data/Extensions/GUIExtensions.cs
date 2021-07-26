@@ -14,7 +14,6 @@ namespace RimHUD.Data.Extensions
         public static GUIStyle ResizedBy(this GUIStyle self, int size = 0) => new GUIStyle(self) { fontSize = self.fontSize + size };
 
         public static Rect Round(this Rect self) => new Rect(Mathf.Round(self.x), Mathf.Round(self.y), Mathf.Round(self.width), Mathf.Round(self.height));
-        public static Rect ContractedBy(this Rect self, float x, float y) => new Rect(self.x + x, self.y + y, self.width - (x * 2f), self.height - (y * 2f));
 
         public static Rect[] GetHGrid(this Rect self, float padding, params float[] widths)
         {
