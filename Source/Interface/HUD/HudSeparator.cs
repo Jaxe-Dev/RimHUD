@@ -4,7 +4,7 @@ using Verse;
 
 namespace RimHUD.Interface.HUD
 {
-    internal class HudSeparator : HudWidget
+    internal class HudSeparator : HudWidgetBase
     {
         public const string Name = "Separator";
 
@@ -12,7 +12,7 @@ namespace RimHUD.Interface.HUD
 
         public static HudSeparator Get() => new HudSeparator();
 
-        public override bool Draw(Rect rect)
+        public override bool Draw(HudComponent component, Rect rect)
         {
             GUIPlus.SetColor(Theme.LineColor.Value);
             Widgets.DrawLineHorizontal(rect.x, rect.y + (rect.height / 2f), rect.width);

@@ -6,14 +6,14 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal struct HealthBarModel : IBarModel
+    internal class HealthBarModel : IBarModel
     {
         public PawnModel Model { get; }
         public bool Hidden { get; }
 
         public string Label { get; }
         public Color? Color { get; }
-        public TipSignal? Tooltip { get; }
+        public Func<string> Tooltip { get; }
 
         public Action OnHover { get; }
         public Action OnClick { get; }
@@ -23,7 +23,7 @@ namespace RimHUD.Data.Models
         public HudBar.ValueStyle ValueStyle { get; }
         public float[] Thresholds { get; }
 
-        public HealthBarModel(PawnModel model) : this()
+        public HealthBarModel(PawnModel model)
         {
             Model = model;
 

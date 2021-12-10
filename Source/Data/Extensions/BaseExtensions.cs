@@ -20,7 +20,7 @@ namespace RimHUD.Data.Extensions
             if (text != null) { self.AppendLine(text); }
         }
 
-        public static string ToStringTrimmed(this StringBuilder self) => self.ToString().TrimEndNewlines();
+        public static string ToStringTrimmed(this StringBuilder self) => self.ToString().TrimEndNewlines().Trim();
         public static int LastIndex(this IList self) => self.Count - 1;
         public static int? ToInt(this string self) => int.TryParse(self, out var result) ? result : (int?) null;
         public static bool? ToBool(this string self) => bool.TryParse(self, out var result) ? result : (bool?) null;

@@ -16,7 +16,7 @@ namespace RimHUD.Interface.HUD
         private readonly float[] _thresholds;
         private readonly Action _onClick;
 
-        public HudBar(string label, float value, float max, ValueStyle valueStyle, TextStyle textStyle, TipSignal? tooltip = null, float[] thresholds = null, Action onClick = null) : base(label, tooltip, textStyle)
+        public HudBar(string label, float value, float max, ValueStyle valueStyle, TextStyle textStyle, Func<string> tooltip = null, float[] thresholds = null, Action onClick = null) : base(label, tooltip, textStyle)
         {
             _thresholds = thresholds;
             _max = max;
@@ -25,11 +25,12 @@ namespace RimHUD.Interface.HUD
             _onClick = onClick;
         }
 
-        private HudBar(IBarModel model, TextStyle textStyle) : this(model.Label, model.Value, model.Max, model.ValueStyle, textStyle, model.Tooltip, model.Thresholds, model.OnClick) { }
+        private HudBar(IBarModel model, TextStyle textStyle) : this(model.Label, model.Value, model.Max, model.ValueStyle, textStyle, model.Tooltip, model.Thresholds, model.OnClick)
+        { }
 
         public static HudBar FromModel(IBarModel model, TextStyle textStyle) => model == null || model.Hidden ? null : new HudBar(model, textStyle);
 
-        public override bool Draw(Rect rect)
+        protected override bool DoDraw(Rect rect)
         {
             if (_value < 0f) { return false; }
 
@@ -47,7 +48,7 @@ namespace RimHUD.Interface.HUD
             if (Hud.IsMouseOverConfigButton) { return true; }
 
             if (Widgets.ButtonInvisible(rect.ExpandedBy(GUIPlus.TinyPadding))) { _onClick?.Invoke(); }
-            if (Mouse.IsOver(rect)) { GUIPlus.DrawTooltip(grid[0], Tooltip, false); }
+            GUIPlus.DrawTooltip(rect, Tooltip, false);
 
             return true;
         }

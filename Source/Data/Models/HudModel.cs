@@ -26,7 +26,7 @@ namespace RimHUD.Data.Models
             new LayoutItem(LayoutItemType.Stack, HudHStack.Name)
         };
 
-        private static Dictionary<string, Func<PawnModel, HudWidget>> StandardElementComponents { get; } = new Dictionary<string, Func<PawnModel, HudWidget>>
+        private static Dictionary<string, Func<PawnModel, HudWidgetBase>> StandardElementComponents { get; } = new Dictionary<string, Func<PawnModel, HudWidgetBase>>
         {
             { HudBlank.Name, _ => HudBlank.GetEmpty },
             { HudSeparator.Name, _ => HudSeparator.Get() },
@@ -35,12 +35,12 @@ namespace RimHUD.Data.Models
 
             { "Outfit", model => HudSelector.FromSelectorModel(model.OutfitSelector, Theme.SmallTextStyle) },
             { "Food", model => HudSelector.FromSelectorModel(model.FoodSelector, Theme.SmallTextStyle) },
-            { "Rules", model => HudSelector.FromSelectorModel(model.RulesSelector, Theme.SmallTextStyle) },
             { "Timetable", model => HudSelector.FromSelectorModel(model.TimetableSelector, Theme.SmallTextStyle) },
             { "Area", model => HudSelector.FromSelectorModel(model.AreaSelector, Theme.SmallTextStyle) },
 
-            { "RelationKindAndFaction", model => HudValue.FromTextModel(model.RelationKindAndFaction, Theme.SmallTextStyle) },
-            { "GenderAndAge", model => HudValue.FromTextModel(model.GenderAndAge, Theme.SmallTextStyle) },
+            { "RelationKindAndFaction", model => HudValue.FromTextModel(model.RelationKindFaction, Theme.SmallTextStyle) },
+            { "GenderRaceAndAge", model => HudValue.FromTextModel(model.GenderRaceAndAge, Theme.SmallTextStyle) },
+            { "IdeoligionGenderRaceAndAge", model => HudValue.FromTextModel(model.IdeoligionGenderRaceAndAge, Theme.SmallTextStyle) },
 
             { "Health", model => HudBar.FromModel(model.Health.Bar, Theme.RegularTextStyle) },
             { "HealthCondition", model => HudValue.FromTextModel(model.Health.Condition, Theme.SmallTextStyle) },
@@ -55,7 +55,7 @@ namespace RimHUD.Data.Models
             { "CompInfo", model => HudValue.FromText(model.CompInfo, null, Theme.SmallTextStyle) }
         };
 
-        private static Dictionary<string, Func<PawnModel, HudWidget>> Widgets { get; } = new Dictionary<string, Func<PawnModel, HudWidget>>(StandardElementComponents)
+        private static Dictionary<string, Func<PawnModel, HudWidgetBase>> Widgets { get; } = new Dictionary<string, Func<PawnModel, HudWidgetBase>>(StandardElementComponents)
         {
             { "NeedMood", model => HudBar.FromModel(model.Mood, Theme.RegularTextStyle) },
             { "NeedFood", model => HudBar.FromModel(model.Food, Theme.RegularTextStyle) },
@@ -161,7 +161,7 @@ namespace RimHUD.Data.Models
 
         public static bool IsValidType(string id) => Widgets.ContainsKey(id) || id == StatTypeName || id == RecordTypeName || id == NeedTypeName || id == SkillTypeName || id == TrainingTypeName;
 
-        public static HudWidget GetWidget(PawnModel model, string id, string defName)
+        public static HudWidgetBase GetWidget(PawnModel model, string id, string defName)
         {
             if (id == "Stat") { return GetStatWidget(model, defName); }
             if (id == "Record") { return GetRecordWidget(model, defName); }
@@ -175,14 +175,14 @@ namespace RimHUD.Data.Models
             return widget.Invoke(model) ?? HudBlank.GetEmpty;
         }
 
-        private static HudWidget GetStatWidget(PawnModel model, string defName)
+        private static HudWidgetBase GetStatWidget(PawnModel model, string defName)
         {
             var def = DefDatabase<StatDef>.GetNamed(defName, false);
             if (def != null)
             {
                 if (def.Worker?.IsDisabledFor(model.Base) ?? true) { return HudBlank.GetEmpty; }
                 var text = $"{def.LabelCap}: {def.ValueToString(model.Base.GetStatValue(def))}";
-                return (HudWidget) HudValue.FromText(text, null, Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
+                return (HudWidgetBase) HudValue.FromText(text, null, Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
             }
 
             Mod.Warning($"Invalid HUD Widget, Stat def '{defName}' not found, resetting layout to default");
@@ -190,13 +190,13 @@ namespace RimHUD.Data.Models
             return HudBlank.GetEmpty;
         }
 
-        private static HudWidget GetRecordWidget(PawnModel model, string defName)
+        private static HudWidgetBase GetRecordWidget(PawnModel model, string defName)
         {
             var def = DefDatabase<RecordDef>.GetNamed(defName, false);
             if (def != null)
             {
                 var text = $"{def.LabelCap}: {(def.type == RecordType.Time ? model.Base.records.GetAsInt(def).ToStringTicksToPeriod() : model.Base.records.GetValue(def).ToString("0.##"))}";
-                return (HudWidget) HudValue.FromText(text, null, Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
+                return (HudWidgetBase) HudValue.FromText(text, null, Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
             }
 
             Mod.Warning($"Invalid HUD Widget, Record def '{defName}' not found, resetting layout to default");
@@ -204,30 +204,30 @@ namespace RimHUD.Data.Models
             return HudBlank.GetEmpty;
         }
 
-        private static HudWidget GetNeedWidget(PawnModel model, string defName)
+        private static HudWidgetBase GetNeedWidget(PawnModel model, string defName)
         {
             var def = DefDatabase<NeedDef>.GetNamed(defName, false);
-            if (def != null) { return (HudWidget) HudBar.FromModel(new NeedModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty; }
+            if (def != null) { return (HudWidgetBase) HudBar.FromModel(new NeedModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty; }
 
             Mod.Warning($"Invalid HUD Widget, Need def '{defName}' not found, resetting layout to default");
             RequiredReset();
             return HudBlank.GetEmpty;
         }
 
-        private static HudWidget GetSkillWidget(PawnModel model, string defName)
+        private static HudWidgetBase GetSkillWidget(PawnModel model, string defName)
         {
             var def = DefDatabase<SkillDef>.GetNamed(defName, false);
-            if (def != null) { return (HudWidget) HudValue.FromValueModel(new SkillModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty; }
+            if (def != null) { return (HudWidgetBase) HudValue.FromValueModel(new SkillModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty; }
 
             Mod.Warning($"Invalid HUD Widget, Skill def '{defName}' not found, resetting layout to default");
             RequiredReset();
             return HudBlank.GetEmpty;
         }
 
-        private static HudWidget GetTrainingWidget(PawnModel model, string defName)
+        private static HudWidgetBase GetTrainingWidget(PawnModel model, string defName)
         {
             var def = DefDatabase<TrainableDef>.GetNamed(defName, false);
-            if (def != null) { return (HudWidget) HudValue.FromValueModel(new TrainingModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty; }
+            if (def != null) { return (HudWidgetBase) HudValue.FromValueModel(new TrainingModel(model, def), Theme.RegularTextStyle) ?? HudBlank.GetEmpty; }
 
             Mod.Warning($"Invalid HUD Widget, Trainable def '{defName}' not found, resetting layout to default");
             RequiredReset();
@@ -242,9 +242,12 @@ namespace RimHUD.Data.Models
 
         public static void BuildStatString(IAttributeModel attribute, StringBuilder builder, StatDef def)
         {
-            if (def.Worker?.IsDisabledFor(attribute.Model.Base) ?? true) { return; }
-            try { builder.AppendLine($"{def.LabelCap}: {def.ValueToString(attribute.Model.Base.GetStatValue(def))}"); }
-            catch { }
+            try
+            {
+                if (def.Worker?.IsDisabledFor(attribute.Model.Base) ?? true) { return; }
+                builder.AppendLine($"{def.LabelCap}: {def.ValueToString(attribute.Model.Base.GetStatValue(def))}");
+            }
+            catch (Exception exception) { Mod.HandleWarning(exception); }
         }
     }
 }

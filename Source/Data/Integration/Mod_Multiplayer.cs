@@ -33,7 +33,10 @@ namespace RimHUD.Data.Integration
 
         public static void SetFoodRestriction(Pawn pawn, FoodRestriction value) => pawn.foodRestriction.CurrentFoodRestriction = value;
 
-        public static void SetAssignment(Pawn pawn, int hour, TimeAssignmentDef value) { pawn.timetable.SetAssignment(hour, value); }
+        public static void SetAssignment(Pawn pawn, int hour, TimeAssignmentDef value)
+        {
+            pawn.timetable.SetAssignment(hour, value);
+        }
 
         public static void SetArea(Pawn pawn, Area value) => pawn.playerSettings.AreaRestriction = value;
 

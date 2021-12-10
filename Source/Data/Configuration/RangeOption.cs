@@ -10,7 +10,8 @@ namespace RimHUD.Data.Configuration
         public int Min { get; private set; }
         public int Max { get; private set; }
 
-        [Attributes.Option(typeof(int))] public int Value { get => (int) Object; set => Object = Mathf.Clamp(value, Min, Max); }
+        [Attributes.Option(typeof(int))]
+        public int Value { get => (int) Object; set => Object = Mathf.Clamp(value, Min, Max); }
 
         public RangeOption(int @default, int min, int max, string label, Func<int, string> format = null, string tooltip = null, Action<ThemeOption> onChange = null) : base(@default, label, tooltip, onChange)
         {

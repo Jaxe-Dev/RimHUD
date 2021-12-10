@@ -13,7 +13,7 @@ namespace RimHUD.Interface.HUD
         private readonly Action _onHover;
         public override float Height { get; }
 
-        public HudSelector(string label, TipSignal? tooltip, TextStyle textStyle, Color? color, Action onClick, Action onHover) : base(label, tooltip, textStyle)
+        public HudSelector(string label, Func<string> tooltip, TextStyle textStyle, Color? color, Action onClick, Action onHover) : base(label, tooltip, textStyle)
         {
             _color = color;
             _onClick = onClick;
@@ -21,11 +21,12 @@ namespace RimHUD.Interface.HUD
             Height = textStyle.LineHeight;
         }
 
-        private HudSelector(ISelectorModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, textStyle, model.Color, model.OnClick, model.OnHover) { }
+        private HudSelector(ISelectorModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, textStyle, model.Color, model.OnClick, model.OnHover)
+        { }
 
         public static HudSelector FromSelectorModel(ISelectorModel model, TextStyle textStyle) => model == null ? null : new HudSelector(model, textStyle);
 
-        public override bool Draw(Rect rect)
+        protected override bool DoDraw(Rect rect)
         {
             if (Label.NullOrEmpty()) { return true; }
 

@@ -13,8 +13,10 @@ namespace RimHUD.Interface
         public GUIStyle GUIStyle { get; private set; }
         public int ActualSize => GUIStyle.fontSize;
 
-        [Attributes.Option("Size")] public RangeOption Size { get; }
-        [Attributes.Option("Height")] public RangeOption Height { get; }
+        [Attributes.Option("Size")]
+        public RangeOption Size { get; }
+        [Attributes.Option("Height")]
+        public RangeOption Height { get; }
 
         private readonly Action<TextStyle> _onChange;
         public float LineHeight;
