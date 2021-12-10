@@ -1,17 +1,17 @@
-﻿using UnityEngine;
-using Verse;
+﻿using System;
+using UnityEngine;
 
 namespace RimHUD.Interface.HUD
 {
     internal abstract class HudFeature : HudWidget
     {
         protected string Label { get; }
-        protected TipSignal? Tooltip { get; }
+        protected Func<string> Tooltip { get; }
         private readonly TextStyle _textStyle;
 
         public override float Height { get; }
 
-        protected HudFeature(string label, TipSignal? tooltip, TextStyle textStyle)
+        protected HudFeature(string label, Func<string> tooltip, TextStyle textStyle)
         {
             Label = label;
             Tooltip = tooltip;

@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
+using RimHUD.Data;
 using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimWorld;
@@ -12,6 +14,7 @@ namespace RimHUD.Interface
     internal static class GUIPlus
     {
         public const int TooltipId = 10001000;
+        public const int TooltipExpandedId = 10001001;
         public const float ScrollbarWidth = 20f;
         public const float ButtonHeight = 30f;
         public const float SmallButtonHeight = 18f;
@@ -76,6 +79,7 @@ namespace RimHUD.Interface
         public static void DrawText(Rect rect, string text, Color? color = null, TextStyle style = null, TextAnchor? alignment = null, TipSignal? tooltip = null)
         {
             if (text.NullOrEmpty()) { return; }
+            var textFinal = text;
 
             SetColor(color);
             var textRect = rect;
@@ -83,18 +87,27 @@ namespace RimHUD.Interface
             var originalAlignment = guiStyle.alignment;
             if (alignment != null) { guiStyle.alignment = alignment.Value; }
 
-            TextContent.text = text;
+            TextContent.text = textFinal;
+            var calcSize = guiStyle.CalcSize(TextContent);
 
-            if (guiStyle.CalcSize(TextContent).x > rect.width)
+            if (calcSize.y > rect.height && textFinal.LastIndexOf('\n') > 0)
+            {
+                textFinal = textFinal.FlattenWithSeparator(" | ");
+
+                TextContent.text = textFinal;
+                calcSize = guiStyle.CalcSize(TextContent);
+            }
+
+            if (calcSize.x > rect.width || calcSize.y > rect.height)
             {
                 TextContent.text = "...";
                 var ellipsesLength = guiStyle.CalcSize(TextContent);
                 textRect.width -= ellipsesLength.x;
                 GUI.Label(new Rect(rect.RightPartPixels(ellipsesLength.x)), TextContent.text, guiStyle);
-                if (tooltip == null) { tooltip = new TipSignal(text.Size(guiStyle.fontSize)); }
+                DrawTooltip(rect, () => text.Size(guiStyle.fontSize), false, TooltipExpandedId);
             }
 
-            GUI.Label(textRect, text, guiStyle);
+            GUI.Label(textRect, textFinal, guiStyle);
             DrawTooltip(rect, tooltip, false);
 
             TextContent.text = "";
@@ -164,12 +177,27 @@ namespace RimHUD.Interface
             Widgets.DrawBoxSolid(rect.LeftPart(percentage), color);
         }
 
-        public static void DrawTooltip(Rect rect, TipSignal? tooltip, bool highlight)
+        public static TipSignal? PrepareTipSignal(Func<string> textGetter, int uniqueId = TooltipId) => textGetter == null ? null : new TipSignal(textGetter, uniqueId);
+
+        public static void DrawTooltip(Rect rect, Func<string> tooltip, bool highlight, int uniqueId = TooltipId)
         {
             if (tooltip == null || !Mouse.IsOver(rect)) { return; }
 
+            var text = tooltip?.Invoke();
+            if (text == null) { return; }
+
+            var tipSignal = new TipSignal(text, uniqueId);
+
             if (highlight) { Widgets.DrawHighlight(rect); }
-            TooltipHandler.TipRegion(rect, tooltip.Value);
+            TooltipHandler.TipRegion(rect, tipSignal);
+        }
+
+        public static void DrawTooltip(Rect rect, TipSignal? tipSignal, bool highlight)
+        {
+            if (tipSignal == null || !Mouse.IsOver(rect)) { return; }
+
+            if (highlight) { Widgets.DrawHighlight(rect); }
+            TooltipHandler.TipRegion(rect, tipSignal.Value);
         }
 
         public static Color HexToColor(string hex) => ColorUtility.TryParseHtmlString("#" + hex.TrimStart('#'), out var color) ? color : default;

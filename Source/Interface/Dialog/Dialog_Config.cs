@@ -3,6 +3,7 @@ using RimHUD.Data;
 using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Storage;
+using RimHUD.Interface.HUD;
 using UnityEngine;
 using Verse;
 
@@ -48,7 +49,12 @@ namespace RimHUD.Interface.Dialog
 
                 var button = GUIPlus.DrawButtonRow(grid[2], ButtonWidth, Padding, Lang.Get("Dialog_Config.SetToDefault"), Lang.Get("Dialog_Config.OpenFolder"), Lang.Get("Button.Close"));
 
-                GUIPlus.DrawText(grid[2], "Version " + Mod.Version, style: Theme.SmallTextStyle, alignment: TextAnchor.LowerRight);
+                GUIPlus.DrawText(grid[2], "Version " + Mod.Version + (Prefs.DevMode && Mod.DevMode ? "[DEV MODE - Click to disable]" : null), style: Theme.SmallTextStyle, alignment: TextAnchor.LowerRight);
+                if (Widgets.ButtonInvisible(grid[2]) && Prefs.DevMode)
+                {
+                    Mod.DevMode = !Mod.DevMode;
+                    HudTimings.Restart();
+                }
 
                 if (button == 1) { ConfirmSetToDefault(); }
                 else if (button == 2) { Persistent.OpenConfigFolder(); }

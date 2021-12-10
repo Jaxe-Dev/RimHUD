@@ -1,4 +1,5 @@
 ﻿namespace RimHUD.Data.Models
 {
-    internal interface ISelectorModel : IAttributeModel { }
+    internal interface ISelectorModel : IAttributeModel
+    { }
 }

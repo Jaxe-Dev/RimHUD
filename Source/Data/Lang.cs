@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using System;
+using Verse;
 
 namespace RimHUD.Data
 {
@@ -23,5 +24,13 @@ namespace RimHUD.Data
         public static string CombineWords(string first, string second) => string.Concat(first, " ", second).Trim();
 
         public static string AdjectiveNoun(string adjective, string noun) => Get("Language.AdjectiveNounOrder", adjective, noun).Trim();
+
+        public static string FlattenWithSeparator(this string text, string separator)
+        {
+            if (text.NullOrEmpty()) { return text; }
+            text = text.Replace("\r", "");
+
+            return string.Join(separator, text.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
+        }
     }
 }

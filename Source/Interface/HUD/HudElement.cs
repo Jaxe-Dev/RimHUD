@@ -15,13 +15,15 @@ namespace RimHUD.Interface.HUD
         public string DefName { get; }
         public override HudTarget Targets { get; }
 
-        public HudWidget Widget;
+        public HudWidgetBase Widget;
 
         private HudElement(string elementType, string defName, HudTarget targets)
         {
             _elementType = elementType;
             DefName = defName;
             Targets = targets;
+
+            HudTimings.Add(this);
         }
 
         public override float Prepare(PawnModel model) => Widget?.Height ?? 0f;
@@ -49,7 +51,7 @@ namespace RimHUD.Interface.HUD
 
         public override bool Draw(Rect rect)
         {
-            var result = Widget?.Draw(rect) ?? false;
+            var result = Widget?.Draw(this, rect) ?? false;
             return result;
         }
 
@@ -66,5 +68,10 @@ namespace RimHUD.Interface.HUD
         }
 
         public override LayoutItem GetLayoutItem(LayoutEditor editor, LayoutItem parent) => new LayoutItem(editor, parent, this);
+
+        ~HudElement()
+        {
+            HudTimings.Remove(this);
+        }
     }
 }

@@ -54,6 +54,8 @@
     <Compile Include="Data\Integration\Mod_Multiplayer.cs" />
     <Compile Include="Data\Models\ISelectorModel.cs" />
     <Compile Include="Interface\Dialog\Tab_ConfigCredits.cs" />
+    <Compile Include="Interface\HUD\HudWidget.cs" />
+    <Compile Include="Interface\HUD\HudTimings.cs" />
     <Compile Include="Patch\RimWorld_MainTabWindow_InitialSize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mod.cs" />
@@ -132,7 +134,7 @@
     <Compile Include="Interface\HUD\HudTargetUtility.cs" />
     <Compile Include="Interface\HUD\HudValue.cs" />
     <Compile Include="Interface\HUD\HudVStack.cs" />
-    <Compile Include="Interface\HUD\HudWidget.cs" />
+    <Compile Include="Interface\HUD\HudWidgetBase.cs" />
     <Compile Include="Patch\Access.cs" />
     <Compile Include="Patch\RimWorld_InspectPaneFiller_DoPaneContentsFor.cs" />
     <Compile Include="Patch\RimWorld_InspectPaneUtility_DoTabs.cs" />

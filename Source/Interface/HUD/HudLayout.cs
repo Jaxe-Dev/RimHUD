@@ -31,11 +31,13 @@ namespace RimHUD.Interface.HUD
         public static HudLayout Docked { get; set; } = DefaultDocked;
         public static HudLayout Floating { get; set; } = DefaultFloating;
 
-        private DateTime _lastDraw;
+        private DateTime _lastRefresh;
         private Pawn _lastPawn;
 
         private HudLayout(XElement xe) : base(xe, true)
         {
+            HudTimings.Add(this);
+
             bool docked;
             if (xe.Name == DockedElementName) { docked = true; }
             else if (xe.Name == FloatingElementName) { docked = false; }
@@ -106,20 +108,24 @@ namespace RimHUD.Interface.HUD
 
         public void Draw(Rect rect, PawnModel model)
         {
+            HudTimings.Update(this)?.Start();
+
             try
             {
                 if (model == null) { return; }
 
-                if (model.Base != _lastPawn || _lastDraw == default || (DateTime.Now - _lastDraw).TotalMilliseconds > Theme.RefreshRate.Value * 100)
+                if (model.Base != _lastPawn || _lastRefresh == default || (DateTime.Now - _lastRefresh).TotalMilliseconds > Theme.RefreshRate.Value * 100)
                 {
                     Prepare(model);
                     _lastPawn = model.Base;
-                    _lastDraw = DateTime.Now;
+                    _lastRefresh = DateTime.Now;
                 }
 
                 Draw(rect);
             }
             catch (Exception exception) { Mod.HandleError(exception); }
+
+            HudTimings.Update(this)?.Finish(rect, true);
         }
     }
 }

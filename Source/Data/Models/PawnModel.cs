@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
@@ -22,21 +23,22 @@ namespace RimHUD.Data.Models
         public HudTarget Target => GetTargetType();
 
         public string Name => Base.GetName();
-        public TextModel? GenderAndAge => GetGenderAndAge();
+        public TextModel GenderRaceAndAge => GetGenderRaceAndAge();
+        public TextModel IdeoligionGenderRaceAndAge => GetIdeoligionGenderRaceAndAge();
 
         public bool IsPlayerFaction => Base.Faction?.IsPlayer ?? false;
         public bool IsPlayerManaged => (Base.Faction?.IsPlayer ?? false) || (Base.HostFaction?.IsPlayer ?? false);
 
         private Color? _factionRelationColor;
         public Color FactionRelationColor => _factionRelationColor ?? (_factionRelationColor = GetFactionRelationColor()).Value;
-        public TextModel? RelationKindAndFaction => GetRelationKindAndFaction();
+        public TextModel RelationKindFaction => GetRelationKindAndFaction();
 
         public HealthModel Health { get; }
         public MindModel Mind { get; }
 
         public bool IsHumanlike => Base.RaceProps.Humanlike;
         public bool IsAnimal => Base.RaceProps.Animal;
-        public TextModel? Master => GetMaster();
+        public TextModel Master => GetMaster();
 
         public NeedModel Rest => GetNeedModel(NeedDefOf.Rest);
         public NeedModel Food => GetNeedModel(NeedDefOf.Food);
@@ -66,7 +68,7 @@ namespace RimHUD.Data.Models
         public TrainingModel Haul => GetTrainingModel(Access.TrainableDefOfHaul);
 
         public string Activity => GetActivity();
-        public TipSignal? ActivityTooltip => GetActivityTooltip();
+        public Func<string> ActivityTooltip { get; }
         public string Queued => GetQueued();
 
         public string Equipped => GetEquipped();
@@ -74,11 +76,11 @@ namespace RimHUD.Data.Models
 
         public string CompInfo => GetCompInfo();
 
-        public TipSignal? BioTooltip => GetBioTooltip();
+        public Func<string> BioTooltip { get; }
 
         public ISelectorModel OutfitSelector => new OutfitModel(this);
         public ISelectorModel FoodSelector => Mod_PawnRules.Instance.IsActive ? RulesSelector : new FoodModel(this);
-        public ISelectorModel RulesSelector => Mod_PawnRules.Instance.IsActive ? new RulesModel(this) : (ISelectorModel) null;
+        public ISelectorModel RulesSelector => Mod_PawnRules.Instance.IsActive ? new RulesModel(this) : null;
         public ISelectorModel TimetableSelector => new TimetableModel(this);
         public ISelectorModel AreaSelector => new AreaModel(this);
 
@@ -87,6 +89,8 @@ namespace RimHUD.Data.Models
             Base = pawn;
             Health = new HealthModel(this);
             Mind = new MindModel(this);
+            ActivityTooltip = GetActivityTooltip();
+            BioTooltip = GetBioTooltip();
         }
 
         private static PawnModel GetSelected()
@@ -107,12 +111,15 @@ namespace RimHUD.Data.Models
 
         private string GetGender() => Base.gender == Gender.None ? null : Base.GetGenderLabel();
 
-        private TextModel? GetGenderAndAge()
+        private string GetRace() => Base.kindDef?.race?.label;
+        private string GetRaceIfNotHuman() => Base.RaceProps?.Humanlike ?? true ? null : Base.kindDef?.race?.label;
+
+        private string GetGenderRaceAndAgeText(bool hideRaceIfHuman)
         {
             var gender = GetGender();
-            var genderKind = Lang.AdjectiveNoun(gender, Base.kindDef?.race?.label);
+            var genderKind = Lang.AdjectiveNoun(gender, hideRaceIfHuman ? GetRaceIfNotHuman() : GetRace());
 
-            if (Base.ageTracker == null) { return TextModel.Create(genderKind.CapitalizeFirst(), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab); }
+            if (Base.ageTracker == null) { return genderKind.Trim(); }
 
             Base.ageTracker.AgeBiologicalTicks.TicksToPeriod(out var years, out var quadrums, out var days, out _);
             var ageDays = (quadrums * GenDate.DaysPerQuadrum) + days;
@@ -122,7 +129,15 @@ namespace RimHUD.Data.Models
             else if (ageDays == 1) { age = Lang.CombineWords(age, Lang.Get("Model.Age.Day")); }
             else { age = Lang.CombineWords(age, Lang.Get("Model.Age.Days", ageDays)); }
 
-            return TextModel.Create(Lang.Get("Model.GenderAndAge", genderKind, age).CapitalizeFirst(), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab);
+            return Lang.Get("Model.GenderRaceAndAge", genderKind, age).Trim();
+        }
+
+        private TextModel GetGenderRaceAndAge() => TextModel.Create(GetGenderRaceAndAgeText(false).CapitalizeFirst(), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab);
+
+        private TextModel GetIdeoligionGenderRaceAndAge()
+        {
+            var genderRaceAge = GetGenderRaceAndAgeText(true);
+            return TextModel.Create(!ModLister.IdeologyInstalled || Base.Ideo == null ? genderRaceAge : Lang.Get("Model.IdeoligionGenderRaceAndAge", Base.Ideo.memberName, genderRaceAge), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab);
         }
 
         private string GetKind()
@@ -168,7 +183,7 @@ namespace RimHUD.Data.Models
             return relation == FactionRelationKind.Ally ? Lang.Get("Model.Faction.Allied") : null;
         }
 
-        private TextModel? GetRelationKindAndFaction()
+        private TextModel GetRelationKindAndFaction()
         {
             var faction = Base.Faction == null || !Base.Faction.HasName ? null : Lang.Get("Model.OfFaction", Base.Faction.Name);
             var relationKind = Lang.AdjectiveNoun(GetFactionRelation(), GetKind());
@@ -187,10 +202,14 @@ namespace RimHUD.Data.Models
 
                 return activity == null ? null : Lang.Get("Model.Info.Activity", activity.Bold());
             }
-            catch { return null; }
+            catch (Exception exception)
+            {
+                Mod.HandleWarning(exception);
+                return null;
+            }
         }
 
-        private TipSignal? GetActivityTooltip()
+        private Func<string> GetActivityTooltip() => () =>
         {
             try
             {
@@ -201,10 +220,14 @@ namespace RimHUD.Data.Models
                 builder.AppendLine(Lang.Get("Model.Info.Activity.WorkType", work));
                 builder.AppendLine(Lang.Get("Model.Info.Activity.RelevantSkills", Base.CurJob?.workGiverDef?.Worker?.def?.workType?.relevantSkills?.Select(p => p.LabelCap.ToString()).ToCommaList()));
 
-                return new TipSignal(() => builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize), GUIPlus.TooltipId);
+                return builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize);
             }
-            catch { return null; }
-        }
+            catch (Exception exception)
+            {
+                Mod.HandleWarning(exception);
+                return null;
+            }
+        };
 
         private string GetQueued()
         {
@@ -218,7 +241,11 @@ namespace RimHUD.Data.Models
 
                 return queued == null ? null : Lang.Get("Model.Info.Queued", queued);
             }
-            catch { return null; }
+            catch (Exception exception)
+            {
+                Mod.HandleWarning(exception);
+                return null;
+            }
         }
 
         private string GetCarrying()
@@ -240,45 +267,50 @@ namespace RimHUD.Data.Models
             return comps.Length > 0 ? comps.ToCommaList() : null;
         }
 
-        private TipSignal? GetBioTooltip()
+        private Func<string> GetBioTooltip()
         {
             if (IsAnimal) { return GetAnimalTooltip(); }
 
             if (Base.story == null) { return null; }
 
-            var builder = new StringBuilder();
+            return () =>
+            {
+                var builder = new StringBuilder();
 
-            var title = Base.story?.TitleCap;
-            if (title != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Title", title)); }
-            var faction = Base.Faction?.Name;
-            if (faction != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Faction", faction)); }
+                var title = Base.story?.TitleCap;
+                if (title != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Title", title)); }
+                var faction = Base.Faction?.Name;
+                if (faction != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Faction", faction)); }
+                var ideoligion = !ModLister.IdeologyInstalled || Base.Ideo == null ? null : Base.Ideo.name;
+                if (ideoligion != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Ideoligion", ideoligion)); }
 
-            builder.AppendLine();
+                builder.AppendLine();
 
-            var childhood = Base.story.GetBackstory(BackstorySlot.Childhood);
-            var childhoodText = childhood == null ? null : $"{"Childhood".Translate()}: {childhood.TitleCapFor(Base.gender)}";
-            var adulthood = Base.story.GetBackstory(BackstorySlot.Adulthood);
-            var adulthoodText = adulthood == null ? null : $"{"Adulthood".Translate()}: {adulthood.TitleCapFor(Base.gender)}";
+                var childhood = Base.story.GetBackstory(BackstorySlot.Childhood);
+                var childhoodText = childhood == null ? null : $"{"Childhood".Translate()}: {childhood.TitleCapFor(Base.gender)}";
+                var adulthood = Base.story.GetBackstory(BackstorySlot.Adulthood);
+                var adulthoodText = adulthood == null ? null : $"{"Adulthood".Translate()}: {adulthood.TitleCapFor(Base.gender)}";
 
-            builder.TryAppendLine(childhoodText);
-            builder.TryAppendLine(adulthoodText);
+                builder.TryAppendLine(childhoodText);
+                builder.TryAppendLine(adulthoodText);
 
-            builder.AppendLine();
+                builder.AppendLine();
 
-            var traits = Base.story.traits.allTraits.Count > 0 ? "Traits".Translate() + ": " + Base.story.traits.allTraits.Select(trait => trait.LabelCap).ToCommaList(true) : null;
-            builder.TryAppendLine(traits);
+                var traits = Base.story.traits.allTraits.Count > 0 ? "Traits".Translate() + ": " + Base.story.traits.allTraits.Select(trait => trait.LabelCap).ToCommaList(true) : null;
+                builder.TryAppendLine(traits);
 
-            builder.AppendLine();
+                builder.AppendLine();
 
-            var disabledWork = Base.story.DisabledWorkTagsBackstoryAndTraits;
-            string incapable = disabledWork == WorkTags.None ? null : "IncapableOf".Translate() + ": " + disabledWork.GetAllSelectedItems<WorkTags>().Where(tag => tag != WorkTags.None).Select(tag => tag.LabelTranslated().CapitalizeFirst()).ToCommaList(true);
+                var disabledWork = Base.story.DisabledWorkTagsBackstoryAndTraits;
+                string incapable = disabledWork == WorkTags.None ? null : "IncapableOf".Translate() + ": " + disabledWork.GetAllSelectedItems<WorkTags>().Where(tag => tag != WorkTags.None).Select(tag => tag.LabelTranslated().CapitalizeFirst()).ToCommaList(true);
 
-            builder.TryAppendLine(incapable.NullOrEmpty() ? null : incapable.Color(Theme.CriticalColor.Value));
+                builder.TryAppendLine(incapable.NullOrEmpty() ? null : incapable.Color(Theme.CriticalColor.Value));
 
-            return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
+                return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
+            };
         }
 
-        private TextModel? GetMaster()
+        private TextModel GetMaster()
         {
             var master = Base.playerSettings?.Master;
             if (master == null) { return null; }
@@ -288,7 +320,7 @@ namespace RimHUD.Data.Models
             return TextModel.Create(Lang.Get("Model.Bio.Master", masterName), GetAnimalTooltip(), relation == null ? (Color?) null : Theme.SkillMinorPassionColor.Value, InspectPanePlus.ToggleSocialTab);
         }
 
-        public TipSignal? GetAnimalTooltip(TrainableDef def = null)
+        public Func<string> GetAnimalTooltip(TrainableDef def = null) => () =>
         {
             var builder = new StringBuilder();
 
@@ -317,8 +349,7 @@ namespace RimHUD.Data.Models
                 builder.AppendLine(def.description);
             }
 
-            var text = builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize);
-            return new TipSignal(() => text, GUIPlus.TooltipId);
-        }
+            return builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize);
+        };
     }
 }
