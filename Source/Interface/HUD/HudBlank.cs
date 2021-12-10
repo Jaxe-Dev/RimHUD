@@ -2,7 +2,7 @@
 
 namespace RimHUD.Interface.HUD
 {
-    internal class HudBlank : HudWidget
+    internal class HudBlank : HudWidgetBase
     {
         public const string Name = "Blank";
         public static HudBlank GetEmpty => new HudBlank(0f);
@@ -13,6 +13,6 @@ namespace RimHUD.Interface.HUD
 
         public static HudBlank Get(float height) => new HudBlank(height);
 
-        public override bool Draw(Rect rect) => true;
+        public override bool Draw(HudComponent component, Rect rect) => true;
     }
 }

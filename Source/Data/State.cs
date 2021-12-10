@@ -9,7 +9,7 @@ namespace RimHUD.Data
         public static bool Activated { get; set; } = true;
         public static bool Active => Activated && Current.ProgramState == ProgramState.Playing;
 
-        public static bool ModifyPane => ResizePane || (ShowPane && Theme.InspectPaneTabModify.Value);
+        public static bool ModifyPane => ResizePane || ShowPane && Theme.InspectPaneTabModify.Value;
         public static bool CompressLetters => Active && Theme.LetterCompress.Value;
         public static bool HudFloatingVisible => !Theme.HudDocked.Value && ShowPane;
 
@@ -18,7 +18,6 @@ namespace RimHUD.Data
         private static bool ShowPane => Active && MainButtonDefOf.Inspect.TabWindow.IsOpen && SelectedPawn != null;
 
         public static bool ResizePane { get; set; }
-
 
         private static Pawn GetSelectedPawn()
         {

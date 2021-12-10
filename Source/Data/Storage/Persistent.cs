@@ -31,7 +31,6 @@ namespace RimHUD.Data.Storage
 
         private static string _credits;
 
-        private static bool VersionNeedsNewConfig { get; } = Mod.VersionNeedsNewConfig;
         public static bool IsLoaded { get; private set; }
 
         private static bool _configWasReset;
@@ -47,7 +46,7 @@ namespace RimHUD.Data.Storage
             if (loadedVersion == Mod.Version) { return false; }
             Mod.Warning($"Loaded config version ({loadedVersion ?? "NULL"}) is different from the current mod version");
 
-            return VersionNeedsNewConfig || string.IsNullOrEmpty(loadedVersion) || Mod.SameConfigVersions.All(version => !loadedVersion.StartsWith(version));
+            return string.IsNullOrEmpty(loadedVersion) || Mod.SameConfigVersions.All(version => !loadedVersion.StartsWith(version));
         }
 
         public static void CheckAlerts()

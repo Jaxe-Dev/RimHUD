@@ -12,7 +12,8 @@ namespace RimHUD.Interface.Dialog
         protected string Title { get; set; }
         protected string Subtitle { get; set; }
 
-        protected WindowPlus(Vector2 size) : this(null, size) { }
+        protected WindowPlus(Vector2 size) : this(null, size)
+        { }
 
         protected WindowPlus(string title = null, Vector2 size = default)
         {

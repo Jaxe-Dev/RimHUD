@@ -21,18 +21,17 @@ namespace RimHUD
     {
         public const string Id = "RimHUD";
         public const string Name = Id;
-        public const string Version = "1.8.0";
-        public const bool VersionNeedsNewConfig = false;
+        public const string Version = "1.9.0";
 
         public static IEnumerable<string> SameConfigVersions { get; } = new[]
         {
-            "1.6",
-            "1.7",
-            "1.8",
+            "1.9"
         };
 
         public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
         public static readonly ModContentPack ContentPack;
+
+        public static bool DevMode { get; set; }
 
         public static bool FirstTimeUser { get; }
 
@@ -90,6 +89,13 @@ namespace RimHUD
             HudLayout.Floating.Flush();
         }
 
+        public static void HandleWarning(System.Exception exception)
+        {
+            if (!Prefs.DevMode) { return; }
+            if (DevMode) { HandleError(exception); }
+            else { Warning($"Non-critical exception:\n{exception.Message}\n\nStacktrace:\n{exception.StackTrace}"); }
+        }
+
         public static void HandleError(System.Exception exception)
         {
             State.Activated = false;
@@ -98,7 +104,8 @@ namespace RimHUD
 
         public class Exception : System.Exception
         {
-            public Exception(string message, System.Exception innerException = null) : base(message, innerException) { }
+            public Exception(string message, System.Exception innerException = null) : base(message, innerException)
+            { }
         }
 
         public class ExceptionInfo
@@ -127,8 +134,7 @@ namespace RimHUD
                     StackTrace += "\n\n" + BuildStacktrace(innerException);
                     level++;
                     innerException = innerException.InnerException;
-                }
-                while (innerException != null);
+                } while (innerException != null);
             }
 
             private static string BuildStacktrace(System.Exception exception) => $"[{exception.Source}: {exception.Message}]\n{exception.StackTrace}";

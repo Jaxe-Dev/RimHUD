@@ -10,7 +10,7 @@ using Verse;
 
 namespace RimHUD.Data.Models
 {
-    internal struct SkillModel : IValueModel
+    internal class SkillModel : IValueModel
     {
         private static readonly StatDef SmeltingSpeed = DefDatabase<StatDef>.GetNamed("SmeltingSpeed");
         private static readonly StatDef ButcheryMechanoidSpeed = DefDatabase<StatDef>.GetNamed("ButcheryMechanoidSpeed");
@@ -29,14 +29,14 @@ namespace RimHUD.Data.Models
         public string Label { get; }
         public string Value { get; }
         public Color? Color { get; }
-        public TipSignal? Tooltip => GetTooltip();
+        public Func<string> Tooltip { get; }
         public Action OnHover { get; }
         public Action OnClick { get; }
 
         public SkillDef Def { get; }
         public SkillRecord Skill { get; }
 
-        public SkillModel(PawnModel model, SkillDef def) : this()
+        public SkillModel(PawnModel model, SkillDef def)
         {
             Model = model;
             Def = def;
@@ -60,6 +60,8 @@ namespace RimHUD.Data.Models
             Value = skill.TotallyDisabled ? "-" : skill.Level.ToDecimalString(skill.XpProgressPercent.ToPercentageInt());
             Color = skill.TotallyDisabled ? Theme.DisabledColor.Value : isSaturated ? Theme.SkillSaturatedColor.Value : isActive ? Theme.SkillActiveColor.Value : GetSkillColor(skill);
 
+            Tooltip = GetTooltip();
+
             OnClick = InspectPanePlus.ToggleBioTab;
         }
 
@@ -73,12 +75,12 @@ namespace RimHUD.Data.Models
 
         private string GetSkillDescription() => (string) Access.Method_RimWorld_SkillUI_GetSkillDescription.Invoke(null, Skill);
 
-        private TipSignal? GetTooltip()
+        private Func<string> GetTooltip() => () =>
         {
             var builder = new StringBuilder();
 
             builder.AppendLine(GetSkillDescription());
-            if (Skill.TotallyDisabled) { return new TipSignal(() => builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize), GUIPlus.TooltipId); }
+            if (Skill.TotallyDisabled) { return builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize); }
             builder.AppendLine();
 
             if (Def == SkillDefOf.Shooting)
@@ -154,7 +156,7 @@ namespace RimHUD.Data.Models
                 else if (Def == SkillDefOf.Intellectual) { HudModel.BuildStatString(this, builder, StatDefOf.ResearchSpeedFactor); }
             }
 
-            return builder.Length == 0 ? null : new TipSignal(() => builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize), GUIPlus.TooltipId);
-        }
+            return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
+        };
     }
 }

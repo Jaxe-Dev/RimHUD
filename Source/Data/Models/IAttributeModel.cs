@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using Verse;
 
 namespace RimHUD.Data.Models
 {
@@ -12,7 +11,7 @@ namespace RimHUD.Data.Models
 
         string Label { get; }
         Color? Color { get; }
-        TipSignal? Tooltip { get; }
+        Func<string> Tooltip { get; }
 
         Action OnHover { get; }
         Action OnClick { get; }

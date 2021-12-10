@@ -14,7 +14,7 @@ namespace RimHUD.Interface.HUD
         private readonly Color? _color;
         private readonly Action _onClick;
 
-        private HudValue(string label, TipSignal? tooltip, string value, string fallbackValue, Color? color, TextStyle textStyle, Action onClick) : base(label, tooltip, textStyle)
+        private HudValue(string label, Func<string> tooltip, string value, string fallbackValue, Color? color, TextStyle textStyle, Action onClick) : base(label, tooltip, textStyle)
         {
             _value = value;
             _fallbackValue = fallbackValue;
@@ -22,15 +22,17 @@ namespace RimHUD.Interface.HUD
             _onClick = onClick;
         }
 
-        private HudValue(IValueModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, model.Value, null, model.Color, textStyle, model.OnClick) { }
+        private HudValue(IValueModel model, TextStyle textStyle) : this(model.Label, model.Tooltip, model.Value, null, model.Color, textStyle, model.OnClick)
+        { }
 
-        private HudValue(TextModel model, TextStyle textStyle, Action onClick) : this(null, model.Tooltip, model.Text, null, model.Color, textStyle, onClick) { }
+        private HudValue(TextModel model, TextStyle textStyle, Action onClick) : this(null, model.Tooltip, model.Text, null, model.Color, textStyle, onClick)
+        { }
 
         public static HudValue FromValueModel(IValueModel model, TextStyle textStyle) => model == null || model.Hidden ? null : new HudValue(model, textStyle);
-        public static HudValue FromTextModel(TextModel? model, TextStyle textStyle) => model == null ? null : new HudValue(model.Value, textStyle, model.Value.OnClick);
-        public static HudValue FromText(string text, TipSignal? tooltip, TextStyle textStyle, Action onClick = null) => new HudValue(null, tooltip, text, null, null, textStyle, onClick);
+        public static HudValue FromTextModel(TextModel model, TextStyle textStyle) => model == null ? null : new HudValue(model, textStyle, model?.OnClick);
+        public static HudValue FromText(string text, Func<string> tooltip, TextStyle textStyle, Action onClick = null) => new HudValue(null, tooltip, text, null, null, textStyle, onClick);
 
-        public override bool Draw(Rect rect)
+        protected override bool DoDraw(Rect rect)
         {
             if (_value.NullOrEmpty() && _fallbackValue == null) { return false; }
 

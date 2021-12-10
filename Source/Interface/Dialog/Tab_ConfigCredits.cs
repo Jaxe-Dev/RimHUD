@@ -13,7 +13,8 @@ namespace RimHUD.Interface.Dialog
         private Vector2 _scrollPosition = Vector2.zero;
         private Rect _viewRect;
 
-        public override void Reset() { }
+        public override void Reset()
+        { }
 
         public override void Draw(Rect rect)
         {
@@ -32,7 +33,7 @@ namespace RimHUD.Interface.Dialog
 
             l.Gap();
 
-            l.Label("A special thanks to everyone above and countless others who have helped along the way");
+            l.Label("A special thanks to everyone above and countless others who have helped along the way.");
             l.Label(("❤️".Color("FF0011") + " Jaxe".Italic()).Bold());
 
             l.Gap();

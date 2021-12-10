@@ -14,9 +14,11 @@ namespace RimHUD.Data
             public string Category { get; }
             public string Label { get; }
 
-            public Option(string label, Type type = null) : this(null, label, type) { }
+            public Option(string label, Type type = null) : this(null, label, type)
+            { }
 
-            public Option(Type type) : this(null, null, type) { }
+            public Option(Type type) : this(null, null, type)
+            { }
 
             public Option(string category, string label, Type type = null)
             {
@@ -47,6 +49,7 @@ namespace RimHUD.Data
         }
 
         [AttributeUsage(AttributeTargets.Class)]
-        internal class IntegratedOptions : Attribute { }
+        internal class IntegratedOptions : Attribute
+        { }
     }
 }

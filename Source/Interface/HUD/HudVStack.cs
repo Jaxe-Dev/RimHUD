@@ -13,7 +13,8 @@ namespace RimHUD.Interface.HUD
 
         private float[] _heights;
 
-        public HudVStack(XElement xe, bool? fillHeight) : base(xe, fillHeight) { }
+        public HudVStack(XElement xe, bool? fillHeight) : base(xe, fillHeight)
+        { }
 
         public override float Prepare(PawnModel model)
         {

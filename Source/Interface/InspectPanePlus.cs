@@ -103,11 +103,7 @@ namespace RimHUD.Interface
 
         public static bool DrawTabs(IInspectPane pane)
         {
-            if (pane.CurTabs == null)
-            {
-                Log.Warning("NO CURTABS");
-                return false;
-            }
+            if (pane.CurTabs == null) { return false; }
 
             try
             {
@@ -166,7 +162,27 @@ namespace RimHUD.Interface
             lineEndWidth += ButtonSize;
             Widgets.InfoCardButton(rect.width - lineEndWidth, 0f, selected);
 
-            if (!(selected is Pawn pawn) || !PlayerControlled(pawn)) { return; }
+            if (!(selected is Pawn pawn)) { return; }
+
+            if (pawn.Faction != null)
+            {
+                lineEndWidth += ButtonSize;
+                var factionRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
+                FactionUIUtility.DrawFactionIconWithTooltip(factionRect, pawn.Faction);
+                lineEndWidth += GUIPlus.SmallPadding;
+            }
+
+            if (ModLister.IdeologyInstalled && pawn.Ideo != null)
+            {
+                lineEndWidth += ButtonSize;
+                var ideoligionRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
+                IdeoUIUtility.DoIdeoIcon(ideoligionRect, pawn.Ideo, extraAction: () => IdeoUIUtility.OpenIdeoInfo(pawn.Ideo));
+                lineEndWidth += GUIPlus.SmallPadding;
+            }
+
+            if (!PlayerControlled(pawn)) { return; }
+
+            lineEndWidth += GUIPlus.SmallPadding;
 
             if (pawn.playerSettings.UsesConfigurableHostilityResponse)
             {
@@ -178,29 +194,29 @@ namespace RimHUD.Interface
             lineEndWidth += ButtonSize;
             var careRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
             MedicalCareUtility.MedicalCareSelectButton(careRect, pawn);
-            GUIPlus.DrawTooltip(careRect, new TipSignal(() => Lang.Get("InspectPane.MedicalCare", pawn.KindLabel, pawn.playerSettings.medCare.GetLabel()), GUIPlus.TooltipId), true);
+            GUIPlus.DrawTooltip(careRect, () => Lang.Get("InspectPane.MedicalCare", pawn.KindLabel, pawn.playerSettings.medCare.GetLabel()), true);
             lineEndWidth += GUIPlus.SmallPadding;
 
-            if (!pawn.IsColonist) { return; }
+            if (pawn.IsColonist)
+            {
+                lineEndWidth += ButtonSize;
 
-            lineEndWidth += ButtonSize;
+                var canDoctor = !pawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor);
+                var canDoctorPriority = pawn.workSettings == null || pawn.workSettings?.GetPriority(WorkTypeDefOf.Doctor) > 0;
 
-            var canDoctor = !pawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor);
-            var canDoctorPriority = pawn.workSettings == null || pawn.workSettings?.GetPriority(WorkTypeDefOf.Doctor) > 0;
+                var selfTendRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
+                var selfTendTip = "SelfTendTip".Translate(Faction.OfPlayer.def.pawnsPlural, 0.7f.ToStringPercent()).CapitalizeFirst();
 
-            var selfTendRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
-            var selfTendTip = "SelfTendTip".Translate(Faction.OfPlayer.def.pawnsPlural, 0.7f.ToStringPercent()).CapitalizeFirst();
+                if (!canDoctor) { selfTendTip += "\n\n" + "MessageCannotSelfTendEver".Translate(pawn.LabelShort, pawn); }
+                else if (!canDoctorPriority) { selfTendTip += "\n\n" + "MessageSelfTendUnsatisfied".Translate(pawn.LabelShort, pawn); }
 
-            if (!canDoctor) { selfTendTip += "\n\n" + "MessageCannotSelfTendEver".Translate(pawn.LabelShort, pawn); }
-            else if (!canDoctorPriority) { selfTendTip += "\n\n" + "MessageSelfTendUnsatisfied".Translate(pawn.LabelShort, pawn); }
-
-            GUIPlus.SetFont(GameFont.Tiny);
-            var selfTend = pawn.playerSettings.selfTend;
-            selfTend = GUIPlus.DrawToggle(selfTendRect, selfTend, new TipSignal(() => selfTendTip, GUIPlus.TooltipId), canDoctor, Textures.SelfTendOnIcon, Textures.SelfTendOffIcon);
-            if (selfTend != pawn.playerSettings.selfTend) { Mod_Multiplayer.SetSelfTend(pawn, selfTend); }
-            GUIPlus.ResetFont();
-
-            lineEndWidth += GUIPlus.SmallPadding;
+                GUIPlus.SetFont(GameFont.Tiny);
+                var selfTend = pawn.playerSettings.selfTend;
+                selfTend = GUIPlus.DrawToggle(selfTendRect, selfTend, GUIPlus.PrepareTipSignal(() => selfTendTip), canDoctor, Textures.SelfTendOnIcon, Textures.SelfTendOffIcon);
+                if (selfTend != pawn.playerSettings.selfTend) { Mod_Multiplayer.SetSelfTend(pawn, selfTend); }
+                GUIPlus.ResetFont();
+                lineEndWidth += GUIPlus.SmallPadding;
+            }
         }
 
         private static bool PlayerControlled(Pawn pawn) => !pawn.Dead && pawn.playerSettings != null && ((pawn.Faction?.IsPlayer ?? false) || (pawn.HostFaction?.IsPlayer ?? false));
