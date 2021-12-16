@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RimHUD.Model.RelationKindAndFaction>{0} {1}</RimHUD.Model.RelationKindAndFaction>
+  <RimHUD.Model.OfFaction>of {0}</RimHUD.Model.OfFaction>
+
+  <RimHUD.Model.Faction.Own>our</RimHUD.Model.Faction.Own>
+  <RimHUD.Model.Faction.Wild>wild</RimHUD.Model.Faction.Wild>
+  <RimHUD.Model.Faction.Allied>allied</RimHUD.Model.Faction.Allied>
+  <RimHUD.Model.Faction.Enemy>enemy</RimHUD.Model.Faction.Enemy>
+  <RimHUD.Model.Faction.Hostile>hostile</RimHUD.Model.Faction.Hostile>
+  <RimHUD.Model.Faction.Independent>independent</RimHUD.Model.Faction.Independent>
+
+  <RimHUD.Model.Creature.Wild>creature</RimHUD.Model.Creature.Wild>
+  <RimHUD.Model.Creature.Tame>animal</RimHUD.Model.Creature.Tame>
+  <RimHUD.Model.Creature.Stray>stray</RimHUD.Model.Creature.Stray>
+  <RimHUD.Model.Creature.Pet>pet</RimHUD.Model.Creature.Pet>
+  <RimHUD.Model.Creature.ExoticPet>exotic pet</RimHUD.Model.Creature.ExoticPet>
+  <RimHUD.Model.Creature.Predator>predator</RimHUD.Model.Creature.Predator>
+  <RimHUD.Model.Creature.Hunt>hunting animal</RimHUD.Model.Creature.Hunt>
+  <RimHUD.Model.Creature.Pack>pack animal</RimHUD.Model.Creature.Pack>
+  <RimHUD.Model.Creature.Farm>farm animal</RimHUD.Model.Creature.Farm>
+  <RimHUD.Model.Creature.Herd>herd animal</RimHUD.Model.Creature.Herd>
+  <RimHUD.Model.Creature.Insect>insect</RimHUD.Model.Creature.Insect>
+  <RimHUD.Model.Creature.Unit>unit</RimHUD.Model.Creature.Unit>
+
+  <RimHUD.Model.GenderAndAge>{0} aged {1}</RimHUD.Model.GenderAndAge>
+  <RimHUD.Model.Age.Birthday>(Birthday today)</RimHUD.Model.Age.Birthday>
+  <RimHUD.Model.Age.Day>and one day</RimHUD.Model.Age.Day>
+  <RimHUD.Model.Age.Days>and {0} days</RimHUD.Model.Age.Days>
+
+  <RimHUD.Model.Health.Dead>Dead</RimHUD.Model.Health.Dead>
+  <RimHUD.Model.Health.Incapacitated>Incapacitated</RimHUD.Model.Health.Incapacitated>
+  <RimHUD.Model.Health.Bleed>Bleeding out in {0}</RimHUD.Model.Health.Bleed>
+  <RimHUD.Model.Health.Tend>{0} condition needs tending</RimHUD.Model.Health.Tend>
+  <RimHUD.Model.Health.TendPlural>{0} conditions need tending</RimHUD.Model.Health.TendPlural>
+  <RimHUD.Model.Health.Threat>Has life-threatening {0}</RimHUD.Model.Health.Threat>
+  <RimHUD.Model.Health.ThreatPlural>Has {0} life-threatening conditions</RimHUD.Model.Health.ThreatPlural>
+  <RimHUD.Model.Health.Affected>Affected by {0}</RimHUD.Model.Health.Affected>
+  <RimHUD.Model.Health.AffectedPlural>Affected by {0} and {1} other conditions</RimHUD.Model.Health.AffectedPlural>
+  <RimHUD.Model.Health.Stable>In stable health</RimHUD.Model.Health.Stable>
+
+  <RimHUD.Model.Mood.ExtremeBreakImminent>Feeling depressed</RimHUD.Model.Mood.ExtremeBreakImminent>
+  <RimHUD.Model.Mood.MajorBreakImminent>Feeling unhappy</RimHUD.Model.Mood.MajorBreakImminent>
+  <RimHUD.Model.Mood.MinorBreakImminent>Feeling stressed</RimHUD.Model.Mood.MinorBreakImminent>
+  <RimHUD.Model.Mood.Happy>Feeling happy</RimHUD.Model.Mood.Happy>
+  <RimHUD.Model.Mood.Content>Feeling content</RimHUD.Model.Mood.Content>
+  <RimHUD.Model.Mood.Indifferent>Feeling indifferent</RimHUD.Model.Mood.Indifferent>
+
+  <RimHUD.Model.Info.Activity>Activity: {0}</RimHUD.Model.Info.Activity>
+  <RimHUD.Model.Info.Activity.Tooltip>{0}\n\n{1}\n\n{2}</RimHUD.Model.Info.Activity.Tooltip>
+  <RimHUD.Model.Info.Activity.WorkType>Work type: {0}</RimHUD.Model.Info.Activity.WorkType>
+  <RimHUD.Model.Info.Activity.RelevantSkills>Relevant Skills: {0}</RimHUD.Model.Info.Activity.RelevantSkills>
+  <RimHUD.Model.Info.Attacking>Attacking {0}</RimHUD.Model.Info.Attacking>
+  <RimHUD.Model.Info.Queued>Queued: {0}</RimHUD.Model.Info.Queued>
+  <RimHUD.Model.Info.Equipped>Equipped: {0}</RimHUD.Model.Info.Equipped>
+  <RimHUD.Model.Info.Carrying>Carrying: {0}</RimHUD.Model.Info.Carrying>
+
+  <RimHUD.Model.Bio.Title>Title: {0}</RimHUD.Model.Bio.Title>
+  <RimHUD.Model.Bio.Faction>Faction: {0}</RimHUD.Model.Bio.Faction>
+  <RimHUD.Model.Bio.Master>Master: {0}</RimHUD.Model.Bio.Master>
+  <RimHUD.Model.Bio.Diet>Diet: {0}</RimHUD.Model.Bio.Diet>
+  <RimHUD.Model.Bio.Trainability>Trainability: {0}</RimHUD.Model.Bio.Trainability>
+  <RimHUD.Model.Bio.Wildness>Wildness: {0}</RimHUD.Model.Bio.Wildness>
+  <RimHUD.Model.Bio.Petness>Petness: {0}</RimHUD.Model.Bio.Petness>
+
+  <RimHUD.Model.Selector.OutfitFormat>Outfit: {0}</RimHUD.Model.Selector.OutfitFormat>
+  <RimHUD.Model.Selector.FoodFormat>Food: {0}</RimHUD.Model.Selector.FoodFormat>
+  <RimHUD.Model.Selector.TimetableFormat>Schedule: {0}</RimHUD.Model.Selector.TimetableFormat>
+  <RimHUD.Model.Selector.SetTimeAssignment>Set hour {0} to {1}</RimHUD.Model.Selector.SetTimeAssignment>
+  <RimHUD.Model.Selector.AreaFormat>Area: {0}</RimHUD.Model.Selector.AreaFormat>
+  <RimHUD.Model.Selector.Manage>Manage...</RimHUD.Model.Selector.Manage>
+
+  <RimHUD.Model.Component.Root>Root</RimHUD.Model.Component.Root>
+  <RimHUD.Model.Component.VStack>Vertical stack</RimHUD.Model.Component.VStack>
+  <RimHUD.Model.Component.VStackFilled>Vertical stack (filled)</RimHUD.Model.Component.VStackFilled>
+  <RimHUD.Model.Component.HStack>Horizontal stack</RimHUD.Model.Component.HStack>
+  <RimHUD.Model.Component.HStackFilled>Horizontal stack (filled)</RimHUD.Model.Component.HStackFilled>
+  <RimHUD.Model.Component.Panel>Panel</RimHUD.Model.Component.Panel>
+  <RimHUD.Model.Component.PanelFilled>Panel (filled)</RimHUD.Model.Component.PanelFilled>
+  <RimHUD.Model.Component.Row>Row</RimHUD.Model.Component.Row>
+
+  <RimHUD.Model.Component.Blank>Blank</RimHUD.Model.Component.Blank>
+  <RimHUD.Model.Component.Separator>Line separator</RimHUD.Model.Component.Separator>
+  <RimHUD.Model.Component.NameHeader>Name as header</RimHUD.Model.Component.NameHeader>
+  <RimHUD.Model.Component.Outfit>Outfit selector</RimHUD.Model.Component.Outfit>
+  <RimHUD.Model.Component.Food>Food selector</RimHUD.Model.Component.Food>
+  <RimHUD.Model.Component.Rules>Rules selector (Requires Pawn Rules)</RimHUD.Model.Component.Rules>
+  <RimHUD.Model.Component.Timetable>Timetable selector</RimHUD.Model.Component.Timetable>
+  <RimHUD.Model.Component.Area>Area selector</RimHUD.Model.Component.Area>
+  <RimHUD.Model.Component.RelationKindAndFaction>Relation kind and faction</RimHUD.Model.Component.RelationKindAndFaction>
+  <RimHUD.Model.Component.GenderAndAge>Gender and age</RimHUD.Model.Component.GenderAndAge>
+  <RimHUD.Model.Component.Health>Health bar</RimHUD.Model.Component.Health>
+  <RimHUD.Model.Component.HealthCondition>Health condition</RimHUD.Model.Component.HealthCondition>
+  <RimHUD.Model.Component.MindCondition>Mind condition</RimHUD.Model.Component.MindCondition>
+
+  <RimHUD.Model.Component.Stat>{0} stat</RimHUD.Model.Component.Stat>
+  <RimHUD.Model.Component.Record>{0} record</RimHUD.Model.Component.Record>
+
+  <RimHUD.Model.Component.NeedMood>Mood bar</RimHUD.Model.Component.NeedMood>
+  <RimHUD.Model.Component.NeedFood>Food bar</RimHUD.Model.Component.NeedFood>
+  <RimHUD.Model.Component.NeedRest>Rest bar</RimHUD.Model.Component.NeedRest>
+  <RimHUD.Model.Component.NeedRecreation>Recreation bar</RimHUD.Model.Component.NeedRecreation>
+  <RimHUD.Model.Component.Need>{0} bar</RimHUD.Model.Component.Need>
+
+  <RimHUD.Model.Component.SkillShooting>Shooting skill</RimHUD.Model.Component.SkillShooting>
+  <RimHUD.Model.Component.SkillMelee>Melee skill</RimHUD.Model.Component.SkillMelee>
+  <RimHUD.Model.Component.SkillConstruction>Construction skill</RimHUD.Model.Component.SkillConstruction>
+  <RimHUD.Model.Component.SkillMining>Mining skill</RimHUD.Model.Component.SkillMining>
+  <RimHUD.Model.Component.SkillCooking>Cooking skill</RimHUD.Model.Component.SkillCooking>
+  <RimHUD.Model.Component.SkillPlants>Plants skill</RimHUD.Model.Component.SkillPlants>
+  <RimHUD.Model.Component.SkillAnimals>Animals skill</RimHUD.Model.Component.SkillAnimals>
+  <RimHUD.Model.Component.SkillCrafting>Crafting skill</RimHUD.Model.Component.SkillCrafting>
+  <RimHUD.Model.Component.SkillArtistic>Artistic skill</RimHUD.Model.Component.SkillArtistic>
+  <RimHUD.Model.Component.SkillMedicine>Medicine skill</RimHUD.Model.Component.SkillMedicine>
+  <RimHUD.Model.Component.SkillSocial>Social skill</RimHUD.Model.Component.SkillSocial>
+  <RimHUD.Model.Component.SkillIntellectual>Intellectual skill</RimHUD.Model.Component.SkillIntellectual>
+  <RimHUD.Model.Component.Skill>{0} skill</RimHUD.Model.Component.Skill>
+  <RimHUD.Model.Component.Skill.PassionIndicator>★</RimHUD.Model.Component.Skill.PassionIndicator>
+
+  <RimHUD.Model.Component.TrainingTameness>Tameness training</RimHUD.Model.Component.TrainingTameness>
+  <RimHUD.Model.Component.TrainingObedience>Obedience training</RimHUD.Model.Component.TrainingObedience>
+  <RimHUD.Model.Component.TrainingRelease>Release training</RimHUD.Model.Component.TrainingRelease>
+  <RimHUD.Model.Component.TrainingRescue>Rescue training</RimHUD.Model.Component.TrainingRescue>
+  <RimHUD.Model.Component.TrainingHaul>Haul training</RimHUD.Model.Component.TrainingHaul>
+  <RimHUD.Model.Component.Training>{0} training</RimHUD.Model.Component.Training>
+
+  <RimHUD.Model.Component.Master>Master</RimHUD.Model.Component.Master>
+  <RimHUD.Model.Component.Activity>Activity</RimHUD.Model.Component.Activity>
+  <RimHUD.Model.Component.Queued>Queued</RimHUD.Model.Component.Queued>
+  <RimHUD.Model.Component.Equipped>Equipped</RimHUD.Model.Component.Equipped>
+  <RimHUD.Model.Component.Carrying>Carrying</RimHUD.Model.Component.Carrying>
+  <RimHUD.Model.Component.CompInfo>Extra information</RimHUD.Model.Component.CompInfo>
+
+  <RimHUD.Model.Component.Container.Filled>Filled</RimHUD.Model.Component.Container.Filled>
+
+  <RimHUD.Model.Target.PlayerHumanlike>Player Humanlike</RimHUD.Model.Target.PlayerHumanlike>
+  <RimHUD.Model.Target.OtherHumanlike>Other Humanlike</RimHUD.Model.Target.OtherHumanlike>
+  <RimHUD.Model.Target.PlayerCreature>Player Creature</RimHUD.Model.Target.PlayerCreature>
+  <RimHUD.Model.Target.OtherCreature>Other Creature</RimHUD.Model.Target.OtherCreature>
+</LanguageData>
