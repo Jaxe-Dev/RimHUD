@@ -4,14 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Integration;
 using RimHUD.Interface.HUD;
-using UnityEngine;
 using Verse;
 
 namespace RimHUD.Data.Storage
@@ -29,8 +27,7 @@ namespace RimHUD.Data.Storage
     private static readonly Regex ValidFilenameRegex = new Regex("^(?:[\\p{L}\\p{N}_\\-]|[\\p{L}\\p{N}_\\-]+[\\p{L}\\p{N}_\\- ]*[\\p{L}\\p{N}_\\-]+)$");
     private static readonly DirectoryInfo UserPresetDirectory = new DirectoryInfo(Path.Combine(Mod.ConfigDirectory.FullName, PresetsDirectoryName));
 
-    private static string _credits;
-
+    public static XElement Credits;
     public static bool IsLoaded { get; private set; }
 
     private static bool _configWasReset;
@@ -115,7 +112,7 @@ namespace RimHUD.Data.Storage
 
     private static void LoadAll()
     {
-      _credits = LoadCredits();
+      LoadCredits();
 
       if (!ConfigFile.ExistsNow())
       {
@@ -330,50 +327,12 @@ namespace RimHUD.Data.Storage
       return directory.Exists ? directory.GetFiles("*" + PresetExtension).Select(file => LayoutPreset.Prepare(null, file)).Where(preset => preset != null).ToArray() : new LayoutPreset[] { };
     }
 
-    private static string LoadCredits()
+    private static void LoadCredits()
     {
       var file = new FileInfo(Path.Combine(Mod.ContentPack.RootDir, AboutDirectoryName, CreditsFileName));
 
-      try
-      {
-        var xml = XDocument.Load(file.FullName).Root;
-        if (xml == null) { throw new Exception(); }
-
-        var builder = new StringBuilder();
-        foreach (var group in xml.Elements("Group"))
-        {
-          var label = group.Attribute("label")?.Value;
-          var color = group.Attribute("color")?.Value ?? "FFFFFF";
-          var format = group.Attribute("format")?.Value;
-
-          builder.AppendLine($"[ {label.Color(color)} ]".Bold());
-
-          var groupBuilder = new StringBuilder();
-          var entries = group.Elements("Entry").ToArray();
-          if (entries.Length > 0)
-          {
-            foreach (var item in entries)
-            {
-              var name = item.Attribute("name")?.Value;
-              if (name == null) { continue; }
-
-              if (format != null) { name = string.Format(format, name); }
-
-              var quote = item.Attribute("quote")?.Value.Italic();
-              groupBuilder.AppendLine($"{name}{(quote == null ? null : $" - \"{quote}\"".Color("888888"))}");
-            }
-          }
-          else { groupBuilder.AppendLine("(None)".Color(Color.grey)); }
-
-          builder.AppendLine(groupBuilder.ToStringTrimmed().Color(color));
-          builder.AppendLine();
-        }
-
-        return builder.ToStringTrimmed();
-      }
-      catch { return null; }
+      try { Credits = XDocument.Load(file.FullName).Root; }
+      catch { Mod.Warning("Unable to load credits. This may be an unofficial version of the mod"); }
     }
-
-    public static string GetCredits() => _credits;
   }
 }

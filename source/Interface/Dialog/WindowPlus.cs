@@ -30,19 +30,14 @@ namespace RimHUD.Interface.Dialog
 
     protected abstract void DrawContent(Rect rect);
 
-    public override void DoWindowContents(Rect rect)
-    {
-      var wordWrap = Text.WordWrap;
-      Text.WordWrap = false;
-
-      DrawContent(DrawTitle(rect));
-
-      Text.WordWrap = wordWrap;
-    }
+    public override void DoWindowContents(Rect rect) => DrawContent(DrawTitle(rect));
 
     private Rect DrawTitle(Rect rect)
     {
       if (Title.NullOrEmpty()) { return rect; }
+
+      var wordWrap = Text.WordWrap;
+      Text.WordWrap = false;
 
       var header = new ListingPlus();
 
@@ -61,6 +56,8 @@ namespace RimHUD.Interface.Dialog
       header.End();
       var contentRect = new Rect(rect.x, rect.y + header.CurHeight, rect.width, rect.height - header.CurHeight);
       if (doCloseButton) { contentRect.height -= CloseButtonOffset; }
+
+      Text.WordWrap = wordWrap;
 
       return contentRect;
     }

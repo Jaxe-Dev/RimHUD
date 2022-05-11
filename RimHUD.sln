@@ -5,12 +5,6 @@ VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimHUD", "source\RimHUD.csproj", "{CCCC7430-4D27-4A71-A435-9E3F8B424D7B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "-", "-", "{2B7BFC94-8776-4E98-A0F2-4946B9C92EA1}"
-	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
-		README.md = README.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|Any CPU = Release|Any CPU
@@ -20,9 +14,7 @@ Global
 		{CCCC7430-4D27-4A71-A435-9E3F8B424D7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {2D2E4B91-9E63-4902-91B0-02DD43B62EAA}
 	EndGlobalSection
 EndGlobal

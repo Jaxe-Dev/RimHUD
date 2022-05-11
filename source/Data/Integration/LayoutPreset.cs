@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Storage;
 using RimHUD.Interface.HUD;
@@ -19,7 +18,7 @@ namespace RimHUD.Data.Integration
     public FileInfo File { get; }
     public string Name { get; }
     public string Mod { get; }
-    public string Label => Name + " " + Mod.Size(Theme.SmallTextStyle.ActualSize).Italic();
+    public string Label => Name + " " + Mod.SmallSize().Italic();
     public bool IsUserMade { get; }
 
     private LayoutPreset(string name, string mod, FileInfo file)

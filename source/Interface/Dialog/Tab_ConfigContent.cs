@@ -14,7 +14,7 @@ namespace RimHUD.Interface.Dialog
   internal class Tab_ConfigContent : Tab
   {
     private const float EditorWidth = 280f;
-    private const float SelectedHeight = 145f;
+    private const float TargetsHeight = 120f;
 
     public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Content");
     public override TipSignal? Tooltip { get; } = null;
@@ -54,9 +54,12 @@ namespace RimHUD.Interface.Dialog
       var hGrid = rect.GetHGrid(GUIPlus.LargePadding, -1f, EditorWidth);
 
       l.Begin(hGrid[1]);
+
       l.Label(Lang.Get("Dialog_Config.Tab.Content.Editor", GetMode()).Bold());
       var editorRect = l.GetRemaining();
+
       _editor.Draw(editorRect);
+
       l.End();
 
       l.Begin(hGrid[2]);
@@ -84,13 +87,21 @@ namespace RimHUD.Interface.Dialog
 
       if (l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.Remove"), enabled: hasSelected && _editor.Selected.CanRemove))
       {
+        var index = _editor.Selected.Index;
+        var parent = _editor.Selected.Parent;
         _editor.Selected.Remove();
+        if (parent != null) { _editor.Selected = index == 0 ? parent : parent.Contents[index - 1]; }
         return;
       }
 
       if (canAddContainer && l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.Stack"), Lang.Get("Dialog_Config.Tab.Content.Component.StackDesc"))) { HudModel.StackComponents.Select(item => new FloatMenuOption(item.Label, () => _editor.Add(item))).ShowMenu(); }
       if (canAddContainer && l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.Panel"), Lang.Get("Dialog_Config.Tab.Content.Component.PanelDesc"))) { _editor.Add(HudModel.PanelComponent); }
-      if (canAddRow && l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.Row"), Lang.Get("Dialog_Config.Tab.Content.Component.RowDesc"))) { _editor.Add(HudModel.RowComponent); }
+      if (canAddRow && l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.Row"), Lang.Get("Dialog_Config.Tab.Content.Component.RowDesc")))
+      {
+        Mod.Warning(_editor.Selected.Type.ToString());
+        if (_editor.Selected.Type == LayoutItemType.Row) { _editor.AddSibling(HudModel.RowComponent); }
+        else { _editor.Add(HudModel.RowComponent, true); }
+      }
       if (canAddElement && l.ButtonText(Lang.Get("Dialog_Config.Tab.Content.Component.Element"), Lang.Get("Dialog_Config.Tab.Content.Component.ElementDesc"))) { HudModel.ElementComponents.Select(item => new FloatMenuOption(item.Label, () => _editor.Add(item))).ShowMenu(); }
 
       var statRecordGrid = l.GetButtonGrid(-1f, -1f);
@@ -105,7 +116,7 @@ namespace RimHUD.Interface.Dialog
 
       if (!hasSelected || _editor.Selected.IsRoot) { return; }
 
-      var selectedRect = hGrid[2].GetVGrid(GUIPlus.MediumPadding, -1f, SelectedHeight)[2];
+      var selectedRect = hGrid[2].GetVGrid(GUIPlus.MediumPadding, -1f, TargetsHeight)[2];
       l.Begin(selectedRect);
       l.Label(Lang.Get("Dialog_Config.Tab.Content.Selected").Bold() + _editor.Selected.Label.Bold().Italic());
 

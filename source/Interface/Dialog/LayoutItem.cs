@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
 using RimHUD.Data;
-using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
 using RimHUD.Interface.HUD;
@@ -22,7 +21,7 @@ namespace RimHUD.Interface.Dialog
     private static readonly Color ElementColor = new Color(1f, 1f, 1f);
 
     private readonly LayoutEditor _editor;
-    private readonly LayoutItem _parent;
+    public readonly LayoutItem Parent;
     public string Id { get; }
     public string Label => GetLabel();
     public LayoutItemType Type { get; }
@@ -57,15 +56,17 @@ namespace RimHUD.Interface.Dialog
     private bool _collapsed;
     private bool Selected => Equals(_editor.Selected);
 
-    public bool CanMoveUp => _parent != null && _parent.Contents.IndexOf(this) > 0;
-    public bool CanMoveDown => _parent != null && _parent.Contents.IndexOf(this) < _parent.Contents.LastIndex();
-    public bool CanRemove => _parent != null;
-    public bool IsRoot => _editor != null && _parent == null;
+    public int Index => Parent?.Contents.IndexOf(this) ?? -1;
+
+    public bool CanMoveUp => Parent != null && Index > 0;
+    public bool CanMoveDown => Parent != null && Index < Parent.Contents.LastIndex();
+    public bool CanRemove => Parent != null;
+    public bool IsRoot => _editor != null && Parent == null;
 
     public LayoutItem(LayoutItemType type, string id, Def def = null, LayoutEditor editor = null, LayoutItem parent = null)
     {
       _editor = editor;
-      _parent = parent;
+      Parent = parent;
       Type = type;
       Id = id;
       Def = def;
@@ -75,7 +76,7 @@ namespace RimHUD.Interface.Dialog
     public LayoutItem(LayoutEditor editor, LayoutItem parent, HudComponent component)
     {
       _editor = editor;
-      _parent = parent;
+      Parent = parent;
 
       Id = component.ElementName;
 
@@ -113,31 +114,31 @@ namespace RimHUD.Interface.Dialog
 
     public void MoveUp()
     {
-      if (_parent == null) { return; }
+      if (Parent == null) { return; }
 
-      var oldIndex = _parent.Contents.IndexOf(this);
+      var oldIndex = Parent.Contents.IndexOf(this);
       if (oldIndex == 0) { return; }
 
-      _parent.Contents.RemoveAt(oldIndex);
-      _parent.Contents.Insert(oldIndex - 1, this);
+      Parent.Contents.RemoveAt(oldIndex);
+      Parent.Contents.Insert(oldIndex - 1, this);
       _editor.Update();
     }
 
     public void MoveDown()
     {
-      if (_parent == null) { return; }
+      if (Parent == null) { return; }
 
-      var oldIndex = _parent.Contents.IndexOf(this);
-      if (oldIndex == _parent.Contents.LastIndex()) { return; }
+      var oldIndex = Parent.Contents.IndexOf(this);
+      if (oldIndex == Parent.Contents.LastIndex()) { return; }
 
-      _parent.Contents.RemoveAt(oldIndex);
-      _parent.Contents.Insert(oldIndex + 1, this);
+      Parent.Contents.RemoveAt(oldIndex);
+      Parent.Contents.Insert(oldIndex + 1, this);
       _editor.Update();
     }
 
     public void Remove()
     {
-      _parent?.Contents.RemoveAt(_parent.Contents.IndexOf(this));
+      Parent?.Contents.RemoveAt(Parent.Contents.IndexOf(this));
       _editor.Selected = null;
       _editor.Update();
     }
@@ -156,7 +157,7 @@ namespace RimHUD.Interface.Dialog
         if (Widgets.ButtonImage(buttonRect, _collapsed ? Textures.Reveal : Textures.Collapse)) { _collapsed = !_collapsed; }
       }
 
-      var label = IsRoot ? Lang.Get("Model.Component.Root").Bold() : GetLabel() + GetAttributes().Size(Theme.SmallTextStyle.ActualSize);
+      var label = IsRoot ? Lang.Get("Model.Component.Root").Bold() : GetLabel() + GetAttributes().SmallSize();
       GUIPlus.DrawText(labelRect, Type == LayoutItemType.Element || Type == LayoutItemType.CustomElement ? label.Bold() : label, Color);
       Widgets.DrawHighlightIfMouseover(labelRect);
       var curY = y + Text.LineHeight;
@@ -168,7 +169,7 @@ namespace RimHUD.Interface.Dialog
       return curY;
     }
 
-    private string GetLabel() => Def != null ? Lang.Get("Model.Component." + Id, Def.LabelCap) : Lang.Get("Model.Component." + Id);
+    private string GetLabel() => Def != null ? Lang.Get("Model.Component." + Id, Def.GetLabelCap()) : Lang.Get("Model.Component." + Id);
     private string GetAttributes() => (FillHeight ? $" {Lang.Get("Model.Component.Container.Filled")}" : null) + GetTargets();
 
     private string GetTargets()
@@ -196,7 +197,7 @@ namespace RimHUD.Interface.Dialog
 
     public XElement ToXml()
     {
-      var xml = new XElement(_parent == null ? HudLayout.RootName : Id);
+      var xml = new XElement(Parent == null ? HudLayout.RootName : Id);
       if (FillHeight) { xml.Add(new XAttribute(HudStack.FillAttributeName, true)); }
       if (Targets != HudTarget.All) { xml.Add(new XAttribute(HudComponent.TargetAttribute, Targets.ToId())); }
       if (Def != null) { xml.Add(new XAttribute(HudElement.DefNameAttribute, Def.defName)); }

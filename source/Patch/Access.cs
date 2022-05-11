@@ -25,6 +25,7 @@ namespace RimHUD.Patch
     public static MainButtonDef MainButtonDefOfWork { get; private set; }
 
     public static NeedDef NeedDefOfMood { get; private set; }
+    public static NeedDef NeedDefOfSuppression { get; private set; }
     public static NeedDef NeedDefOfBeauty { get; private set; }
     public static NeedDef NeedDefOfComfort { get; private set; }
     public static NeedDef NeedDefOfOutdoors { get; private set; }
@@ -51,6 +52,7 @@ namespace RimHUD.Patch
       MainButtonDefOfWork = DefDatabase<MainButtonDef>.GetNamed("Work");
 
       NeedDefOfMood = DefDatabase<NeedDef>.GetNamed("Mood");
+      NeedDefOfSuppression = DefDatabase<NeedDef>.GetNamed("Suppression");
       NeedDefOfBeauty = DefDatabase<NeedDef>.GetNamed("Beauty");
       NeedDefOfComfort = DefDatabase<NeedDef>.GetNamed("Comfort");
       NeedDefOfOutdoors = DefDatabase<NeedDef>.GetNamed("Outdoors");

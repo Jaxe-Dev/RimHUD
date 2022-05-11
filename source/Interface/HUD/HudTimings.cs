@@ -28,7 +28,7 @@ namespace RimHUD.Interface.HUD
 
     public class Timing
     {
-      private static readonly Color ColorBackground = Color.black.ToTransparent(0.4f);
+      private static readonly Color ColorBackground = Color.black.ToTransparent(0.7f);
       private static readonly Color ColorForeground = Color.cyan.ToTransparent(0.2f);
       private static readonly TextStyle MiniTextStyle = new TextStyle("Mini Text Style (Dev)", Theme.SmallTextStyle, -3, -3, -3, 100, 100, 100);
 
