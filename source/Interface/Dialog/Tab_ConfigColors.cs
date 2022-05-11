@@ -25,12 +25,19 @@ namespace RimHUD.Interface.Dialog
     private string _lightnessText;
     private readonly RangeOption _alpha = new RangeOption(0, 0, 100, Lang.Get("Dialog_Config.Tab.Colors.Alpha"));
     private string _alphaText;
+    private string _hexText;
 
-    private void ParseColor()
+    private void SelectColor()
     {
       if (_selected == null) { return; }
 
       GUI.FocusControl(null);
+      ParseColor();
+      _hexText = _selected.Value.ToHex();
+    }
+
+    private void ParseColor()
+    {
       Color.RGBToHSV(_selected.Value, out var hue, out var saturation, out var lightness);
       _hue.Value = hue.ToPercentageInt();
       _saturation.Value = saturation.ToPercentageInt();
@@ -38,7 +45,7 @@ namespace RimHUD.Interface.Dialog
       _alpha.Value = _selected.Value.a.ToPercentageInt();
     }
 
-    public override void Reset() => ParseColor();
+    public override void Reset() => SelectColor();
 
     public override void Draw(Rect rect)
     {
@@ -46,6 +53,8 @@ namespace RimHUD.Interface.Dialog
       var l = new ListingPlus();
 
       var selected = _selected;
+
+      GUIPlus.DrawContainer(hGrid[1]);
 
       l.BeginScrollView(hGrid[1], ref _scrollPosition, ref _viewRect);
 
@@ -74,6 +83,8 @@ namespace RimHUD.Interface.Dialog
       l.ColorOptionSelect(Theme.FactionIndependentColor, ref _selected);
       l.ColorOptionSelect(Theme.FactionHostileColor, ref _selected);
       l.ColorOptionSelect(Theme.FactionWildColor, ref _selected);
+      l.ColorOptionSelect(Theme.FactionPrisonerColor, ref _selected);
+      l.ColorOptionSelect(Theme.FactionSlaveColor, ref _selected);
       l.Gap();
 
       l.Label(Lang.Get("Theme.SkillColors").Bold());
@@ -90,18 +101,25 @@ namespace RimHUD.Interface.Dialog
 
       if (_selected != null)
       {
-        if (_selected != selected) { ParseColor(); }
+        if (_selected != selected) { SelectColor(); }
 
         l.Label(Lang.Get("Dialog_Config.Tab.Colors.Editor", _selected.Label).Bold());
         l.GapLine();
-        l.RangeSliderEntry(_hue, ref _hueText, 1);
-        l.RangeSliderEntry(_saturation, ref _saturationText, 2);
-        l.RangeSliderEntry(_lightness, ref _lightnessText, 3);
-        l.RangeSliderEntry(_alpha, ref _alphaText, 4);
+
+        if (l.HexEntry(Lang.Get("Dialog_Config.Tab.Colors.RGBA"), _selected, ref _hexText)) { ParseColor(); }
         l.GapLine();
-        var newColor = Color.HSVToRGB(_hue.Value.ToPercentageFloat(), _saturation.Value.ToPercentageFloat(), _lightness.Value.ToPercentageFloat());
-        newColor.a = _alpha.Value.ToPercentageFloat();
-        _selected.Value = newColor;
+
+        var hslChanged = l.RangeSliderEntry(_hue, ref _hueText, 1) || l.RangeSliderEntry(_saturation, ref _saturationText, 2) || l.RangeSliderEntry(_lightness, ref _lightnessText, 3) || l.RangeSliderEntry(_alpha, ref _alphaText, 4);
+
+        if (hslChanged)
+        {
+          var newColor = Color.HSVToRGB(_hue.Value.ToPercentageFloat(), _saturation.Value.ToPercentageFloat(), _lightness.Value.ToPercentageFloat());
+          newColor.a = _alpha.Value.ToPercentageFloat();
+          _selected.Value = newColor;
+          _hexText = _selected.Value.ToHex();
+        }
+
+        l.GapLine();
 
         var sampleRect = l.GetRect(30f);
         Widgets.DrawBoxSolid(sampleRect, _selected.Value);

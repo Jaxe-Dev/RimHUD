@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace RimHUD.Data.Models
 {
@@ -10,7 +9,6 @@ namespace RimHUD.Data.Models
     bool Hidden { get; }
 
     string Label { get; }
-    Color? Color { get; }
     Func<string> Tooltip { get; }
 
     Action OnHover { get; }

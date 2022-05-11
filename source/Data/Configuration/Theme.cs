@@ -27,7 +27,7 @@ namespace RimHUD.Data.Configuration
     [Attributes.Option("HudDimensions", "Width")]
     public static RangeOption HudWidth { get; } = new RangeOption(320, 200, 600, Lang.Get("Theme.HudWidth"));
     [Attributes.Option("HudDimensions", "Height")]
-    public static RangeOption HudHeight { get; } = new RangeOption(412, 300, 1500, Lang.Get("Theme.HudHeight"));
+    public static RangeOption HudHeight { get; } = new RangeOption(396, 300, 1500, Lang.Get("Theme.HudHeight"));
 
     [Attributes.Option("InspectPane", "Modify")]
     public static BoolOption InspectPaneTabModify { get; } = new BoolOption(true, Lang.Get("Theme.InspectPaneModify"), Lang.Get("Theme.InspectPaneModifyDesc"), EnsureHudNotHidden);
@@ -102,6 +102,10 @@ namespace RimHUD.Data.Configuration
     public static ColorOption FactionHostileColor { get; } = new ColorOption(new Color(1f, 0.1f, 0f), Lang.Get("Theme.FactionHostileColor"));
     [Attributes.Option("FactionColors", "Wild")]
     public static ColorOption FactionWildColor { get; } = new ColorOption(new Color(0.8f, 0.5f, 0.2f), Lang.Get("Theme.FactionWildColor"));
+    [Attributes.Option("FactionColors", "Prisoner")]
+    public static ColorOption FactionPrisonerColor { get; } = new ColorOption(new Color(0.85f, 1f, 0.5f), Lang.Get("Theme.FactionPrisonerColor"));
+    [Attributes.Option("FactionColors", "Slave")]
+    public static ColorOption FactionSlaveColor { get; } = new ColorOption(new Color(0.95f, 0.85f, 0.1f), Lang.Get("Theme.FactionSlaveColor"));
 
     [Attributes.Option("SkillColors", "MinorPassion")]
     public static ColorOption SkillMinorPassionColor { get; } = new ColorOption(new Color(1f, 0.9f, 0.7f), Lang.Get("Theme.SkillMinorPassionColor"));

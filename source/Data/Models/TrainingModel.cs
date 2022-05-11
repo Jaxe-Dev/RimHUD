@@ -15,7 +15,6 @@ namespace RimHUD.Data.Models
     public bool Hidden { get; }
 
     public string Label { get; }
-    public Color? Color { get; }
     public Func<string> Tooltip { get; }
 
     public Action OnHover { get; }
@@ -43,20 +42,22 @@ namespace RimHUD.Data.Models
           return;
         }
 
-        Label = def.LabelCap;
-
         var disabled = !model.Base.training.GetWanted(def);
         var hasLearned = model.Base.training.HasLearned(def);
 
+        Color color;
+        if (disabled) { color = Theme.DisabledColor.Value; }
+        else if (hasLearned) { color = Theme.SkillMinorPassionColor.Value; }
+        else { color = Theme.MainTextColor.Value; }
+
+        Label = def.GetLabelCap().Colorize(color);
+
         var steps = GetSteps(model.Base, def);
-        var value = steps + " / " + def.steps;
+        var value = (steps + " / " + def.steps).Colorize(color);
+
         Value = hasLearned ? value.Bold() : value;
 
-        Tooltip = model.GetAnimalTooltip(def);
-
-        if (disabled) { Color = Theme.DisabledColor.Value; }
-        else if (hasLearned) { Color = Theme.SkillMinorPassionColor.Value; }
-        else { Color = Theme.MainTextColor.Value; }
+        Tooltip = () => model.GetAnimalTooltip(def);
 
         OnClick = InspectPanePlus.ToggleTrainingTab;
       }

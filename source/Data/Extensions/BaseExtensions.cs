@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Text;
 using RimHUD.Data.Configuration;
+using RimHUD.Interface;
 using UnityEngine;
 using Verse;
 
@@ -14,6 +15,7 @@ namespace RimHUD.Data.Extensions
     public static string Color(this string self, Color color) => $"<color=#{color.ToHex()}>{self}</color>";
     public static TaggedString Color(this TaggedString self, Color color) => $"<color=#{color.ToHex()}>{self}</color>";
     public static string Size(this string self, int size) => $"<size={size}>{self}</size>";
+    public static string SmallSize(this string self) => $"<size={GUIPlus.FixedSmallFontSize}>{self}</size>";
 
     public static void TryAppendLine(this StringBuilder self, string text)
     {

@@ -33,7 +33,7 @@ namespace RimHUD.Interface.HUD
       var type = xe.Name.ToString();
       if (!HudModel.IsValidType(type))
       {
-        Mod.Error($"Invalid HUD widget type '{type}'");
+        Mod.Error($"Invalid HUD widget type '{type}'. It is recommended to reset the settings to default.");
         return null;
       }
 

@@ -28,5 +28,7 @@ namespace RimHUD.Data.Extensions
     }
 
     public static string GetName(this Pawn self) => self.Name?.ToStringFull.CapitalizeFirst() ?? self.LabelCap;
+
+    public static string GetLabelCap(this Def self) => string.IsNullOrWhiteSpace(self.LabelCap) ? self.defName : self.LabelCap.ToString();
   }
 }
