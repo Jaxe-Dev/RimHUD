@@ -28,7 +28,6 @@ namespace RimHUD.Data.Models
 
     public string Label { get; }
     public string Value { get; }
-    public Color? Color { get; }
     public Func<string> Tooltip { get; }
     public Action OnHover { get; }
     public Action OnClick { get; }
@@ -52,15 +51,15 @@ namespace RimHUD.Data.Models
       Skill = skill;
 
       var passionIndicator = new StringBuilder().Insert(0, Lang.Get("Model.Component.Skill.PassionIndicator"), (int) skill.passion).ToString();
-      Label = def.LabelCap + passionIndicator;
 
       var isActive = model.Base.jobs?.curDriver?.ActiveSkill == def;
       var isSaturated = skill.LearningSaturatedToday;
 
-      Value = skill.TotallyDisabled ? "-" : skill.Level.ToDecimalString(skill.XpProgressPercent.ToPercentageInt());
-      Color = skill.TotallyDisabled ? Theme.DisabledColor.Value : isSaturated ? Theme.SkillSaturatedColor.Value : isActive ? Theme.SkillActiveColor.Value : GetSkillColor(skill);
+      Label = (def.GetLabelCap() + passionIndicator).Colorize(skill.TotallyDisabled ? Theme.DisabledColor.Value : isSaturated ? Theme.SkillSaturatedColor.Value : isActive ? Theme.SkillActiveColor.Value : GetSkillColor(skill));
 
-      Tooltip = GetTooltip();
+      Value = skill.TotallyDisabled ? "-" : skill.Level.ToDecimalString(Math.Max(0, Math.Min(99, skill.XpProgressPercent.ToPercentageInt())));
+
+      Tooltip = GetTooltip;
 
       OnClick = InspectPanePlus.ToggleBioTab;
     }
@@ -75,88 +74,95 @@ namespace RimHUD.Data.Models
 
     private string GetSkillDescription() => (string) Access.Method_RimWorld_SkillUI_GetSkillDescription.Invoke(null, Skill);
 
-    private Func<string> GetTooltip() => () =>
+    private string GetTooltip()
     {
       var builder = new StringBuilder();
 
       builder.AppendLine(GetSkillDescription());
-      if (Skill.TotallyDisabled) { return builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize); }
       builder.AppendLine();
 
       if (Def == SkillDefOf.Shooting)
       {
-        HudModel.BuildStatString(this, builder, StatDefOf.ShootingAccuracyPawn);
-        HudModel.BuildStatString(this, builder, StatDefOf.AimingDelayFactor);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.ShootingAccuracyPawn);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.AimingDelayFactor);
       }
       else if (Def == SkillDefOf.Melee)
       {
-        HudModel.BuildStatString(this, builder, StatDefOf.MeleeDPS);
-        HudModel.BuildStatString(this, builder, StatDefOf.MeleeHitChance);
-        HudModel.BuildStatString(this, builder, StatDefOf.MeleeDodgeChance);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.MeleeDPS);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.MeleeHitChance);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.MeleeDodgeChance);
       }
       else if (!Skill.TotallyDisabled)
       {
-        HudModel.BuildStatString(this, builder, StatDefOf.WorkSpeedGlobal);
-        HudModel.BuildStatString(this, builder, StatDefOf.GeneralLaborSpeed);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.WorkSpeedGlobal);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.GeneralLaborSpeed);
         builder.AppendLine();
-
-        if (Def == SkillDefOf.Construction)
-        {
-          HudModel.BuildStatString(this, builder, StatDefOf.ConstructSuccessChance);
-          HudModel.BuildStatString(this, builder, StatDefOf.ConstructionSpeedFactor);
-          HudModel.BuildStatString(this, builder, StatDefOf.FixBrokenDownBuildingSuccessChance);
-          HudModel.BuildStatString(this, builder, StatDefOf.SmoothingSpeed);
-        }
-        else if (Def == SkillDefOf.Mining)
-        {
-          HudModel.BuildStatString(this, builder, StatDefOf.MiningSpeed);
-          HudModel.BuildStatString(this, builder, StatDefOf.MiningYield);
-        }
-        else if (Def == SkillDefOf.Cooking)
-        {
-          HudModel.BuildStatString(this, builder, CookSpeed);
-          HudModel.BuildStatString(this, builder, StatDefOf.FoodPoisonChance);
-          HudModel.BuildStatString(this, builder, ButcheryFleshSpeed);
-          HudModel.BuildStatString(this, builder, ButcheryFleshEfficiency);
-          HudModel.BuildStatString(this, builder, DrugCookingSpeed);
-        }
-        else if (Def == SkillDefOf.Plants)
-        {
-          HudModel.BuildStatString(this, builder, StatDefOf.PlantWorkSpeed);
-          HudModel.BuildStatString(this, builder, StatDefOf.PlantHarvestYield);
-        }
-        else if (Def == SkillDefOf.Animals)
-        {
-          HudModel.BuildStatString(this, builder, StatDefOf.AnimalGatherSpeed);
-          HudModel.BuildStatString(this, builder, StatDefOf.AnimalGatherYield);
-          HudModel.BuildStatString(this, builder, StatDefOf.TameAnimalChance);
-          HudModel.BuildStatString(this, builder, StatDefOf.TrainAnimalChance);
-          HudModel.BuildStatString(this, builder, StatDefOf.HuntingStealth);
-        }
-        else if (Def == SkillDefOf.Crafting)
-        {
-          HudModel.BuildStatString(this, builder, SmeltingSpeed);
-          HudModel.BuildStatString(this, builder, ButcheryMechanoidSpeed);
-          HudModel.BuildStatString(this, builder, ButcheryMechanoidEfficiency);
-        }
-        else if (Def == SkillDefOf.Artistic) { }
-        else if (Def == SkillDefOf.Medicine)
-        {
-          HudModel.BuildStatString(this, builder, MedicalOperationSpeed);
-          HudModel.BuildStatString(this, builder, StatDefOf.MedicalSurgerySuccessChance);
-          HudModel.BuildStatString(this, builder, StatDefOf.MedicalTendSpeed);
-          HudModel.BuildStatString(this, builder, StatDefOf.MedicalTendQuality);
-        }
-        else if (Def == SkillDefOf.Social)
-        {
-          HudModel.BuildStatString(this, builder, StatDefOf.NegotiationAbility);
-          HudModel.BuildStatString(this, builder, StatDefOf.TradePriceImprovement);
-          HudModel.BuildStatString(this, builder, StatDefOf.SocialImpact);
-        }
-        else if (Def == SkillDefOf.Intellectual) { HudModel.BuildStatString(this, builder, StatDefOf.ResearchSpeedFactor); }
+      }
+      if (Def == SkillDefOf.Construction)
+      {
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.ConstructSuccessChance);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.ConstructionSpeed);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.FixBrokenDownBuildingSuccessChance);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.SmoothingSpeed);
+      }
+      else if (Def == SkillDefOf.Mining)
+      {
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.MiningYield);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.MiningSpeed);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.DeepDrillingSpeed);
+      }
+      else if (Def == SkillDefOf.Cooking)
+      {
+        HudModel.BuildStatString(Model.Base, builder, CookSpeed);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.FoodPoisonChance);
+        HudModel.BuildStatString(Model.Base, builder, ButcheryFleshEfficiency);
+        HudModel.BuildStatString(Model.Base, builder, ButcheryFleshSpeed);
+        HudModel.BuildStatString(Model.Base, builder, DrugCookingSpeed);
+      }
+      else if (Def == SkillDefOf.Plants)
+      {
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.PlantWorkSpeed);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.PlantHarvestYield);
+        if (ModsConfig.IdeologyActive) { HudModel.BuildStatString(Model.Base, builder, StatDefOf.PruningSpeed); }
+      }
+      else if (Def == SkillDefOf.Animals)
+      {
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.AnimalGatherSpeed);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.AnimalGatherYield);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.TameAnimalChance);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.TrainAnimalChance);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.HuntingStealth);
+      }
+      else if (Def == SkillDefOf.Crafting)
+      {
+        HudModel.BuildStatString(Model.Base, builder, SmeltingSpeed);
+        HudModel.BuildStatString(Model.Base, builder, ButcheryMechanoidSpeed);
+        HudModel.BuildStatString(Model.Base, builder, ButcheryMechanoidEfficiency);
+      }
+      else if (Def == SkillDefOf.Artistic) { }
+      else if (Def == SkillDefOf.Medicine)
+      {
+        HudModel.BuildStatString(Model.Base, builder, MedicalOperationSpeed);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.MedicalSurgerySuccessChance);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.MedicalTendSpeed);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.MedicalTendQuality);
+      }
+      else if (Def == SkillDefOf.Social)
+      {
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.NegotiationAbility);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.TradePriceImprovement);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.Beauty);
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.SocialImpact);
+        if (ModsConfig.RoyaltyActive) { HudModel.BuildStatString(Model.Base, builder, StatDefOf.ConversionPower); }
+        if (ModsConfig.IdeologyActive) { HudModel.BuildStatString(Model.Base, builder, StatDefOf.SuppressionPower); }
+      }
+      else if (Def == SkillDefOf.Intellectual)
+      {
+        HudModel.BuildStatString(Model.Base, builder, StatDefOf.ResearchSpeed);
+        if (ModsConfig.IdeologyActive) { HudModel.BuildStatString(Model.Base, builder, StatDefOf.HackingSpeed); }
       }
 
       return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
-    };
+    }
   }
 }

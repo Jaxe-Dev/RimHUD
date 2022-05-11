@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <Layout>
   <HStack>
     <Panel>
@@ -46,11 +45,17 @@
       <Row>
         <NeedFood />
       </Row>
-      <Row>
+      <Row Targets="HhC">
         <NeedRest />
       </Row>
-      <Row Targets="Hh">
+      <Row Targets="H">
         <NeedRecreation />
+      </Row>
+      <Row Targets="H">
+        <NeedSuppression />
+      </Row>
+      <Row Targets="H">
+        <PrisonerInfo />
       </Row>
     </Panel>
     <Panel>

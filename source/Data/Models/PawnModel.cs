@@ -22,9 +22,11 @@ namespace RimHUD.Data.Models
 
     public HudTarget Target => GetTargetType();
 
-    public string Name => Base.GetName();
-    public TextModel GenderRaceAndAge => GetGenderRaceAndAge();
-    public TextModel IdeoligionGenderRaceAndAge => GetIdeoligionGenderRaceAndAge();
+    public TextModel Name => TextModel.Create(GetName().Colorize(FactionRelationColor), BioTooltip, InspectPanePlus.ToggleSocialTab);
+    public string NameText => GetName();
+
+    public TextModel GenderRaceAndAge => TextModel.Create(GetGenderRaceAndAge().CapitalizeFirst().Colorize(FactionRelationColor), GetBioTooltip, InspectPanePlus.ToggleBioTab);
+    public TextModel SimpleGenderRaceAndAge => TextModel.Create(GetGenderRaceAndAge(true).CapitalizeFirst().Colorize(FactionRelationColor), GetBioTooltip, InspectPanePlus.ToggleBioTab);
 
     public bool IsPlayerFaction => Base.Faction?.IsPlayer ?? false;
     public bool IsPlayerManaged => (Base.Faction?.IsPlayer ?? false) || (Base.HostFaction?.IsPlayer ?? false);
@@ -40,26 +42,27 @@ namespace RimHUD.Data.Models
     public bool IsAnimal => Base.RaceProps.Animal;
     public TextModel Master => GetMaster();
 
-    public NeedModel Rest => GetNeedModel(NeedDefOf.Rest);
-    public NeedModel Food => GetNeedModel(NeedDefOf.Food);
-    public NeedModel Recreation => GetNeedModel(NeedDefOf.Joy);
-    public NeedModel Mood => GetNeedModel(Access.NeedDefOfMood);
+    public NeedModel Rest => GetNeed(NeedDefOf.Rest);
+    public NeedModel Food => GetNeed(NeedDefOf.Food);
+    public NeedModel Recreation => GetNeed(NeedDefOf.Joy);
+    public NeedModel Suppression => GetNeed(Access.NeedDefOfSuppression);
+    public NeedModel Mood => GetNeed(Access.NeedDefOfMood);
     public float MoodThresholdMinor => Base.mindState?.mentalBreaker?.BreakThresholdMinor ?? -1f;
     public float MoodThresholdMajor => Base.mindState?.mentalBreaker?.BreakThresholdMajor ?? -1f;
     public float MoodThresholdExtreme => Base.mindState?.mentalBreaker?.BreakThresholdExtreme ?? -1f;
 
-    public SkillModel Shooting => GetSkillModel(SkillDefOf.Shooting);
-    public SkillModel Melee => GetSkillModel(SkillDefOf.Melee);
-    public SkillModel Construction => GetSkillModel(SkillDefOf.Construction);
-    public SkillModel Mining => GetSkillModel(SkillDefOf.Mining);
-    public SkillModel Cooking => GetSkillModel(SkillDefOf.Cooking);
-    public SkillModel Plants => GetSkillModel(SkillDefOf.Plants);
-    public SkillModel Animals => GetSkillModel(SkillDefOf.Animals);
-    public SkillModel Crafting => GetSkillModel(SkillDefOf.Crafting);
-    public SkillModel Artistic => GetSkillModel(SkillDefOf.Artistic);
-    public SkillModel Medicine => GetSkillModel(SkillDefOf.Medicine);
-    public SkillModel Social => GetSkillModel(SkillDefOf.Social);
-    public SkillModel Intellectual => GetSkillModel(SkillDefOf.Intellectual);
+    public SkillModel Shooting => GetSkill(SkillDefOf.Shooting);
+    public SkillModel Melee => GetSkill(SkillDefOf.Melee);
+    public SkillModel Construction => GetSkill(SkillDefOf.Construction);
+    public SkillModel Mining => GetSkill(SkillDefOf.Mining);
+    public SkillModel Cooking => GetSkill(SkillDefOf.Cooking);
+    public SkillModel Plants => GetSkill(SkillDefOf.Plants);
+    public SkillModel Animals => GetSkill(SkillDefOf.Animals);
+    public SkillModel Crafting => GetSkill(SkillDefOf.Crafting);
+    public SkillModel Artistic => GetSkill(SkillDefOf.Artistic);
+    public SkillModel Medicine => GetSkill(SkillDefOf.Medicine);
+    public SkillModel Social => GetSkill(SkillDefOf.Social);
+    public SkillModel Intellectual => GetSkill(SkillDefOf.Intellectual);
 
     public TrainingModel Tameness => GetTrainingModel(TrainableDefOf.Tameness);
     public TrainingModel Obedience => GetTrainingModel(TrainableDefOf.Obedience);
@@ -67,14 +70,15 @@ namespace RimHUD.Data.Models
     public TrainingModel Rescue => GetTrainingModel(Access.TrainableDefOfRescue);
     public TrainingModel Haul => GetTrainingModel(Access.TrainableDefOfHaul);
 
-    public string Activity => GetActivity();
+    public TextModel Activity => TextModel.Create(GetActivity() ?? "", GetActivityTooltip, () => Find.MainTabsRoot.SetCurrentTab(Access.MainButtonDefOfWork));
     public Func<string> ActivityTooltip { get; }
-    public string Queued => GetQueued();
+    public TextModel Queued => TextModel.Create(GetQueued() ?? "");
 
-    public string Equipped => GetEquipped();
-    public string Carrying => GetCarrying();
+    public TextModel Equipped => TextModel.Create(GetEquipped() ?? "", onClick: InspectPanePlus.ToggleGearTab);
+    public TextModel Carrying => TextModel.Create(GetCarrying() ?? "", onClick: InspectPanePlus.ToggleGearTab);
 
-    public string CompInfo => GetCompInfo();
+    public TextModel CompInfo => TextModel.Create(GetCompInfo());
+    public TextModel PrisonerInfo => TextModel.Create(GetPrisonerInfo(), onClick: InspectPanePlus.TogglePrisonerTab);
 
     public Func<string> BioTooltip { get; }
 
@@ -89,8 +93,8 @@ namespace RimHUD.Data.Models
       Base = pawn;
       Health = new HealthModel(this);
       Mind = new MindModel(this);
-      ActivityTooltip = GetActivityTooltip();
-      BioTooltip = GetBioTooltip();
+      ActivityTooltip = GetActivityTooltip;
+      BioTooltip = GetBioTooltip;
     }
 
     private static PawnModel GetSelected()
@@ -105,44 +109,54 @@ namespace RimHUD.Data.Models
       return Base.RaceProps.Humanlike ? HudTarget.OtherHumanlike : HudTarget.OtherCreature;
     }
 
-    private NeedModel GetNeedModel(NeedDef def) => new NeedModel(this, def);
-    private SkillModel GetSkillModel(SkillDef def) => new SkillModel(this, def);
+    private NeedModel GetNeed(NeedDef def) => new NeedModel(this, def);
+    private SkillModel GetSkill(SkillDef def) => new SkillModel(this, def);
     private TrainingModel GetTrainingModel(TrainableDef def) => new TrainingModel(this, def);
+
+    private string GetName() => Base.GetName();
 
     private string GetGender() => Base.gender == Gender.None ? null : Base.GetGenderLabel();
 
-    private string GetRace() => Base.kindDef?.race?.label;
-    private string GetRaceIfNotHuman() => Base.RaceProps?.Humanlike ?? true ? null : Base.kindDef?.race?.label;
+    private string GetRace(bool simple = false)
+    {
+      if (!simple && ModsConfig.IdeologyActive && (Base.RaceProps?.Humanlike ?? true))
+      {
+        var race = Base.Ideo?.memberName ?? Base.kindDef?.race?.label;
 
-    private string GetGenderRaceAndAgeText(bool hideRaceIfHuman)
+        if (Base.IsPrisoner) { race += " " + "Prisoner".Translate().ToLower(); }
+        else if (Base.IsSlave) { race += " " + "Slave".Translate().ToLower(); }
+
+        return race.Trim();
+      }
+      return Base.kindDef?.race?.label;
+    }
+
+    private string GetGenderRaceAndAge(bool simple = false)
     {
       var gender = GetGender();
-      var genderKind = Lang.AdjectiveNoun(gender, hideRaceIfHuman ? GetRaceIfNotHuman() : GetRace());
+
+      var race = GetRace(simple);
+
+      var genderKind = Lang.AdjectiveNoun(gender, race);
 
       if (Base.ageTracker == null) { return genderKind.Trim(); }
 
       Base.ageTracker.AgeBiologicalTicks.TicksToPeriod(out var years, out var quadrums, out var days, out _);
       var ageDays = (quadrums * GenDate.DaysPerQuadrum) + days;
 
-      var age = years.ToString().Bold();
+      var age = years.ToString();
       if (ageDays == 0 || ageDays == GenDate.DaysPerYear) { age = Lang.CombineWords(age, Lang.Get("Model.Age.Birthday")); }
       else if (ageDays == 1) { age = Lang.CombineWords(age, Lang.Get("Model.Age.Day")); }
       else { age = Lang.CombineWords(age, Lang.Get("Model.Age.Days", ageDays)); }
 
-      return Lang.Get("Model.GenderRaceAndAge", genderKind, age).Trim();
-    }
+      var genderRaceAndAge = Lang.Get("Model.GenderRaceAndAge", genderKind, age).Trim();
 
-    private TextModel GetGenderRaceAndAge() => TextModel.Create(GetGenderRaceAndAgeText(false).CapitalizeFirst(), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab);
-
-    private TextModel GetIdeoligionGenderRaceAndAge()
-    {
-      var genderRaceAge = GetGenderRaceAndAgeText(true);
-      return TextModel.Create(!ModLister.IdeologyInstalled || Base.Ideo == null ? genderRaceAge : Lang.Get("Model.IdeoligionGenderRaceAndAge", Base.Ideo.memberName, genderRaceAge), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab);
+      return genderRaceAndAge;
     }
 
     private string GetKind()
     {
-      if (IsHumanlike) { return Base.Faction == Faction.OfPlayer ? Base.story?.Title ?? Base.KindLabel : Base.TraderKind?.label ?? Base.KindLabel; }
+      if (IsHumanlike) { return (Base.Faction == Faction.OfPlayer ? Base.story?.Title ?? Base.KindLabel : Base.TraderKind?.label ?? Base.KindLabel).CapitalizeFirst(); }
 
       if (Base.Faction == null)
       {
@@ -167,10 +181,16 @@ namespace RimHUD.Data.Models
     private Color GetFactionRelationColor()
     {
       if (Base.Faction == null) { return IsHumanlike ? Theme.FactionIndependentColor.Value : Theme.FactionWildColor.Value; }
+
+      if (Base.IsPrisonerOfColony) { return Theme.FactionPrisonerColor.Value; }
+      if (Base.IsSlaveOfColony) { return Theme.FactionSlaveColor.Value; }
+
       if (Base.Faction.IsPlayer) { return Theme.FactionOwnColor.Value; }
 
       if (Base.Faction.PlayerRelationKind == FactionRelationKind.Hostile) { return Theme.FactionHostileColor.Value; }
-      return Base.Faction.PlayerRelationKind == FactionRelationKind.Ally ? Theme.FactionAlliedColor.Value : Theme.FactionIndependentColor.Value;
+      if (Base.Faction.PlayerRelationKind == FactionRelationKind.Ally) { return Theme.FactionAlliedColor.Value; }
+
+      return Theme.FactionIndependentColor.Value;
     }
 
     private string GetFactionRelation()
@@ -180,7 +200,9 @@ namespace RimHUD.Data.Models
 
       var relation = Base.Faction.PlayerRelationKind;
       if (relation == FactionRelationKind.Hostile) { return Base.RaceProps.IsMechanoid ? Lang.Get("Model.Faction.Hostile") : Lang.Get("Model.Faction.Enemy"); }
-      return relation == FactionRelationKind.Ally ? Lang.Get("Model.Faction.Allied") : null;
+      if (relation == FactionRelationKind.Ally) { return Lang.Get("Model.Faction.Allied"); }
+
+      return null;
     }
 
     private TextModel GetRelationKindAndFaction()
@@ -188,7 +210,7 @@ namespace RimHUD.Data.Models
       var faction = Base.Faction == null || !Base.Faction.HasName ? null : Lang.Get("Model.OfFaction", Base.Faction.Name);
       var relationKind = Lang.AdjectiveNoun(GetFactionRelation(), GetKind());
 
-      return TextModel.Create(Lang.Get("Model.RelationKindAndFaction", relationKind, faction).Trim().CapitalizeFirst(), GetBioTooltip(), FactionRelationColor, InspectPanePlus.ToggleBioTab);
+      return TextModel.Create(Lang.Get("Model.RelationKindAndFaction", relationKind, faction).Trim().CapitalizeFirst().Colorize(FactionRelationColor), GetBioTooltip, InspectPanePlus.ToggleBioTab);
     }
 
     private string GetActivity()
@@ -200,7 +222,7 @@ namespace RimHUD.Data.Models
         var target = Base.jobs?.curJob?.def == JobDefOf.AttackStatic || Base.jobs?.curJob?.def == JobDefOf.Wait_Combat ? Base.TargetCurrentlyAimingAt.Thing?.LabelCap : null;
         var activity = target == null ? lord.NullOrEmpty() ? jobText : $"{lord} ({jobText})" : Lang.Get("Model.Info.Attacking", target);
 
-        return activity == null ? null : Lang.Get("Model.Info.Activity", activity.Bold());
+        return activity == null ? "" : Lang.Get("Model.Info.Activity", activity.Bold());
       }
       catch (Exception exception)
       {
@@ -209,11 +231,11 @@ namespace RimHUD.Data.Models
       }
     }
 
-    private Func<string> GetActivityTooltip() => () =>
+    private string GetActivityTooltip()
     {
       try
       {
-        var work = Base.CurJob?.workGiverDef?.Worker?.def?.workType?.gerundLabel.CapitalizeFirst();
+        var work = Base.CurJob?.workGiverDef?.Worker?.def?.workType?.labelShort.CapitalizeFirst();
         if (work == null) { return null; }
 
         var builder = new StringBuilder();
@@ -227,7 +249,7 @@ namespace RimHUD.Data.Models
         Mod.HandleWarning(exception);
         return null;
       }
-    };
+    }
 
     private string GetQueued()
     {
@@ -263,51 +285,74 @@ namespace RimHUD.Data.Models
 
     private string GetCompInfo()
     {
-      var comps = (from comp in Base.AllComps select comp.CompInspectStringExtra() into text where !text.NullOrEmpty() select text.Replace('\n', ' ')).ToArray();
-      return comps.Length > 0 ? comps.ToCommaList() : null;
+      try
+      {
+        var info = (from comp in Base.AllComps select comp.CompInspectStringExtra() into text where !text.NullOrEmpty() select text.Replace('\n', ' ')).ToArray();
+        return info.Length > 0 ? info.ToCommaList() : null;
+      }
+      catch { return null; }
     }
 
-    private Func<string> GetBioTooltip()
+    private string GetPrisonerInfo()
+    {
+      if (!Base.IsPrisonerOfColony || Base.guest == null) { return null; }
+      var resistance = "RecruitmentResistance".Translate() + ": " + Base.guest.resistance.ToString("F1").Bold();
+      var will = "WillLevel".Translate() + ": " + Base.guest.will.ToString("F1").Bold();
+      return ModsConfig.IdeologyActive ? $"{resistance} / {will}" : resistance.ToString();
+    }
+
+    private string GetBioTooltip()
     {
       if (IsAnimal) { return GetAnimalTooltip(); }
 
       if (Base.story == null) { return null; }
 
-      return () =>
+      var builder = new StringBuilder();
+
+      var title = Base.story?.TitleCap;
+      if (title != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Title", title)); }
+      var faction = Base.Faction?.Name;
+      if (faction != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Faction", faction)); }
+      var ideoligion = !ModsConfig.IdeologyActive || Base.Ideo == null ? null : Base.Ideo.name;
+      if (ideoligion != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Ideoligion", ideoligion)); }
+
+      builder.AppendLine();
+
+      var childhood = Base.story.GetBackstory(BackstorySlot.Childhood);
+      var childhoodText = childhood == null ? null : $"{"Childhood".Translate()}: {childhood.TitleCapFor(Base.gender)}";
+      var adulthood = Base.story.GetBackstory(BackstorySlot.Adulthood);
+      var adulthoodText = adulthood == null ? null : $"{"Adulthood".Translate()}: {adulthood.TitleCapFor(Base.gender)}";
+
+      builder.TryAppendLine(childhoodText);
+      builder.TryAppendLine(adulthoodText);
+
+      builder.AppendLine();
+
+      var traits = Base.story.traits.allTraits.Count > 0 ? "Traits".Translate() + ": " + Base.story.traits.allTraits.Select(trait => trait.LabelCap).ToCommaList(true) : null;
+      builder.TryAppendLine(traits);
+
+      var disabledWork = Base.story.DisabledWorkTagsBackstoryAndTraits;
+      string incapable = disabledWork == WorkTags.None ? null : "IncapableOf".Translate() + ": " + disabledWork.GetAllSelectedItems<WorkTags>().Where(tag => tag != WorkTags.None).Select(tag => tag.LabelTranslated().CapitalizeFirst()).ToCommaList(true);
+
+      builder.TryAppendLine(incapable.NullOrEmpty() ? null : incapable.Color(Theme.CriticalColor.Value));
+
+      builder.AppendLine();
+
+      HudModel.BuildStatString(Base, builder, StatDefOf.PsychicSensitivity);
+
+      if (ModsConfig.RoyaltyActive)
       {
-        var builder = new StringBuilder();
+        builder.AppendLine("MeditationFocuses".Translate().CapitalizeFirst() + ": " + MeditationUtility.FocusTypesAvailableForPawnString(Base).CapitalizeFirst());
+        HudModel.BuildStatString(Base, builder, StatDefOf.MeditationFocusGain);
+        HudModel.BuildStatString(Base, builder, StatDefOf.MeditationFocusStrength);
+      }
+      if (ModsConfig.IdeologyActive)
+      {
+        HudModel.BuildStatString(Base, builder, StatDefOf.SocialIdeoSpreadFrequencyFactor);
+        HudModel.BuildStatString(Base, builder, StatDefOf.CertaintyLossFactor);
+      }
 
-        var title = Base.story?.TitleCap;
-        if (title != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Title", title)); }
-        var faction = Base.Faction?.Name;
-        if (faction != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Faction", faction)); }
-        var ideoligion = !ModLister.IdeologyInstalled || Base.Ideo == null ? null : Base.Ideo.name;
-        if (ideoligion != null) { builder.TryAppendLine(Lang.Get("Model.Bio.Ideoligion", ideoligion)); }
-
-        builder.AppendLine();
-
-        var childhood = Base.story.GetBackstory(BackstorySlot.Childhood);
-        var childhoodText = childhood == null ? null : $"{"Childhood".Translate()}: {childhood.TitleCapFor(Base.gender)}";
-        var adulthood = Base.story.GetBackstory(BackstorySlot.Adulthood);
-        var adulthoodText = adulthood == null ? null : $"{"Adulthood".Translate()}: {adulthood.TitleCapFor(Base.gender)}";
-
-        builder.TryAppendLine(childhoodText);
-        builder.TryAppendLine(adulthoodText);
-
-        builder.AppendLine();
-
-        var traits = Base.story.traits.allTraits.Count > 0 ? "Traits".Translate() + ": " + Base.story.traits.allTraits.Select(trait => trait.LabelCap).ToCommaList(true) : null;
-        builder.TryAppendLine(traits);
-
-        builder.AppendLine();
-
-        var disabledWork = Base.story.DisabledWorkTagsBackstoryAndTraits;
-        string incapable = disabledWork == WorkTags.None ? null : "IncapableOf".Translate() + ": " + disabledWork.GetAllSelectedItems<WorkTags>().Where(tag => tag != WorkTags.None).Select(tag => tag.LabelTranslated().CapitalizeFirst()).ToCommaList(true);
-
-        builder.TryAppendLine(incapable.NullOrEmpty() ? null : incapable.Color(Theme.CriticalColor.Value));
-
-        return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
-      };
+      return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
     }
 
     private TextModel GetMaster()
@@ -317,10 +362,13 @@ namespace RimHUD.Data.Models
 
       var masterName = master.LabelShort;
       var relation = Base.GetMostImportantRelation(master)?.LabelCap;
-      return TextModel.Create(Lang.Get("Model.Bio.Master", masterName), GetAnimalTooltip(), relation == null ? (Color?) null : Theme.SkillMinorPassionColor.Value, InspectPanePlus.ToggleSocialTab);
+
+      var text = Lang.Get("Model.Bio.Master", masterName);
+
+      return TextModel.Create(relation == null ? text : text.Colorize(Theme.SkillMinorPassionColor.Value), () => GetAnimalTooltip(), InspectPanePlus.ToggleSocialTab);
     }
 
-    public Func<string> GetAnimalTooltip(TrainableDef def = null) => () =>
+    public string GetAnimalTooltip(TrainableDef def = null)
     {
       var builder = new StringBuilder();
 
@@ -350,6 +398,6 @@ namespace RimHUD.Data.Models
       }
 
       return builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize);
-    };
+    }
   }
 }

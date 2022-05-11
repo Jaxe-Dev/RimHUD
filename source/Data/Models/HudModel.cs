@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RimHUD.Data.Configuration;
-using RimHUD.Interface;
+using RimHUD.Data.Extensions;
 using RimHUD.Interface.Dialog;
 using RimHUD.Interface.HUD;
-using RimHUD.Patch;
 using RimWorld;
 using Verse;
 
@@ -31,7 +30,7 @@ namespace RimHUD.Data.Models
       { HudBlank.Name, _ => HudBlank.GetEmpty },
       { HudSeparator.Name, _ => HudSeparator.Get() },
 
-      { "NameHeader", model => HudValue.FromText(model.Name, model.BioTooltip, Theme.LargeTextStyle, InspectPanePlus.ToggleSocialTab) },
+      { "NameHeader", model => HudValue.FromTextModel(model.Name, Theme.LargeTextStyle) },
 
       { "Outfit", model => HudSelector.FromSelectorModel(model.OutfitSelector, Theme.SmallTextStyle) },
       { "Food", model => HudSelector.FromSelectorModel(model.FoodSelector, Theme.SmallTextStyle) },
@@ -40,7 +39,7 @@ namespace RimHUD.Data.Models
 
       { "RelationKindAndFaction", model => HudValue.FromTextModel(model.RelationKindFaction, Theme.SmallTextStyle) },
       { "GenderRaceAndAge", model => HudValue.FromTextModel(model.GenderRaceAndAge, Theme.SmallTextStyle) },
-      { "IdeoligionGenderRaceAndAge", model => HudValue.FromTextModel(model.IdeoligionGenderRaceAndAge, Theme.SmallTextStyle) },
+      { "SimpleGenderRaceAndAge", model => HudValue.FromTextModel(model.SimpleGenderRaceAndAge, Theme.SmallTextStyle) },
 
       { "Health", model => HudBar.FromModel(model.Health.Bar, Theme.RegularTextStyle) },
       { "HealthCondition", model => HudValue.FromTextModel(model.Health.Condition, Theme.SmallTextStyle) },
@@ -48,11 +47,12 @@ namespace RimHUD.Data.Models
 
       { "Master", model => HudValue.FromTextModel(model.Master, Theme.RegularTextStyle) },
 
-      { "Activity", model => HudValue.FromText(model.Activity, model.ActivityTooltip, Theme.SmallTextStyle, () => Find.MainTabsRoot.SetCurrentTab(Access.MainButtonDefOfWork)) },
-      { "Queued", model => HudValue.FromText(model.Queued, null, Theme.SmallTextStyle) },
-      { "Equipped", model => HudValue.FromText(model.Equipped, null, Theme.SmallTextStyle, InspectPanePlus.ToggleGearTab) },
-      { "Carrying", model => HudValue.FromText(model.Carrying, null, Theme.SmallTextStyle, InspectPanePlus.ToggleGearTab) },
-      { "CompInfo", model => HudValue.FromText(model.CompInfo, null, Theme.SmallTextStyle) }
+      { "Activity", model => HudValue.FromTextModel(model.Activity, Theme.SmallTextStyle) },
+      { "Queued", model => HudValue.FromTextModel(model.Queued, Theme.SmallTextStyle) },
+      { "Equipped", model => HudValue.FromTextModel(model.Equipped, Theme.SmallTextStyle) },
+      { "Carrying", model => HudValue.FromTextModel(model.Carrying, Theme.SmallTextStyle) },
+      { "CompInfo", model => HudValue.FromTextModel(model.CompInfo, Theme.SmallTextStyle) },
+      { "PrisonerInfo", model => HudValue.FromTextModel(model.PrisonerInfo, Theme.RegularTextStyle) }
     };
 
     private static Dictionary<string, Func<PawnModel, HudWidgetBase>> Widgets { get; } = new Dictionary<string, Func<PawnModel, HudWidgetBase>>(StandardElementComponents)
@@ -61,6 +61,7 @@ namespace RimHUD.Data.Models
       { "NeedFood", model => HudBar.FromModel(model.Food, Theme.RegularTextStyle) },
       { "NeedRest", model => HudBar.FromModel(model.Rest, Theme.RegularTextStyle) },
       { "NeedRecreation", model => HudBar.FromModel(model.Recreation, Theme.RegularTextStyle) },
+      { "NeedSuppression", model => HudBar.FromModel(model.Suppression, Theme.RegularTextStyle) },
 
       { "SkillShooting", model => HudValue.FromValueModel(model.Shooting, Theme.RegularTextStyle) },
       { "SkillMelee", model => HudValue.FromValueModel(model.Melee, Theme.RegularTextStyle) },
@@ -87,7 +88,8 @@ namespace RimHUD.Data.Models
       new LayoutItem(LayoutItemType.Element, "NeedFood"),
       new LayoutItem(LayoutItemType.Element, "NeedRecreation"),
       new LayoutItem(LayoutItemType.Element, "NeedMood"),
-      new LayoutItem(LayoutItemType.Element, "NeedRest")
+      new LayoutItem(LayoutItemType.Element, "NeedRest"),
+      new LayoutItem(LayoutItemType.Element, "NeedSuppression")
     };
 
     private static readonly LayoutItem[] StandardSkillComponents =
@@ -120,7 +122,8 @@ namespace RimHUD.Data.Models
       "Food",
       "Joy",
       "Mood",
-      "Rest"
+      "Rest",
+      "Suppression"
     };
 
     private static readonly string[] StandardSkillDefs =
@@ -181,8 +184,8 @@ namespace RimHUD.Data.Models
       if (def != null)
       {
         if (def.Worker?.IsDisabledFor(model.Base) ?? true) { return HudBlank.GetEmpty; }
-        var text = $"{def.LabelCap}: {def.ValueToString(model.Base.GetStatValue(def))}";
-        return (HudWidgetBase) HudValue.FromText(text, null, Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
+        var text = $"{def.GetLabelCap()}: {def.ValueToString(model.Base.GetStatValue(def))}";
+        return (HudWidgetBase) HudValue.FromTextModel(TextModel.Create(text), Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
       }
 
       Mod.Warning($"Invalid HUD Widget, Stat def '{defName}' not found, resetting layout to default");
@@ -196,7 +199,7 @@ namespace RimHUD.Data.Models
       if (def != null)
       {
         var text = $"{def.LabelCap}: {(def.type == RecordType.Time ? model.Base.records.GetAsInt(def).ToStringTicksToPeriod() : model.Base.records.GetValue(def).ToString("0.##"))}";
-        return (HudWidgetBase) HudValue.FromText(text, null, Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
+        return (HudWidgetBase) HudValue.FromTextModel(TextModel.Create(text), Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
       }
 
       Mod.Warning($"Invalid HUD Widget, Record def '{defName}' not found, resetting layout to default");
@@ -240,14 +243,17 @@ namespace RimHUD.Data.Models
       HudLayout.LoadDefaultAndSave();
     }
 
-    public static void BuildStatString(IAttributeModel attribute, StringBuilder builder, StatDef def)
+    public static void BuildStatString(Pawn pawn, StringBuilder builder, StatDef def) => builder.TryAppendLine(GetStatString(pawn, def));
+
+    public static string GetStatString(Pawn pawn, StatDef def)
     {
       try
       {
-        if (def.Worker?.IsDisabledFor(attribute.Model.Base) ?? true) { return; }
-        builder.AppendLine($"{def.LabelCap}: {def.ValueToString(attribute.Model.Base.GetStatValue(def))}");
+        if (def.Worker?.IsDisabledFor(pawn) ?? true) { return null; }
+
+        return $"{def.LabelCap}: {def.ValueToString(pawn.GetStatValue(def))}";
       }
-      catch (Exception exception) { Mod.HandleWarning(exception); }
+      catch { return null; }
     }
   }
 }

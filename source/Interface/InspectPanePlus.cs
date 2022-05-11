@@ -66,7 +66,7 @@ namespace RimHUD.Interface
         GUIPlus.SetColor(model.FactionRelationColor);
 
         var labelRect = new Rect(0f, 0f, rect.width - lineEndWidth, Text.LineHeight);
-        var label = model.Name;
+        var label = model.NameText;
 
         Widgets.Label(labelRect, label);
         if (Widgets.ButtonInvisible(labelRect)) { ToggleSocialTab(); }
@@ -153,73 +153,6 @@ namespace RimHUD.Interface
       return false;
     }
 
-    private static void DrawButtons(Rect rect, ref float lineEndWidth)
-    {
-      if (Find.Selector.NumSelected != 1) { return; }
-      var selected = Find.Selector.SingleSelectedThing;
-      if (selected == null) { return; }
-
-      lineEndWidth += ButtonSize;
-      Widgets.InfoCardButton(rect.width - lineEndWidth, 0f, selected);
-
-      if (!(selected is Pawn pawn)) { return; }
-
-      if (Theme.ShowFactionIcon.Value && pawn.Faction != null)
-      {
-        lineEndWidth += ButtonSize;
-        var factionRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
-        FactionUIUtility.DrawFactionIconWithTooltip(factionRect, pawn.Faction);
-        lineEndWidth += GUIPlus.SmallPadding;
-      }
-
-      if (Theme.ShowIdeoligionIcon.Value && ModLister.IdeologyInstalled && pawn.Ideo != null)
-      {
-        lineEndWidth += ButtonSize;
-        var ideoligionRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
-        IdeoUIUtility.DoIdeoIcon(ideoligionRect, pawn.Ideo, extraAction: () => IdeoUIUtility.OpenIdeoInfo(pawn.Ideo));
-        lineEndWidth += GUIPlus.SmallPadding;
-      }
-
-      if (!PlayerControlled(pawn)) { return; }
-
-      lineEndWidth += GUIPlus.SmallPadding;
-
-      if (pawn.playerSettings.UsesConfigurableHostilityResponse)
-      {
-        lineEndWidth += ButtonSize;
-        HostilityResponseModeUtility.DrawResponseButton(new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize), pawn, false);
-        lineEndWidth += GUIPlus.SmallPadding;
-      }
-
-      lineEndWidth += ButtonSize;
-      var careRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
-      MedicalCareUtility.MedicalCareSelectButton(careRect, pawn);
-      GUIPlus.DrawTooltip(careRect, () => Lang.Get("InspectPane.MedicalCare", pawn.KindLabel, pawn.playerSettings.medCare.GetLabel()), true);
-      lineEndWidth += GUIPlus.SmallPadding;
-
-      if (!pawn.IsColonist) { return; }
-
-      lineEndWidth += ButtonSize;
-
-      var canDoctor = !pawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor);
-      var canDoctorPriority = pawn.workSettings == null || pawn.workSettings?.GetPriority(WorkTypeDefOf.Doctor) > 0;
-
-      var selfTendRect = new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize);
-      var selfTendTip = "SelfTendTip".Translate(Faction.OfPlayer.def.pawnsPlural, 0.7f.ToStringPercent()).CapitalizeFirst();
-
-      if (!canDoctor) { selfTendTip += "\n\n" + "MessageCannotSelfTendEver".Translate(pawn.LabelShort, pawn); }
-      else if (!canDoctorPriority) { selfTendTip += "\n\n" + "MessageSelfTendUnsatisfied".Translate(pawn.LabelShort, pawn); }
-
-      GUIPlus.SetFont(GameFont.Tiny);
-      var selfTend = pawn.playerSettings.selfTend;
-      selfTend = GUIPlus.DrawToggle(selfTendRect, selfTend, GUIPlus.PrepareTipSignal(() => selfTendTip), canDoctor, Textures.SelfTendOnIcon, Textures.SelfTendOffIcon);
-      if (selfTend != pawn.playerSettings.selfTend) { Mod_Multiplayer.SetSelfTend(pawn, selfTend); }
-      GUIPlus.ResetFont();
-      lineEndWidth += GUIPlus.SmallPadding;
-    }
-
-    private static bool PlayerControlled(Pawn pawn) => !pawn.Dead && pawn.playerSettings != null && ((pawn.Faction?.IsPlayer ?? false) || (pawn.HostFaction?.IsPlayer ?? false));
-
     private static void DrawLog(Pawn pawn, Rect rect)
     {
       if (_log == null || _lastBattleTick != pawn.records.LastBattleTick || _lastPlayTick != Find.PlayLog.LastTick || _pawn != pawn)
@@ -252,6 +185,91 @@ namespace RimHUD.Interface
       Widgets.EndScrollView();
     }
 
+    private static void DrawButtons(Rect rect, ref float lineEndWidth)
+    {
+      if (Find.Selector.NumSelected != 1) { return; }
+      var selected = Find.Selector.SingleSelectedThing;
+      if (selected == null) { return; }
+
+      lineEndWidth += ButtonSize;
+      Widgets.InfoCardButton(rect.width - lineEndWidth, 0f, selected);
+
+      if (!(selected is Pawn pawn)) { return; }
+
+      if (Theme.ShowFactionIcon.Value && pawn.Faction != null)
+      {
+        lineEndWidth += ButtonSize;
+        FactionUIUtility.DrawFactionIconWithTooltip(new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize), pawn.Faction);
+        lineEndWidth += GUIPlus.SmallPadding;
+      }
+
+      if (Theme.ShowIdeoligionIcon.Value && ModsConfig.IdeologyActive && pawn.Ideo != null)
+      {
+        lineEndWidth += ButtonSize;
+        DrawIdeoligionButton(pawn, new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize));
+        lineEndWidth += GUIPlus.SmallPadding;
+      }
+
+      if (!PlayerControlled(pawn)) { return; }
+
+      lineEndWidth += GUIPlus.SmallPadding;
+
+      if (pawn.playerSettings.UsesConfigurableHostilityResponse)
+      {
+        lineEndWidth += ButtonSize;
+        HostilityResponseModeUtility.DrawResponseButton(new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize), pawn, false);
+        lineEndWidth += GUIPlus.SmallPadding;
+      }
+
+      lineEndWidth += ButtonSize;
+      DrawMedicalButton(pawn, new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize));
+      lineEndWidth += GUIPlus.SmallPadding;
+
+      if (!pawn.IsColonist) { return; }
+
+      lineEndWidth += ButtonSize;
+
+      DrawSelfTendButton(pawn, new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize));
+
+      lineEndWidth += GUIPlus.SmallPadding;
+    }
+
+    private static bool PlayerControlled(Pawn pawn) => !pawn.Dead && pawn.playerSettings != null && ((pawn.Faction?.IsPlayer ?? false) || (pawn.HostFaction?.IsPlayer ?? false));
+
+    private static void DrawSelfTendButton(Pawn pawn, Rect rect)
+    {
+      var canDoctor = !pawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor);
+      var canDoctorPriority = pawn.workSettings == null || pawn.workSettings?.GetPriority(WorkTypeDefOf.Doctor) > 0;
+
+      var selfTendTip = "SelfTendTip".Translate(Faction.OfPlayer.def.pawnsPlural, 0.7f.ToStringPercent()).CapitalizeFirst();
+
+      if (!canDoctor) { selfTendTip += "\n\n" + "MessageCannotSelfTendEver".Translate(pawn.LabelShort, pawn); }
+      else if (!canDoctorPriority) { selfTendTip += "\n\n" + "MessageSelfTendUnsatisfied".Translate(pawn.LabelShort, pawn); }
+
+      GUIPlus.SetFont(GameFont.Tiny);
+      var selfTend = pawn.playerSettings.selfTend;
+      selfTend = GUIPlus.DrawToggle(rect, selfTend, GUIPlus.PrepareTipSignal(() => selfTendTip), canDoctor, Textures.SelfTendOnIcon, Textures.SelfTendOffIcon);
+      if (selfTend != pawn.playerSettings.selfTend) { Mod_Multiplayer.SetSelfTend(pawn, selfTend); }
+      GUIPlus.ResetFont();
+    }
+
+    private static void DrawMedicalButton(Pawn pawn, Rect rect)
+    {
+      MedicalCareUtility.MedicalCareSelectButton(rect, pawn);
+      GUIPlus.DrawTooltip(rect, () => Lang.Get("InspectPane.MedicalCare", pawn.KindLabel, pawn.playerSettings.medCare.GetLabel()), true);
+    }
+
+    private static void DrawIdeoligionButton(Pawn pawn, Rect rect)
+    {
+      IdeoUIUtility.DoIdeoIcon(rect, pawn.Ideo, false, () => IdeoUIUtility.OpenIdeoInfo(pawn.Ideo));
+      if (!Mouse.IsOver(rect)) { return; }
+
+      var name = pawn.ideo.Ideo.name.Colorize(ColoredText.TipSectionTitleColor);
+      var certainty = "Certainty".Translate().CapitalizeFirst().Resolve() + ": " + pawn.ideo.Certainty.ToStringPercent();
+      var previous = pawn != null && pawn.ideo.PreviousIdeos.Any() ? "\n\n" + "Formerly".Translate().CapitalizeFirst() + ": \n" + (from x in pawn.ideo.PreviousIdeos select x.name).ToLineList("  - ") : null;
+      TooltipHandler.TipRegion(rect, $"{name}\n{certainty}{previous}");
+    }
+
     public static void ClearCache()
     {
       _log = null;
@@ -282,5 +300,7 @@ namespace RimHUD.Interface
     public static void ToggleNeedsTab() => ToggleTab(typeof(ITab_Pawn_Needs));
     public static void ToggleSocialTab() => ToggleTab(typeof(ITab_Pawn_Social));
     public static void ToggleTrainingTab() => ToggleTab(typeof(ITab_Pawn_Training));
+    public static void TogglePrisonerTab() => ToggleTab(typeof(ITab_Pawn_Prisoner));
+    public static void ToggleSlaveTab() => ToggleTab(typeof(ITab_Pawn_Slave));
   }
 }

@@ -23,8 +23,12 @@ namespace RimHUD.Interface
     public const float MediumPadding = 8f;
     public const float LargePadding = 16f;
 
+    public const int FixedSmallFontSize = 11;
+
     private static readonly Stack SavedColors = new Stack();
     private static readonly Stack SavedFonts = new Stack();
+
+    public static readonly Color ContainerColor = new Color(1f, 1f, 1f, 0.025f);
 
     public static readonly Color ButtonSelectedColor = new Color(0.5f, 1f, 0.5f);
     public static readonly Color ItemSelectedColor = new Color(0.25f, 0.4f, 0.1f);
@@ -98,12 +102,13 @@ namespace RimHUD.Interface
         calcSize = guiStyle.CalcSize(TextContent);
       }
 
-      if (calcSize.x > rect.width || calcSize.y > rect.height)
+      if (Math.Floor(calcSize.x) > rect.width || Math.Floor(calcSize.y) > rect.height)
       {
         TextContent.text = "...";
-        var ellipsesLength = guiStyle.CalcSize(TextContent);
-        textRect.width -= ellipsesLength.x;
-        GUI.Label(new Rect(rect.RightPartPixels(ellipsesLength.x)), TextContent.text, guiStyle);
+        var ellipsesLength = (float) Math.Floor(guiStyle.CalcSize(TextContent).x);
+        textRect.width -= ellipsesLength;
+        var truncated = TextContent.text.Truncate(ellipsesLength);
+        GUI.Label(new Rect(rect.RightPartPixels(ellipsesLength)), truncated, guiStyle);
         DrawTooltip(rect, () => text.Size(guiStyle.fontSize), false, TooltipExpandedId);
       }
 
@@ -113,17 +118,6 @@ namespace RimHUD.Interface
       TextContent.text = "";
       guiStyle.alignment = originalAlignment;
       ResetColor();
-    }
-
-    public static bool DrawButton(Rect rect, Texture2D texture, TipSignal? tooltip = null, bool enabled = true)
-    {
-      SetEnabledColor(enabled);
-      var result = Widgets.ButtonImage(rect, texture);
-      ResetColor();
-
-      DrawTooltip(rect, tooltip, false);
-
-      return result & enabled;
     }
 
     public static bool DrawButton(Rect rect, string label, TipSignal? tooltip = null, GameFont? font = null, bool enabled = true)
@@ -205,6 +199,13 @@ namespace RimHUD.Interface
     public static Vector2 GetTextSize(string text, GUIStyle style) => style.CalcSize(new GUIContent(text));
 
     public static GUIStyle GetGameFontStyle(GameFont font) => Text.fontStyles[(int) font];
-    public static GUIStyle GetGameReadOnlyFontStyle(GameFont font) => Text.textAreaReadOnlyStyles[(int) font];
+
+    public static void DrawContainer(Rect rect)
+    {
+      SetColor(ContainerColor);
+      GUI.DrawTexture(rect, BaseContent.WhiteTex);
+      Widgets.DrawBox(rect);
+      ResetColor();
+    }
   }
 }

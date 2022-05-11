@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using UnityEngine;
@@ -14,7 +15,8 @@ namespace RimHUD.Interface.Dialog
     private const float ElementPadding = 1f;
 
     private static readonly Color LinkColor = new Color(0.3f, 0.7f, 1f);
-    private static readonly Regex RangeSliderEntryRegex = new Regex(@"^[-]?\d{0,4}$");
+    private static readonly Regex RangeSliderEntryRegex = new Regex(@"^[-]?\d{0,3}$");
+    private static readonly Regex HexRegex = new Regex(@"^[A-Fa-f0-9]{0,8}$");
 
     public void BeginScrollView(Rect rect, ref Vector2 scrollPosition, ref Rect viewRect)
     {
@@ -96,7 +98,7 @@ namespace RimHUD.Interface.Dialog
       GUIPlus.ResetColor();
     }
 
-    public void RangeSliderEntry(RangeOption range, ref string text, int id, bool enabled = true)
+    public bool RangeSliderEntry(RangeOption range, ref string text, int id, bool enabled = true)
     {
       GUIPlus.SetEnabledColor(enabled);
 
@@ -107,6 +109,8 @@ namespace RimHUD.Interface.Dialog
       var entryName = "RangeSliderEntry_Text" + id;
       var isFocused = GUI.GetNameOfFocusedControl() == entryName;
       if (!isFocused) { text = range.Value.ToString(); }
+
+      var original = text;
 
       GUI.SetNextControlName(entryName);
       var newText = Widgets.TextField(grid[2], text, 5, RangeSliderEntryRegex);
@@ -135,6 +139,31 @@ namespace RimHUD.Interface.Dialog
       Gap(verticalSpacing);
 
       GUIPlus.ResetColor();
+
+      return original != text;
+    }
+
+    public bool HexEntry(string label, ColorOption color, ref string text, string tooltip = null, bool enabled = true)
+    {
+      GUIPlus.SetEnabledColor(enabled);
+
+      var grid = GetRect(Text.LineHeight).GetHGrid(ElementPadding, LabelWidth, -1f);
+
+      GUIPlus.DrawText(grid[1], label);
+
+      if (text == null) { text = color.Value.ToHex(); }
+
+      var original = text;
+
+      text = Widgets.TextField(grid[2], text, 8, HexRegex);
+      if (enabled) { color.Value = GUIPlus.HexToColor(text); }
+
+      GUIPlus.DrawTooltip(grid[0], tooltip, true);
+      Gap(verticalSpacing);
+
+      GUIPlus.ResetColor();
+
+      return original != text;
     }
 
     public bool CheckboxLabeled(string label, bool value, string tooltip = null, bool enabled = true)
@@ -158,7 +187,8 @@ namespace RimHUD.Interface.Dialog
     {
       var height = listingRect.height - curY;
 
-      NewColumnIfNeeded(height);
+      NewColumnIfNeeded((float) Math.Floor(height));
+
       var result = new Rect(curX, curY, ColumnWidth, height);
       curY += height;
       return result;

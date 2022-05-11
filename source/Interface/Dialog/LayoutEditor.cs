@@ -10,7 +10,7 @@ namespace RimHUD.Interface.Dialog
     public LayoutItem Selected { get; set; }
     public bool HasSelected => Selected != null;
     public bool CanAddContainer => Selected != null && Selected.Type == LayoutItemType.Stack;
-    public bool CanAddRow => Selected != null && Selected.Type == LayoutItemType.Panel;
+    public bool CanAddRow => Selected != null && (Selected.Type == LayoutItemType.Panel || Selected.Type == LayoutItemType.Row);
     public bool CanAddElement => Selected != null && Selected.Type == LayoutItemType.Row;
 
     public bool Docked { get; }
@@ -26,7 +26,7 @@ namespace RimHUD.Interface.Dialog
 
     public void Draw(Rect rect)
     {
-      Widgets.DrawOptionUnselected(rect);
+      GUIPlus.DrawContainer(rect);
 
       var viewRect = new Rect(rect.x, rect.y, rect.width - GUIPlus.ScrollbarWidth, _lastHeight > -1f ? _lastHeight : 99999f);
       Widgets.BeginScrollView(rect, ref _scrollPosition, viewRect);
@@ -34,9 +34,19 @@ namespace RimHUD.Interface.Dialog
       Widgets.EndScrollView();
     }
 
-    public void Add(LayoutItem container)
+    public void Add(LayoutItem container, bool selectNew = false)
     {
-      Selected.Contents.Insert(0, new LayoutItem(container.Type, container.Id, container.Def, this, Selected));
+      var newItem = new LayoutItem(container.Type, container.Id, container.Def, this, Selected);
+      Selected.Contents.Insert(0, newItem);
+      if (selectNew) { Selected = newItem; }
+      Update();
+    }
+
+    public void AddSibling(LayoutItem container)
+    {
+      var newItem = new LayoutItem(container.Type, container.Id, container.Def, this, Selected.Parent);
+      Selected.Parent.Contents.Insert(Selected.Index + 1, newItem);
+      Selected = newItem;
       Update();
     }
 

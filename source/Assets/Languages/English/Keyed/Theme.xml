@@ -67,6 +67,8 @@
   <RimHUD.Theme.FactionIndependentColor>Independent</RimHUD.Theme.FactionIndependentColor>
   <RimHUD.Theme.FactionHostileColor>Hostile</RimHUD.Theme.FactionHostileColor>
   <RimHUD.Theme.FactionWildColor>Wild</RimHUD.Theme.FactionWildColor>
+  <RimHUD.Theme.FactionPrisonerColor>Prisoner</RimHUD.Theme.FactionPrisonerColor>
+  <RimHUD.Theme.FactionSlaveColor>Slave</RimHUD.Theme.FactionSlaveColor>
 
   <RimHUD.Theme.SkillColors>Skill Colors</RimHUD.Theme.SkillColors>
   <RimHUD.Theme.SkillMinorPassionColor>Minor passion</RimHUD.Theme.SkillMinorPassionColor>

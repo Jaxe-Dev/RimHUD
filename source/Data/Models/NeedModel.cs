@@ -6,7 +6,6 @@ using RimHUD.Interface;
 using RimHUD.Interface.HUD;
 using RimHUD.Patch;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace RimHUD.Data.Models
@@ -17,7 +16,6 @@ namespace RimHUD.Data.Models
     public bool Hidden { get; }
 
     public string Label { get; }
-    public Color? Color { get; }
     public Func<string> Tooltip { get; }
 
     public Action OnHover { get; }
@@ -39,7 +37,7 @@ namespace RimHUD.Data.Models
         return;
       }
 
-      Label = def.LabelCap;
+      Label = def.GetLabelCap();
 
       Max = 1f;
       Value = need.CurLevelPercentage;
@@ -50,14 +48,19 @@ namespace RimHUD.Data.Models
         Tooltip = model.Mind.Tooltip;
         Thresholds = new[] { model.MoodThresholdMinor, model.MoodThresholdMajor, model.MoodThresholdExtreme };
       }
-      else if (def == NeedDefOf.Food) { Tooltip = GetFoodTooltip(); }
-      else if (def == NeedDefOf.Rest) { Tooltip = GetRestTooltip(); }
-      else if (def == NeedDefOf.Joy) { Tooltip = GetJoyTooltip(); }
+      else if (def == NeedDefOf.Food) { Tooltip = GetFoodTooltip; }
+      else if (def == NeedDefOf.Rest) { Tooltip = GetRestTooltip; }
+      else if (def == NeedDefOf.Joy) { Tooltip = GetJoyTooltip; }
 
-      OnClick = InspectPanePlus.ToggleNeedsTab;
+      if (def == Access.NeedDefOfSuppression)
+      {
+        Tooltip = GetSuppressionTooltip;
+        OnClick = InspectPanePlus.ToggleSlaveTab;
+      }
+      else { OnClick = InspectPanePlus.ToggleNeedsTab; }
     }
 
-    private Func<string> GetFoodTooltip() => () =>
+    private string GetFoodTooltip()
     {
       var builder = new StringBuilder();
       if (Model.Base.RaceProps?.foodType != null)
@@ -65,21 +68,21 @@ namespace RimHUD.Data.Models
         builder.AppendLine("Diet".Translate() + ": " + Model.Base.RaceProps.foodType.ToHumanString().CapitalizeFirst());
         builder.AppendLine();
       }
-      HudModel.BuildStatString(this, builder, StatDefOf.EatingSpeed);
-      HudModel.BuildStatString(this, builder, StatDefOf.HungerRateMultiplier);
+      HudModel.BuildStatString(Model.Base, builder, StatDefOf.EatingSpeed);
+      HudModel.BuildStatString(Model.Base, builder, StatDefOf.HungerRateMultiplier);
 
       return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
-    };
+    }
 
-    private Func<string> GetRestTooltip() => () =>
+    private string GetRestTooltip()
     {
       var builder = new StringBuilder();
-      HudModel.BuildStatString(this, builder, StatDefOf.RestRateMultiplier);
+      HudModel.BuildStatString(Model.Base, builder, StatDefOf.RestRateMultiplier);
 
       return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
-    };
+    }
 
-    private Func<string> GetJoyTooltip() => () =>
+    private string GetJoyTooltip()
     {
       var builder = new StringBuilder();
       if (Model.Base.needs?.beauty != null) { builder.AppendLine($"{Access.NeedDefOfBeauty.LabelCap}: {Model.Base.needs.beauty.CurLevelPercentage.ToStringPercent()}"); }
@@ -87,6 +90,16 @@ namespace RimHUD.Data.Models
       if (Model.Base.needs?.outdoors != null) { builder.AppendLine($"{Access.NeedDefOfOutdoors.LabelCap}: {Model.Base.needs.outdoors.CurLevelPercentage.ToStringPercent()}"); }
 
       return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
-    };
+    }
+
+    private string GetSuppressionTooltip()
+    {
+      var builder = new StringBuilder();
+
+      HudModel.BuildStatString(Model.Base, builder, StatDefOf.SlaveSuppressionFallRate);
+      HudModel.BuildStatString(Model.Base, builder, StatDefOf.Terror);
+
+      return builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize);
+    }
   }
 }

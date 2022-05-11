@@ -26,7 +26,7 @@
   <RimHUD.Dialog_Config.Tab.Colors.Saturation>Saturation</RimHUD.Dialog_Config.Tab.Colors.Saturation>
   <RimHUD.Dialog_Config.Tab.Colors.Lightness>Lightness</RimHUD.Dialog_Config.Tab.Colors.Lightness>
   <RimHUD.Dialog_Config.Tab.Colors.Alpha>Alpha</RimHUD.Dialog_Config.Tab.Colors.Alpha>
-  <RimHUD.Dialog_Config.Tab.Colors.Hex>Hex</RimHUD.Dialog_Config.Tab.Colors.Hex>
+  <RimHUD.Dialog_Config.Tab.Colors.RGBA>RGBA</RimHUD.Dialog_Config.Tab.Colors.RGBA>
 
   <RimHUD.Dialog_Config.Tab.Content>Content</RimHUD.Dialog_Config.Tab.Content>
   <RimHUD.Dialog_Config.Tab.Content.Preset>Choose Preset</RimHUD.Dialog_Config.Tab.Content.Preset>
