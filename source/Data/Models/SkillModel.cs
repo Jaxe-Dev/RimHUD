@@ -55,9 +55,10 @@ namespace RimHUD.Data.Models
       var isActive = model.Base.jobs?.curDriver?.ActiveSkill == def;
       var isSaturated = skill.LearningSaturatedToday;
 
-      Label = (def.GetLabelCap() + passionIndicator).Colorize(skill.TotallyDisabled ? Theme.DisabledColor.Value : isSaturated ? Theme.SkillSaturatedColor.Value : isActive ? Theme.SkillActiveColor.Value : GetSkillColor(skill));
+      var color = skill.TotallyDisabled ? Theme.DisabledColor.Value : isSaturated ? Theme.SkillSaturatedColor.Value : isActive ? Theme.SkillActiveColor.Value : GetSkillColor(skill);
+      Label = (def.GetLabelCap() + passionIndicator).Colorize(color);
 
-      Value = skill.TotallyDisabled ? "-" : skill.Level.ToDecimalString(Math.Max(0, Math.Min(99, skill.XpProgressPercent.ToPercentageInt())));
+      Value = skill.TotallyDisabled ? "-" : skill.Level.ToDecimalString(Math.Max(0, Math.Min(99, skill.XpProgressPercent.ToPercentageInt()))).Colorize(color);
 
       Tooltip = GetTooltip;
 

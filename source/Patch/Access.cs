@@ -52,7 +52,6 @@ namespace RimHUD.Patch
       MainButtonDefOfWork = DefDatabase<MainButtonDef>.GetNamed("Work");
 
       NeedDefOfMood = DefDatabase<NeedDef>.GetNamed("Mood");
-      NeedDefOfSuppression = DefDatabase<NeedDef>.GetNamed("Suppression");
       NeedDefOfBeauty = DefDatabase<NeedDef>.GetNamed("Beauty");
       NeedDefOfComfort = DefDatabase<NeedDef>.GetNamed("Comfort");
       NeedDefOfOutdoors = DefDatabase<NeedDef>.GetNamed("Outdoors");
@@ -60,6 +59,8 @@ namespace RimHUD.Patch
 
       TrainableDefOfHaul = DefDatabase<TrainableDef>.GetNamed("Haul");
       TrainableDefOfRescue = DefDatabase<TrainableDef>.GetNamed("Rescue");
+
+      if (ModsConfig.IdeologyActive) { NeedDefOfSuppression = DefDatabase<NeedDef>.GetNamed("Suppression", false); }
     }
 
     public class StaticMethodHandler

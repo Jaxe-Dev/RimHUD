@@ -183,13 +183,20 @@ namespace RimHUD.Data.Models
       var def = DefDatabase<StatDef>.GetNamed(defName, false);
       if (def != null)
       {
-        if (def.Worker?.IsDisabledFor(model.Base) ?? true) { return HudBlank.GetEmpty; }
-        var text = $"{def.GetLabelCap()}: {def.ValueToString(model.Base.GetStatValue(def))}";
-        return (HudWidgetBase) HudValue.FromTextModel(TextModel.Create(text), Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
+        try
+        {
+          if (def.Worker?.IsDisabledFor(model.Base) ?? true) { return HudBlank.GetEmpty; }
+
+          var text = $"{def.GetLabelCap()}: {def.ValueToString(model.Base.GetStatValue(def))}";
+
+          return (HudWidgetBase) HudValue.FromTextModel(TextModel.Create(text), Theme.RegularTextStyle) ?? HudBlank.GetEmpty;
+        }
+        catch { return HudBlank.GetEmpty; }
       }
 
       Mod.Warning($"Invalid HUD Widget, Stat def '{defName}' not found, resetting layout to default");
       RequiredReset();
+
       return HudBlank.GetEmpty;
     }
 
