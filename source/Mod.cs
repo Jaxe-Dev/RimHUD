@@ -21,7 +21,7 @@ namespace RimHUD
   {
     public const string Id = "RimHUD";
     public const string Name = Id;
-    public const string Version = "1.10.0";
+    public const string Version = "1.10.1";
 
     public static IEnumerable<string> SameConfigVersions { get; } = new[]
     {
