@@ -11,6 +11,7 @@ using RimHUD.Data.Extensions;
 using RimHUD.Data.Integration;
 using RimHUD.Interface.HUD;
 using Verse;
+using Verse.Steam;
 
 namespace RimHUD.Data.Storage
 {
@@ -332,7 +333,10 @@ namespace RimHUD.Data.Storage
       var file = new FileInfo(Path.Combine(Mod.ContentPack.RootDir, AboutDirectoryName, CreditsFileName));
 
       try { Credits = XDocument.Load(file.FullName).Root; }
-      catch { Mod.Warning("Unable to load credits. This may be an unofficial version of the mod"); }
+      catch
+      {
+        if (SteamManager.Initialized) { Mod.Warning("Unable to load credits. This may be an unofficial version of the mod"); }
+      }
     }
   }
 }
