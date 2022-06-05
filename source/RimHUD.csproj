@@ -59,11 +59,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Mod.cs" />
     <Compile Include="Data\Attributes.cs" />
     <Compile Include="Data\ExternalMod.cs" />
     <Compile Include="Data\Lang.cs" />
     <Compile Include="Data\State.cs" />
+    <Compile Include="Data\Troubleshooter.cs" />
     <Compile Include="Data\Compatibility\CompatibilityManager.cs" />
     <Compile Include="Data\Compatibility\CompatibilityPatch.cs" />
     <Compile Include="Data\Configuration\BoolOption.cs" />
@@ -160,38 +163,37 @@
     <Compile Include="Patch\Verse_Profile_MemoryUtility_ClearAllMapsAndWorld.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\LICENSE" />
-    <None Include="Assets\README.md" />
-    <None Include="Assets\loadFolders.xml" />
-    <None Include="Assets\About\About.xml" />
-    <None Include="Assets\About\Credits.xml" />
-    <None Include="Assets\About\Preview.png" />
-    <None Include="Assets\About\PublishedFileId.txt" />
-    <None Include="Assets\Languages\English\Keyed\Base.xml" />
-    <None Include="Assets\Languages\English\Keyed\Integration.xml" />
-    <None Include="Assets\Languages\English\Keyed\Model.xml" />
-    <None Include="Assets\Languages\English\Keyed\Theme.xml" />
-    <None Include="Assets\Presets\Dubs Bad Hygiene.xml" />
-    <None Include="Assets\Textures\RimHUD\ConfigIcon.png" />
-    <None Include="Assets\Textures\RimHUD\SelfTendOffIcon.png" />
-    <None Include="Assets\Textures\RimHUD\SelfTendOnIcon.png" />
-    <None Include="Assets\Textures\RimHUD\ToggleIcon.png" />
-    <None Include="Assets\Legacy\1.1-1.2\Languages\English\Keyed\Base.xml" />
-    <None Include="Assets\Legacy\1.1-1.2\Languages\English\Keyed\Integration.xml" />
-    <None Include="Assets\Legacy\1.1-1.2\Languages\English\Keyed\Model.xml" />
-    <None Include="Assets\Legacy\1.1-1.2\Languages\English\Keyed\Theme.xml" />
-    <None Include="Assets\Legacy\1.1-1.2\Presets\Dubs Bad Hygiene.xml" />
-    <None Include="Assets\Legacy\1.1-1.2\Textures\RimHUD\ConfigIcon.png" />
-    <None Include="Assets\Legacy\1.1-1.2\Textures\RimHUD\SelfTendOffIcon.png" />
-    <None Include="Assets\Legacy\1.1-1.2\Textures\RimHUD\SelfTendOnIcon.png" />
-    <None Include="Assets\Legacy\1.1-1.2\Textures\RimHUD\ToggleIcon.png" />
+    <None Include="-\README.md" />
+    <None Include="-\loadFolders.xml" />
+    <None Include="-\About\About.xml" />
+    <None Include="-\About\Credits.xml" />
+    <None Include="-\About\Preview.png" />
+    <None Include="-\About\PublishedFileId.txt" />
+    <None Include="-\Languages\English\Keyed\Base.xml" />
+    <None Include="-\Languages\English\Keyed\Integration.xml" />
+    <None Include="-\Languages\English\Keyed\Model.xml" />
+    <None Include="-\Languages\English\Keyed\Theme.xml" />
+    <None Include="-\Presets\Dubs Bad Hygiene.xml" />
+    <None Include="-\Textures\RimHUD\ConfigIcon.png" />
+    <None Include="-\Textures\RimHUD\SelfTendOffIcon.png" />
+    <None Include="-\Textures\RimHUD\SelfTendOnIcon.png" />
+    <None Include="-\Textures\RimHUD\ToggleIcon.png" />
+    <None Include="-\Legacy\1.1-1.2\Languages\English\Keyed\Base.xml" />
+    <None Include="-\Legacy\1.1-1.2\Languages\English\Keyed\Integration.xml" />
+    <None Include="-\Legacy\1.1-1.2\Languages\English\Keyed\Model.xml" />
+    <None Include="-\Legacy\1.1-1.2\Languages\English\Keyed\Theme.xml" />
+    <None Include="-\Legacy\1.1-1.2\Presets\Dubs Bad Hygiene.xml" />
+    <None Include="-\Legacy\1.1-1.2\Textures\RimHUD\ConfigIcon.png" />
+    <None Include="-\Legacy\1.1-1.2\Textures\RimHUD\SelfTendOffIcon.png" />
+    <None Include="-\Legacy\1.1-1.2\Textures\RimHUD\SelfTendOnIcon.png" />
+    <None Include="-\Legacy\1.1-1.2\Textures\RimHUD\ToggleIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Interface\Layout\Presets\Defaults\Docked.xml" />
     <EmbeddedResource Include="Interface\Layout\Presets\Defaults\Floating.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Presets\Dubs Bad Hygiene - Thirst.xml" />
+    <None Include="-\Presets\Dubs Bad Hygiene - Thirst.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProjectDir)release.targets" />
