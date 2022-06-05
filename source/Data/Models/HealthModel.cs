@@ -97,13 +97,13 @@ namespace RimHUD.Data.Models
           foreach (var hediff in hediffs.Where(hediff => hediff.Visible)) { builder.AppendLine(GetHealthTooltipLine(hediff)); }
         }
 
-        if (builder.Length == 0) { builder.AppendLine("NoHealthConditions".Translate().CapitalizeFirst().Color(Theme.DisabledColor.Value)); }
+        if (builder.Length == 0) { builder.AppendLine("NoHealthConditions".Translate().CapitalizeFirst().Colorize(Theme.DisabledColor.Value)); }
 
         return builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize);
       }
       catch (Exception exception)
       {
-        Mod.HandleWarning(exception);
+        Troubleshooter.HandleWarning(exception);
         return "";
       }
     }
@@ -122,11 +122,11 @@ namespace RimHUD.Data.Models
         else if (hediff.def.IsAddiction || hediff.IsTended()) { color = Theme.WarningColor.Value; }
         else { color = Theme.CriticalColor.Value; }
 
-        return $"{part}: {condition}".Color(color);
+        return $"{part}: {condition}".Colorize(color);
       }
       catch (Exception exception)
       {
-        Mod.HandleWarning(exception);
+        Troubleshooter.HandleWarning(exception);
         return null;
       }
     }

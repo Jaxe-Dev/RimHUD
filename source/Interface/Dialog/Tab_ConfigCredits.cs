@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Storage;
 using UnityEngine;
@@ -10,6 +9,7 @@ namespace RimHUD.Interface.Dialog
   internal class Tab_ConfigCredits : Tab
   {
     private const float LineSpacing = -4f;
+
     public override string Label { get; } = "Credits";
     public override TipSignal? Tooltip { get; } = null;
 
@@ -41,7 +41,7 @@ namespace RimHUD.Interface.Dialog
 
         if (entries.Length > 0 || special)
         {
-          l.Label($"[ {label.Color(color)} ]".Bold());
+          l.Label($"[ {label.ColorizeHex(color)} ]".Bold());
           l.Gap(LineSpacing);
         }
 
@@ -55,18 +55,18 @@ namespace RimHUD.Interface.Dialog
             if (format != null) { name = string.Format(format, name); }
 
             var quote = entry.Attribute("quote")?.Value.Italic();
-            var quoteText = quote == null ? null : " - ".Color("888888") + $"\"{quote}\"".Color("AAAAAA");
+            var quoteText = quote == null ? null : " - ".ColorizeHex("888888") + $"\"{quote}\"".ColorizeHex("AAAAAA");
 
             var link = entry.Attribute("link")?.Value;
-            var linkText = link == null ? null : " (Click to see link)".SmallSize().Color("666666").Italic();
+            var linkText = link == null ? null : " (Click to see link)".SmallSize().Italic();
 
-            var text = $"{name}{quoteText}{linkText}";
-            if (l.Label(text) && link != null) { CreateLinkMenu(link); }
+            var text = $"{name.Colorize(Color.white)}{quoteText}{linkText}";
+            l.LinkLabel(text, link, Color.gray);
 
             l.Gap(LineSpacing);
           }
         }
-        else if (special) { l.Label("(None)".Color("888888")); }
+        else if (special) { l.Label("(None)".ColorizeHex("888888")); }
 
         if (entries.Length > 0 || special) { l.Gap(); }
       }
@@ -82,21 +82,13 @@ namespace RimHUD.Interface.Dialog
 
       l.Label("A special thanks to supporters and countless others who have helped along the way.");
       l.Gap(LineSpacing);
-      l.Label(("❤️".Color("FF0011") + " Jaxe".Italic()).Bold());
+      l.Label(("❤️".ColorizeHex("FF0011") + " Jaxe".Italic()).Bold());
 
-      if (l.Label("For more information, check out the mod description".SmallSize().Italic().Color("888888"))) { CreateLinkMenu("https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027"); }
+      l.LinkLabel("For more information, check out the mod description".SmallSize().Italic(), Mod.WorkshopLink, Color.gray);
 
       Text.Anchor = anchor;
 
       l.End();
-    }
-
-    private static void CreateLinkMenu(string link)
-    {
-      var text = $"Click to visit URL:\n{link.SmallSize().Italic()}";
-      var menu = new List<FloatMenuOption> { new FloatMenuOption(text, () => Application.OpenURL(link)) };
-
-      Find.WindowStack.Add(new FloatMenu(menu));
     }
   }
 }

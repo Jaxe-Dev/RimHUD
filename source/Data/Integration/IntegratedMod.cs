@@ -85,7 +85,7 @@ namespace RimHUD.Data.Integration
     public void FailInitialization(Exception exception)
     {
       Disabled = true;
-      var info = new Mod.ExceptionInfo(exception);
+      var info = new Troubleshooter.ExceptionInfo(exception);
       Mod.Warning($"Integrated mod '{Name}' failed initialization due to the following error:\n{info.Text}");
     }
   }

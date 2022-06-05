@@ -11,11 +11,11 @@ namespace RimHUD.Interface.Dialog
     private Vector2 _scrollPosition = Vector2.zero;
     private Rect _scrollView;
 
-    private readonly Mod.ExceptionInfo _info;
+    private readonly Troubleshooter.ExceptionInfo _info;
 
     public override Vector2 InitialSize { get; } = new Vector2(800f, 360f);
 
-    private Dialog_Error(Mod.ExceptionInfo info)
+    private Dialog_Error(Troubleshooter.ExceptionInfo info)
     {
       doCloseButton = false;
       closeOnAccept = true;
@@ -28,7 +28,7 @@ namespace RimHUD.Interface.Dialog
       Mod.Warning("RimHUD Auto-deactivation reason:\n" + _info.Text);
     }
 
-    public static void Open(Mod.ExceptionInfo info) => Find.WindowStack.Add(new Dialog_Error(info));
+    public static void Open(Troubleshooter.ExceptionInfo info) => Find.WindowStack.Add(new Dialog_Error(info));
 
     public override void DoWindowContents(Rect inRect)
     {
@@ -36,7 +36,7 @@ namespace RimHUD.Interface.Dialog
       listing.Begin(inRect);
       listing.Label("RimHUD has automatically deactivated due to the following error(s):".Bold());
       listing.Label(_info.Message);
-      if (_info.IsExternalError) { listing.Label(_info.PossibleMod == null ? "The error appears to be from outside RimHUD." : $"The error appears to be have been caused by the mod '{_info.PossibleMod.Bold()}'.", color: Color.yellow); }
+      if (_info.IsExternalError) { listing.Label(_info.PossibleMod == null ? "The error appears to have triggered outside of RimHUD" : $"The error appears to be trigged by the following mod:\n{_info.PossibleMod.Bold()}", color: Color.yellow); }
       listing.Gap();
       listing.Label("Stacktrace:".Bold(), font: GameFont.Tiny);
       listing.End();

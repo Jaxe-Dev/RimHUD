@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using System.Xml.Linq;
+using RimHUD.Data;
 using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
 using RimHUD.Data.Models;
@@ -123,7 +124,7 @@ namespace RimHUD.Interface.HUD
 
         Draw(rect);
       }
-      catch (Exception exception) { Mod.HandleError(exception); }
+      catch (Exception exception) { Troubleshooter.HandleError(exception); }
 
       HudTimings.Update(this)?.Finish(rect, true);
     }
