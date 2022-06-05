@@ -32,7 +32,7 @@ namespace RimHUD.Data.Models
         try { canTrainNow = model.Base.RaceProps?.trainability != null && model.Base.training != null && model.Base.training.CanAssignToTrain(def, out var visible).Accepted && visible; }
         catch (Exception exception)
         {
-          Mod.HandleWarning(exception);
+          Troubleshooter.HandleWarning(exception);
           canTrainNow = false;
         }
 
@@ -63,7 +63,7 @@ namespace RimHUD.Data.Models
       }
       catch (Exception exception)
       {
-        Mod.HandleWarning(exception);
+        Troubleshooter.HandleWarning(exception);
         Hidden = true;
       }
     }

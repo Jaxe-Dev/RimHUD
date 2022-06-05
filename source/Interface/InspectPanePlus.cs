@@ -82,7 +82,7 @@ namespace RimHUD.Interface
         contentRect.yMin += 26f;
         DrawContent(contentRect, model, null);
       }
-      catch (Exception exception) { Mod.HandleError(exception); }
+      catch (Exception exception) { Troubleshooter.HandleError(exception); }
       finally { GUI.EndGroup(); }
     }
 
@@ -149,7 +149,7 @@ namespace RimHUD.Interface
 
         GUI.DrawTexture(new Rect(0f, y, width, 30f), Textures.InspectTabButtonFill);
       }
-      catch (Exception exception) { Mod.HandleError(exception); }
+      catch (Exception exception) { Troubleshooter.HandleError(exception); }
       return false;
     }
 

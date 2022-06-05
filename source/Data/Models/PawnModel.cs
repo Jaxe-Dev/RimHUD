@@ -226,7 +226,7 @@ namespace RimHUD.Data.Models
       }
       catch (Exception exception)
       {
-        Mod.HandleWarning(exception);
+        Troubleshooter.HandleWarning(exception);
         return null;
       }
     }
@@ -246,7 +246,7 @@ namespace RimHUD.Data.Models
       }
       catch (Exception exception)
       {
-        Mod.HandleWarning(exception);
+        Troubleshooter.HandleWarning(exception);
         return null;
       }
     }
@@ -265,7 +265,7 @@ namespace RimHUD.Data.Models
       }
       catch (Exception exception)
       {
-        Mod.HandleWarning(exception);
+        Troubleshooter.HandleWarning(exception);
         return null;
       }
     }
@@ -334,7 +334,7 @@ namespace RimHUD.Data.Models
       var disabledWork = Base.story.DisabledWorkTagsBackstoryAndTraits;
       string incapable = disabledWork == WorkTags.None ? null : "IncapableOf".Translate() + ": " + disabledWork.GetAllSelectedItems<WorkTags>().Where(tag => tag != WorkTags.None).Select(tag => tag.LabelTranslated().CapitalizeFirst()).ToCommaList(true);
 
-      builder.TryAppendLine(incapable.NullOrEmpty() ? null : incapable.Color(Theme.CriticalColor.Value));
+      builder.TryAppendLine(incapable.NullOrEmpty() ? null : incapable.Colorize(Theme.CriticalColor.Value));
 
       builder.AppendLine();
 

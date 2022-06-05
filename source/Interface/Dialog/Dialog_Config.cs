@@ -62,7 +62,7 @@ namespace RimHUD.Interface.Dialog
       }
       catch (Exception exception)
       {
-        Mod.HandleError(exception);
+        Troubleshooter.HandleError(exception);
         Close();
       }
     }

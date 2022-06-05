@@ -34,7 +34,7 @@ namespace RimHUD.Data.Models
       }
       catch (Exception exception)
       {
-        Mod.HandleWarning(exception);
+        Troubleshooter.HandleWarning(exception);
         Hidden = true;
       }
     }

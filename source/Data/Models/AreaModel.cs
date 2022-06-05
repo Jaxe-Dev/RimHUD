@@ -43,7 +43,7 @@ namespace RimHUD.Data.Models
       }
       catch (Exception exception)
       {
-        Mod.HandleWarning(exception);
+        Troubleshooter.HandleWarning(exception);
         Hidden = true;
       }
     }
@@ -60,7 +60,7 @@ namespace RimHUD.Data.Models
 
         Find.WindowStack.Add(new FloatMenu(options));
       }
-      catch (Exception exception) { Mod.HandleError(exception); }
+      catch (Exception exception) { Troubleshooter.HandleError(exception); }
     }
   }
 }

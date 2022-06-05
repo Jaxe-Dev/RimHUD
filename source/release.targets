@@ -57,7 +57,7 @@
   </UsingTask>
   <Target Name="AfterBuild">
     <PropertyGroup>
-      <AssetsDir>$(ProjectDir)Assets\</AssetsDir>
+      <AssetsDir>$(ProjectDir)-\</AssetsDir>
       <BuildDir>$(SolutionDir)build\$(AssemblyName)\</BuildDir>
       <ReleasesDir>$(SolutionDir)releases\</ReleasesDir>
     </PropertyGroup>

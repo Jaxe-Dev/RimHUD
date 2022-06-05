@@ -47,10 +47,14 @@ namespace RimHUD.Data.Models
 
     private TextModel GetInspiration()
     {
-      if (!Model.Base.Inspired) { return null; }
+      var inspiration = GetInspirationInspectLine();
+      return inspiration == null ? null : TextModel.Create(inspiration.Colorize(Theme.ExcellentColor.Value), GetTooltip, OnClick);
+    }
 
-      var inspiration = Model.Base.Inspiration.InspectLine;
-      return TextModel.Create(inspiration.Colorize(Theme.ExcellentColor.Value), GetTooltip, OnClick);
+    private string GetInspirationInspectLine()
+    {
+      try { return !Model.Base.Inspired ? null : Model.Base.Inspiration.InspectLine; }
+      catch { return null; }
     }
 
     private string GetTooltip()
@@ -59,7 +63,7 @@ namespace RimHUD.Data.Models
 
       var thoughts = new List<Thought>();
       try { PawnNeedsUIUtility.GetThoughtGroupsInDisplayOrder(Model.Base.needs.mood, thoughts); }
-      catch (Exception exception) { Mod.HandleWarning(exception); }
+      catch (Exception exception) { Troubleshooter.HandleWarning(exception); }
 
       var builder = new StringBuilder();
       foreach (var thought in thoughts)
@@ -68,7 +72,7 @@ namespace RimHUD.Data.Models
         try { offset = thought.MoodOffset(); }
         catch (Exception exception)
         {
-          Mod.HandleWarning(exception);
+          Troubleshooter.HandleWarning(exception);
           offset = 0;
         }
 
@@ -87,14 +91,19 @@ namespace RimHUD.Data.Models
           var thoughtLabel = thought.LabelCap;
           if (similar.Count > 1) { thoughtLabel += " x" + similar.Count; }
 
-          var line = $"{thoughtLabel}: {offset * similar.Count}".Color(color);
+          var line = $"{thoughtLabel}: {offset * similar.Count}".Colorize(color);
           builder.AppendLine(line);
         }
-        catch (Exception exception) { Mod.HandleWarning(exception); }
+        catch (Exception exception) { Troubleshooter.HandleWarning(exception); }
       }
 
       builder.AppendLine();
-      if (Model.Base.Inspired) { builder.AppendLine(Model.Base.Inspiration.InspectLine.Color(Theme.ExcellentColor.Value)); }
+
+      try
+      {
+        if (Model.Base.Inspired) { builder.AppendLine(Model.Base.Inspiration.InspectLine.Colorize(Theme.ExcellentColor.Value)); }
+      }
+      catch { }
 
       return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : "";
     }

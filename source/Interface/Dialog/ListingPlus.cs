@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using RimHUD.Data.Configuration;
 using RimHUD.Data.Extensions;
@@ -14,7 +15,7 @@ namespace RimHUD.Interface.Dialog
     private const float ValueWidth = 100f;
     private const float ElementPadding = 1f;
 
-    private static readonly Color LinkColor = new Color(0.3f, 0.7f, 1f);
+    private static readonly Color LinkHoverColor = new Color(0.3f, 0.7f, 1f);
     private static readonly Regex RangeSliderEntryRegex = new Regex(@"^[-]?\d{0,3}$");
     private static readonly Regex HexRegex = new Regex(@"^[A-Fa-f0-9]{0,8}$");
 
@@ -34,14 +35,15 @@ namespace RimHUD.Interface.Dialog
       viewRect.height = CurHeight;
     }
 
-    public bool Label(string label, TipSignal? tooltip = null, GameFont? font = null, Color? color = null, bool highlight = false)
+    public bool Label(string label, TipSignal? tooltip = null, GameFont? font = null, Color? color = null, Color? hoverColor = null, bool highlightTooltip = false)
     {
-      GUIPlus.SetFont(font);
-      GUIPlus.SetColor(color);
-
       var rect = GetRect(Text.CalcHeight(label, ColumnWidth));
+
+      GUIPlus.SetFont(font);
+      GUIPlus.SetColor(hoverColor != null && Mouse.IsOver(rect) ? hoverColor : color);
+
       Widgets.Label(rect, label);
-      GUIPlus.DrawTooltip(rect, tooltip, highlight);
+      GUIPlus.DrawTooltip(rect, tooltip, highlightTooltip);
       Gap(verticalSpacing);
 
       GUIPlus.ResetColor();
@@ -50,9 +52,14 @@ namespace RimHUD.Interface.Dialog
       return Widgets.ButtonInvisible(rect);
     }
 
-    public void LinkLabel(string label, string url, TipSignal? tooltip = null)
+    public void LinkLabel(string text, string url, Color? color = null, Color? hoverColor = null)
     {
-      if (Label(label, tooltip, GameFont.Tiny, LinkColor, true)) { Application.OpenURL(url); }
+      if (!Label(text, color: color, hoverColor: hoverColor ?? LinkHoverColor) || string.IsNullOrWhiteSpace(url)) { return; }
+
+      var menuText = $"Click to visit URL:\n{url.SmallSize().Italic()}";
+      var menu = new List<FloatMenuOption> { new FloatMenuOption(menuText, () => Application.OpenURL(url)) };
+
+      Find.WindowStack.Add(new FloatMenu(menu));
     }
 
     public void ColorOptionSelect(ColorOption colorOption, ref ColorOption selected, bool enabled = true)
