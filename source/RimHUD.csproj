@@ -178,7 +178,7 @@
     <None Include="-\Textures\RimHUD\SelfTendOnIcon.png" />
     <None Include="-\Textures\RimHUD\ToggleIcon.png" />
     <None Include="-\Legacy\1.3\Assemblies\RimHUD.dll" />
-    <None Include="-\loadFolders.xml" />
+    <None Include="-\LoadFolders.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Interface\Layout\Presets\Defaults\Docked.xml" />
