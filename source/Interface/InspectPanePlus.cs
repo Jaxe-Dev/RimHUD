@@ -16,6 +16,8 @@ namespace RimHUD.Interface
 {
   internal static class InspectPanePlus
   {
+    private const int LogLinesMax = 300;
+
     private const float ButtonSize = 24f;
 
     private static Vector2 _scrollPosition = Vector2.zero;
@@ -158,7 +160,7 @@ namespace RimHUD.Interface
       if (_log == null || _lastBattleTick != pawn.records.LastBattleTick || _lastPlayTick != Find.PlayLog.LastTick || _pawn != pawn)
       {
         ClearCache();
-        _log = ITab_Pawn_Log_Utility.GenerateLogLinesFor(pawn, true, true, true).ToList();
+        _log = ITab_Pawn_Log_Utility.GenerateLogLinesFor(pawn, true, true, true, LogLinesMax).ToList();
         _lastPlayTick = Find.PlayLog.LastTick;
         _lastBattleTick = pawn.records.LastBattleTick;
         _pawn = pawn;

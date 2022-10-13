@@ -69,7 +69,7 @@ namespace RimHUD.Data.Models
         builder.AppendLine();
       }
       HudModel.BuildStatString(Model.Base, builder, StatDefOf.EatingSpeed);
-      HudModel.BuildStatString(Model.Base, builder, StatDefOf.HungerRateMultiplier);
+      HudModel.BuildStatString(Model.Base, builder, StatDefOf.BedHungerRateFactor);
 
       return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
     }
