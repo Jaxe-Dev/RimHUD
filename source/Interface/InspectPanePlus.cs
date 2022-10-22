@@ -117,6 +117,15 @@ namespace RimHUD.Interface
 
         foreach (var tab in pane.CurTabs)
         {
+          var isOpenTab = tab.GetType() == pane.OpenTabType;
+
+          if (isOpenTab)
+          {
+            tab.DoTabGUI();
+            pane.RecentHeight = 700f;
+            isSelected = true;
+          }
+
           if (!tab.IsVisible || tab.Hidden) { continue; }
 
           int buttonWidth;
@@ -135,15 +144,7 @@ namespace RimHUD.Interface
 
           if (Widgets.ButtonText(rect, tab.labelKey.Translate())) { InterfaceToggleTab(tab, pane); }
 
-          var isOpenTab = tab.GetType() == pane.OpenTabType;
           if (!isOpenTab && !tab.TutorHighlightTagClosed.NullOrEmpty()) { UIHighlighter.HighlightOpportunity(rect, tab.TutorHighlightTagClosed); }
-
-          if (isOpenTab)
-          {
-            tab.DoTabGUI();
-            pane.RecentHeight = 700f;
-            isSelected = true;
-          }
 
           x -= Theme.InspectPaneTabWidth.Value;
         }
