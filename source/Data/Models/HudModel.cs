@@ -60,6 +60,7 @@ namespace RimHUD.Data.Models
       { "NeedMood", model => HudBar.FromModel(model.Mood, Theme.RegularTextStyle) },
       { "NeedFood", model => HudBar.FromModel(model.Food, Theme.RegularTextStyle) },
       { "NeedRest", model => HudBar.FromModel(model.Rest, Theme.RegularTextStyle) },
+      { "NeedEnergy", model => HudBar.FromModel(model.Energy, Theme.RegularTextStyle) },
       { "NeedRecreation", model => HudBar.FromModel(model.Recreation, Theme.RegularTextStyle) },
       { "NeedSuppression", model => HudBar.FromModel(model.Suppression, Theme.RegularTextStyle) },
 

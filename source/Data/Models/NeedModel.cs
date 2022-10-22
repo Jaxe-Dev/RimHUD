@@ -50,6 +50,7 @@ namespace RimHUD.Data.Models
       }
       else if (def == NeedDefOf.Food) { Tooltip = GetFoodTooltip; }
       else if (def == NeedDefOf.Rest) { Tooltip = GetRestTooltip; }
+      else if (def == Access.NeedDefOfEnergy) { Tooltip = GetEnergyTooltip; }
       else if (def == NeedDefOf.Joy) { Tooltip = GetJoyTooltip; }
 
       if (def == Access.NeedDefOfSuppression)
@@ -80,6 +81,16 @@ namespace RimHUD.Data.Models
       HudModel.BuildStatString(Model.Base, builder, StatDefOf.RestRateMultiplier);
 
       return builder.Length > 0 ? builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize) : null;
+    }
+
+    private string GetEnergyTooltip()
+    {
+      if (Model.Base.needs?.energy?.FallPerDay == null) { return null; }
+
+      var builder = new StringBuilder();
+      builder.AppendInNewLine("CurrentMechEnergyFallPerDay".Translate() + ": " + (Model.Base.needs.energy.FallPerDay / 100f).ToStringPercent());
+
+      return builder.ToStringTrimmed().Size(Theme.RegularTextStyle.ActualSize);
     }
 
     private string GetJoyTooltip()

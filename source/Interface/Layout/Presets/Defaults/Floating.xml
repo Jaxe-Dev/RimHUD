@@ -48,6 +48,9 @@
     <Row Targets="HhC">
       <NeedRest />
     </Row>
+    <Row Targets="Cc">
+      <NeedEnergy />
+    </Row>
     <Row Targets="H">
       <NeedRecreation />
     </Row>

@@ -25,6 +25,7 @@ namespace RimHUD.Patch
     public static MainButtonDef MainButtonDefOfWork { get; private set; }
 
     public static NeedDef NeedDefOfMood { get; private set; }
+    public static NeedDef NeedDefOfEnergy { get; private set; }
     public static NeedDef NeedDefOfSuppression { get; private set; }
     public static NeedDef NeedDefOfBeauty { get; private set; }
     public static NeedDef NeedDefOfComfort { get; private set; }
@@ -60,6 +61,7 @@ namespace RimHUD.Patch
       TrainableDefOfHaul = DefDatabase<TrainableDef>.GetNamed("Haul");
       TrainableDefOfRescue = DefDatabase<TrainableDef>.GetNamed("Rescue");
 
+      if (ModsConfig.BiotechActive) { NeedDefOfEnergy = DefDatabase<NeedDef>.GetNamed("MechEnergy", false); }
       if (ModsConfig.IdeologyActive) { NeedDefOfSuppression = DefDatabase<NeedDef>.GetNamed("Suppression", false); }
     }
 

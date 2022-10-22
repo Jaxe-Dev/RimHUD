@@ -225,7 +225,8 @@ namespace RimHUD.Interface
       }
 
       lineEndWidth += ButtonSize;
-      DrawMedicalButton(pawn, new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize));
+      if (pawn.RaceProps?.IsMechanoid ?? true) { TrainingCardUtility.DrawRenameButton(new Rect(rect.width - lineEndWidth, 0f, ButtonSize + 4f, ButtonSize + 4f), pawn); }
+      else { DrawMedicalButton(pawn, new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize)); }
       lineEndWidth += GUIPlus.SmallPadding;
 
       if (!pawn.IsColonist) { return; }
