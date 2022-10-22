@@ -117,7 +117,7 @@ namespace RimHUD.Interface
 
         foreach (var tab in pane.CurTabs)
         {
-          if (!tab.IsVisible) { continue; }
+          if (!tab.IsVisible || tab.Hidden) { continue; }
 
           int buttonWidth;
           if (TabButtonWidths.ContainsKey(tab)) { buttonWidth = TabButtonWidths[tab]; }

@@ -14,7 +14,7 @@ namespace RimHUD.Patch
     {
       if (!State.ModifyPane) { return true; }
 
-      var count = pane.CurTabs.Count(tab => tab.IsVisible);
+      var count = pane.CurTabs.Count(tab => tab.IsVisible && !tab.Hidden);
       __result = Theme.InspectPaneTabWidth.Value * (float) Mathf.Max(Theme.InspectPaneMinTabs.Value, count);
       return false;
     }
