@@ -43,6 +43,7 @@ namespace RimHUD.Data.Models
     public TextModel Master => GetMaster();
 
     public NeedModel Rest => GetNeed(NeedDefOf.Rest);
+    public NeedModel Energy => GetNeed(Access.NeedDefOfEnergy);
     public NeedModel Food => GetNeed(NeedDefOf.Food);
     public NeedModel Recreation => GetNeed(NeedDefOf.Joy);
     public NeedModel Suppression => GetNeed(Access.NeedDefOfSuppression);
@@ -158,6 +159,8 @@ namespace RimHUD.Data.Models
     {
       if (IsHumanlike) { return (Base.Faction == Faction.OfPlayer ? Base.story?.Title ?? Base.KindLabel : Base.TraderKind?.label ?? Base.KindLabel).CapitalizeFirst(); }
 
+      if (Base.RaceProps.IsMechanoid) { return Base.Faction == Faction.OfPlayer ? Lang.Get("Model.Creature.Mechanoid") : Lang.Get("Model.Creature.Unit"); }
+
       if (Base.Faction == null)
       {
         if (Base.RaceProps.petness > 0.5f) { return Lang.Get("Model.Creature.Stray"); }
@@ -175,7 +178,7 @@ namespace RimHUD.Data.Models
       if (Base.kindDef.race.tradeTags?.Contains("AnimalInsect") ?? false) { return Lang.Get("Model.Creature.Insect"); }
       if (Base.RaceProps.Animal) { return Lang.Get("Model.Creature.Tame"); }
 
-      return Lang.Get("Model.Creature.Unit");
+      return Lang.Get("Model.Creature.Entity");
     }
 
     private Color GetFactionRelationColor()

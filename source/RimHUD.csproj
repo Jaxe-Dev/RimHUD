@@ -29,7 +29,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp, Version=1.4.8329.22675, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Assembly-CSharp, Version=1.4.8330.30233, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>Assembly-CSharp.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
