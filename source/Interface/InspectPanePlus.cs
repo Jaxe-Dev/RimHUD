@@ -199,6 +199,13 @@ namespace RimHUD.Interface
 
       if (!(selected is Pawn pawn)) { return; }
 
+      if (ModsConfig.BiotechActive && pawn.genes?.Xenotype != null)
+      {
+        lineEndWidth += ButtonSize;
+        DrawXenotypeButton(pawn, new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize));
+        lineEndWidth += GUIPlus.SmallPadding;
+      }
+
       if (Theme.ShowFactionIcon.Value && pawn.Faction != null)
       {
         lineEndWidth += ButtonSize;
@@ -272,6 +279,23 @@ namespace RimHUD.Interface
       var certainty = "Certainty".Translate().CapitalizeFirst().Resolve() + ": " + pawn.ideo.Certainty.ToStringPercent();
       var previous = pawn != null && pawn.ideo.PreviousIdeos.Any() ? "\n\n" + "Formerly".Translate().CapitalizeFirst() + ": \n" + (from x in pawn.ideo.PreviousIdeos select x.name).ToLineList("  - ") : null;
       TooltipHandler.TipRegion(rect, $"{name}\n{certainty}{previous}");
+    }
+
+    private static void DrawXenotypeButton(Pawn pawn, Rect rect)
+    {
+      if (Mouse.IsOver(rect)) { Widgets.DrawHighlight(rect); }
+
+      if (Widgets.ButtonImage(rect, pawn.genes.XenotypeIcon)) { InspectPaneUtility.OpenTab(typeof(ITab_Genes)); }
+
+      if (!Mouse.IsOver(rect)) { return; }
+
+      var tooltip = ("Xenotype".Translate().CapitalizeFirst().Resolve() + ": " + pawn.genes.XenotypeLabelCap).Colorize(ColoredText.TipSectionTitleColor);
+      var stage = pawn.ageTracker?.CurLifeStage?.LabelCap.ToString();
+      // if (stage != null) { top += $" ({stage})"; }
+      if (stage != null) { tooltip += "\n" + Lang.Get("Model.Bio.Lifestage", stage); }
+      if (!pawn.genes.Xenotype.description.NullOrEmpty()) { tooltip += "\n\n" + pawn.genes.Xenotype.description; }
+
+      TooltipHandler.TipRegion(rect, tooltip);
     }
 
     public static void ClearCache()

@@ -20,12 +20,15 @@ namespace RimHUD
   {
     public const string Id = "RimHUD";
     public const string Name = Id;
-    public const string Version = "1.11.2";
+    public const string Version = "1.11.3";
 
     public const string PackageId = "Jaxe.RimHUD";
     public const string WorkshopLink = "https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027";
 
-    public static IEnumerable<string> SameConfigVersions { get; } = new string[] { };
+    public static IEnumerable<string> SameConfigVersions { get; } = new[]
+    {
+      "1.11.2"
+    };
 
     public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
     public static readonly ModContentPack ContentPack;
