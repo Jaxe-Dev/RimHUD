@@ -28,7 +28,7 @@ namespace RimHUD.Interface.Dialog
 
       if (Lang.HasKey("Language.TranslatedBy")) { Subtitle = Lang.Get("Language.TranslatedBy").Italic(); }
 
-      _tabs = Persistent.Credits == null ? new TabManager(TabWidth, TabHeight, new Tab_ConfigDesign(), new Tab_ConfigColors(), new Tab_ConfigContent()) : new TabManager(TabWidth, TabHeight, new Tab_ConfigDesign(), new Tab_ConfigColors(), new Tab_ConfigContent(), new Tab_ConfigCredits());
+      _tabs = Persistent.Credits == null ? new TabManager(TabWidth, TabHeight, new Tab_ConfigDesign(), new Tab_ConfigColors(), new Tab_ConfigContent()) : new TabManager(TabWidth, TabHeight, new Tab_ConfigCredits(), new Tab_ConfigDesign(), new Tab_ConfigColors(), new Tab_ConfigContent());
     }
 
     public static void Open() => Find.WindowStack.Add(new Dialog_Config());
