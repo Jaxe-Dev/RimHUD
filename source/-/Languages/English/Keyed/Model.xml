@@ -61,6 +61,7 @@
   <RimHUD.Model.Bio.Title>Title: {0}</RimHUD.Model.Bio.Title>
   <RimHUD.Model.Bio.Faction>Faction: {0}</RimHUD.Model.Bio.Faction>
   <RimHUD.Model.Bio.Ideoligion>Ideoligion: {0}</RimHUD.Model.Bio.Ideoligion>
+  <RimHUD.Model.Bio.Lifestage>Lifestage: {0}</RimHUD.Model.Bio.Lifestage>
   <RimHUD.Model.Bio.Master>Master: {0}</RimHUD.Model.Bio.Master>
   <RimHUD.Model.Bio.Diet>Diet: {0}</RimHUD.Model.Bio.Diet>
   <RimHUD.Model.Bio.Trainability>Trainability: {0}</RimHUD.Model.Bio.Trainability>
