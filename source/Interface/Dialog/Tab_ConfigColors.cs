@@ -1,15 +1,15 @@
-﻿using RimHUD.Data;
-using RimHUD.Data.Configuration;
-using RimHUD.Data.Extensions;
+﻿using RimHUD.Configuration;
+using RimHUD.Engine;
+using RimHUD.Extensions;
 using UnityEngine;
 using Verse;
-using ColorOption = RimHUD.Data.Configuration.ColorOption;
+using ColorOption = RimHUD.Configuration.ColorOption;
 
 namespace RimHUD.Interface.Dialog
 {
-  internal class Tab_ConfigColors : Tab
+  public class Tab_ConfigColors : Tab
   {
-    public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Colors");
+    public override string Label { get; } = Lang.Get("Interface.Dialog_Config.Tab_Colors");
     public override TipSignal? Tooltip { get; } = null;
 
     private Vector2 _scrollPosition = Vector2.zero;
@@ -17,13 +17,13 @@ namespace RimHUD.Interface.Dialog
 
     private ColorOption _selected;
 
-    private readonly RangeOption _hue = new RangeOption(0, 0, 100, Lang.Get("Dialog_Config.Tab.Colors.Hue"));
+    private readonly RangeOption _hue = new RangeOption(0, 0, 100, Lang.Get("Interface.Dialog_Config.Tab_Colors.Hue"));
     private string _hueText;
-    private readonly RangeOption _saturation = new RangeOption(0, 0, 100, Lang.Get("Dialog_Config.Tab.Colors.Saturation"));
+    private readonly RangeOption _saturation = new RangeOption(0, 0, 100, Lang.Get("Interface.Dialog_Config.Tab_Colors.Saturation"));
     private string _saturationText;
-    private readonly RangeOption _lightness = new RangeOption(0, 0, 100, Lang.Get("Dialog_Config.Tab.Colors.Lightness"));
+    private readonly RangeOption _lightness = new RangeOption(0, 0, 100, Lang.Get("Interface.Dialog_Config.Tab_Colors.Lightness"));
     private string _lightnessText;
-    private readonly RangeOption _alpha = new RangeOption(0, 0, 100, Lang.Get("Dialog_Config.Tab.Colors.Alpha"));
+    private readonly RangeOption _alpha = new RangeOption(0, 0, 100, Lang.Get("Interface.Dialog_Config.Tab_Colors.Alpha"));
     private string _alphaText;
     private string _hexText;
 
@@ -49,12 +49,12 @@ namespace RimHUD.Interface.Dialog
 
     public override void Draw(Rect rect)
     {
-      var hGrid = rect.GetHGrid(GUIPlus.LargePadding, -1f, -1f);
+      var hGrid = rect.GetHGrid(WidgetsPlus.LargePadding, -1f, -1f);
       var l = new ListingPlus();
 
       var selected = _selected;
 
-      GUIPlus.DrawContainer(hGrid[1]);
+      WidgetsPlus.DrawContainer(hGrid[1]);
 
       l.BeginScrollView(hGrid[1], ref _scrollPosition, ref _viewRect);
 
@@ -103,10 +103,10 @@ namespace RimHUD.Interface.Dialog
       {
         if (_selected != selected) { SelectColor(); }
 
-        l.Label(Lang.Get("Dialog_Config.Tab.Colors.Editor", _selected.Label).Bold());
+        l.Label(Lang.Get("Interface.Dialog_Config.Tab_Colors.Editor", _selected.Label).Bold());
         l.GapLine();
 
-        if (l.HexEntry(Lang.Get("Dialog_Config.Tab.Colors.RGBA"), _selected, ref _hexText)) { ParseColor(); }
+        if (l.HexEntry(Lang.Get("Interface.Dialog_Config.Tab_Colors.RGBA"), _selected, ref _hexText)) { ParseColor(); }
         l.GapLine();
 
         var hslChanged = l.RangeSliderEntry(_hue, ref _hueText, 1) || l.RangeSliderEntry(_saturation, ref _saturationText, 2) || l.RangeSliderEntry(_lightness, ref _lightnessText, 3) || l.RangeSliderEntry(_alpha, ref _alphaText, 4);

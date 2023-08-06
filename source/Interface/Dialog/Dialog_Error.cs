@@ -1,11 +1,11 @@
-﻿using RimHUD.Data;
-using RimHUD.Data.Extensions;
+﻿using RimHUD.Engine;
+using RimHUD.Extensions;
 using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
-  internal class Dialog_Error : Window
+  public class Dialog_Error : Window
   {
     private const float ButtonWidth = 120f;
     private Vector2 _scrollPosition = Vector2.zero;
@@ -41,31 +41,31 @@ namespace RimHUD.Interface.Dialog
       listing.Label("Stacktrace:".Bold(), font: GameFont.Tiny);
       listing.End();
 
-      var grid = inRect.GetVGrid(0f, listing.CurHeight, -1f, GUIPlus.SmallButtonHeight + GUIPlus.MediumPadding);
+      var grid = inRect.GetVGrid(0f, listing.CurHeight, -1f, WidgetsPlus.SmallButtonHeight + WidgetsPlus.MediumPadding);
 
       Widgets.DrawMenuSection(grid[2]);
 
-      var stacktraceRect = grid[2].ContractedBy(GUIPlus.SmallPadding);
+      var stacktraceRect = grid[2].ContractedBy(WidgetsPlus.SmallPadding);
       var stacktraceList = new ListingPlus();
 
       stacktraceList.BeginScrollView(stacktraceRect, ref _scrollPosition, ref _scrollView);
       stacktraceList.Label(_info.StackTrace, font: GameFont.Tiny);
       stacktraceList.EndScrollView(ref _scrollView);
 
-      grid[3].yMin += GUIPlus.MediumPadding;
-      var buttonGrid = grid[3].GetHGrid(GUIPlus.MediumPadding, ButtonWidth, -1f, ButtonWidth, ButtonWidth);
+      grid[3].yMin += WidgetsPlus.MediumPadding;
+      var buttonGrid = grid[3].GetHGrid(WidgetsPlus.MediumPadding, ButtonWidth, -1f, ButtonWidth, ButtonWidth);
 
-      if (GUIPlus.DrawButton(buttonGrid[1], "Copy to clipboard", font: GameFont.Tiny))
+      if (WidgetsPlus.DrawButton(buttonGrid[1], "Copy to clipboard", font: GameFont.Tiny))
       {
         GUIUtility.systemCopyBuffer = $"[[RimHUD Auto-deactivation report]]\n{_info.Text}";
         Mod.Message("RimHUD Auto-deactivation details copied to clipboard");
       }
-      if (GUIPlus.DrawButton(buttonGrid[3], "Reactivate", font: GameFont.Tiny))
+      if (WidgetsPlus.DrawButton(buttonGrid[3], "Reactivate", font: GameFont.Tiny))
       {
         Close();
         State.Activated = true;
       }
-      if (GUIPlus.DrawButton(buttonGrid[4], "Close", font: GameFont.Tiny)) { Close(); }
+      if (WidgetsPlus.DrawButton(buttonGrid[4], "Close", font: GameFont.Tiny)) { Close(); }
     }
   }
 }

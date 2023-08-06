@@ -1,10 +1,10 @@
-﻿using RimHUD.Data.Configuration;
+﻿using RimHUD.Configuration;
 using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
-  internal abstract class WindowPlus : Window
+  public abstract class WindowPlus : Window
   {
     private const float CloseButtonOffset = 55f;
 
@@ -42,19 +42,22 @@ namespace RimHUD.Interface.Dialog
       var header = new ListingPlus();
 
       header.Begin(rect);
+
       header.Label(Title, font: GameFont.Medium);
 
       if (!string.IsNullOrEmpty(Subtitle))
       {
-        var titleSize = GUIPlus.GetTextSize(Title, GUIPlus.GetGameFontStyle(GameFont.Medium));
-        var titleOffset = titleSize.x + GUIPlus.MediumPadding;
+        var titleSize = GUIPlus.GetTextSize(GUIPlus.GetGameFontStyle(GameFont.Medium), Title);
+        var titleOffset = titleSize.x + WidgetsPlus.MediumPadding;
         var subtitleRect = new Rect(rect.x + titleOffset, rect.y, rect.width - titleOffset, titleSize.y);
-        GUIPlus.DrawText(subtitleRect, Subtitle, style: Theme.SmallTextStyle);
+        WidgetsPlus.DrawText(subtitleRect, Subtitle, Theme.SmallTextStyle);
       }
 
       header.GapLine();
       header.End();
+
       var contentRect = new Rect(rect.x, rect.y + header.CurHeight, rect.width, rect.height - header.CurHeight);
+
       if (doCloseButton) { contentRect.height -= CloseButtonOffset; }
 
       Text.WordWrap = wordWrap;

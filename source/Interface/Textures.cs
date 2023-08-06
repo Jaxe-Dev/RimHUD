@@ -5,10 +5,11 @@ using Verse;
 namespace RimHUD.Interface
 {
   [StaticConstructorOnStartup]
-  internal static class Textures
+  public static class Textures
   {
     public static Texture2D ToggleIcon { get; private set; }
     public static Texture2D ConfigIcon { get; private set; }
+    public static Texture2D TutorialConfigIcon { get; private set; }
     public static Texture2D SelfTendOnIcon { get; private set; }
     public static Texture2D SelfTendOffIcon { get; private set; }
 
@@ -22,10 +23,11 @@ namespace RimHUD.Interface
     {
       ToggleIcon = LoadTexture("ToggleIcon");
       ConfigIcon = LoadTexture("ConfigIcon");
+      TutorialConfigIcon = LoadTexture("TutorialConfigIcon");
       SelfTendOnIcon = LoadTexture("SelfTendOnIcon");
       SelfTendOffIcon = LoadTexture("SelfTendOffIcon");
 
-      InspectTabButtonFill = (Texture2D) Access.Field_RimWorld_InspectPaneUtility_InspectTabButtonFillTex.GetValue(null);
+      InspectTabButtonFill = (Texture2D)Access.Field_RimWorld_InspectPaneUtility_InspectTabButtonFillTex.GetValue(null);
       SelectOverlappingNext = ContentFinder<Texture2D>.Get("UI/Buttons/SelectNextOverlapping");
 
       Reveal = ContentFinder<Texture2D>.Get("UI/Buttons/Dev/Reveal");

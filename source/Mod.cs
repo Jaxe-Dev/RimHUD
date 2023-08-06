@@ -1,53 +1,58 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using HarmonyLib;
-using RimHUD.Data;
-using RimHUD.Data.Compatibility;
-using RimHUD.Data.Integration;
-using RimHUD.Data.Storage;
+using RimHUD.Compatibility;
+using RimHUD.Configuration;
+using RimHUD.Engine;
 using RimHUD.Interface;
-using RimHUD.Interface.HUD;
+using RimHUD.Interface.Hud.Layers;
 using RimHUD.Patch;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimHUD
 {
-  [StaticConstructorOnStartup]
-  internal static class Mod
+  public class Mod : Verse.Mod
   {
     public const string Id = "RimHUD";
     public const string Name = Id;
-    public const string Version = "1.11.3";
+    public const string Version = "1.13.0";
 
     public const string PackageId = "Jaxe.RimHUD";
     public const string WorkshopLink = "https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027";
 
     public static IEnumerable<string> SameConfigVersions { get; } = new[]
     {
-      "1.11.2"
+      "1.12"
     };
 
     public static readonly DirectoryInfo ConfigDirectory = new DirectoryInfo(Path.Combine(GenFilePaths.ConfigFolderPath, Id));
-    public static readonly ModContentPack ContentPack;
+
+    public static Mod Instance { get; private set; }
+
+    public static ModContentPack ContentPack => Instance.Content;
 
     public static bool DevMode { get; set; }
 
-    public static bool FirstTimeUser { get; }
+    public static bool FirstTimeUser { get; private set; }
 
-    public static readonly Assembly Assembly;
+    public static Assembly Assembly { get; private set; }
 
-    static Mod()
+    public Mod(ModContentPack content) : base(content)
     {
+      Instance = this;
+
       Assembly = Assembly.GetExecutingAssembly();
+
       var harmony = new Harmony(Id);
       harmony.PatchAll();
 
       FirstTimeUser = !ConfigDirectory.Exists;
-      ContentPack = LoadedModManager.RunningMods.FirstOrDefault(mod => mod.assemblies.loadedAssemblies.Contains(Assembly));
       ConfigDirectory.Create();
+
+      IntegrationManager.EarlyInitialization();
 
       Log("Initialized");
 
@@ -62,8 +67,7 @@ namespace RimHUD
         Access.Initialize();
         Textures.Initialize();
 
-        IntegrationManager.Initialize();
-        CompatibilityManager.Initialize();
+        IntegrationManager.FinalInitialization();
       }
       catch (System.Exception exception)
       {
@@ -85,9 +89,13 @@ namespace RimHUD
     public static void ClearCache()
     {
       InspectPanePlus.ClearCache();
-      HudLayout.Docked.Flush();
-      HudLayout.Floating.Flush();
+      LayoutLayer.Docked.Flush();
+      LayoutLayer.Floating.Flush();
     }
+
+    public override string SettingsCategory() => Name;
+
+    public override void DoSettingsWindowContents(Rect rect) => Tutorial.OverlayModSettings(rect);
 
     public class Exception : System.Exception
     {
