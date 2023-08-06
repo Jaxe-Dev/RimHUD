@@ -36,7 +36,6 @@
       <Code Type="Fragment" Language="cs"><![CDATA[this.Value = Regex.Match(File.ReadAllText(Filename), Match).Groups[1].Value;]]></Code>
     </Task>
   </UsingTask>
-
   <UsingTask
     TaskName="FileRegexReplace"
     TaskFactory="RoslynCodeTaskFactory"

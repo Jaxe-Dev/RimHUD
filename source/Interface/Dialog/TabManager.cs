@@ -1,10 +1,11 @@
 ﻿using System.Linq;
-using RimHUD.Data.Extensions;
+using RimHUD.Configuration;
+using RimHUD.Extensions;
 using UnityEngine;
 
 namespace RimHUD.Interface.Dialog
 {
-  internal class TabManager
+  public class TabManager
   {
     private const float TabPadding = 4f;
 
@@ -18,11 +19,13 @@ namespace RimHUD.Interface.Dialog
     {
       _tabWidth = tabWidth;
       _tabHeight = tabHeight;
-      _tabs = tabs;
+      _tabs = tabs.Where(tab => tab != null).ToArray();
 
-      if (tabs.Length == 0) { return; }
-      _selected = tabs[0];
+      if (_tabs.Length == 0) { return; }
+      _selected = Persistent.HasCredits ? _tabs.Last() : _tabs.First();
     }
+
+    public void SelectType<T>() where T : Tab => _selected = _tabs.First(tab => tab.GetType() == typeof(T)) ?? _selected;
 
     public void Reset()
     {
@@ -39,8 +42,8 @@ namespace RimHUD.Interface.Dialog
       for (var index = 0; index < _tabs.Length; index++)
       {
         var tab = _tabs[index];
-        GUIPlus.SetColor(tab == _selected ? GUIPlus.ButtonSelectedColor : (Color?) null);
-        if (GUIPlus.DrawButton(hGrid[index + 1], tab.Label, tab.Tooltip, enabled: tab.Enabled)) { _selected = tab; }
+        GUIPlus.SetColor(tab == _selected ? Theme.ButtonSelectedColor : (Color?)null);
+        if (WidgetsPlus.DrawButton(hGrid[index + 1], tab.Label, tab.Tooltip, enabled: tab.Enabled)) { _selected = tab; }
         GUIPlus.ResetColor();
       }
 

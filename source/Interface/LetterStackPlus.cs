@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using RimHUD.Data.Configuration;
+using RimHUD.Configuration;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
@@ -7,7 +7,7 @@ using Verse;
 
 namespace RimHUD.Interface
 {
-  internal static class LetterStackPlus
+  public static class LetterStackPlus
   {
     private const float HudPadding = 8f;
 
@@ -17,8 +17,8 @@ namespace RimHUD.Interface
     private const float LetterHeight = 30f;
     private const float AlertHeight = 28f;
 
-    private static List<Alert> GetActiveAlerts() => (List<Alert>) Access.Field_RimWorld_AlertsReadout_ActiveAlerts.GetValue(((UIRoot_Play) Find.UIRoot).alerts);
-    private static List<Letter> GetLetters() => (List<Letter>) Access.Field_Verse_LetterStack_Letters.GetValue(Find.LetterStack);
+    private static List<Alert> GetActiveAlerts() => (List<Alert>)Access.Field_RimWorld_AlertsReadout_ActiveAlerts.GetValue(((UIRoot_Play)Find.UIRoot).alerts);
+    private static List<Letter> GetLetters() => (List<Letter>)Access.Field_Verse_LetterStack_Letters.GetValue(Find.LetterStack);
     private static void SetLastTopYInt(float value) => Access.Field_Verse_LetterStack_LastTopYInt.SetValue(Find.LetterStack, value);
 
     public static bool DrawLetters(float baseY)

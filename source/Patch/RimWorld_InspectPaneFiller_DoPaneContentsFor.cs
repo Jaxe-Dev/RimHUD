@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using RimHUD.Data;
+using RimHUD.Engine;
 using RimHUD.Interface;
 using RimWorld;
 using UnityEngine;
@@ -8,7 +8,7 @@ using Verse;
 namespace RimHUD.Patch
 {
   [HarmonyPatch(typeof(InspectPaneFiller), "DoPaneContentsFor")]
-  internal static class RimWorld_InspectPaneFiller_DoPaneContentsFor
+  public static class RimWorld_InspectPaneFiller_DoPaneContentsFor
   {
     public static bool Prefix(ISelectable sel, Rect rect)
     {

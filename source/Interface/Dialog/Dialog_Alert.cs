@@ -1,12 +1,12 @@
 ﻿using System;
-using RimHUD.Data;
-using RimHUD.Data.Extensions;
+using RimHUD.Engine;
+using RimHUD.Extensions;
 using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
-  internal class Dialog_Alert : Window
+  public class Dialog_Alert : Window
   {
     public override Vector2 InitialSize { get; }
     private readonly string _message;
@@ -52,7 +52,7 @@ namespace RimHUD.Interface.Dialog
 
       listing.Begin(_buttons == Buttons.Ok ? vGrid[2] : hGrid[1]);
 
-      if (listing.ButtonText(_buttons == Buttons.YesNo ? Lang.Get("Button.Yes") : Lang.Get("Button.OK")))
+      if (listing.ButtonText(_buttons == Buttons.YesNo ? Lang.Get("Interface.Button.Yes") : Lang.Get("Interface.Button.OK")))
       {
         _isAccepted = true;
         _onAccept?.Invoke();
@@ -64,7 +64,7 @@ namespace RimHUD.Interface.Dialog
       if (_buttons == Buttons.Ok) { return; }
 
       listing.Begin(hGrid[2]);
-      if (listing.ButtonText(_buttons == Buttons.YesNo ? Lang.Get("Button.No") : Lang.Get("Button.Cancel"))) { Close(); }
+      if (listing.ButtonText(_buttons == Buttons.YesNo ? Lang.Get("Interface.Button.No") : Lang.Get("Interface.Button.Cancel"))) { Close(); }
       listing.End();
     }
 

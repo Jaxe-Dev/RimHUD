@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using RimHUD.Data;
+using RimHUD.Engine;
 using RimHUD.Interface;
 using RimWorld;
 using UnityEngine;
@@ -7,7 +7,7 @@ using UnityEngine;
 namespace RimHUD.Patch
 {
   [HarmonyPatch(typeof(InspectPaneUtility), "InspectPaneOnGUI")]
-  internal static class RimWorld_InspectPaneUtility_InspectPaneOnGUI
+  public static class RimWorld_InspectPaneUtility_InspectPaneOnGUI
   {
     private static bool Prefix(Rect inRect, IInspectPane pane)
     {
