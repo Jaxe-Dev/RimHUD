@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using RimHUD.Data.Extensions;
-using RimHUD.Data.Storage;
+using RimHUD.Configuration;
+using RimHUD.Extensions;
 using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
-  internal class Tab_ConfigCredits : Tab
+  public class Tab_ConfigCredits : Tab
   {
     private const float LineSpacing = -4f;
 
@@ -21,12 +21,17 @@ namespace RimHUD.Interface.Dialog
 
     public override void Draw(Rect rect)
     {
-      var vGrid = rect.GetVGrid(GUIPlus.LargePadding, 10f, -1f, 70f);
+      var vGrid = rect.GetVGrid(WidgetsPlus.SmallPadding, Text.LineHeight, -1f, 70f);
 
-      GUIPlus.DrawContainer(vGrid[2]);
+      Widgets.Label(vGrid[1], "This mod is kindly supported by:");
+
+      WidgetsPlus.DrawContainer(vGrid[2]);
 
       var l = new ListingPlus();
+
       l.BeginScrollView(vGrid[2], ref _scrollPosition, ref _viewRect);
+
+      l.Gap();
 
       foreach (var group in Persistent.Credits.Elements("Group"))
       {
@@ -80,7 +85,7 @@ namespace RimHUD.Interface.Dialog
       var anchor = Text.Anchor;
       Text.Anchor = TextAnchor.LowerRight;
 
-      l.Label("A special thanks to supporters and countless others who have helped along the way.");
+      l.Label("A special thanks to all above and to countless others who have helped along the way.");
       l.Gap(LineSpacing);
       l.Label(("❤️".ColorizeHex("FF0011") + " Jaxe".Italic()).Bold());
 

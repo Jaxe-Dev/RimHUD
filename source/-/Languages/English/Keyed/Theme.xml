@@ -2,8 +2,8 @@
 
 <LanguageData>
   <RimHUD.Theme.HudPosition>HUD Position</RimHUD.Theme.HudPosition>
-  <RimHUD.Theme.HudDocked>Dock to Inspect Pane</RimHUD.Theme.HudDocked>
-  <RimHUD.Theme.HudDockedDesc>Requires Inspect Pane to be modified, see below.</RimHUD.Theme.HudDockedDesc>
+  <RimHUD.Theme.HudDocked>Dock to Inspect Pane (Docked Mode)</RimHUD.Theme.HudDocked>
+  <RimHUD.Theme.HudDockedDesc>Requires the Inspect Pane to be modified, see below.</RimHUD.Theme.HudDockedDesc>
   <RimHUD.Theme.HudAnchor>Anchor</RimHUD.Theme.HudAnchor>
   <RimHUD.Theme.HudAnchors>Top Left|Top Center|Top Right|Center Left|Center|Center Right|Bottom Left|Bottom Center|Bottom Right</RimHUD.Theme.HudAnchors>
   <RimHUD.Theme.HudOffsetX>X</RimHUD.Theme.HudOffsetX>
@@ -76,6 +76,6 @@
   <RimHUD.Theme.SkillSaturatedColor>Learning saturated</RimHUD.Theme.SkillSaturatedColor>
   <RimHUD.Theme.SkillActiveColor>Currently active</RimHUD.Theme.SkillActiveColor>
 
-  <RimHUD.TextStyle.Size>Size</RimHUD.TextStyle.Size>
-  <RimHUD.TextStyle.Height>Height</RimHUD.TextStyle.Height>
+  <RimHUD.Theme.TextStyle.Size>Size</RimHUD.Theme.TextStyle.Size>
+  <RimHUD.Theme.TextStyle.Height>Height</RimHUD.Theme.TextStyle.Height>
 </LanguageData>

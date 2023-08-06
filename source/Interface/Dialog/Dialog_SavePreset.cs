@@ -1,16 +1,13 @@
-﻿using System.Xml.Linq;
-using RimHUD.Data;
-using RimHUD.Data.Configuration;
-using RimHUD.Data.Extensions;
-using RimHUD.Data.Integration;
-using RimHUD.Data.Storage;
-using RimHUD.Interface.HUD;
+﻿using RimHUD.Configuration;
+using RimHUD.Engine;
+using RimHUD.Extensions;
+using RimHUD.Interface.Hud.Layout;
 using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
-  internal class Dialog_SavePreset : WindowPlus
+  public class Dialog_SavePreset : WindowPlus
   {
     private const string NameControl = "PresetName";
     private string _name;
@@ -20,7 +17,7 @@ namespace RimHUD.Interface.Dialog
     private bool _includeWidth = true;
     private bool _includeTabs;
 
-    private Dialog_SavePreset() : base(Lang.Get("Dialog_SavePreset.Title").Bold(), new Vector2(400f, 320f))
+    private Dialog_SavePreset() : base(Lang.Get("Interface.Dialog_SavePreset.Title").Bold(), new Vector2(400f, 320f))
     {
       onlyOneOfTypeAllowed = true;
       absorbInputAroundWindow = true;
@@ -34,23 +31,23 @@ namespace RimHUD.Interface.Dialog
     {
       var l = new ListingPlus();
       l.Begin(rect);
-      _includeDocked = l.CheckboxLabeled(Lang.Get("Dialog_SavePreset.IncludeDocked"), _includeDocked, enabled: !_includeDocked || _includeFloating);
-      _includeFloating = l.CheckboxLabeled(Lang.Get("Dialog_SavePreset.IncludeFloating"), _includeFloating, enabled: !_includeFloating || _includeDocked);
+      _includeDocked = l.CheckboxLabeled(Lang.Get("Interface.Dialog_SavePreset.IncludeDocked"), _includeDocked, enabled: !_includeDocked || _includeFloating);
+      _includeFloating = l.CheckboxLabeled(Lang.Get("Interface.Dialog_SavePreset.IncludeFloating"), _includeFloating, enabled: !_includeFloating || _includeDocked);
       l.GapLine();
-      _includeHeight = l.CheckboxLabeled(Lang.Get("Dialog_SavePreset.IncludeHeight"), _includeHeight);
-      _includeWidth = l.CheckboxLabeled(Lang.Get("Dialog_SavePreset.IncludeWidth"), _includeWidth);
-      _includeTabs = l.CheckboxLabeled(Lang.Get("Dialog_SavePreset.IncludeTabs"), _includeTabs, enabled: _includeDocked);
+      _includeWidth = l.CheckboxLabeled(Lang.Get("Interface.Dialog_SavePreset.IncludeWidth"), _includeWidth);
+      _includeHeight = l.CheckboxLabeled(Lang.Get("Interface.Dialog_SavePreset.IncludeHeight"), _includeHeight);
+      _includeTabs = l.CheckboxLabeled(Lang.Get("Interface.Dialog_SavePreset.IncludeTabs"), _includeTabs, enabled: _includeDocked);
 
       l.GapLine();
-      l.Label(Lang.Get("Dialog_SavePreset.Name"));
+      l.Label(Lang.Get("Interface.Dialog_SavePreset.Name"));
       GUI.SetNextControlName(NameControl);
       _name = l.TextEntry(_name);
       GUI.FocusControl(NameControl);
       l.Gap();
 
       var buttonGrid = l.GetButtonGrid(-1f, -1f);
-      if (GUIPlus.DrawButton(buttonGrid[1], Lang.Get("Button.Save"), enabled: Persistent.IsValidFilename(_name))) { Save(); }
-      if (GUIPlus.DrawButton(buttonGrid[2], Lang.Get("Button.Cancel"))) { Close(); }
+      if (WidgetsPlus.DrawButton(buttonGrid[1], Lang.Get("Interface.Button.Save"), enabled: Persistent.IsValidFilename(_name))) { Save(); }
+      if (WidgetsPlus.DrawButton(buttonGrid[2], Lang.Get("Interface.Button.Cancel"))) { Close(); }
       l.End();
     }
 
@@ -62,17 +59,10 @@ namespace RimHUD.Interface.Dialog
 
     private void Save()
     {
-      var xe = new XElement(LayoutPreset.RootElementName);
-
-      xe.Add(new XAttribute(LayoutPreset.VersionAttributeName, Mod.Version));
-
-      if (_includeDocked) { xe.Add(HudLayout.Docked.ToXml(HudLayout.DockedElementName, _includeHeight ? Theme.InspectPaneHeight.Value : -1, _includeWidth ? Theme.InspectPaneTabWidth.Value : -1, _includeTabs ? Theme.InspectPaneMinTabs.Value : -1)); }
-      if (_includeFloating) { xe.Add(HudLayout.Floating.ToXml(HudLayout.FloatingElementName, _includeHeight ? Theme.HudHeight.Value : -1, _includeWidth ? Theme.HudWidth.Value : -1)); }
-
-      Persistent.SaveLayoutPreset(_name, xe);
+      Persistent.SaveCurrentLayouts(_name, _includeDocked, _includeFloating, _includeWidth, _includeHeight, _includeTabs);
       LayoutPreset.RefreshUserPresets();
 
-      Dialog_Alert.Open(Lang.Get("Alert.Saved", _name));
+      Dialog_Alert.Open(Lang.Get("Interface.Alert.Saved", _name));
       Close();
     }
   }

@@ -1,13 +1,15 @@
 ﻿using HarmonyLib;
-using RimHUD.Data;
+using RimHUD.Engine;
 using RimHUD.Interface;
+using RimHUD.Interface.Dialog;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimHUD.Patch
 {
   [HarmonyPatch(typeof(PlaySettings), "DoPlaySettingsGlobalControls")]
-  internal static class RimWorld_PlaySettings_DoPlaySettingsGlobalControls
+  public static class RimWorld_PlaySettings_DoPlaySettingsGlobalControls
   {
     private static void Postfix(WidgetRow row, bool worldView)
     {
@@ -15,7 +17,9 @@ namespace RimHUD.Patch
 
       var showHud = State.Activated;
       row.ToggleableIcon(ref showHud, Textures.ToggleIcon, Lang.Get("ToggleHud"), SoundDefOf.Mouseover_ButtonToggle);
-      State.Activated = showHud;
+
+      if (Event.current.shift && showHud != State.Activated) { Dialog_Config.Open(); }
+      else { State.Activated = showHud; }
     }
   }
 }

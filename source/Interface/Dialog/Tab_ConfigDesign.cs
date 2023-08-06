@@ -1,12 +1,12 @@
-﻿using RimHUD.Data;
-using RimHUD.Data.Configuration;
-using RimHUD.Data.Extensions;
+﻿using RimHUD.Configuration;
+using RimHUD.Engine;
+using RimHUD.Extensions;
 using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
-  internal class Tab_ConfigDesign : Tab
+  public class Tab_ConfigDesign : Tab
   {
     private string _hudWidthText;
     private string _hudHeightText;
@@ -14,7 +14,7 @@ namespace RimHUD.Interface.Dialog
     private string _hudOffsetYText;
     private string _inspectPaneHeightText;
 
-    public override string Label { get; } = Lang.Get("Dialog_Config.Tab.Design");
+    public override string Label { get; } = Lang.Get("Interface.Dialog_Config.Tab_Design");
     public override TipSignal? Tooltip { get; } = null;
 
     public override void Reset()
@@ -22,7 +22,7 @@ namespace RimHUD.Interface.Dialog
 
     public override void Draw(Rect rect)
     {
-      var hGrid = rect.GetHGrid(GUIPlus.LargePadding, -1f, -1f);
+      var hGrid = rect.GetHGrid(WidgetsPlus.LargePadding, -1f, -1f);
       var l = new ListingPlus();
       l.Begin(hGrid[1]);
 

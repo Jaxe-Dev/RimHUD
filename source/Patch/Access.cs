@@ -7,7 +7,7 @@ using Verse;
 namespace RimHUD.Patch
 {
   [StaticConstructorOnStartup]
-  internal static class Access
+  public static class Access
   {
     public static FastInvokeHandler Method_RimWorld_HealthCardUtility_VisibleHediffGroupsInOrder { get; private set; }
     public static FastInvokeHandler Method_RimWorld_HealthCardUtility_VisibleHediffs { get; private set; }
@@ -77,7 +77,7 @@ namespace RimHUD.Patch
       }
 
       public void Invoke(params object[] parameters) => Invoke<object>();
-      public T Invoke<T>(params object[] parameters) => (T) _handler.Invoke(_type, parameters);
+      public T Invoke<T>(params object[] parameters) => (T)_handler.Invoke(_type, parameters);
     }
   }
 }

@@ -1,5 +1,5 @@
 # RimHUD
-![Mod Version](https://img.shields.io/badge/Mod_Version-1.11.3-blue.svg)
+![Mod Version](https://img.shields.io/badge/Mod_Version-1.13.0-blue.svg)
 ![RimWorld Version](https://img.shields.io/badge/Built_for_RimWorld-1.4-blue.svg)
 ![Harmony Version](https://img.shields.io/badge/Powered_by_Harmony-2.2-blue.svg)\
 ![Steam Downloads](https://img.shields.io/steam/downloads/1508850027?colorB=blue&label=Steam+Downloads)
@@ -26,11 +26,11 @@ Visual warnings will appear if a pawn has any life threatening conditions, has w
 
 ---
 
-**Note to Modders**: *Adding a layout preset in your mod's `RimHUD\Presets` folder will be automatically added to RimHUD's built-in presets.*
+**Note to Translators**: *Although the offers are appreciated, for maintenance reasons only English will included with the base mod. All translations should be uploaded as language submods with full permission to use the mod's images in any way.*
 
 ---
 
-**Note to Translators**: *Although the offers are appreciated, for maintenance reasons only English will included with the base mod. All translations should be uploaded as language submods with full permission to use the mod's images in any way.*
+**Note to Modders**: *RimHUD supports built-in presets and custom widgets from your mod. Check the wiki for details.*
 
 ---
 
@@ -47,6 +47,8 @@ Postfix : RimWorld.MainTabWindow.InitialSize
 Prefix* : RimWorld.MainTabWindow_Inspect.PaneTopY
 Postfix : RimWorld.PlaySettings.DoPlaySettingsGlobalControls
 Prefix* : RimWorld.Tutor.TutorOnGUI
+Prefix* : Verse.ActiveTip.DrawInner
+Prefix* : Verse.ActiveTip.TipRect
 Postfix : Verse.Game.FinalizeInit
 Prefix* : Verse.LetterStack.LettersOnGUI
 Prefix  : Verse.MapInterface.MapInterfaceOnGUI_AfterMainTabs

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using RimHUD.Data;
-using RimHUD.Data.Configuration;
-using RimHUD.Data.Integration;
-using RimHUD.Data.Models;
-using RimHUD.Interface.HUD;
+using RimHUD.Compatibility.Multiplayer;
+using RimHUD.Configuration;
+using RimHUD.Engine;
+using RimHUD.Interface.Hud.Layout;
+using RimHUD.Interface.Hud.Models;
 using RimHUD.Patch;
 using RimWorld;
 using UnityEngine;
@@ -14,7 +14,7 @@ using Verse;
 
 namespace RimHUD.Interface
 {
-  internal static class InspectPanePlus
+  public static class InspectPanePlus
   {
     private const int LogLinesMax = 300;
 
@@ -31,44 +31,42 @@ namespace RimHUD.Interface
 
     private static readonly Dictionary<InspectTabBase, int> TabButtonWidths = new Dictionary<InspectTabBase, int>();
 
-    public static void OnGUI(Rect inRect, IInspectPane pane)
+    public static void OnGUI(Rect rect, IInspectPane pane)
     {
       Theme.CheckFontChange();
 
-      var model = PawnModel.Selected;
+      var selected = PawnModel.Selected;
 
       pane.RecentHeight = Theme.InspectPaneHeight.Value - 35f;
 
-      if (model == null) { return; }
+      if (selected == null) { return; }
       if (!pane.AnythingSelected) { return; }
 
-      var rect = inRect.ContractedBy(12f);
-      rect.yMin -= 4f;
-      rect.yMax += 6f;
+      var bounds = GetContentRect(rect);
 
       try
       {
-        GUI.BeginGroup(rect.ExpandedBy(1f));
+        GUI.BeginGroup(bounds.ExpandedBy(1f));
 
         var lineEndWidth = 0f;
 
         if (pane.ShouldShowSelectNextInCellButton)
         {
-          var selectOverlappingNextRect = new Rect(rect.width - ButtonSize, 0f, ButtonSize, ButtonSize);
+          var selectOverlappingNextRect = new Rect(bounds.width - ButtonSize, 0f, ButtonSize, ButtonSize);
           if (Widgets.ButtonImage(selectOverlappingNextRect, Textures.SelectOverlappingNext)) { pane.SelectNextInCell(); }
           lineEndWidth += ButtonSize;
           TooltipHandler.TipRegion(selectOverlappingNextRect, "SelectNextInSquareTip".Translate(KeyBindingDefOf.SelectNextInCell.MainKeyLabel));
         }
 
-        DrawButtons(rect, ref lineEndWidth);
+        DrawButtons(bounds, ref lineEndWidth);
 
         var previousAnchor = Text.Anchor;
         Text.Anchor = TextAnchor.UpperLeft;
         GUIPlus.SetFont(GameFont.Medium);
-        GUIPlus.SetColor(model.FactionRelationColor);
+        GUIPlus.SetColor(selected.FactionRelationColor);
 
-        var labelRect = new Rect(0f, 0f, rect.width - lineEndWidth, Text.LineHeight);
-        var label = model.NameText;
+        var labelRect = new Rect(0f, 0f, bounds.width - lineEndWidth, Text.LineHeight);
+        var label = selected.NameText;
 
         Widgets.Label(labelRect, label);
         if (Widgets.ButtonInvisible(labelRect)) { ToggleSocialTab(); }
@@ -76,30 +74,41 @@ namespace RimHUD.Interface
         GUIPlus.ResetFont();
         GUIPlus.ResetColor();
         Text.Anchor = previousAnchor;
-        GUIPlus.DrawTooltip(labelRect, model.BioTooltip, false);
+        WidgetsPlus.DrawTooltip(labelRect, selected.BioTooltip, true);
 
         if (!pane.ShouldShowPaneContents) { return; }
 
-        var contentRect = rect.AtZero();
+        var contentRect = bounds.AtZero();
         contentRect.yMin += 26f;
-        DrawContent(contentRect, model, null);
+        DrawContent(contentRect, selected, null);
       }
       catch (Exception exception) { Troubleshooter.HandleError(exception); }
       finally { GUI.EndGroup(); }
+
+      if (!Persistent.TutorialComplete) { Tutorial.DoInspectPane(rect); }
     }
 
-    public static void DrawContent(Rect rect, PawnModel model, Pawn pawn)
+    public static Rect GetContentRect(Rect bounds)
+    {
+      var rect = bounds.ContractedBy(12f);
+      rect.yMin -= 4f;
+      rect.yMax += 6f;
+
+      return rect;
+    }
+
+    public static void DrawContent(Rect rect, PawnModel selected, Pawn pawn)
     {
       if (pawn == null)
       {
-        if (model == null) { throw new Mod.Exception("Both model and pawn are null"); }
+        if (selected == null) { throw new Mod.Exception("Both model and pawn are null"); }
 
-        pawn = model.Base;
+        pawn = selected.Base;
       }
 
       Text.Font = GameFont.Small;
 
-      if (Theme.HudDocked.Value) { Hud.DrawDocked(rect, model); }
+      if (Theme.HudDocked.Value) { HudLayout.DrawDocked(rect, selected); }
       else if (Theme.InspectPaneTabAddLog.Value) { DrawLog(pawn, rect); }
     }
 
@@ -129,7 +138,7 @@ namespace RimHUD.Interface
           if (!tab.IsVisible || tab.Hidden) { continue; }
 
           int buttonWidth;
-          if (TabButtonWidths.ContainsKey(tab)) { buttonWidth = TabButtonWidths[tab]; }
+          if (TabButtonWidths.TryGetValue(tab, out var tabButtonWidth)) { buttonWidth = tabButtonWidth; }
           else
           {
             buttonWidth = Traverse.Create(tab).Field<int>("tabButtonWidth")?.Value ?? 0;
@@ -167,12 +176,12 @@ namespace RimHUD.Interface
         _pawn = pawn;
       }
 
-      var width = rect.width - GUIPlus.ScrollbarWidth;
+      var width = rect.width - WidgetsPlus.ScrollbarWidth;
       var height = _log.Sum(line => line.GetHeight(rect.width));
 
       if (height <= 0f) { return; }
 
-      var viewRect = new Rect(0f, 0f, rect.width - GUIPlus.ScrollbarWidth, height);
+      var viewRect = new Rect(0f, 0f, rect.width - WidgetsPlus.ScrollbarWidth, height);
 
       _logDrawData.StartNewDraw();
 
@@ -199,53 +208,33 @@ namespace RimHUD.Interface
 
       if (!(selected is Pawn pawn)) { return; }
 
-      if (ModsConfig.BiotechActive && pawn.genes?.Xenotype != null)
-      {
-        lineEndWidth += ButtonSize;
-        DrawXenotypeButton(pawn, new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize));
-        lineEndWidth += GUIPlus.SmallPadding;
-      }
+      if (HudContent.AllowXenotypeButton(pawn)) { DrawXenotypeButton(pawn, GetRowButtonRect(rect, ref lineEndWidth)); }
 
-      if (Theme.ShowFactionIcon.Value && pawn.Faction != null)
-      {
-        lineEndWidth += ButtonSize;
-        FactionUIUtility.DrawFactionIconWithTooltip(new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize), pawn.Faction);
-        lineEndWidth += GUIPlus.SmallPadding;
-      }
+      if (HudContent.AllowFactionIconButton(pawn)) { FactionUIUtility.DrawFactionIconWithTooltip(GetRowButtonRect(rect, ref lineEndWidth), pawn.Faction); }
 
-      if (Theme.ShowIdeoligionIcon.Value && ModsConfig.IdeologyActive && pawn.Ideo != null)
-      {
-        lineEndWidth += ButtonSize;
-        DrawIdeoligionButton(pawn, new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize));
-        lineEndWidth += GUIPlus.SmallPadding;
-      }
+      if (HudContent.AllowIdeoButton(pawn)) { DrawIdeoligionButton(pawn, GetRowButtonRect(rect, ref lineEndWidth)); }
 
-      if (!PlayerControlled(pawn)) { return; }
+      if (!IsPlayerControlled(pawn)) { return; }
 
-      lineEndWidth += GUIPlus.SmallPadding;
+      lineEndWidth += WidgetsPlus.SmallPadding;
 
-      if (pawn.playerSettings.UsesConfigurableHostilityResponse)
-      {
-        lineEndWidth += ButtonSize;
-        HostilityResponseModeUtility.DrawResponseButton(new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize), pawn, false);
-        lineEndWidth += GUIPlus.SmallPadding;
-      }
+      if (HudContent.AllowResponseButton(pawn)) { HostilityResponseModeUtility.DrawResponseButton(GetRowButtonRect(rect, ref lineEndWidth), pawn, false); }
 
-      lineEndWidth += ButtonSize;
-      if (pawn.RaceProps?.IsMechanoid ?? true) { TrainingCardUtility.DrawRenameButton(new Rect(rect.width - lineEndWidth, 0f, ButtonSize + 4f, ButtonSize + 4f), pawn); }
-      else { DrawMedicalButton(pawn, new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize)); }
-      lineEndWidth += GUIPlus.SmallPadding;
+      if (HudContent.AllowMedicalButton(pawn)) { DrawMedicalButton(pawn, GetRowButtonRect(rect, ref lineEndWidth)); }
+      if (HudContent.AllowRenameButton(pawn)) { TrainingCardUtility.DrawRenameButton(GetRowButtonRect(rect, ref lineEndWidth, 4f, 4f), pawn); }
 
-      if (!pawn.IsColonist) { return; }
-
-      lineEndWidth += ButtonSize;
-
-      DrawSelfTendButton(pawn, new Rect(rect.width - lineEndWidth, 0f, ButtonSize, ButtonSize));
-
-      lineEndWidth += GUIPlus.SmallPadding;
+      if (HudContent.AllowSelfTendButton(pawn)) { DrawSelfTendButton(pawn, GetRowButtonRect(rect, ref lineEndWidth)); }
     }
 
-    private static bool PlayerControlled(Pawn pawn) => !pawn.Dead && pawn.playerSettings != null && ((pawn.Faction?.IsPlayer ?? false) || (pawn.HostFaction?.IsPlayer ?? false));
+    private static Rect GetRowButtonRect(Rect bounds, ref float lineEndWidth, float widthModifier = 0f, float heightModifier = 0f)
+    {
+      lineEndWidth += ButtonSize;
+      var rect = new Rect(bounds.width - lineEndWidth, 0f, ButtonSize + widthModifier, ButtonSize + heightModifier);
+      lineEndWidth += WidgetsPlus.SmallPadding;
+      return rect;
+    }
+
+    private static bool IsPlayerControlled(Pawn pawn) => !pawn.Dead && pawn.playerSettings != null && ((pawn.Faction?.IsPlayer ?? false) || (pawn.HostFaction?.IsPlayer ?? false));
 
     private static void DrawSelfTendButton(Pawn pawn, Rect rect)
     {
@@ -257,17 +246,15 @@ namespace RimHUD.Interface
       if (!canDoctor) { selfTendTip += "\n\n" + "MessageCannotSelfTendEver".Translate(pawn.LabelShort, pawn); }
       else if (!canDoctorPriority) { selfTendTip += "\n\n" + "MessageSelfTendUnsatisfied".Translate(pawn.LabelShort, pawn); }
 
-      GUIPlus.SetFont(GameFont.Tiny);
       var selfTend = pawn.playerSettings.selfTend;
-      selfTend = GUIPlus.DrawToggle(rect, selfTend, GUIPlus.PrepareTipSignal(() => selfTendTip), canDoctor, Textures.SelfTendOnIcon, Textures.SelfTendOffIcon);
+      selfTend = WidgetsPlus.DrawToggle(rect, selfTend, new TipSignal(selfTendTip, WidgetsPlus.StandardTooltipId), canDoctor, Textures.SelfTendOnIcon, Textures.SelfTendOffIcon);
       if (selfTend != pawn.playerSettings.selfTend) { Mod_Multiplayer.SetSelfTend(pawn, selfTend); }
-      GUIPlus.ResetFont();
     }
 
     private static void DrawMedicalButton(Pawn pawn, Rect rect)
     {
       MedicalCareUtility.MedicalCareSelectButton(rect, pawn);
-      GUIPlus.DrawTooltip(rect, () => Lang.Get("InspectPane.MedicalCare", pawn.KindLabel, pawn.playerSettings.medCare.GetLabel()), true);
+      WidgetsPlus.DrawTooltip(rect, () => Lang.Get("Model.Health.MedicalCare", pawn.KindLabel, pawn.playerSettings.medCare.GetLabel()));
     }
 
     private static void DrawIdeoligionButton(Pawn pawn, Rect rect)
@@ -291,12 +278,14 @@ namespace RimHUD.Interface
 
       var tooltip = ("Xenotype".Translate().CapitalizeFirst().Resolve() + ": " + pawn.genes.XenotypeLabelCap).Colorize(ColoredText.TipSectionTitleColor);
       var stage = pawn.ageTracker?.CurLifeStage?.LabelCap.ToString();
-      // if (stage != null) { top += $" ({stage})"; }
+
       if (stage != null) { tooltip += "\n" + Lang.Get("Model.Bio.Lifestage", stage); }
       if (!pawn.genes.Xenotype.description.NullOrEmpty()) { tooltip += "\n\n" + pawn.genes.Xenotype.description; }
 
       TooltipHandler.TipRegion(rect, tooltip);
     }
+
+    public static void ClearButtonWidths() => TabButtonWidths.Clear();
 
     public static void ClearCache()
     {
@@ -313,7 +302,7 @@ namespace RimHUD.Interface
 
     private static void ToggleTab(Type tabType)
     {
-      var pane = (MainTabWindow_Inspect) MainButtonDefOf.Inspect.TabWindow;
+      var pane = (MainTabWindow_Inspect)MainButtonDefOf.Inspect.TabWindow;
       var tab = (from t in pane.CurTabs where tabType.IsInstanceOfType(t) select t).FirstOrDefault();
       if (tab == null) { return; }
 
