@@ -75,7 +75,7 @@ namespace RimHUD.Engine
             return;
           }
 
-          var configButtonRect = HudLayout.GetConfigButtonRect(contentRect, false);
+          var configButtonRect = HudLayout.GetConfigButtonRect(contentRect);
           SetFocus(configButtonRect, Vector2.left);
           DrawNotice(noticeRect, text);
 

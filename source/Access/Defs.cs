@@ -18,9 +18,9 @@ namespace RimHUD.Access
     public static readonly NeedDef NeedComfort = null!;
     [DefAlias("Outdoors")]
     public static readonly NeedDef NeedOutdoors = null!;
-    [DefAlias("MechEnergy")]
+    [DefAlias("MechEnergy"), MayRequireBiotech]
     public static readonly NeedDef NeedEnergy = null!;
-    [DefAlias("Suppression")]
+    [DefAlias("Suppression"), MayRequireIdeology]
     public static readonly NeedDef NeedSuppression = null!;
 
     [DefAlias("Haul")]

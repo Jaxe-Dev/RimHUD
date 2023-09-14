@@ -1,7 +1,6 @@
 using RimHUD.Configuration;
 using RimHUD.Interface.Hud.Layers;
 using RimHUD.Interface.Screen;
-using RimWorld;
 using Verse;
 
 namespace RimHUD.Engine
@@ -13,13 +12,11 @@ namespace RimHUD.Engine
 
     public static Pawn? SelectedPawn => Find.Selector?.SingleSelectedThing as Pawn;
 
-    public static bool ForceModifyPane { get; set; }
+    private static bool ShowPane => Active && SelectedPawn is not null;
 
-    public static bool ModifyPane => ForceModifyPane || (ShowPane && Theme.InspectPaneTabModify.Value);
+    public static bool ModifyPane => ShowPane && Theme.InspectPaneTabModify.Value;
     public static bool CompressLetters => Active && !Theme.DockedMode.Value && Theme.LetterCompress.Value;
     public static bool HudFloatingVisible => !Theme.DockedMode.Value && ShowPane;
-
-    private static bool ShowPane => Active && MainButtonDefOf.Inspect!.TabWindow!.IsOpen && SelectedPawn is not null;
 
     public static LayoutLayer CurrentLayout => Theme.DockedMode.Value ? LayoutLayer.Docked : LayoutLayer.Floating;
 
