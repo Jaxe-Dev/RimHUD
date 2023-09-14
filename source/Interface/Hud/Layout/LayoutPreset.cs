@@ -1,6 +1,9 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Xml.Linq;
 using RimHUD.Configuration;
+using RimHUD.Configuration.Settings;
 using RimHUD.Engine;
 using RimHUD.Extensions;
 using RimHUD.Interface.Hud.Layers;
@@ -8,79 +11,99 @@ using Verse;
 
 namespace RimHUD.Interface.Hud.Layout
 {
-  public class LayoutPreset
+  public sealed class LayoutPreset
   {
-    public const string RootElementName = "Preset";
-    public const string VersionAttributeName = "Version";
+    private const string RootElementName = "Preset";
+    private const string VersionAttributeName = "Version";
+    private const string TextSizesAttributeName = "TextSizes";
 
-    public static LayoutPreset[] FixedList { get; } = Persistent.GetFixedPresets();
-    public static LayoutPreset[] UserList { get; private set; } = Persistent.GetUserPresets();
+    public static IEnumerable<LayoutPreset> IntegratedList { get; } = Presets.GetIntegratedList();
+    public static IEnumerable<LayoutPreset> UserList { get; private set; } = Presets.GetUserList();
 
     public FileInfo File { get; }
-    public string Name { get; }
-    public string Mod { get; }
-    public string Label => Name + " " + Mod.SmallSize().Italic();
-    public bool IsUserMade { get; }
 
-    private LayoutPreset(string name, string mod, FileInfo file)
+    public string Name { get; }
+
+    private readonly string? _source;
+
+    public string Label => $"{Name} [{_source?.SmallSize()}]";
+
+    public bool IsUserMade => _source is null;
+
+    private LayoutPreset(FileInfo file, string name, string? source)
     {
       File = file;
       Name = name;
-      IsUserMade = mod == null;
-      Mod = mod ?? Lang.Get("Layout.UserPreset");
+      _source = source;
     }
 
-    public static LayoutPreset Prepare(ModContentPack mod, FileInfo file)
+    public static LayoutPreset? FromFile(ModContentPack? mod, FileInfo file)
     {
-      var isBuiltIn = mod == RimHUD.Mod.ContentPack;
-      var modName = isBuiltIn ? Lang.Get("Layout.BuiltIn") : mod?.Name;
+      var isIntegrated = mod == Mod.ContentPack;
+      var source = isIntegrated ? Lang.Get("Layout.IntegratedPreset") : mod?.Name ?? Lang.Get("Layout.UserPreset");
       var name = file.NameWithoutExtension();
 
       var xml = Persistent.LoadXml(file);
-      if (xml == null)
+      if (xml is null)
       {
-        RimHUD.Mod.Warning($"'{file.FullName}' is an invalid RimHUD preset file");
+        Report.Warning($"'{file.FullName}' is an invalid {Mod.Name} preset file.");
         return null;
       }
 
-      var versionText = xml.Attribute(VersionAttributeName)?.Value;
+      var versionText = xml.GetAttribute(VersionAttributeName);
 
-      var preset = new LayoutPreset(name, modName, file);
-      if (isBuiltIn) { return preset; }
+      var preset = new LayoutPreset(file, name, source);
+      if (isIntegrated) { return preset; }
 
-      if (versionText == null)
+      if (versionText is null)
       {
-        RimHUD.Mod.Warning($"{name} ({modName}) is does not contain a version check");
+        Report.Warning($"{name} {source} is does not contain a version check.");
         return preset;
       }
       var version = new Version(versionText);
-      if (new Version(RimHUD.Mod.Version).ComparePartial(version) == 1) { RimHUD.Mod.Warning($"{name} {(modName == null ? null : "(" + modName + ")")} was built for a lower version of RimHUD ({versionText})"); }
+      if (new Version(Mod.Version).ComparePartial(version) is 1) { Report.Warning($"{name} {source} was built for an older version of {Mod.Name} ({versionText})."); }
 
       return preset;
     }
 
-    public static void RefreshUserPresets() => UserList = Persistent.GetUserPresets();
+    public static void SaveCurrent(string name, bool includeDocked, bool includeFloating, bool includeWidth, bool includeHeight, bool includeTabs, bool includeTextSizes)
+    {
+      var xml = new XElement(RootElementName);
+
+      xml.Add(new XAttribute(VersionAttributeName, Mod.Version));
+      if (includeTextSizes) { xml.AddAttribute(TextSizesAttributeName, TextStyle.GetSizesString()); }
+
+      if (includeDocked) { xml.Add(LayoutLayer.Docked.ToXml(LayoutLayer.DockedElementName, includeWidth ? Theme.InspectPaneTabWidth.Value : -1, includeHeight ? Theme.InspectPaneHeight.Value : -1, includeTabs ? Theme.InspectPaneMinTabs.Value : -1)); }
+      if (includeFloating) { xml.Add(LayoutLayer.Floating.ToXml(LayoutLayer.FloatingElementName, includeWidth ? Theme.FloatingWidth.Value : -1, includeHeight ? Theme.FloatingHeight.Value : -1)); }
+
+      Presets.Save(name, xml);
+      RefreshList();
+    }
+
+    public static void RefreshList() => UserList = Presets.GetUserList();
 
     public bool Load()
     {
       if (!File.ExistsNow())
       {
-        RefreshUserPresets();
+        Report.Error($"Preset file '{Label}' not found.");
         return false;
       }
 
       var xml = Persistent.LoadXml(File);
-      if (xml == null)
+      if (xml is null)
       {
-        RimHUD.Mod.Error($"Unable to load preset '{Label}'");
+        Report.Error($"Unable to load preset '{Label}'.");
         return false;
       }
+
+      TextStyle.SetFromString(xml.GetAttribute(TextSizesAttributeName));
 
       var docked = xml.Element(LayoutLayer.DockedElementName);
       var floating = xml.Element(LayoutLayer.FloatingElementName);
 
-      if (docked != null) { LayoutLayer.Docked = LayoutLayer.FromXml(docked); }
-      if (floating != null) { LayoutLayer.Floating = LayoutLayer.FromXml(floating); }
+      if (docked is not null) { LayoutLayer.Docked = LayoutLayer.FromXml(docked); }
+      if (floating is not null) { LayoutLayer.Floating = LayoutLayer.FromXml(floating); }
 
       Persistent.Save();
 

@@ -1,128 +1,67 @@
-﻿using System;
+using System;
 using System.Linq;
 using RimHUD.Configuration;
-using RimHUD.Engine;
+using RimHUD.Configuration.Settings;
 using RimHUD.Extensions;
-using RimHUD.Interface.Hud.Layout;
-using RimHUD.Interface.Hud.Models;
+using RimHUD.Interface.Hud.Tooltips;
 using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Hud.Widgets
 {
-  public class BarWidget : StandardWidget
+  public sealed class BarWidget : StandardWidget
   {
-    private const ValueStyle DefaultValueStyle = ValueStyle.Percentage;
-    private const ColorStyle DefaultColorStyle = ColorStyle.LowToMain;
+    private readonly string? _value;
+    private readonly float _fill;
 
-    private readonly float _max;
-    private readonly float _value;
+    private readonly BarColorStyle _colorStyle;
 
-    private readonly ValueStyle _valueStyle;
-    private readonly ColorStyle _colorStyle;
+    private readonly float[]? _thresholds;
 
-    private readonly float[] _thresholds;
-    private readonly Action _onClick;
+    private readonly Action? _onHover;
+    private readonly Action? _onClick;
 
-    private BarWidget(string label, float value, float max, TextStyle textStyle, Func<string> tooltip, float[] thresholds, ValueStyle valueStyle, ColorStyle colorStyle, Action onClick) : base(label, tooltip, textStyle)
+    public BarWidget(string? label, string? value, float fill, float[]? thresholds, Func<string?>? tooltip, Action? onHover, Action? onClick, TextStyle textStyle, BarColorStyle colorStyle) : base(label, tooltip, textStyle)
     {
-      _thresholds = thresholds;
-      _max = max;
       _value = value;
-      _valueStyle = valueStyle;
-      _colorStyle = colorStyle;
+      _fill = fill;
+      _thresholds = thresholds;
+
+      _onHover = onHover;
       _onClick = onClick;
-    }
 
-    public static BarWidget FromModel(IModelBar model, TextStyle textStyle, string variant = null) => model?.Hidden ?? true ? null : new BarWidget(model.Label, model.Value, model.Max, textStyle, model.Tooltip, model.Thresholds, DefaultValueStyle, GetColorStyleFromVariant(variant), model.OnClick);
-
-    private static ColorStyle GetColorStyleFromVariant(string variant)
-    {
-      switch (variant)
-      {
-        case nameof(ColorStyle.LowOnly):
-          return ColorStyle.LowOnly;
-        case nameof(ColorStyle.MainOnly):
-          return ColorStyle.MainOnly;
-        case nameof(ColorStyle.MainToLow):
-          return ColorStyle.MainToLow;
-        default:
-          return DefaultColorStyle;
-      }
+      _colorStyle = colorStyle;
     }
 
     public override bool Draw(Rect rect)
     {
-      if (_value < 0f) { return false; }
+      if (_fill < 0f) { return false; }
 
-      var percentage = _value / _max;
+      var percentage = _fill / 1f;
 
-      var showLabel = Label != null;
+      var grid = rect.GetHGrid(GUIPlus.TinyPadding, Label is not null ? Theme.LabelWidth.Value : 0f, -1f, Theme.ValueWidth.Value);
 
-      var grid = rect.GetHGrid(WidgetsPlus.TinyPadding, showLabel ? Theme.LabelWidth.Value : 0f, -1f, _valueStyle == ValueStyle.Hidden ? 0f : Theme.ValueWidth.Value);
-
-      DrawText(grid[1], Label);
-      WidgetsPlus.DrawBar(grid[2], percentage, GetBarColor(percentage));
+      if (Label is not null) { DrawText(grid[1], Label); }
+      WidgetsPlus.DrawBar(grid[2], percentage, _colorStyle.GetColor(percentage));
       DrawThresholds(grid[2]);
-      DrawValue(grid[3], _value, _max);
+      if (_value is not null) { DrawText(grid[3], _value); }
 
       if (HudLayout.IsMouseOverConfigButton) { return true; }
 
-      if (Verse.Widgets.ButtonInvisible(rect.ExpandedBy(WidgetsPlus.TinyPadding))) { _onClick?.Invoke(); }
-      WidgetsPlus.DrawTooltip(rect, Tooltip, true);
+      if (Mouse.IsOver(rect)) { _onHover?.Invoke(); }
+      if (Verse.Widgets.ButtonInvisible(rect)) { _onClick?.Invoke(); }
+      TooltipsPlus.DrawCompact(rect, Tooltip);
 
       return true;
     }
 
-    private void DrawValue(Rect rect, float value, float max)
-    {
-      if (_valueStyle == ValueStyle.Hidden) { return; }
-      if (_valueStyle == ValueStyle.Percentage) { DrawText(rect, value.ToStringPercent()); }
-      else if (_valueStyle == ValueStyle.ValueMax) { DrawText(rect, $"{value}/{max}"); }
-      else if (_valueStyle == ValueStyle.ValueOnly) { DrawText(rect, $"{value}"); }
-      else { throw new Mod.Exception($"Invalid {nameof(ValueStyle)}"); }
-    }
-
     private void DrawThresholds(Rect rect)
     {
-      if (_thresholds == null) { return; }
+      if (_thresholds is null) { return; }
 
       GUIPlus.SetColor(Theme.BarThresholdColor.Value);
-      foreach (var threshold in _thresholds.Where(threshold => threshold > 0f)) { Verse.Widgets.DrawLineVertical(Mathf.Round(rect.x + (rect.width * threshold)), rect.y, rect.height); }
+      foreach (var threshold in _thresholds.Where(static threshold => threshold > 0f)) { Verse.Widgets.DrawLineVertical(Mathf.Round(rect.x + (rect.width * threshold)), rect.y, rect.height); }
       GUIPlus.ResetColor();
-    }
-
-    private Color GetBarColor(float percentage)
-    {
-      switch (_colorStyle)
-      {
-        case ColorStyle.LowOnly:
-          return Theme.BarLowColor.Value;
-        case ColorStyle.MainToLow:
-          return Color.Lerp(Theme.BarMainColor.Value, Theme.BarLowColor.Value, percentage);
-        case ColorStyle.MainOnly:
-          return Theme.BarMainColor.Value;
-        default:
-          return Color.Lerp(Theme.BarLowColor.Value, Theme.BarMainColor.Value, percentage);
-      }
-    }
-
-    public static string GetColorStyleLabel(ColorStyle colorStyle) => Lang.Get($"Layout.Variant.{colorStyle}");
-
-    public enum ValueStyle
-    {
-      Hidden,
-      Percentage,
-      ValueMax,
-      ValueOnly
-    }
-
-    public enum ColorStyle
-    {
-      LowToMain,
-      LowOnly,
-      MainToLow,
-      MainOnly
     }
   }
 }

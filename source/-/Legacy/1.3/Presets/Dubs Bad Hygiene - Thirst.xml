@@ -37,10 +37,7 @@
         <Row Targets="Hh">
           <NeedMood />
         </Row>
-        <Row Targets="Hh">
-          <MindCondition />
-        </Row>
-        <Row Targets="Cc">
+        <Row>
           <MindCondition />
         </Row>
         <Row>

@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace RimHUD.Interface.Hud.Widgets
 {
   public interface IWidget
   {
-    float Height { get; }
+    float GetMaxHeight { get; }
 
     bool Draw(Rect rect);
   }

@@ -13,6 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <BaseIntermediateOutputPath>..\build\.obj\$(ProjectName)\$(AssemblyName)</BaseIntermediateOutputPath>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -22,13 +24,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(ProjectDir)release.targets" />
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.Harmony.2.2.2\lib\net472\0Harmony.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp, Version=1.4.8330.27489, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>Assembly-CSharp.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -55,7 +56,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="Lib.Harmony">
+      <Version>2.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="Nullable">
+      <Version>1.3.1</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="release.targets" />
   </ItemGroup>
   <ItemGroup>
@@ -65,112 +75,162 @@
     <Compile Include="Mod.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\IDefaultable.cs" />
-    <Compile Include="Configuration\Attributes.cs" />
-    <Compile Include="Configuration\BoolOption.cs" />
-    <Compile Include="Configuration\ColorOption.cs" />
     <Compile Include="Configuration\Persistent.cs" />
-    <Compile Include="Configuration\RangeOption.cs" />
-    <Compile Include="Configuration\TextStyle.cs" />
+    <Compile Include="Configuration\Presets.cs" />
+    <Compile Include="Configuration\Settings\BaseSetting.cs" />
+    <Compile Include="Configuration\Settings\BoolSetting.cs" />
+    <Compile Include="Configuration\Settings\ColorSetting.cs" />
+    <Compile Include="Configuration\Settings\RangeSetting.cs" />
+    <Compile Include="Configuration\Settings\SettingAttribute.cs" />
+    <Compile Include="Configuration\Settings\TextStyle.cs" />
+    <Compile Include="Configuration\Settings\ValueSetting.cs" />
     <Compile Include="Configuration\Theme.cs" />
-    <Compile Include="Configuration\ThemeOption.cs" />
+    <Compile Include="Engine\Credits.cs" />
     <Compile Include="Engine\Lang.cs" />
+    <Compile Include="Engine\Report.cs" />
     <Compile Include="Engine\State.cs" />
-    <Compile Include="Engine\Troubleshooter.cs" />
     <Compile Include="Engine\Tutorial.cs" />
     <Compile Include="Extensions\BaseExtensions.cs" />
     <Compile Include="Extensions\DataExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\GUIExtensions.cs" />
     <Compile Include="Extensions\IOExtensions.cs" />
-    <Compile Include="Interface\GUIPlus.cs" />
-    <Compile Include="Interface\InspectPanePlus.cs" />
-    <Compile Include="Interface\LetterStackPlus.cs" />
-    <Compile Include="Interface\ListingPlus.cs" />
-    <Compile Include="Interface\Textures.cs" />
-    <Compile Include="Interface\WidgetsPlus.cs" />
+    <Compile Include="Extensions\TextExtensions.cs" />
+    <Compile Include="Extensions\XmlExtensions.cs" />
+    <Compile Include="Integration\IntegratedMod.cs" />
+    <Compile Include="Integration\Integrations.cs" />
+    <Compile Include="Integration\Multiplayer\Mod_Multiplayer.cs" />
+    <Compile Include="Integration\PawnRules\Mod_PawnRules.cs" />
     <Compile Include="Interface\Dialog\Dialog_Alert.cs" />
     <Compile Include="Interface\Dialog\Dialog_Config.cs" />
     <Compile Include="Interface\Dialog\Dialog_Error.cs" />
-    <Compile Include="Interface\Dialog\Dialog_Presets.cs" />
+    <Compile Include="Interface\Dialog\Dialog_ManagePresets.cs" />
     <Compile Include="Interface\Dialog\Dialog_SavePreset.cs" />
-    <Compile Include="Interface\Dialog\Tab_ConfigColors.cs" />
-    <Compile Include="Interface\Dialog\Tab_ConfigContent.cs" />
-    <Compile Include="Interface\Dialog\Tab_ConfigCredits.cs" />
-    <Compile Include="Interface\Dialog\Tab_ConfigDesign.cs" />
-    <Compile Include="Interface\Dialog\Tab.cs" />
-    <Compile Include="Interface\Dialog\TabManager.cs" />
+    <Compile Include="Interface\Dialog\Tabs\Tab_ConfigColors.cs" />
+    <Compile Include="Interface\Dialog\Tabs\Tab_ConfigContent.cs" />
+    <Compile Include="Interface\Dialog\Tabs\Tab_ConfigCredits.cs" />
+    <Compile Include="Interface\Dialog\Tabs\Tab_ConfigDesign.cs" />
+    <Compile Include="Interface\Dialog\Tabs\Tab.cs" />
+    <Compile Include="Interface\Dialog\Tabs\TabManager.cs" />
     <Compile Include="Interface\Dialog\WindowPlus.cs" />
+    <Compile Include="Interface\GUIPlus.cs" />
+    <Compile Include="Interface\Hud\HudArgs.cs" />
+    <Compile Include="Interface\Hud\HudContent.cs" />
+    <Compile Include="Interface\Hud\HudLayout.cs" />
+    <Compile Include="Interface\Hud\HudTimings.cs" />
+    <Compile Include="Interface\Hud\HudWidget.cs" />
     <Compile Include="Interface\Hud\Layers\BaseLayer.cs" />
     <Compile Include="Interface\Hud\Layers\ContainerLayer.cs" />
     <Compile Include="Interface\Hud\Layers\HStackLayer.cs" />
+    <Compile Include="Interface\Hud\Layers\LayerTarget.cs" />
+    <Compile Include="Interface\Hud\Layers\LayerTargetUtility.cs" />
     <Compile Include="Interface\Hud\Layers\LayoutLayer.cs" />
     <Compile Include="Interface\Hud\Layers\PanelLayer.cs" />
     <Compile Include="Interface\Hud\Layers\RowLayer.cs" />
     <Compile Include="Interface\Hud\Layers\StackLayer.cs" />
     <Compile Include="Interface\Hud\Layers\VStackLayer.cs" />
     <Compile Include="Interface\Hud\Layers\WidgetLayer.cs" />
-    <Compile Include="Interface\Hud\Layout\HudBuilder.cs" />
-    <Compile Include="Interface\Hud\Layout\HudContent.cs" />
-    <Compile Include="Interface\Hud\Layout\HudLayout.cs" />
-    <Compile Include="Interface\Hud\Layout\HudTarget.cs" />
-    <Compile Include="Interface\Hud\Layout\HudTargetUtility.cs" />
-    <Compile Include="Interface\Hud\Layout\HudTimings.cs" />
     <Compile Include="Interface\Hud\Layout\LayoutEditor.cs" />
     <Compile Include="Interface\Hud\Layout\LayoutElement.cs" />
     <Compile Include="Interface\Hud\Layout\LayoutElementType.cs" />
     <Compile Include="Interface\Hud\Layout\LayoutPreset.cs" />
-    <Compile Include="Interface\Hud\Models\IModelBar.cs" />
-    <Compile Include="Interface\Hud\Models\IModelBase.cs" />
-    <Compile Include="Interface\Hud\Models\IModelOwned.cs" />
-    <Compile Include="Interface\Hud\Models\IModelSelector.cs" />
-    <Compile Include="Interface\Hud\Models\IModelValue.cs" />
-    <Compile Include="Interface\Hud\Models\AreaModel.cs" />
-    <Compile Include="Interface\Hud\Models\FoodModel.cs" />
-    <Compile Include="Interface\Hud\Models\HealthConditionModel.cs" />
-    <Compile Include="Interface\Hud\Models\HealthModel.cs" />
-    <Compile Include="Interface\Hud\Models\MindConditionModel.cs" />
-    <Compile Include="Interface\Hud\Models\NeedModel.cs" />
-    <Compile Include="Interface\Hud\Models\OutfitModel.cs" />
-    <Compile Include="Interface\Hud\Models\PawnModel.cs" />
-    <Compile Include="Interface\Hud\Models\SkillModel.cs" />
-    <Compile Include="Interface\Hud\Models\TextModel.cs" />
-    <Compile Include="Interface\Hud\Models\TimetableModel.cs" />
-    <Compile Include="Interface\Hud\Models\TrainingModel.cs" />
-    <Compile Include="Interface\Hud\Widgets\IWidget.cs" />
+    <Compile Include="Interface\Hud\Models\Active.cs" />
+    <Compile Include="Interface\Hud\Models\BarModel.cs" />
+    <Compile Include="Interface\Hud\Models\Bars\HealthBar.cs" />
+    <Compile Include="Interface\Hud\Models\Bars\NeedBar.cs" />
+    <Compile Include="Interface\Hud\Models\Bars\NeedEnergyBar.cs" />
+    <Compile Include="Interface\Hud\Models\Bars\NeedFoodBar.cs" />
+    <Compile Include="Interface\Hud\Models\Bars\NeedMoodBar.cs" />
+    <Compile Include="Interface\Hud\Models\Bars\NeedRecreationBar.cs" />
+    <Compile Include="Interface\Hud\Models\Bars\NeedSleepBar.cs" />
+    <Compile Include="Interface\Hud\Models\Bars\NeedSuppressionBar.cs" />
+    <Compile Include="Interface\Hud\Models\BaseModel.cs" />
+    <Compile Include="Interface\Hud\Models\IModel.cs" />
+    <Compile Include="Interface\Hud\Models\SelectorModel.cs" />
+    <Compile Include="Interface\Hud\Models\Selectors\AreaSelector.cs" />
+    <Compile Include="Interface\Hud\Models\Selectors\FoodSelector.cs" />
+    <Compile Include="Interface\Hud\Models\Selectors\OutfitSelector.cs" />
+    <Compile Include="Interface\Hud\Models\Selectors\TimetableSelector.cs" />
+    <Compile Include="Interface\Hud\Models\ValueModel.cs" />
+    <Compile Include="Interface\Hud\Models\Values\ActivityValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\AnimalMasterValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\CarryingValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\CompInfoValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\EquippedValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\GenderRaceAndAgeValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\HealthConditionValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\MentalConditionValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\NameHeaderValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\PrisonerInfoValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\QueuedValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\RecordValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\RelationKindAndFactionValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillAnimalsValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillConstructionValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillCookingValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillCraftingValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillIntellectualValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillMedicineValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillMeleeValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillMiningValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillPlantsValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillShootingValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillSocialValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\SkillValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\StatValue.cs" />
+    <Compile Include="Interface\Hud\Models\Values\TrainableValue.cs" />
+    <Compile Include="Interface\Hud\Tooltips\AnimalTooltip.cs" />
+    <Compile Include="Interface\Hud\Tooltips\BioTooltip.cs" />
+    <Compile Include="Interface\Hud\Tooltips\HealthTooltip.cs" />
+    <Compile Include="Interface\Hud\Tooltips\MentalTooltip.cs" />
+    <Compile Include="Interface\Hud\Tooltips\TooltipsPlus.cs" />
+    <Compile Include="Interface\Hud\Widgets\BarColorStyle.cs" />
     <Compile Include="Interface\Hud\Widgets\BarWidget.cs" />
     <Compile Include="Interface\Hud\Widgets\BlankWidget.cs" />
+    <Compile Include="Interface\Hud\Widgets\IWidget.cs" />
     <Compile Include="Interface\Hud\Widgets\MissingWidget.cs" />
     <Compile Include="Interface\Hud\Widgets\SelectorWidget.cs" />
     <Compile Include="Interface\Hud\Widgets\SeparatorWidget.cs" />
     <Compile Include="Interface\Hud\Widgets\StandardWidget.cs" />
     <Compile Include="Interface\Hud\Widgets\ValueWidget.cs" />
+    <Compile Include="Interface\Hud\Widgets\WidgetTextStyle.cs" />
+    <Compile Include="Interface\ListingPlus.cs" />
+    <Compile Include="Interface\Screen\InspectPaneButtons.cs" />
+    <Compile Include="Interface\Screen\InspectPaneLog.cs" />
+    <Compile Include="Interface\Screen\InspectPanePlus.cs" />
+    <Compile Include="Interface\Screen\InspectPaneTabs.cs" />
+    <Compile Include="Interface\Screen\LetterStackPlus.cs" />
+    <Compile Include="Interface\TexturesPlus.cs" />
+    <Compile Include="Interface\WidgetsPlus.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Patch\Access.cs" />
-    <Compile Include="Patch\RimWorld_InspectPaneFiller_DoPaneContentsFor.cs" />
-    <Compile Include="Patch\RimWorld_InspectPaneUtility_DoTabs.cs" />
-    <Compile Include="Patch\RimWorld_InspectPaneUtility_InspectPaneOnGUI.cs" />
-    <Compile Include="Patch\RimWorld_InspectPaneUtility_PaneSizeFor.cs" />
-    <Compile Include="Patch\RimWorld_InspectPaneUtility_PaneWidthFor.cs" />
-    <Compile Include="Patch\RimWorld_ITab_PaneTopY.cs" />
-    <Compile Include="Patch\RimWorld_MainTabWindow_InitialSize.cs" />
-    <Compile Include="Patch\RimWorld_MainTabWindow_Inspect_PaneTopY.cs" />
-    <Compile Include="Patch\RimWorld_PlaySettings_DoPlaySettingsGlobalControls.cs" />
-    <Compile Include="Patch\RimWorld_Tutor_TutorOnGUI.cs" />
-    <Compile Include="Patch\Verse_ActiveTip_DrawInner.cs" />
-    <Compile Include="Patch\Verse_ActiveTip_TipRect.cs" />
-    <Compile Include="Patch\Verse_Game_FinalizeInit.cs" />
-    <Compile Include="Patch\Verse_LetterStack_LettersOnGUI.cs" />
-    <Compile Include="Patch\Verse_MapInterface_MapInterfaceOnGUI_AfterMainTabs.cs" />
-    <Compile Include="Patch\Verse_MapInterface_Notify_SwitchedMap.cs" />
-    <Compile Include="Patch\Verse_Profile_MemoryUtility_ClearAllMapsAndWorld.cs" />
+    <Compile Include="Access\Reflection.cs" />
+    <Compile Include="Access\Defs.cs" />
+    <Compile Include="Access\Patch\RimWorld_InspectPaneFiller_DoPaneContentsFor.cs" />
+    <Compile Include="Access\Patch\RimWorld_InspectPaneUtility_DoTabs.cs" />
+    <Compile Include="Access\Patch\RimWorld_InspectPaneUtility_InspectPaneOnGUI.cs" />
+    <Compile Include="Access\Patch\RimWorld_InspectPaneUtility_PaneSizeFor.cs" />
+    <Compile Include="Access\Patch\RimWorld_InspectPaneUtility_PaneWidthFor.cs" />
+    <Compile Include="Access\Patch\RimWorld_ITab_PaneTopY.cs" />
+    <Compile Include="Access\Patch\RimWorld_MainTabWindow_InitialSize.cs" />
+    <Compile Include="Access\Patch\RimWorld_MainTabWindow_Inspect_PaneTopY.cs" />
+    <Compile Include="Access\Patch\RimWorld_PlaySettings_DoPlaySettingsGlobalControls.cs" />
+    <Compile Include="Access\Patch\RimWorld_Tutor_TutorOnGUI.cs" />
+    <Compile Include="Access\Patch\Verse_ActiveTip_DrawInner.cs" />
+    <Compile Include="Access\Patch\Verse_ActiveTip_TipRect.cs" />
+    <Compile Include="Access\Patch\Verse_Game_FinalizeInit.cs" />
+    <Compile Include="Access\Patch\Verse_LetterStack_LettersOnGUI.cs" />
+    <Compile Include="Access\Patch\Verse_MapInterface_MapInterfaceOnGUI_AfterMainTabs.cs" />
+    <Compile Include="Access\Patch\Verse_MapInterface_Notify_SwitchedMap.cs" />
+    <Compile Include="Access\Patch\Verse_Profile_MemoryUtility_ClearAllMapsAndWorld.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Compatibility\ExternalMod.cs" />
-    <Compile Include="Compatibility\IntegratedMod.cs" />
-    <Compile Include="Compatibility\IntegrationManager.cs" />
-    <Compile Include="Compatibility\Multiplayer\Mod_Multiplayer.cs" />
-    <Compile Include="Compatibility\PawnRules\Mod_PawnRules.cs" />
+    <Compile Include="External\CustomBarDef.cs" />
+    <Compile Include="External\CustomWidgetDef.cs" />
+    <Compile Include="External\ExternalWidgetDef.cs" />
+    <Compile Include="External\CustomNeedDef.cs" />
+    <Compile Include="External\CustomSelectorDef.cs" />
+    <Compile Include="External\CustomValueDef.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="-\README.md" />
@@ -183,7 +243,7 @@
     <Content Include="-\Languages\English\Keyed\Layout.xml" />
     <Content Include="-\Languages\English\Keyed\Model.xml" />
     <Content Include="-\Languages\English\Keyed\Theme.xml" />
-    <Content Include="-\Presets\Dubs Bad Hygiene - Thirst.xml" />
+    <Content Include="-\Presets\Dubs Bad Hygiene + Thirst.xml" />
     <Content Include="-\Presets\Dubs Bad Hygiene.xml" />
     <Content Include="-\Textures\RimHUD\ConfigIcon.png" />
     <Content Include="-\Textures\RimHUD\SelfTendOffIcon.png" />
@@ -192,36 +252,11 @@
     <Content Include="-\LoadFolders.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="-\Legacy\1.1-1.2\Assemblies\RimHUD.dll" />
-    <Content Include="-\Legacy\1.1-1.2\Languages\English\Keyed\Base.xml" />
-    <Content Include="-\Legacy\1.1-1.2\Languages\English\Keyed\Integration.xml" />
-    <Content Include="-\Legacy\1.1-1.2\Languages\English\Keyed\Model.xml" />
-    <Content Include="-\Legacy\1.1-1.2\Languages\English\Keyed\Theme.xml" />
-    <Content Include="-\Legacy\1.1-1.2\Presets\Dubs Bad Hygiene.xml" />
-    <Content Include="-\Legacy\1.1-1.2\Textures\RimHUD\ConfigIcon.png" />
-    <Content Include="-\Legacy\1.1-1.2\Textures\RimHUD\SelfTendOffIcon.png" />
-    <Content Include="-\Legacy\1.1-1.2\Textures\RimHUD\SelfTendOnIcon.png" />
-    <Content Include="-\Legacy\1.1-1.2\Textures\RimHUD\ToggleIcon.png" />
-    <Content Include="-\Legacy\1.3\Assemblies\RimHUD.dll" />
-    <Content Include="-\Legacy\1.3\Languages\English\Keyed\Base.xml" />
-    <Content Include="-\Legacy\1.3\Languages\English\Keyed\Integration.xml" />
-    <Content Include="-\Legacy\1.3\Languages\English\Keyed\Model.xml" />
-    <Content Include="-\Legacy\1.3\Languages\English\Keyed\Theme.xml" />
-    <Content Include="-\Legacy\1.3\Presets\Dubs Bad Hygiene - Thirst.xml" />
-    <Content Include="-\Legacy\1.3\Presets\Dubs Bad Hygiene.xml" />
-    <Content Include="-\Legacy\1.3\Textures\RimHUD\ConfigIcon.png" />
-    <Content Include="-\Legacy\1.3\Textures\RimHUD\SelfTendOffIcon.png" />
-    <Content Include="-\Legacy\1.3\Textures\RimHUD\SelfTendOnIcon.png" />
-    <Content Include="-\Legacy\1.3\Textures\RimHUD\ToggleIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="-\About\Credits.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Presets\Defaults\Docked.xml" />
-    <EmbeddedResource Include="Resources\Presets\Defaults\Floating.xml" />
+    <EmbeddedResource Include="Resources\Layouts\Defaults\Docked.xml" />
+    <EmbeddedResource Include="Resources\Layouts\Defaults\Floating.xml" />
   </ItemGroup>
   <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(ProjectDir)release.targets" />
 </Project>

@@ -1,4 +1,5 @@
-﻿using RimHUD.Configuration;
+using RimHUD.Configuration;
+using RimHUD.Extensions;
 using UnityEngine;
 using Verse;
 
@@ -8,14 +9,14 @@ namespace RimHUD.Interface.Dialog
   {
     private const float CloseButtonOffset = 55f;
 
+    protected abstract void DrawContent(Rect rect);
+
     public override Vector2 InitialSize { get; }
-    protected string Title { get; set; }
-    protected string Subtitle { get; set; }
 
-    protected WindowPlus(Vector2 size) : this(null, size)
-    { }
+    private readonly string _title;
+    private readonly string? _subtitle;
 
-    protected WindowPlus(string title = null, Vector2 size = default)
+    protected WindowPlus(Vector2 size, string title, string? subtitle = null)
     {
       draggable = true;
       doCloseX = true;
@@ -25,32 +26,31 @@ namespace RimHUD.Interface.Dialog
       closeOnAccept = false;
 
       InitialSize = size == default ? new Vector2(800f, 600f) : size;
-      Title = title;
-    }
 
-    protected abstract void DrawContent(Rect rect);
+      _title = title;
+      _subtitle = subtitle;
+    }
 
     public override void DoWindowContents(Rect rect) => DrawContent(DrawTitle(rect));
 
     private Rect DrawTitle(Rect rect)
     {
-      if (Title.NullOrEmpty()) { return rect; }
+      if (_title.NullOrEmpty()) { return rect; }
 
-      var wordWrap = Text.WordWrap;
-      Text.WordWrap = false;
+      GUIPlus.SetWrap(false);
 
       var header = new ListingPlus();
 
       header.Begin(rect);
 
-      header.Label(Title, font: GameFont.Medium);
+      header.Label(_title.Bold(), font: GameFont.Medium);
 
-      if (!string.IsNullOrEmpty(Subtitle))
+      if (!_subtitle.NullOrWhitespace())
       {
-        var titleSize = GUIPlus.GetTextSize(GUIPlus.GetGameFontStyle(GameFont.Medium), Title);
-        var titleOffset = titleSize.x + WidgetsPlus.MediumPadding;
+        var titleSize = GUIPlus.GetTextSize(GUIPlus.GetGameFontStyle(GameFont.Medium), _title);
+        var titleOffset = titleSize.x + GUIPlus.MediumPadding;
         var subtitleRect = new Rect(rect.x + titleOffset, rect.y, rect.width - titleOffset, titleSize.y);
-        WidgetsPlus.DrawText(subtitleRect, Subtitle, Theme.SmallTextStyle);
+        WidgetsPlus.DrawText(subtitleRect, _subtitle.Italic(), Theme.SmallTextStyle);
       }
 
       header.GapLine();
@@ -60,7 +60,7 @@ namespace RimHUD.Interface.Dialog
 
       if (doCloseButton) { contentRect.height -= CloseButtonOffset; }
 
-      Text.WordWrap = wordWrap;
+      GUIPlus.ResetWrap();
 
       return contentRect;
     }

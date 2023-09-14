@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using RimHUD.Extensions;
-using RimHUD.Interface.Hud.Models;
 using UnityEngine;
 
 namespace RimHUD.Interface.Hud.Layers
@@ -9,43 +9,43 @@ namespace RimHUD.Interface.Hud.Layers
   public class VStackLayer : StackLayer
   {
     public const string Name = "VStack";
-    public override string Id { get; } = Name;
+    public override string Id => Name;
 
-    private float[] _heights;
+    private float[]? _heights;
 
-    public VStackLayer(XElement xe, bool? fillHeight) : base(xe, fillHeight)
+    public VStackLayer(XElement xml) : base(xml)
     { }
 
-    public override float Prepare(PawnModel owner)
+    public override float Prepare()
     {
-      if (Containers.Length == 0 || !IsTargetted(owner)) { return 0f; }
+      if (Children.Length is 0 || !IsTargetted()) { return 0f; }
 
       var list = new List<float>();
       var totalFixedHeight = 0f;
       var totalVisible = 0;
 
-      foreach (var container in Containers)
+      foreach (var height in Children.Select(static container => container.Prepare()))
       {
-        var height = container.Prepare(owner);
         list.Add(height);
-        if ((int)height != -1) { totalFixedHeight += height; }
-        if ((int)height != 0) { totalVisible++; }
+        if ((int)height is not -1) { totalFixedHeight += height; }
+        if ((int)height is not 0) { totalVisible++; }
       }
 
       _heights = list.ToArray();
 
-      return FillHeight ? -1f : totalFixedHeight + (LayoutLayer.Padding * (totalVisible - 1));
+      return Args.FillHeight ? -1f : totalFixedHeight + (LayoutLayer.Padding * (totalVisible - 1));
     }
 
     public override bool Draw(Rect rect)
     {
-      if (Containers.Length == 0) { return false; }
+      if (Children.Length is 0 || _heights is null || !IsTargetted()) { return false; }
 
       var grid = rect.GetVGrid(LayoutLayer.Padding, _heights);
       var index = 1;
-      foreach (var container in Containers)
+
+      foreach (var child in Children)
       {
-        if (_heights[index - 1] != 0f) { container.Draw(grid[index]); }
+        if (_heights[index - 1] is not 0f) { child.Draw(grid[index]); }
         index++;
       }
 

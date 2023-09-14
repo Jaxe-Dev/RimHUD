@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
@@ -9,11 +9,11 @@ namespace RimHUD.Extensions
   {
     public static string ToHex(this Color color) => ColorUtility.ToHtmlStringRGBA(color);
 
-    public static GUIStyle SetTo(this GUIStyle self, int? size = null, TextAnchor? alignment = null, bool? wrap = null) => new GUIStyle(self) { fontSize = size ?? self.fontSize, alignment = alignment ?? self.alignment, wordWrap = wrap ?? self.wordWrap };
+    public static GUIStyle SetTo(this GUIStyle self, int? size = null, TextAnchor? alignment = null, bool? wrap = null) => new(self) { fontSize = size ?? self.fontSize, alignment = alignment ?? self.alignment, wordWrap = wrap ?? self.wordWrap };
 
-    public static GUIStyle ResizedBy(this GUIStyle self, int size = 0) => new GUIStyle(self) { fontSize = self.fontSize + size };
+    public static GUIStyle ResizedBy(this GUIStyle self, int size = 0) => new(self) { fontSize = self.fontSize + size };
 
-    public static Rect Round(this Rect self) => new Rect(Mathf.Round(self.x), Mathf.Round(self.y), Mathf.Round(self.width), Mathf.Round(self.height));
+    public static Rect Round(this Rect self) => new(Mathf.Round(self.x), Mathf.Round(self.y), Mathf.Round(self.width), Mathf.Round(self.height));
 
     public static Rect[] GetHGrid(this Rect self, float padding, params float[] widths)
     {
@@ -95,16 +95,14 @@ namespace RimHUD.Extensions
       return rects.ToArray();
     }
 
-    public static Vector2 AdjustedBy(this Vector2 self, float x, float y) => new Vector2(self.x + x, self.y + y);
-    public static Rect AdjustedBy(this Rect self, float x = 0f, float y = 0f, float width = 0f, float height = 0f) => new Rect(self.x + x, self.y + y, self.width + width, self.height + height);
+    public static Rect GetCenteredRect(this Vector2 self, float width, float height) => new(self.x - width.Half(), self.y - height.Half(), width, height);
+    public static float GetCenteredY(this Rect self, float height) => self.y + (self.height - height).Half();
 
-    public static Rect GetCenteredRect(this Vector2 self, float width, float height) => new Rect(self.x - width.Half(), self.y - height.Half(), width, height);
+    public static void ShowMenu(this IEnumerable<FloatMenuOption> self) => Find.WindowStack!.Add(new FloatMenu(self.ToList()));
 
-    public static void ShowMenu(this IEnumerable<FloatMenuOption> self) => Find.WindowStack.Add(new FloatMenu(self.ToList()));
-
-    public static Vector2 ToGUIPoint(this Vector2 self) => GUIUtility.ScreenToGUIPoint(self);
-    public static Vector2 ToScreenPoint(this Vector2 self) => UI.GUIToScreenPoint(self) * Prefs.UIScale;
-    public static Rect ToGUIRect(this Rect self) => new Rect { min = self.min.ToGUIPoint(), max = self.max.ToGUIPoint() };
+    public static Vector2 ToGUIPoint(this Vector2 self) => GUIUtility.ScreenToGUIPoint(self * Prefs.UIScale);
+    public static Vector2 ToScreenPoint(this Vector2 self) => UI.GUIToScreenPoint(self);
+    public static Rect ToGUIRect(this Rect self) => new() { min = self.min.ToGUIPoint(), max = self.max.ToGUIPoint() };
     public static Rect ToScreenRect(this Rect self) => UI.GUIToScreenRect(self);
   }
 }

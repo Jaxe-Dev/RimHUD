@@ -1,4 +1,6 @@
-﻿using RimHUD.Configuration;
+using RimHUD.Configuration;
+using RimHUD.Interface.Hud.Layers;
+using RimHUD.Interface.Screen;
 using RimWorld;
 using Verse;
 
@@ -7,22 +9,25 @@ namespace RimHUD.Engine
   public static class State
   {
     public static bool Activated { get; set; } = true;
-    public static bool Active => Activated && Current.ProgramState == ProgramState.Playing;
+    private static bool Active => Activated && Current.ProgramState is ProgramState.Playing;
 
-    public static bool ModifyPane => ResizePane || (ShowPane && Theme.InspectPaneTabModify.Value);
-    public static bool CompressLetters => Active && Theme.LetterCompress.Value;
-    public static bool HudFloatingVisible => !Theme.HudDocked.Value && ShowPane;
+    public static Pawn? SelectedPawn => Find.Selector?.SingleSelectedThing as Pawn;
 
-    public static Pawn SelectedPawn => GetSelectedPawn();
+    public static bool ForceModifyPane { get; set; }
 
-    private static bool ShowPane => Active && MainButtonDefOf.Inspect.TabWindow.IsOpen && SelectedPawn != null;
+    public static bool ModifyPane => ForceModifyPane || (ShowPane && Theme.InspectPaneTabModify.Value);
+    public static bool CompressLetters => Active && !Theme.DockedMode.Value && Theme.LetterCompress.Value;
+    public static bool HudFloatingVisible => !Theme.DockedMode.Value && ShowPane;
 
-    public static bool ResizePane { get; set; }
+    private static bool ShowPane => Active && MainButtonDefOf.Inspect!.TabWindow!.IsOpen && SelectedPawn is not null;
 
-    private static Pawn GetSelectedPawn()
+    public static LayoutLayer CurrentLayout => Theme.DockedMode.Value ? LayoutLayer.Docked : LayoutLayer.Floating;
+
+    public static void ClearCache()
     {
-      var thing = Find.Selector.SingleSelectedThing;
-      return thing is Pawn pawn ? pawn : null;
+      InspectPaneLog.ClearCache();
+      LayoutLayer.Docked.Flush();
+      LayoutLayer.Floating.Flush();
     }
   }
 }

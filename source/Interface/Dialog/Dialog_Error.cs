@@ -1,21 +1,20 @@
-﻿using RimHUD.Engine;
+using RimHUD.Configuration;
+using RimHUD.Engine;
 using RimHUD.Extensions;
 using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
-  public class Dialog_Error : Window
+  public sealed class Dialog_Error : Window
   {
-    private const float ButtonWidth = 120f;
+    public override Vector2 InitialSize { get; } = new(800f, 360f);
     private Vector2 _scrollPosition = Vector2.zero;
     private Rect _scrollView;
 
-    private readonly Troubleshooter.ExceptionInfo _info;
+    private readonly Report.ErrorInfo _info;
 
-    public override Vector2 InitialSize { get; } = new Vector2(800f, 360f);
-
-    private Dialog_Error(Troubleshooter.ExceptionInfo info)
+    private Dialog_Error(Report.ErrorInfo info)
     {
       doCloseButton = false;
       closeOnAccept = true;
@@ -24,47 +23,49 @@ namespace RimHUD.Interface.Dialog
       draggable = true;
 
       _info = info;
-
-      Mod.Warning("RimHUD Auto-deactivation reason:\n" + _info.Text);
+      Report.Warning($"RimHUD Auto-deactivation reason:\n{_info.Message}");
     }
 
-    public static void Open(Troubleshooter.ExceptionInfo info) => Find.WindowStack.Add(new Dialog_Error(info));
+    public static void Open(Report.ErrorInfo info) => Find.WindowStack!.Add(new Dialog_Error(info));
 
     public override void DoWindowContents(Rect inRect)
     {
+      const float buttonWidth = 120f;
+
       var listing = new ListingPlus();
       listing.Begin(inRect);
       listing.Label("RimHUD has automatically deactivated due to the following error(s):".Bold());
       listing.Label(_info.Message);
-      if (_info.IsExternalError) { listing.Label(_info.PossibleMod == null ? "The error appears to have triggered outside of RimHUD" : $"The error appears to be trigged by the following mod:\n{_info.PossibleMod.Bold()}", color: Color.yellow); }
+
+      if (_info.Notice is not null) { listing.Label(_info.Notice); }
       listing.Gap();
-      listing.Label("Stacktrace:".Bold(), font: GameFont.Tiny);
+
+      listing.Label($"{nameof(_info.Trace)}:".Bold(), font: GameFont.Tiny);
       listing.End();
 
-      var grid = inRect.GetVGrid(0f, listing.CurHeight, -1f, WidgetsPlus.SmallButtonHeight + WidgetsPlus.MediumPadding);
-
+      var grid = inRect.GetVGrid(0f, listing.CurHeight, -1f, WidgetsPlus.SmallButtonHeight + GUIPlus.MediumPadding);
       Widgets.DrawMenuSection(grid[2]);
 
-      var stacktraceRect = grid[2].ContractedBy(WidgetsPlus.SmallPadding);
-      var stacktraceList = new ListingPlus();
+      var traceRect = grid[2].ContractedBy(GUIPlus.SmallPadding);
+      WidgetsPlus.DrawScrollableText(traceRect, _info.Trace, ref _scrollPosition, ref _scrollView, GameFont.Tiny);
 
-      stacktraceList.BeginScrollView(stacktraceRect, ref _scrollPosition, ref _scrollView);
-      stacktraceList.Label(_info.StackTrace, font: GameFont.Tiny);
-      stacktraceList.EndScrollView(ref _scrollView);
-
-      grid[3].yMin += WidgetsPlus.MediumPadding;
-      var buttonGrid = grid[3].GetHGrid(WidgetsPlus.MediumPadding, ButtonWidth, -1f, ButtonWidth, ButtonWidth);
+      grid[3].yMin += GUIPlus.MediumPadding;
+      var buttonGrid = grid[3].GetHGrid(GUIPlus.MediumPadding, buttonWidth, -1f, buttonWidth, buttonWidth);
 
       if (WidgetsPlus.DrawButton(buttonGrid[1], "Copy to clipboard", font: GameFont.Tiny))
       {
-        GUIUtility.systemCopyBuffer = $"[[RimHUD Auto-deactivation report]]\n{_info.Text}";
-        Mod.Message("RimHUD Auto-deactivation details copied to clipboard");
+        _info.CopyToClipboard();
+        Report.Alert("RimHUD Auto-deactivation details copied to clipboard");
       }
+
       if (WidgetsPlus.DrawButton(buttonGrid[3], "Reactivate", font: GameFont.Tiny))
       {
         Close();
+
+        if (_info.IsResetOnly) { Persistent.Reset(); }
         State.Activated = true;
       }
+
       if (WidgetsPlus.DrawButton(buttonGrid[4], "Close", font: GameFont.Tiny)) { Close(); }
     }
   }

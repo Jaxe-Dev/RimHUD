@@ -1,35 +1,33 @@
-﻿using System;
+using System;
 using RimHUD.Configuration;
-using RimHUD.Interface.Hud.Models;
+using RimHUD.Configuration.Settings;
+using RimHUD.Extensions;
 using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Hud.Widgets
 {
-  public class SelectorWidget : StandardWidget
+  public sealed class SelectorWidget : StandardWidget
   {
-    private readonly Color? _color;
-    private readonly Action _onClick;
-    private readonly Action _onHover;
+    private readonly Action? _onClick;
+    private readonly Action? _onHover;
 
-    public SelectorWidget(string label, Func<string> tooltip, TextStyle textStyle, Color? color, Action onClick, Action onHover) : base(label, tooltip, textStyle)
+    private readonly Color? _backColor;
+
+    public SelectorWidget(string? label, Func<string?>? tooltip, Action? onClick, Action? onHover, TextStyle textStyle, Color? backColor) : base(label, tooltip, textStyle)
     {
-      _color = color;
       _onClick = onClick;
       _onHover = onHover;
+
+      _backColor = backColor;
     }
-
-    private SelectorWidget(IModelSelector model, TextStyle textStyle) : this(model.Label, model.Tooltip, textStyle, model.Color, model.OnClick, model.OnHover)
-    { }
-
-    public static SelectorWidget FromSelectorModel(IModelSelector model, TextStyle textStyle) => model == null ? null : new SelectorWidget(model, textStyle);
 
     public override bool Draw(Rect rect)
     {
-      if (Label.NullOrEmpty()) { return true; }
+      if (Label.NullOrWhitespace()) { return true; }
 
-      Verse.Widgets.DrawBoxSolid(rect, _color ?? Theme.SelectorBackgroundColor.Value);
-      DrawText(rect.ContractedBy(WidgetsPlus.SmallPadding, 0f), Label, Theme.SelectorTextColor.Value);
+      Verse.Widgets.DrawBoxSolid(rect, _backColor ?? Theme.SelectorBackgroundColor.Value);
+      DrawText(rect.ContractedBy(GUIPlus.SmallPadding, 0f), Label, Theme.SelectorTextColor.Value);
 
       if (Mouse.IsOver(rect))
       {
