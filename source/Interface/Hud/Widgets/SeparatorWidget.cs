@@ -1,15 +1,13 @@
-﻿using RimHUD.Configuration;
+using RimHUD.Configuration;
 using UnityEngine;
 
 namespace RimHUD.Interface.Hud.Widgets
 {
-  public class SeparatorWidget : IWidget
+  public sealed class SeparatorWidget : IWidget
   {
-    public const string Id = "Separator";
+    public const string TypeName = "Separator";
 
-    public float Height { get; } = 4f;
-
-    public static SeparatorWidget Get() => new SeparatorWidget();
+    public float GetMaxHeight => GUIPlus.SmallPadding;
 
     public bool Draw(Rect rect)
     {

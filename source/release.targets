@@ -1,83 +1,71 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <UsingTask
-    TaskName="GetAssemblyVersions"
-    TaskFactory="RoslynCodeTaskFactory"
-    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+
+  <UsingTask TaskName="FileRegexCapture" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
-      <GameVersion ParameterType="System.String" Output="true" />
-      <HarmonyVersion ParameterType="System.String" Output="true" />
+      <Filename Required="true" />
+      <Match Required="true" />
+      <Value Output="true" />
     </ParameterGroup>
-    <Task>
-      <Using Namespace="System.Diagnostics" />
-      <Using Namespace="System.Text.RegularExpressions" />
-      <Code Type="Fragment" Language="cs">
-        <![CDATA[
-          var paths = "@(Reference->'%(Identity)', '|')";
-          this.GameVersion = Regex.Match(paths, "Assembly-CSharp, Version=(\\d+\\.\\d+)").Groups[1].Value;
-          this.HarmonyVersion = Regex.Match(paths, "0Harmony, Version=(\\d+\\.\\d+)").Groups[1].Value;
-        ]]>
-      </Code>
-    </Task>
-  </UsingTask>
-  <UsingTask
-    TaskName="FileRegexCapture"
-    TaskFactory="RoslynCodeTaskFactory"
-    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
-    <ParameterGroup>
-      <Filename ParameterType="System.String" Required="true" />
-      <Match ParameterType="System.String" Required="true" />
-      <Value ParameterType="System.String" Output="true" />
-    </ParameterGroup>
+
     <Task>
       <Using Namespace="System" />
       <Using Namespace="System.IO" />
       <Using Namespace="System.Text.RegularExpressions" />
-      <Code Type="Fragment" Language="cs"><![CDATA[this.Value = Regex.Match(File.ReadAllText(Filename), Match).Groups[1].Value;]]></Code>
+      <Code Type="Fragment" Language="cs"><![CDATA[Value = Regex.Match(File.ReadAllText(Filename), Match).Groups[1].Value;]]></Code>
     </Task>
   </UsingTask>
-  <UsingTask
-    TaskName="FileRegexReplace"
-    TaskFactory="RoslynCodeTaskFactory"
-    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+
+  <UsingTask TaskName="FileRegexReplace" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
-      <Filename ParameterType="System.String" Required="true" />
-      <Match ParameterType="System.String" Required="true" />
-      <Replace ParameterType="System.String" Required="true" />
+      <Filename Required="true" />
+      <Match Required="true" />
+      <Replace Required="true" />
     </ParameterGroup>
+
     <Task>
       <Using Namespace="System" />
       <Using Namespace="System.IO" />
       <Using Namespace="System.Text.RegularExpressions" />
-      <Code Type="Fragment" Language="cs">
-        <![CDATA[File.WriteAllText(Filename, Regex.Replace(File.ReadAllText(Filename), Match, Replace));]]>
-      </Code>
+      <Code Type="Fragment" Language="cs"><![CDATA[File.WriteAllText(Filename, Regex.Replace(File.ReadAllText(Filename), Match, Replace));]]></Code>
     </Task>
   </UsingTask>
+
   <Target Name="AfterBuild">
     <PropertyGroup>
       <AssetsDir>$(ProjectDir)-\</AssetsDir>
       <BuildDir>$(SolutionDir)build\$(AssemblyName)\</BuildDir>
       <ReleasesDir>$(SolutionDir)releases\</ReleasesDir>
     </PropertyGroup>
+
     <ItemGroup>
       <AssetsIncluded Include="$(AssetsDir)**" />
     </ItemGroup>
-    <GetAssemblyVersions>
-      <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
-      <Output TaskParameter="HarmonyVersion" PropertyName="HarmonyVersion" />
-    </GetAssemblyVersions>
+
+    <FileRegexCapture Filename="$(ProjectDir)$(ProjectFileName)" Match="&lt;Reference Include=&quot;Assembly-CSharp, Version=(\d+.\d+)">
+      <Output TaskParameter="Value" PropertyName="GameVersion" />
+    </FileRegexCapture>
+
+    <FileRegexCapture Filename="$(ProjectDir)$(ProjectFileName)" Match="&lt;PackageReference Include=&quot;Lib.Harmony&quot;&gt;\s*&lt;Version&gt;([^&lt;]+)">
+      <Output TaskParameter="Value" PropertyName="HarmonyVersion" />
+    </FileRegexCapture>
+
     <FileRegexCapture Filename="$(ProjectDir)Mod.cs" Match="public const string Version = &quot;(.+)&quot;">
       <Output TaskParameter="Value" PropertyName="ModVersion" />
     </FileRegexCapture>
+
     <Copy SourceFiles="@(AssetsIncluded)" DestinationFolder="$(BuildDir)%(RecursiveDir)" />
+
     <FileRegexReplace Filename="$(BuildDir)README.md" Match="{ReleaseVersion}" Replace="$(ModVersion)" />
     <FileRegexReplace Filename="$(BuildDir)README.md" Match="{GameVersion}" Replace="$(GameVersion)" />
     <FileRegexReplace Filename="$(BuildDir)README.md" Match="{HarmonyVersion}" Replace="$(HarmonyVersion)" />
     <FileRegexReplace Filename="$(BuildDir)About\About.xml" Match="{ReleaseVersion}" Replace="$(ModVersion)" />
+
     <Copy SourceFiles="$(BuildDir)README.md" DestinationFolder="$(SolutionDir)" />
+
     <MakeDir Directories="$(SolutionDir)releases" />
     <ZipDirectory SourceDirectory="$(BuildDir)" DestinationFile="$(ReleasesDir)$(AssemblyName)-v$(ModVersion).zip" Overwrite="true" />
+
     <Message Importance="High" Text="Successful build for $(AssemblyName) v$(ModVersion) for RimWorld v$(GameVersion) with Harmony v$(HarmonyVersion)" />
   </Target>
 </Project>

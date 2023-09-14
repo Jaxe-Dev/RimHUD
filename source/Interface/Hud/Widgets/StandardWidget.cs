@@ -1,27 +1,28 @@
-﻿using System;
-using RimHUD.Configuration;
+using System;
+using RimHUD.Configuration.Settings;
 using UnityEngine;
 
 namespace RimHUD.Interface.Hud.Widgets
 {
   public abstract class StandardWidget : IWidget
   {
-    protected string Label { get; }
-    protected Func<string> Tooltip { get; }
+    public abstract bool Draw(Rect rect);
     private readonly TextStyle _textStyle;
 
-    public float Height { get; }
+    protected string? Label { get; }
+    protected Func<string?>? Tooltip { get; }
 
-    protected StandardWidget(string label, Func<string> tooltip, TextStyle textStyle)
+    public float GetMaxHeight { get; }
+
+    protected StandardWidget(string? label, Func<string?>? tooltip, TextStyle textStyle)
     {
       Label = label;
       Tooltip = tooltip;
+
       _textStyle = textStyle;
-      Height = _textStyle.LineHeight;
+      GetMaxHeight = textStyle.LineHeight;
     }
 
-    public abstract bool Draw(Rect rect);
-
-    protected void DrawText(Rect rect, string text, Color? color = null, TextAnchor? alignment = null) => WidgetsPlus.DrawText(rect, text, _textStyle, color, alignment);
+    protected void DrawText(Rect rect, string? text, Color? color = null, TextAnchor? alignment = null) => WidgetsPlus.DrawText(rect, text, _textStyle, color, alignment);
   }
 }

@@ -1,7 +1,7 @@
 # RimHUD
-![Mod Version](https://img.shields.io/badge/Mod_Version-1.13.0-blue.svg)
+![Mod Version](https://img.shields.io/badge/Mod_Version-1.14.0-blue.svg)
 ![RimWorld Version](https://img.shields.io/badge/Built_for_RimWorld-1.4-blue.svg)
-![Harmony Version](https://img.shields.io/badge/Powered_by_Harmony-2.2-blue.svg)\
+![Harmony Version](https://img.shields.io/badge/Powered_by_Harmony-2.2.2-blue.svg)\
 ![Steam Downloads](https://img.shields.io/steam/downloads/1508850027?colorB=blue&label=Steam+Downloads)
 ![GitHub Downloads](https://img.shields.io/github/downloads/Jaxe-Dev/RimHUD/total?colorB=blue&label=GitHub+Downloads)
 
@@ -30,7 +30,7 @@ Visual warnings will appear if a pawn has any life threatening conditions, has w
 
 ---
 
-**Note to Modders**: *RimHUD supports built-in presets and custom widgets from your mod. Check the wiki for details.*
+**Note to Modders**: *RimHUD supports integrated layout presets and custom widgets from your mod. Check the [wiki](https://github.com/Jaxe-Dev/RimHUD/wiki) for details.*
 
 ---
 

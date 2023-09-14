@@ -1,89 +1,63 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using RimHUD.Engine;
 using RimHUD.Extensions;
 using RimHUD.Interface.Hud.Layout;
-using RimHUD.Interface.Hud.Models;
 using UnityEngine;
 
 namespace RimHUD.Interface.Hud.Layers
 {
-  public class PanelLayer : ContainerLayer
+  public sealed class PanelLayer : ContainerLayer<RowLayer>
   {
     public const string Name = "Panel";
 
-    public static readonly LayoutElement LayoutElement = new LayoutElement(LayoutElementType.Panel, Name);
+    public static readonly LayoutElement LayoutElement = new(LayoutElementType.Panel, Name);
+    public override LayoutElementType Type => LayoutElementType.Panel;
 
-    public override string Id { get; } = Name;
+    public override string Id => Name;
 
-    public override bool FillHeight { get; }
-    public override HudTarget Targets { get; }
+    protected override RowLayer[] Children { get; }
 
-    private readonly RowLayer[] _rows;
-    private float[] _heights;
+    private float[]? _heights;
 
-    public PanelLayer(XElement xe, bool? fillHeight)
+    public PanelLayer(XElement xml) : base(xml)
     {
-      Targets = TargetsFromXml(xe);
-
       var rows = new List<RowLayer>();
-      foreach (var element in xe.Elements())
+      foreach (var element in xml.Elements())
       {
         if (element.Name != RowLayer.Name)
         {
-          Mod.Error($"Invalid HUD container element '{element.Name}' instead of '{RowLayer.Name}'");
+          Report.Error($"Invalid container element '{element.Name}' instead of '{RowLayer.Name}'.");
           continue;
         }
-
         rows.Add(new RowLayer(element));
       }
 
-      FillHeight = fillHeight ?? false;
-
-      _rows = rows.ToArray();
+      Children = rows.ToArray();
     }
 
-    public override float Prepare(PawnModel owner)
+    public override float Prepare()
     {
-      if (_rows.Length == 0 || !IsTargetted(owner)) { return 0f; }
-      _heights = _rows.Select(row => row.Prepare(owner)).ToArray();
+      if (Children.Length is 0 || !IsTargetted()) { return 0f; }
+      _heights = Children.Select(static row => row.Prepare()).ToArray();
 
-      return FillHeight ? -1f : _heights.Sum() + (LayoutLayer.Padding * (_rows.Length - 1));
+      return Args.FillHeight ? -1f : _heights.Sum() + (LayoutLayer.Padding * (Children.Length - 1));
     }
 
     public override bool Draw(Rect rect)
     {
-      if (_rows.Length == 0) { return false; }
+      if (Children.Length is 0) { return false; }
 
-      var grid = rect.GetVGrid(LayoutLayer.Padding, _heights);
+      var grid = rect.GetVGrid(LayoutLayer.Padding, _heights!);
       var index = 0;
-      foreach (var row in _rows)
+      foreach (var item in Children)
       {
         index++;
-        row.Draw(grid[index]);
+        item.Draw(grid[index]);
       }
 
       return true;
-    }
-
-    public override void Flush()
-    {
-      foreach (var row in _rows) { row.Flush(); }
-    }
-
-    public override XElement ToXml()
-    {
-      var xml = new XElement(Id);
-      foreach (var row in _rows) { xml.Add(row.ToXml()); }
-      return xml;
-    }
-
-    public override LayoutElement GetLayoutItem(LayoutEditor editor, LayoutElement parent)
-    {
-      var item = new LayoutElement(editor, parent, this);
-      foreach (var row in _rows) { item.Contents.Add(row.GetLayoutItem(editor, item)); }
-
-      return item;
     }
   }
 }
