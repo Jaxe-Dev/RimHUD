@@ -117,7 +117,7 @@ namespace RimHUD.Interface.Screen
     private static bool AllowFaction(Pawn pawn) => Theme.ShowFactionIcon.Value && pawn.Faction is not null;
     private static bool AllowIdeo(Pawn pawn) => Theme.ShowIdeoligionIcon.Value && ModsConfig.IdeologyActive && pawn.Ideo is not null;
     private static bool AllowResponse(Pawn pawn) => pawn.playerSettings!.UsesConfigurableHostilityResponse;
-    private static bool AllowMedical(Pawn pawn) => pawn.RaceProps?.IsFlesh ?? true;
+    private static bool AllowMedical(Pawn pawn) => pawn.RaceProps?.IsFlesh ?? false;
     private static bool AllowRename(Pawn pawn) => !AllowMedical(pawn);
     private static bool AllowSelfTend(Pawn pawn) => pawn.IsColonist;
   }

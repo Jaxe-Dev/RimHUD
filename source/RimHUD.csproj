@@ -206,13 +206,11 @@
   <ItemGroup>
     <Compile Include="Access\Reflection.cs" />
     <Compile Include="Access\Defs.cs" />
-    <Compile Include="Access\Patch\RimWorld_InspectPaneFiller_DoPaneContentsFor.cs" />
     <Compile Include="Access\Patch\RimWorld_InspectPaneUtility_DoTabs.cs" />
     <Compile Include="Access\Patch\RimWorld_InspectPaneUtility_InspectPaneOnGUI.cs" />
     <Compile Include="Access\Patch\RimWorld_InspectPaneUtility_PaneSizeFor.cs" />
     <Compile Include="Access\Patch\RimWorld_InspectPaneUtility_PaneWidthFor.cs" />
     <Compile Include="Access\Patch\RimWorld_ITab_PaneTopY.cs" />
-    <Compile Include="Access\Patch\RimWorld_MainTabWindow_InitialSize.cs" />
     <Compile Include="Access\Patch\RimWorld_MainTabWindow_Inspect_PaneTopY.cs" />
     <Compile Include="Access\Patch\RimWorld_PlaySettings_DoPlaySettingsGlobalControls.cs" />
     <Compile Include="Access\Patch\RimWorld_Tutor_TutorOnGUI.cs" />

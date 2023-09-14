@@ -36,14 +36,11 @@ Visual warnings will appear if a pawn has any life threatening conditions, has w
 
 The following base methods are patched with Harmony:
 ```
-Prefix* : RimWorld.InspectPaneFiller.DoPaneContentsFor
 Prefix* : RimWorld.InspectPaneUtility.DoTabs
 Prefix* : RimWorld.InspectPaneUtility.InspectPaneOnGUI
 Prefix* : RimWorld.InspectPaneUtility.PaneSizeFor
 Postfix : RimWorld.InspectPaneUtility.PaneWidthFor
 Prefix* : RimWorld.ITab.PaneTopY
-Prefix  : RimWorld.MainTabWindow.InitialSize
-Postfix : RimWorld.MainTabWindow.InitialSize
 Prefix* : RimWorld.MainTabWindow_Inspect.PaneTopY
 Postfix : RimWorld.PlaySettings.DoPlaySettingsGlobalControls
 Prefix* : RimWorld.Tutor.TutorOnGUI
