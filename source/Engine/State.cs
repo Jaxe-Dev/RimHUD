@@ -1,6 +1,7 @@
 using RimHUD.Configuration;
 using RimHUD.Interface.Hud.Layers;
 using RimHUD.Interface.Screen;
+using RimWorld.Planet;
 using Verse;
 
 namespace RimHUD.Engine
@@ -12,7 +13,7 @@ namespace RimHUD.Engine
 
     public static Pawn? SelectedPawn => Find.Selector?.SingleSelectedThing as Pawn;
 
-    private static bool ShowPane => Active && SelectedPawn is not null;
+    private static bool ShowPane => Active && !WorldRendererUtility.WorldRenderedNow && SelectedPawn is not null;
 
     public static bool ModifyPane => ShowPane && Theme.InspectPaneTabModify.Value;
     public static bool CompressLetters => Active && !Theme.DockedMode.Value && Theme.LetterCompress.Value;
