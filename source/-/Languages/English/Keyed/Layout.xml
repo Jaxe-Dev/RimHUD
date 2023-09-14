@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <LanguageData>
-  <RimHUD.Layout.UserPreset>[User preset]</RimHUD.Layout.UserPreset>
-  <RimHUD.Layout.BuiltIn>[Built-in]</RimHUD.Layout.BuiltIn>
+  <RimHUD.Layout.UserPreset>User</RimHUD.Layout.UserPreset>
+  <RimHUD.Layout.IntegratedPreset>Integrated</RimHUD.Layout.IntegratedPreset>
 
   <RimHUD.Layout.Root>Root</RimHUD.Layout.Root>
   <RimHUD.Layout.VStack>Vertical stack</RimHUD.Layout.VStack>
@@ -27,14 +27,14 @@
   <RimHUD.Layout.SimpleGenderRaceAndAge>Simple gender, race and age</RimHUD.Layout.SimpleGenderRaceAndAge>
   <RimHUD.Layout.Health>Health bar</RimHUD.Layout.Health>
   <RimHUD.Layout.HealthCondition>Health condition</RimHUD.Layout.HealthCondition>
-  <RimHUD.Layout.MindCondition>Mind condition</RimHUD.Layout.MindCondition>
+  <RimHUD.Layout.MentalCondition>Mental condition</RimHUD.Layout.MentalCondition>
 
   <RimHUD.Layout.Stat>{0} stat</RimHUD.Layout.Stat>
   <RimHUD.Layout.Record>{0} record</RimHUD.Layout.Record>
 
   <RimHUD.Layout.NeedMood>Mood bar</RimHUD.Layout.NeedMood>
   <RimHUD.Layout.NeedFood>Food bar</RimHUD.Layout.NeedFood>
-  <RimHUD.Layout.NeedRest>Rest bar</RimHUD.Layout.NeedRest>
+  <RimHUD.Layout.NeedSleep>Sleep bar</RimHUD.Layout.NeedSleep>
   <RimHUD.Layout.NeedEnergy>Energy bar</RimHUD.Layout.NeedEnergy>
   <RimHUD.Layout.NeedRecreation>Recreation bar</RimHUD.Layout.NeedRecreation>
   <RimHUD.Layout.NeedSuppression>Suppression bar</RimHUD.Layout.NeedSuppression>
@@ -74,8 +74,8 @@
   <RimHUD.Layout.Target.PlayerCreature>Player Creature</RimHUD.Layout.Target.PlayerCreature>
   <RimHUD.Layout.Target.OtherCreature>Other Creature</RimHUD.Layout.Target.OtherCreature>
 
-  <RimHUD.Layout.Variant.LowToMain>Low to Main color (Default)</RimHUD.Layout.Variant.LowToMain>
-  <RimHUD.Layout.Variant.LowOnly>Low color only</RimHUD.Layout.Variant.LowOnly>
-  <RimHUD.Layout.Variant.MainToLow>Main to Low color</RimHUD.Layout.Variant.MainToLow>
-  <RimHUD.Layout.Variant.MainOnly>Main color only</RimHUD.Layout.Variant.MainOnly>
+  <RimHUD.Layout.BarColorStyle.LowToMain>Low to Main color (Default)</RimHUD.Layout.BarColorStyle.LowToMain>
+  <RimHUD.Layout.BarColorStyle.LowOnly>Low color only</RimHUD.Layout.BarColorStyle.LowOnly>
+  <RimHUD.Layout.BarColorStyle.MainToLow>Main to Low color</RimHUD.Layout.BarColorStyle.MainToLow>
+  <RimHUD.Layout.BarColorStyle.MainOnly>Main color only</RimHUD.Layout.BarColorStyle.MainOnly>
 </LanguageData>

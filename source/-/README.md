@@ -30,7 +30,7 @@ Visual warnings will appear if a pawn has any life threatening conditions, has w
 
 ---
 
-**Note to Modders**: *RimHUD supports built-in presets and custom widgets from your mod. Check the wiki for details.*
+**Note to Modders**: *RimHUD supports integrated layout presets and custom widgets from your mod. Check the [wiki](https://github.com/Jaxe-Dev/RimHUD/wiki) for details.*
 
 ---
 

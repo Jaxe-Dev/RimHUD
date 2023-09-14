@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using RimHUD.Configuration;
@@ -11,19 +13,22 @@ using Verse;
 
 namespace RimHUD.Interface.Hud.Layers
 {
-  public class LayoutLayer : VStackLayer
+  public sealed class LayoutLayer : VStackLayer
   {
+    public const float Padding = GUIPlus.TinyPadding;
+
     public const string RootName = "Layout";
     public const string DockedFileName = "Docked.xml";
     public const string FloatingFileName = "Floating.xml";
-    public const float Padding = WidgetsPlus.TinyPadding;
 
     public const string DockedElementName = "Docked";
     public const string FloatingElementName = "Floating";
 
+    private const string ManifestResourcePrefix = "RimHUD.Resources.Layouts.";
+
+    private const string WidthAttributeName = "Width";
     private const string HeightAttributeName = "Height";
     private const string TabsAttributeName = "Tabs";
-    private const string WidthAttributeName = "Width";
 
     private static readonly LayoutLayer DefaultDocked = FromEmbedded("Defaults.Docked.xml");
     private static readonly LayoutLayer DefaultFloating = FromEmbedded("Defaults.Floating.xml");
@@ -31,101 +36,101 @@ namespace RimHUD.Interface.Hud.Layers
     public static LayoutLayer Docked { get; set; } = DefaultDocked;
     public static LayoutLayer Floating { get; set; } = DefaultFloating;
 
-    private DateTime _lastRefresh;
-    private Pawn _lastPawn;
+    private readonly Stopwatch _stopwatch = new();
 
-    private LayoutLayer(XElement xe) : base(xe, true)
+    private Pawn? _lastPawn;
+
+    private LayoutLayer(XElement xml) : base(xml)
     {
+      Args.FillHeight = true;
       HudTimings.Add(this);
 
       bool docked;
-      if (xe.Name == DockedElementName) { docked = true; }
-      else if (xe.Name == FloatingElementName) { docked = false; }
+      if (xml.Name == DockedElementName) { docked = true; }
+      else if (xml.Name == FloatingElementName) { docked = false; }
       else { return; }
 
-      var width = xe.Attribute(WidthAttributeName)?.Value.ToInt() ?? -1;
-      var height = xe.Attribute(HeightAttributeName)?.Value.ToInt() ?? -1;
-      var tabs = xe.Attribute(TabsAttributeName)?.Value.ToInt() ?? -1;
+      var width = xml.GetAttribute(WidthAttributeName)?.ToInt() ?? -1;
+      var height = xml.GetAttribute(HeightAttributeName)?.ToInt() ?? -1;
+      var tabs = xml.GetAttribute(TabsAttributeName)?.ToInt() ?? -1;
 
       if (height > 0)
       {
         if (docked) { Theme.InspectPaneHeight.Value = height; }
-        else { Theme.HudHeight.Value = height; }
+        else { Theme.FloatingHeight.Value = height; }
       }
       if (width > 0)
       {
         if (docked) { Theme.InspectPaneTabWidth.Value = width; }
-        else { Theme.HudWidth.Value = width; }
+        else { Theme.FloatingWidth.Value = width; }
       }
       if (docked && tabs > 0) { Theme.InspectPaneMinTabs.Value = tabs; }
     }
 
+    public static LayoutLayer FromXml(XElement xml) => new(xml);
+
+    public static LayoutLayer FromLayoutView(LayoutEditor editor) => new(editor.Root.ToXml());
+
+    public static void LoadDefaultAndSave(bool compact = false)
+    {
+      LoadDefault(compact);
+      Presets.Save();
+    }
+
     private static LayoutLayer FromEmbedded(string id)
     {
-      using (var stream = Mod.Assembly.GetManifestResourceStream("RimHUD.Resources.Presets." + id))
-      {
-        if (stream == null) { throw new Mod.Exception($"Cannot find embedded HUD layout '{id}'"); }
-        using (var reader = XmlReader.Create(stream)) { return FromXml(XDocument.Load(reader).Root) ?? throw new Mod.Exception($"Error reading embedded HUD layout '{id}'"); }
-      }
+      using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(ManifestResourcePrefix + id);
+      if (stream is null) { throw new Exception($"Cannot find embedded layout '{id}'."); }
+
+      using var reader = XmlReader.Create(stream);
+      return FromXml(XDocument.Load(reader).Root) ?? throw new Exception($"Error reading embedded layout '{id}'.");
     }
 
-    public static LayoutLayer FromXml(XElement xe) => new LayoutLayer(xe);
-    public static LayoutLayer FromLayoutView(LayoutEditor editor) => new LayoutLayer(editor.Root.ToXml());
-
-    public override XElement ToXml() => ToXml(null);
-
-    public XElement ToXml(string name, int width = -1, int height = -1, int tabs = -1)
-    {
-      var xml = new XElement(name ?? RootName);
-
-      if (width > 0) { xml.Add(new XAttribute(WidthAttributeName, width)); }
-      if (height > 0) { xml.Add(new XAttribute(HeightAttributeName, height)); }
-      if (tabs > 0) { xml.Add(new XAttribute(TabsAttributeName, tabs)); }
-
-      foreach (var container in Containers) { xml.Add(container.ToXml()); }
-      return xml;
-    }
-
-    private static void LoadDefault()
+    private static void LoadDefault(bool compact)
     {
       Docked = DefaultDocked;
       Floating = DefaultFloating;
 
-      Theme.InspectPaneHeight.ToDefault();
-      Theme.InspectPaneTabWidth.ToDefault();
-      Theme.InspectPaneMinTabs.ToDefault();
-      Theme.HudHeight.ToDefault();
-      Theme.HudWidth.ToDefault();
+      Theme.SetDefaultHud(compact);
 
       Persistent.Save();
     }
 
-    public static void LoadDefaultAndSave()
+    public XElement ToXml(string? name, int width = -1, int height = -1, int tabs = -1)
     {
-      LoadDefault();
-      Persistent.SaveLayouts();
+      var xml = new XElement(name ?? RootName);
+
+      if (width > 0) { xml.AddAttribute(WidthAttributeName, width); }
+      if (height > 0) { xml.AddAttribute(HeightAttributeName, height); }
+      if (tabs > 0) { xml.AddAttribute(TabsAttributeName, tabs); }
+
+      foreach (var child in Children) { xml.Add(child.ToXml()); }
+      return xml;
     }
 
-    public void Draw(Rect rect, PawnModel owner)
+    public new void Draw(Rect rect)
     {
       HudTimings.Update(this)?.Start();
 
       try
       {
-        if (owner == null) { return; }
+        _stopwatch.Start();
 
-        if (owner.Base != _lastPawn || _lastRefresh == default || (DateTime.Now - _lastRefresh).TotalMilliseconds > Theme.RefreshRate.Value * 100)
+        if (Active.Pawn != _lastPawn || _stopwatch.ElapsedMilliseconds > Theme.RefreshRate.Value * 100)
         {
-          Prepare(owner);
-          _lastPawn = owner.Base;
-          _lastRefresh = DateTime.Now;
+          Prepare();
+          _lastPawn = Active.Pawn;
+          _stopwatch.Restart();
         }
 
-        Draw(rect);
+        base.Draw(rect);
       }
-      catch (Exception exception) { Troubleshooter.HandleError(exception); }
-
-      HudTimings.Update(this)?.Finish(rect, true);
+      catch (Exception exception) { Report.HandleError(exception); }
+      finally { HudTimings.Update(this)?.Finish(rect, true); }
     }
+
+    protected override XElement StartXml() => ToXml(null);
+
+    public void RefreshNow() => _lastPawn = null;
   }
 }

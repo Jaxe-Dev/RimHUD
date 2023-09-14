@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using RimHUD.Engine;
 using RimHUD.Extensions;
 using UnityEngine;
@@ -6,16 +6,18 @@ using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
-  public class Dialog_Alert : Window
+  public sealed class Dialog_Alert : Window
   {
     public override Vector2 InitialSize { get; }
+
     private readonly string _message;
     private readonly Buttons _buttons;
-    private readonly Action _onAccept;
-    private readonly Action _onCancel;
+    private readonly Action? _onAccept;
+    private readonly Action? _onCancel;
+
     private bool _isAccepted;
 
-    private Dialog_Alert(string message, Buttons buttons = Buttons.Ok, Action onAccept = null, Action onCancel = null)
+    private Dialog_Alert(string message, Buttons buttons = Buttons.Ok, Action? onAccept = null, Action? onCancel = null)
     {
       doCloseButton = false;
       closeOnAccept = true;
@@ -28,21 +30,19 @@ namespace RimHUD.Interface.Dialog
       _onAccept = onAccept;
       _onCancel = onCancel;
 
-      var wrap = Text.WordWrap;
-      Text.WordWrap = true;
-
+      GUIPlus.SetWrap(true);
       GUIPlus.SetFont(GameFont.Small);
       InitialSize = new Vector2(400f, 80f + Text.CalcHeight(_message, 364f));
       GUIPlus.ResetFont();
-      Text.WordWrap = wrap;
+      GUIPlus.ResetWrap();
     }
 
-    public static void Open(string message, Buttons buttons = Buttons.Ok, Action onAccept = null, Action onCancel = null) => Find.WindowStack.Add(new Dialog_Alert(message, buttons, onAccept, onCancel));
+    public static void Open(string message, Buttons buttons = Buttons.Ok, Action? onAccept = null, Action? onCancel = null) => Find.WindowStack!.Add(new Dialog_Alert(message, buttons, onAccept, onCancel));
 
     public override void DoWindowContents(Rect rect)
     {
       var listing = new Listing_Standard();
-      var vGrid = rect.GetVGrid(4f, -1f, 30f);
+      var vGrid = rect.GetVGrid(4f, -1f, WidgetsPlus.ButtonHeight);
 
       listing.Begin(vGrid[1]);
       listing.Label(_message);
@@ -50,9 +50,9 @@ namespace RimHUD.Interface.Dialog
 
       var hGrid = vGrid[2].GetHGrid(4f, 100f, -1f);
 
-      listing.Begin(_buttons == Buttons.Ok ? vGrid[2] : hGrid[1]);
+      listing.Begin(_buttons is Buttons.Ok ? vGrid[2] : hGrid[1]);
 
-      if (listing.ButtonText(_buttons == Buttons.YesNo ? Lang.Get("Interface.Button.Yes") : Lang.Get("Interface.Button.OK")))
+      if (listing.ButtonText(_buttons is Buttons.YesNo ? Lang.Get("Interface.Button.Yes") : Lang.Get("Interface.Button.OK")))
       {
         _isAccepted = true;
         _onAccept?.Invoke();
@@ -61,10 +61,10 @@ namespace RimHUD.Interface.Dialog
 
       listing.End();
 
-      if (_buttons == Buttons.Ok) { return; }
+      if (_buttons is Buttons.Ok) { return; }
 
       listing.Begin(hGrid[2]);
-      if (listing.ButtonText(_buttons == Buttons.YesNo ? Lang.Get("Interface.Button.No") : Lang.Get("Interface.Button.Cancel"))) { Close(); }
+      if (listing.ButtonText(_buttons is Buttons.YesNo ? Lang.Get("Interface.Button.No") : Lang.Get("Interface.Button.Cancel"))) { Close(); }
       listing.End();
     }
 
@@ -77,7 +77,6 @@ namespace RimHUD.Interface.Dialog
     public enum Buttons
     {
       Ok,
-      OkCancel,
       YesNo
     }
   }

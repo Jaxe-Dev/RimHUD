@@ -3,8 +3,11 @@ _*
 /*
 *.user
 *.pdb
+*.DotSettings
 !/.gitignore
 !/.gitattributes
+!/.editorconfig
+!/*.props
 !/*.md
 !/*.sln
 !/source/

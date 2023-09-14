@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <LanguageData>
   <RimHUD.Model.Bio.Title>Title: {0}</RimHUD.Model.Bio.Title>
@@ -14,12 +14,13 @@
   <RimHUD.Model.RelationKindAndFaction>{0} {1}</RimHUD.Model.RelationKindAndFaction>
   <RimHUD.Model.OfFaction>of {0}</RimHUD.Model.OfFaction>
 
-  <RimHUD.Model.Faction.Own>our</RimHUD.Model.Faction.Own>
   <RimHUD.Model.Faction.Wild>wild</RimHUD.Model.Faction.Wild>
   <RimHUD.Model.Faction.Allied>allied</RimHUD.Model.Faction.Allied>
   <RimHUD.Model.Faction.Enemy>enemy</RimHUD.Model.Faction.Enemy>
   <RimHUD.Model.Faction.Hostile>hostile</RimHUD.Model.Faction.Hostile>
   <RimHUD.Model.Faction.Independent>independent</RimHUD.Model.Faction.Independent>
+  <RimHUD.Model.Faction.Prisoner>captured</RimHUD.Model.Faction.Prisoner>
+  <RimHUD.Model.Faction.Slave>enslaved</RimHUD.Model.Faction.Slave>
 
   <RimHUD.Model.Creature.Wild>creature</RimHUD.Model.Creature.Wild>
   <RimHUD.Model.Creature.Tame>animal</RimHUD.Model.Creature.Tame>

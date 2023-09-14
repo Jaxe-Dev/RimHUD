@@ -1,61 +1,44 @@
-﻿using System.Xml.Linq;
+using System.Xml.Linq;
+using RimHUD.Engine;
 using RimHUD.Interface.Hud.Layout;
-using RimHUD.Interface.Hud.Models;
 using RimHUD.Interface.Hud.Widgets;
 using UnityEngine;
-using Verse;
 
 namespace RimHUD.Interface.Hud.Layers
 {
-  public class WidgetLayer : BaseLayer
+  public sealed class WidgetLayer : BaseLayer
   {
-    public const string DefNameAttribute = "DefName";
-    public const string VariantAttribute = "Variant";
+    public override LayoutElementType Type => LayoutElementType.Widget;
 
-    private readonly string _type;
-    public override string Id => _type;
+    public override string Id { get; }
 
-    public string DefName { get; }
-    public string Variant { get; }
+    public IWidget? Widget;
 
-    public override HudTarget Targets { get; }
-
-    public IWidget Widget;
-
-    private WidgetLayer(string type, string defName, string variant, HudTarget targets)
+    private WidgetLayer(string id, HudArgs args) : base(args)
     {
-      _type = type;
-      DefName = defName;
-      Variant = variant;
-      Targets = targets;
-
+      Id = id;
       HudTimings.Add(this);
     }
 
-    public override float Prepare(PawnModel owner) => Widget?.Height ?? 0f;
+    ~WidgetLayer() => HudTimings.Remove(this);
 
-    public static WidgetLayer FromXml(XElement xe)
+    public static WidgetLayer FromXml(XElement xml)
     {
-      var id = xe.Name.ToString();
-      var defName = xe.Attribute(DefNameAttribute)?.Value;
+      var id = xml.Name.ToString();
+      var args = new HudArgs(xml);
 
-      if (!HudBuilder.IsValidType(id))
-      {
-        Mod.Error($"Invalid HUD widget id '{id}'. It is recommended to reset the settings to default.");
-        return new WidgetLayer(id, defName, null, HudTarget.All);
-      }
+      if (HudContent.IsValidId(id, args.DefName)) { return new WidgetLayer(id, args); }
 
-      var variant = xe.Attribute(VariantAttribute)?.Value;
-      var targets = TargetsFromXml(xe);
+      Report.ErrorOnce((args.DefName is null ? $"Invalid id '{id}'" : $"Invalid id '{id}' with def '{args.DefName}'") + ". It is recommended to reset your config to default.");
 
-      return new WidgetLayer(id, defName, variant, targets);
+      args.Targets = LayerTarget.All;
+
+      return new WidgetLayer(id, args);
     }
 
-    public void Build(PawnModel owner)
-    {
-      var widget = HudBuilder.GetWidget(owner, _type, DefName, Variant);
-      Widget = IsTargetted(owner) ? widget : BlankWidget.Get(widget.Height);
-    }
+    protected override XElement StartXml() => new(Id);
+
+    public override float Prepare() => Widget?.GetMaxHeight ?? 0f;
 
     public override bool Draw(Rect rect)
     {
@@ -68,21 +51,14 @@ namespace RimHUD.Interface.Hud.Layers
       return result;
     }
 
-    public void Flush() => Widget = null;
+    public override LayoutElement GetLayoutItem(LayoutEditor editor, LayoutElement parent) => new(this, editor, parent);
 
-    public override XElement ToXml()
+    public void Build()
     {
-      var xml = new XElement(_type);
-      if (!DefName.NullOrEmpty()) { xml.Add(new XAttribute(DefNameAttribute, DefName)); }
-      if (!Variant.NullOrEmpty()) { xml.Add(new XAttribute(VariantAttribute, Variant)); }
-
-      var targets = Targets.ToId();
-      if (!targets.NullOrEmpty()) { xml.Add(new XAttribute(TargetAttribute, targets)); }
-      return xml;
+      var widget = HudContent.GetWidget(Id, Args);
+      Widget = IsTargetted() ? widget : new BlankWidget(widget.GetMaxHeight);
     }
 
-    public override LayoutElement GetLayoutItem(LayoutEditor editor, LayoutElement parent) => new LayoutElement(editor, parent, this);
-
-    ~WidgetLayer() => HudTimings.Remove(this);
+    public override void Flush() => Widget = null;
   }
 }

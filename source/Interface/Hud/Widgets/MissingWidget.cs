@@ -1,28 +1,29 @@
-﻿using RimHUD.Configuration;
+using RimHUD.Configuration;
 using UnityEngine;
+using Verse;
 
 namespace RimHUD.Interface.Hud.Widgets
 {
-  public class MissingWidget : IWidget
+  public sealed class MissingWidget : IWidget
   {
-    private static readonly Color Color = new Color(0.5f, 0f, 0f);
+    private static readonly Color Color = new(0.5f, 0f, 0f);
 
-    public float Height { get; }
+    private readonly string _label;
 
-    private readonly string _id;
+    public float GetMaxHeight { get; }
 
-    private MissingWidget(string id)
+    private MissingWidget(string label)
     {
-      _id = id;
-      Height = Theme.SmallTextStyle.LineHeight;
+      _label = label;
+      GetMaxHeight = Theme.SmallTextStyle.LineHeight;
     }
 
-    public static MissingWidget Get(string id, string defName) => new MissingWidget($"<{id}{(defName == null ? null : ":" + defName)}>");
+    public static MissingWidget Get(string id, HudArgs args) => new(args.DefName.NullOrEmpty() ? $"<{id}>" : $"<{id}[{args.DefName}]>");
 
     public bool Draw(Rect rect)
     {
       Verse.Widgets.DrawBoxSolid(rect, Color);
-      WidgetsPlus.DrawText(rect, _id, Theme.SmallTextStyle);
+      WidgetsPlus.DrawText(rect, _label, Theme.SmallTextStyle);
       return true;
     }
   }

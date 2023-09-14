@@ -1,36 +1,26 @@
-﻿using System;
+using System;
 using Verse;
 
 namespace RimHUD.Engine
 {
   public static class Lang
   {
-    public static bool HasKey(string key) => LanguageDatabase.activeLanguage.HaveTextForKey(Mod.Id + "." + key);
+    public static bool HasKey(string key) => LanguageDatabase.activeLanguage!.HaveTextForKey($"{Mod.Id}.{key}");
 
-    public static string Get(string key, params object[] args)
+    public static string Get(string key) => $"{Mod.Id}.{key}".Translate();
+
+    public static string Get(string key, params object?[] args)
     {
-      try { return string.Format((Mod.Id + "." + key).Translate(), args); }
-      catch { return $"<TranslationError:{key}>"; }
+      try { return string.Format($"{Mod.Id}.{key}".Translate(), args); }
+      catch (Exception exception)
+      {
+        Report.Error($"Translation key '{key}' threw the following exception: {exception.Message}");
+        return Get(key);
+      }
     }
 
-    public static string GetIndexed(string key, int index)
-    {
-      var strings = Get(key).Split('|');
+    public static string GetIndexed(string key, int index) => Get(key).Split('|')[index];
 
-      if (index >= strings.Length || index < 0) { return "(INDEX?'" + key + "')"; }
-      return strings[index];
-    }
-
-    public static string CombineWords(string first, string second) => string.Concat(first, " ", second).Trim();
-
-    public static string AdjectiveNoun(string adjective, string noun) => Get("Language.AdjectiveNounOrder", adjective, noun).Trim();
-
-    public static string FlattenWithSeparator(this string text, string separator)
-    {
-      if (text.NullOrEmpty()) { return text; }
-      text = text.Replace("\r", "");
-
-      return string.Join(separator, text.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
-    }
+    public static string AdjectiveNoun(string? adjective, string? noun) => Get("Language.AdjectiveNounOrder", adjective, noun).Trim();
   }
 }

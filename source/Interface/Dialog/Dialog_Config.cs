@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using RimHUD.Configuration;
 using RimHUD.Engine;
 using RimHUD.Extensions;
-using RimHUD.Interface.Hud.Layout;
+using RimHUD.Interface.Dialog.Tabs;
+using RimHUD.Interface.Hud;
 using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Dialog
 {
-  public class Dialog_Config : WindowPlus
+  public sealed class Dialog_Config : WindowPlus
   {
     private const float TabWidth = 160f;
     private const float TabHeight = 30f;
@@ -20,36 +21,34 @@ namespace RimHUD.Interface.Dialog
       new Tab_ConfigDesign(),
       new Tab_ConfigContent(),
       new Tab_ConfigColors(),
-      Persistent.HasCredits ? new Tab_ConfigCredits() : null
+      new Tab_ConfigCredits()
     };
 
     private readonly TabManager _tabs;
 
-    private Dialog_Config() : base(Lang.Get("Interface.Dialog_Config.Title").Bold(), new Vector2(800f, 700f))
+    private Dialog_Config() : base(new Vector2(800f, 700f), Lang.Get("Interface.Dialog_Config.Title"), Lang.HasKey("Language.TranslatedBy") ? Lang.Get("Language.TranslatedBy") : null)
     {
       onlyOneOfTypeAllowed = true;
       absorbInputAroundWindow = false;
       preventCameraMotion = false;
       doCloseButton = false;
 
-      if (Lang.HasKey("Language.TranslatedBy")) { Subtitle = Lang.Get("Language.TranslatedBy").Italic(); }
-
       _tabs = new TabManager(TabWidth, TabHeight, TabOrder);
-      if (!Persistent.TutorialComplete) { Tutorial.DoDialogConfigTab(_tabs); }
+      if (!Tutorial.IsComplete) { Tutorial.Presentation.Stages.DoDialogConfigTab(_tabs); }
     }
 
     public static void Toggle()
     {
-      var current = Find.WindowStack.WindowOfType<Dialog_Config>();
-      if (current == null) { Open(); }
+      var current = Find.WindowStack!.WindowOfType<Dialog_Config>();
+      if (current is null) { Open(); }
       else { current.Close(); }
     }
 
-    public static void Open() => Find.WindowStack.Add(new Dialog_Config());
+    public static void Open() => Find.WindowStack!.Add(new Dialog_Config());
 
     public override void PostClose()
     {
-      Tutorial.CheckComplete(true);
+      Tutorial.Presentation.Stages.CheckComplete(true);
 
       if (!State.Activated) { return; }
       Persistent.Save();
@@ -59,15 +58,15 @@ namespace RimHUD.Interface.Dialog
     {
       try
       {
-        var grid = rect.GetVGrid(WidgetsPlus.MediumPadding, -1f, ButtonHeight);
-        var hGrid = grid[2].GetHGrid(WidgetsPlus.MediumPadding, ButtonWidth, ButtonWidth, ButtonWidth);
+        var grid = rect.GetVGrid(GUIPlus.MediumPadding, -1f, ButtonHeight);
+        var hGrid = grid[2].GetHGrid(GUIPlus.MediumPadding, ButtonWidth, ButtonWidth, ButtonWidth);
 
-        if (!Persistent.TutorialComplete)
+        if (!Tutorial.IsComplete)
         {
-          Tutorial.DoDialogConfigTab(_tabs);
+          Tutorial.Presentation.Stages.DoDialogConfigTab(_tabs);
 
-          Tutorial.SetDialogConfigCloseButton(hGrid[3]);
-          Tutorial.DoDialogConfigEarly();
+          Tutorial.Presentation.Stages.SetDialogConfigCloseButton(hGrid[3]);
+          Tutorial.Presentation.Stages.DoDialogConfigEarly();
         }
 
         _tabs.Draw(grid[1]);
@@ -76,31 +75,31 @@ namespace RimHUD.Interface.Dialog
         else if (WidgetsPlus.DrawButton(hGrid[2], Lang.Get("Interface.Dialog_Config.OpenFolder"))) { Persistent.OpenConfigFolder(); }
         else if (WidgetsPlus.DrawButton(hGrid[3], Lang.Get("Interface.Button.Close"))) { Close(); }
 
-        WidgetsPlus.DrawText(grid[2], "Version " + Mod.Version + (Prefs.DevMode && Mod.DevMode ? "[DEV MODE - Click to disable]".Colorize(Color.yellow) : null), Theme.SmallTextStyle, alignment: TextAnchor.LowerRight);
+        WidgetsPlus.DrawText(grid[2], $"Version {Mod.Version}{(Prefs.DevMode && Mod.DevMode ? "[DEV MODE - Click to disable]".Colorize(Color.yellow) : null)}", GameFont.Tiny, alignment: TextAnchor.LowerRight);
 
-        if (!Event.current.shift || !Widgets.ButtonInvisible(grid[2]) || !Prefs.DevMode) { return; }
+        if (!Event.current!.shift || !Widgets.ButtonInvisible(grid[2]) || !Prefs.DevMode) { return; }
 
         Mod.DevMode = !Mod.DevMode;
         HudTimings.Restart();
       }
       catch (Exception exception)
       {
-        Troubleshooter.HandleError(exception);
+        Report.HandleError(exception);
         Close();
       }
+    }
+
+    protected override void LateWindowOnGUI(Rect inRect)
+    {
+      if (!Tutorial.IsComplete) { Tutorial.Presentation.Stages.DoDialogConfigLate(windowRect.AtZero()); }
     }
 
     private void ConfirmSetToDefault() => Dialog_Alert.Open(Lang.Get("Interface.Alert.SetToDefault"), Dialog_Alert.Buttons.YesNo, SetToDefault);
 
     private void SetToDefault()
     {
-      Persistent.AllToDefault();
+      Persistent.SettingsToDefault();
       _tabs.Reset();
-    }
-
-    protected override void LateWindowOnGUI(Rect inRect)
-    {
-      if (!Persistent.TutorialComplete) { Tutorial.DoDialogConfigLate(windowRect.AtZero()); }
     }
   }
 }
