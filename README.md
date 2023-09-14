@@ -1,5 +1,5 @@
 # RimHUD
-![Mod Version](https://img.shields.io/badge/Mod_Version-1.14.0-blue.svg)
+![Mod Version](https://img.shields.io/badge/Mod_Version-1.14.1-blue.svg)
 ![RimWorld Version](https://img.shields.io/badge/Built_for_RimWorld-1.4-blue.svg)
 ![Harmony Version](https://img.shields.io/badge/Powered_by_Harmony-2.2.2-blue.svg)\
 ![Steam Downloads](https://img.shields.io/steam/downloads/1508850027?colorB=blue&label=Steam+Downloads)
@@ -36,14 +36,11 @@ Visual warnings will appear if a pawn has any life threatening conditions, has w
 
 The following base methods are patched with Harmony:
 ```
-Prefix* : RimWorld.InspectPaneFiller.DoPaneContentsFor
 Prefix* : RimWorld.InspectPaneUtility.DoTabs
 Prefix* : RimWorld.InspectPaneUtility.InspectPaneOnGUI
 Prefix* : RimWorld.InspectPaneUtility.PaneSizeFor
 Postfix : RimWorld.InspectPaneUtility.PaneWidthFor
 Prefix* : RimWorld.ITab.PaneTopY
-Prefix  : RimWorld.MainTabWindow.InitialSize
-Postfix : RimWorld.MainTabWindow.InitialSize
 Prefix* : RimWorld.MainTabWindow_Inspect.PaneTopY
 Postfix : RimWorld.PlaySettings.DoPlaySettingsGlobalControls
 Prefix* : RimWorld.Tutor.TutorOnGUI

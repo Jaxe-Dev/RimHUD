@@ -20,8 +20,6 @@ namespace RimHUD.Interface.Screen
 
       pane.RecentHeight = Theme.InspectPaneHeight.Value - WidgetsPlus.MainButtonHeight;
 
-      if (State.SelectedPawn is null || !pane.AnythingSelected) { return; }
-
       try
       {
         var bounds = GetBounds(rect);
@@ -31,6 +29,8 @@ namespace RimHUD.Interface.Screen
         var headerHeight = Math.Max(Theme.LargeTextStyle.LineHeight, GenUI.SmallIconSize);
         InspectPaneButtons.Draw(bounds.TopPartPixels(headerHeight), pane, ref offset);
 
+        if (State.SelectedPawn is null || !pane.AnythingSelected) { return; }
+
         var labelRect = new Rect(bounds.x, bounds.y, bounds.width - offset, headerHeight);
         WidgetsPlus.DrawText(labelRect, Active.Name, Theme.LargeTextStyle, Active.FactionRelationColor);
         TooltipsPlus.DrawCompact(labelRect, BioTooltip.Get);
@@ -39,17 +39,14 @@ namespace RimHUD.Interface.Screen
         if (!pane.ShouldShowPaneContents) { return; }
 
         var contentRect = bounds.BottomPartPixels(bounds.height - headerHeight - GUIPlus.TinyPadding);
-        DrawContent(contentRect);
+
+        if (Theme.DockedMode.Value) { HudLayout.DrawDocked(contentRect); }
+        else if (Theme.InspectPaneTabAddLog.Value) { InspectPaneLog.Draw(Active.Pawn, contentRect); }
+
       }
       catch (Exception exception) { Report.HandleError(exception); }
 
       if (!Tutorial.IsComplete) { Tutorial.Presentation.Stages.DoInspectPane(rect); }
-    }
-
-    public static void DrawContent(Rect rect)
-    {
-      if (Theme.DockedMode.Value) { HudLayout.DrawDocked(rect); }
-      else if (Theme.InspectPaneTabAddLog.Value) { InspectPaneLog.Draw(Active.Pawn, rect); }
     }
   }
 }
