@@ -38,7 +38,7 @@ namespace RimHUD.Configuration
       if (loadedVersion is Mod.Version) { return false; }
       Report.Warning($"Loaded config version ({loadedVersion ?? "NULL"}) is different from the current mod version.");
 
-      return loadedVersion.NullOrWhitespace() || Mod.AcceptedConfigVersions.All(version => !loadedVersion.StartsWith(version));
+      return loadedVersion.NullOrWhitespace() || Mod.AcceptedConfigVersions.All(version => !loadedVersion!.StartsWith(version));
     }
 
     public static void Load()
@@ -209,7 +209,7 @@ namespace RimHUD.Configuration
 
     public static void OpenConfigFolder() => Process.Start(ConfigDirectory.FullName);
 
-    public static bool IsValidFilename(string? name) => !name.NullOrWhitespace() && name.Length <= FilenameLengthMax - Presets.UserPresetsDirectory.FullName.Length && Presets.ValidFilenameRegex.IsMatch(name);
+    public static bool IsValidFilename(string? name) => !name.NullOrWhitespace() && name!.Length <= FilenameLengthMax - Presets.UserPresetsDirectory.FullName.Length && Presets.ValidFilenameRegex.IsMatch(name);
 
     public static void ReportIfReset()
     {

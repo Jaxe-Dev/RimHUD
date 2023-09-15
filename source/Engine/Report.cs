@@ -111,7 +111,7 @@ namespace RimHUD.Engine
         else if (isExternal) { Notice = (_externalModInvolved is null ? TriggerExternal : $"{TriggerMod}:\n{_externalModInvolved.Bold()}").Colorize(Color.yellow); }
       }
 
-      public void CopyToClipboard() => GUIUtility.systemCopyBuffer = $"[[RimHUD Auto-deactivation report]]\n{(_externalModInvolved is null ? null : $"({TriggerMod}'{_externalModInvolved}')\n\n")}{Message}\n\n{nameof(Trace)}:\n{Trace}";
+      public void CopyToClipboard() => GUIUtility.systemCopyBuffer = $"[[RimHUD v{Mod.Version} Auto-deactivation report]]\n{(_externalModInvolved is null ? null : $"({TriggerMod}'{_externalModInvolved}')\n\n")}{Message}\n\n{nameof(Trace)}:\n{Trace}";
     }
   }
 }

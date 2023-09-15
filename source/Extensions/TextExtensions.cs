@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using RimHUD.Configuration;
 using RimHUD.Interface;
@@ -61,7 +60,7 @@ namespace RimHUD.Extensions
       self.AppendValue(def.LabelCap, pawn.needs.TryGetNeed(def)?.CurLevelPercentage.ToStringPercent());
     }
 
-    public static bool NullOrWhitespace([NotNullWhen(false)] this string? self) => string.IsNullOrWhiteSpace(self);
+    public static bool NullOrWhitespace(this string? self) => string.IsNullOrWhiteSpace(self);
     public static bool NullOrWhitespace(this TaggedString self) => self.RawText.NullOrWhitespace();
   }
 }
