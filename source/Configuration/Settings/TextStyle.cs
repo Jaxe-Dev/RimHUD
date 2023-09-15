@@ -42,7 +42,7 @@ namespace RimHUD.Configuration.Settings
     {
       if (value.NullOrWhitespace()) { return; }
 
-      var split = value.Split('|');
+      var split = value!.Split('|');
       if (split.Length is not 6) { return; }
 
       Theme.RegularTextStyle.Size.Value = split[0].ToInt() ?? Theme.RegularTextStyle.Size.Value;

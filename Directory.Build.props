@@ -1,5 +1,0 @@
-<Project>
-  <PropertyGroup>
-    <MSBuildProjectExtensionsPath>$(SolutionDir)packages\</MSBuildProjectExtensionsPath>
-  </PropertyGroup>
-</Project>

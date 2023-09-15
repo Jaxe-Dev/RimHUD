@@ -42,9 +42,9 @@ namespace RimHUD.Interface
       var originalAlignment = finalStyle.alignment;
       finalStyle.alignment = alignment ?? originalAlignment;
 
-      var textSize = finalStyle.wordWrap ? new Vector2(rect.width, GUIPlus.GetTextHeight(finalStyle, finalText, rect.width)) : GUIPlus.GetTextSize(finalStyle, finalText);
+      var textSize = finalStyle.wordWrap ? new Vector2(rect.width, GUIPlus.GetTextHeight(finalStyle, finalText!, rect.width)) : GUIPlus.GetTextSize(finalStyle, finalText!);
 
-      if (!finalStyle.wordWrap && textSize.y > rect.height && finalText.LastIndexOf('\n') > 0)
+      if (!finalStyle.wordWrap && textSize.y > rect.height && finalText!.LastIndexOf('\n') > 0)
       {
         finalText = finalText.FlattenWithSeparator(SeparatorSymbol);
         textSize = GUIPlus.GetTextSize(finalStyle, finalText);

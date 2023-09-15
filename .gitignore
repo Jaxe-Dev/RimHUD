@@ -3,7 +3,6 @@ _*
 /*
 *.user
 *.pdb
-*.DotSettings
 !/.gitignore
 !/.gitattributes
 !/.editorconfig
