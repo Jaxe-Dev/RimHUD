@@ -34,7 +34,7 @@ namespace RimHUD.Interface.Dialog
 
       var listing = new ListingPlus();
       listing.Begin(inRect);
-      listing.Label("RimHUD has automatically deactivated due to the following error(s):".Bold());
+      listing.Label($"RimHUD v{Mod.Version} has automatically deactivated due to the following error(s):".Bold());
       listing.Label(_info.Message);
 
       if (_info.Notice is not null) { listing.Label(_info.Notice); }
