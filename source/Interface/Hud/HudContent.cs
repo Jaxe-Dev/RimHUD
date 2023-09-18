@@ -108,13 +108,13 @@ namespace RimHUD.Interface.Hud
 
     private static readonly Dictionary<string, HudWidget> Widgets = CommonWidgets.Concat(BarWidgets).Concat(ValueWidgets).Concat(DefWidgets).Concat(IntegratedWidgets).ToDictionary(static entry => entry.Id, static entry => entry);
 
-    public static readonly LayoutElement[] CommonElements = BuildElements(CommonWidgets).ToArray();
-    public static readonly LayoutElement[] BarElements = BuildElements(BarWidgets).Concat(BuildElements<NeedDef>(NeedDefType)).ToArray();
-    public static readonly LayoutElement[] SkillAndTrainableElements = BuildElements(ValueWidgets).Concat(BuildElements<SkillDef>(SkillDefType)).Concat(BuildElements<TrainableDef>(TrainableDefType)).ToArray();
-    public static readonly LayoutElement[] StatElements = BuildElements<StatDef>(StatDefType).ToArray();
-    public static readonly LayoutElement[] RecordElements = BuildElements<RecordDef>(RecordDefType).ToArray();
+    public static readonly LayoutElement[] CommonElements = BuildElements(CommonWidgets).OrderBy(static entry => entry.Label).ToArray();
+    public static readonly LayoutElement[] BarElements = BuildElements(BarWidgets).Concat(BuildElements<NeedDef>(NeedDefType)).OrderBy(static entry => entry.Label).ToArray();
+    public static readonly LayoutElement[] SkillAndTrainableElements = BuildElements(ValueWidgets).Concat(BuildElements<SkillDef>(SkillDefType)).Concat(BuildElements<TrainableDef>(TrainableDefType)).OrderBy(static entry => entry.Label).ToArray();
+    public static readonly LayoutElement[] StatElements = BuildElements<StatDef>(StatDefType).OrderBy(static entry => entry.Label).ToArray();
+    public static readonly LayoutElement[] RecordElements = BuildElements<RecordDef>(RecordDefType).OrderBy(static entry => entry.Label).ToArray();
 
-    public static readonly LayoutElement[] ExternalElements = BuildExternalElements<CustomWidgetDef>(ExternalWidgetType).Concat(BuildExternalElements<CustomValueDef>(ExternalValueType)).Concat(BuildExternalElements<CustomBarDef>(ExternalBarType)).Concat(BuildExternalElements<CustomNeedDef>(ExternalNeedType)).ToArray();
+    public static readonly LayoutElement[] ExternalElements = BuildExternalElements<CustomWidgetDef>(ExternalWidgetType).Concat(BuildExternalElements<CustomValueDef>(ExternalValueType)).Concat(BuildExternalElements<CustomBarDef>(ExternalBarType)).Concat(BuildExternalElements<CustomNeedDef>(ExternalNeedType)).OrderBy(static entry => entry.Label).ToArray();
 
     public static bool IsValidId(string id, string? defName) => Widgets.TryGetValue(id, out var widget) && widget!.DefNameIsValid(defName);
 

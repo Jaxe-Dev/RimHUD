@@ -58,7 +58,7 @@ namespace RimHUD.Interface
     {
       if (!Label(text, color: color, hoverColor: hoverColor ?? LinkHoverColor) || url.NullOrWhitespace()) { return; }
 
-      var menuText = $"Click to visit URL:\n{url.SmallSize().Italic()}";
+      var menuText = $"Click to visit URL:\n{url!.SmallSize().Italic()}";
       var menu = new List<FloatMenuOption> { new(menuText, () => Application.OpenURL(url)) };
 
       Find.WindowStack!.Add(new FloatMenu(menu));
@@ -98,7 +98,7 @@ namespace RimHUD.Interface
       WidgetsPlus.DrawText(grid[1], setting.Label);
       WidgetsPlus.DrawText(grid[2], setting.ToString());
 
-      var value = Mathf.RoundToInt(WidgetsPlus.DrawHorizontalSlider(grid[3], setting.Value, setting.Min, setting.Max));
+      var value = Mathf.RoundToInt(Widgets.HorizontalSlider(grid[3], setting.Value, setting.Min, setting.Max));
 
       if (enabled) { setting.Value = value; }
 
@@ -137,7 +137,7 @@ namespace RimHUD.Interface
 
       var sliderName = $"RangeSliderEntry_Slider{id}";
       GUI.SetNextControlName(sliderName);
-      var sliderValue = Mathf.RoundToInt(WidgetsPlus.DrawHorizontalSlider(grid[3], range.Value, range.Min, range.Max));
+      var sliderValue = Mathf.RoundToInt(Widgets.HorizontalSlider(grid[3], range.Value, range.Min, range.Max));
       if (enabled && range.Value != sliderValue)
       {
         range.Value = sliderValue;
