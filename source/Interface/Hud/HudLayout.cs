@@ -13,7 +13,7 @@ namespace RimHUD.Interface.Hud
 
     public static bool IsMouseOverConfigButton = true;
 
-    public static Rect GetConfigButtonRect(Rect rect) => new(rect.xMax - ConfigButtonSize, rect.yMax - ConfigButtonSize, ConfigButtonSize, ConfigButtonSize);
+    public static Rect GetConfigButtonRect(Rect rect, bool floating) => new(rect.xMax - ConfigButtonSize, floating ? rect.y : rect.yMax - ConfigButtonSize, ConfigButtonSize, ConfigButtonSize);
 
     public static void DrawConfigButton(Rect rect, bool tutorial = false)
     {
@@ -33,7 +33,7 @@ namespace RimHUD.Interface.Hud
     private static void Draw(Rect rect, bool floating)
     {
       var layoutRect = floating ? rect.ContractedBy(GUIPlus.MediumPadding) : rect;
-      var configRect = GetConfigButtonRect(layoutRect);
+      var configRect = GetConfigButtonRect(layoutRect, floating);
 
       IsMouseOverConfigButton = Mouse.IsOver(configRect);
 

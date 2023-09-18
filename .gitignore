@@ -6,7 +6,6 @@ _*
 !/.gitignore
 !/.gitattributes
 !/.editorconfig
-!/*.props
 !/*.md
 !/*.sln
 !/source/

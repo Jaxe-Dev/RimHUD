@@ -13,7 +13,7 @@ namespace RimHUD
   {
     public const string Id = "RimHUD";
     public const string Name = Id;
-    public const string Version = "1.14.3";
+    public const string Version = "1.14.4";
 
     public const string WorkshopLink = "https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027";
 

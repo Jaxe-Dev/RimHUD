@@ -46,7 +46,7 @@
       <Output TaskParameter="Value" PropertyName="GameVersion" />
     </FileRegexCapture>
 
-    <FileRegexCapture Filename="$(ProjectDir)$(ProjectFileName)" Match="&lt;PackageReference Include=&quot;Lib.Harmony&quot;&gt;\s*&lt;Version&gt;([^&lt;]+)">
+    <FileRegexCapture Filename="$(ProjectDir)$(ProjectFileName)" Match="\s*&lt;Reference Include=&quot;0Harmony, Version=(\d+\.\d+\.\d+)">
       <Output TaskParameter="Value" PropertyName="HarmonyVersion" />
     </FileRegexCapture>
 

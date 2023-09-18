@@ -1,5 +1,4 @@
 using System;
-using RimHUD.Access;
 using RimHUD.Configuration;
 using RimHUD.Configuration.Settings;
 using RimHUD.Extensions;
@@ -147,40 +146,6 @@ namespace RimHUD.Interface
       GUI.DrawTexture(rect, BaseContent.WhiteTex);
       Widgets.DrawBox(rect);
       GUIPlus.ResetColor();
-    }
-
-    public static float DrawHorizontalSlider(Rect rect, float value, float min, float max)
-    {
-      const float railHeight = 8f;
-      const float handleSize = 12f;
-
-      var draggingId = Gen.HashCombine(Gen.HashCombine(Gen.HashCombine(Gen.HashCombine(new Vector2(rect.x, rect.y).ToScreenPoint().GetHashCode(), rect.width), rect.height), min), max);
-      var draggableRect = new Rect(rect.x + handleSize.Half(), rect.y, rect.width - handleSize, rect.height);
-
-      GUI.color = Reflection.Verse_Widgets_RangeControlTextColor.GetValueStatic<Color>();
-      var railRect = new Rect(draggableRect.x, draggableRect.center.y - railHeight.Half(), draggableRect.width, railHeight);
-      Widgets.DrawAtlas(railRect, Reflection.Verse_Widgets_SliderRailAtlas.GetValueStatic<Texture2D>());
-      GUI.color = Color.white;
-
-      var newValue = value;
-      var handleRect = new Rect(Mathf.Clamp(rect.x + (draggableRect.width * Mathf.InverseLerp(min, max, newValue)), rect.x, draggableRect.xMax - handleSize.Half()), railRect.center.y - handleSize.Half(), handleSize, handleSize);
-      GUI.DrawTexture(handleRect, Reflection.Verse_Widgets_SliderHandle.GetValueStatic<Texture2D>());
-
-      if (Event.current!.type is EventType.MouseDown && Mouse.IsOver(rect) && Reflection.Verse_Widgets_SliderDraggingId.GetValueStatic<int>() != draggingId)
-      {
-        Reflection.Verse_Widgets_SliderDraggingId.SetValueStatic(draggingId);
-        SoundDefOf.DragSlider.PlayOneShotOnCamera();
-        Event.current.Use();
-      }
-
-      if (Reflection.Verse_Widgets_SliderDraggingId.GetValueStatic<int>() == draggingId && UnityGUIBugsFixer.MouseDrag())
-      {
-        newValue = Mathf.Clamp((((Event.current.mousePosition.x - draggableRect.x) / draggableRect.width) * (max - min)) + min, min, max);
-        if (Event.current.type is EventType.MouseDrag) { Event.current.Use(); }
-      }
-
-      if (!value.Equals(newValue)) { Reflection.Verse_Widgets_CheckPlayDragSliderSound.InvokeStatic(); }
-      return newValue;
     }
   }
 }
