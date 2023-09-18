@@ -19,8 +19,11 @@ namespace RimHUD.Interface.Hud.Models.Values
       builder.AppendStatLine(StatDefOf.TradePriceImprovement);
       builder.AppendStatLine(StatDefOf.Beauty);
       builder.AppendStatLine(StatDefOf.SocialImpact);
-      if (ModsConfig.RoyaltyActive) { builder.AppendStatLine(StatDefOf.ConversionPower); }
-      if (ModsConfig.IdeologyActive) { builder.AppendStatLine(StatDefOf.SuppressionPower); }
+
+      if (!ModsConfig.IdeologyActive) { return builder.ToTooltip(); }
+
+      builder.AppendStatLine(StatDefOf.ConversionPower);
+      builder.AppendStatLine(StatDefOf.SuppressionPower);
 
       return builder.ToTooltip();
     }
