@@ -4,6 +4,6 @@ namespace RimHUD.Interface.Hud.Models
 {
   public interface IModel
   {
-    IWidget? Build(HudArgs args);
+    IWidget? Build(HudArgs? args);
   }
 }

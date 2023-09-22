@@ -63,7 +63,7 @@ namespace RimHUD.Engine
       public ErrorInfo(Exception exception)
       {
         var baseException = exception.GetBaseException();
-        Message = exception.Message + (exception == baseException ? null : $"\n{baseException.Message.Size(12)}");
+        Message = exception.Message + (exception == baseException ? null : $"\n{baseException.Message}");
 
         var isResetOnly = false;
 

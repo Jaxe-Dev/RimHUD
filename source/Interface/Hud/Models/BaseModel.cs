@@ -7,7 +7,8 @@ namespace RimHUD.Interface.Hud.Models
 {
   public abstract class BaseModel : IModel
   {
-    public abstract IWidget? Build(HudArgs args);
+    public abstract IWidget? Build(HudArgs? args);
+
     protected virtual string? Label => null;
     protected virtual Func<string?>? Tooltip => null;
 

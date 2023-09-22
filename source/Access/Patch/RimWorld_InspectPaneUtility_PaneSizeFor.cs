@@ -10,9 +10,9 @@ namespace RimHUD.Access.Patch
   [HarmonyPatch(typeof(InspectPaneUtility), "PaneSizeFor")]
   public static class RimWorld_InspectPaneUtility_PaneSizeFor
   {
-    private static bool Prefix(ref Vector2 __result, IInspectPane pane)
+    private static bool Prefix(ref Vector2 __result, IInspectPane? pane)
     {
-      if (!State.ModifyPane) { return true; }
+      if (!State.ModifyPane || pane is null) { return true; }
 
       __result = new Vector2(InspectPaneUtility.PaneWidthFor(pane), Theme.InspectPaneHeight.Value - WidgetsPlus.MainButtonHeight);
 

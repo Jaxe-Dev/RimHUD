@@ -47,9 +47,9 @@ namespace RimHUD.Interface.Screen
       if (AllowResponse(pawn)) { HostilityResponseModeUtility.DrawResponseButton(GetRowRect(bounds, ref offset), pawn, false); }
 
       if (AllowMedical(pawn)) { DrawMedical(pawn, GetRowRect(bounds, ref offset)); }
-      if (AllowRename(pawn)) { TrainingCardUtility.DrawRenameButton(GetRowRect(bounds, ref offset, GenUI.SmallIconSize + GUIPlus.SmallPadding, GenUI.SmallIconSize + GUIPlus.SmallPadding), pawn); }
-
       if (AllowSelfTend(pawn)) { DrawSelfTend(pawn, GetRowRect(bounds, ref offset)); }
+
+      if (AllowRename(pawn)) { TrainingCardUtility.DrawRenameButton(GetRowRect(bounds, ref offset, GenUI.SmallIconSize + GUIPlus.SmallPadding, GenUI.SmallIconSize + GUIPlus.SmallPadding), pawn); }
     }
 
     private static Rect GetRowRect(Rect bounds, ref float offset, float width = GenUI.SmallIconSize, float height = GenUI.SmallIconSize)
@@ -118,7 +118,7 @@ namespace RimHUD.Interface.Screen
     private static bool AllowIdeo(Pawn pawn) => Theme.ShowIdeoligionIcon.Value && ModsConfig.IdeologyActive && pawn.Ideo is not null;
     private static bool AllowResponse(Pawn pawn) => pawn.playerSettings!.UsesConfigurableHostilityResponse;
     private static bool AllowMedical(Pawn pawn) => pawn.RaceProps?.IsFlesh ?? false;
-    private static bool AllowRename(Pawn pawn) => !AllowMedical(pawn);
     private static bool AllowSelfTend(Pawn pawn) => pawn.IsColonist;
+    private static bool AllowRename(Pawn pawn) => (pawn.Faction == Faction.OfPlayer && (pawn.RaceProps?.Animal ?? false) && pawn.RaceProps.hideTrainingTab) || (ModsConfig.BiotechActive && pawn.IsColonyMech);
   }
 }
