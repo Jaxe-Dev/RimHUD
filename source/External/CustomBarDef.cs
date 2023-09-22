@@ -18,7 +18,7 @@ namespace RimHUD
     [Unsaved]
     private ExternalMethodHandler<(string? label, string? value, float fill, float[]? thresholds, Func<string?>? tooltip, Action? onHover, Action? onClick)>? _getParameters;
 
-    public IWidget Build(HudArgs _)
+    public IWidget Build(HudArgs? args)
     {
       var parameters = _getParameters?.Invoke(Active.Pawn) ?? throw new Exception($"Error getting {nameof(CustomBarDef)} parameters.").AddData(resetOnly: true);
       return new BarWidget(parameters.label, parameters.value, parameters.fill, parameters.thresholds, parameters.tooltip, parameters.onHover, parameters.onClick, textStyle.GetActual(), colorStyle);

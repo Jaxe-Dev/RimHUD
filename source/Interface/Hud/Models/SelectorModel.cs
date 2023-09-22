@@ -10,6 +10,6 @@ namespace RimHUD.Interface.Hud.Models
     protected override TextStyle TextStyle => Theme.SmallTextStyle;
     protected virtual Color? Color => null;
 
-    public override IWidget? Build(HudArgs args) => OnClick is null ? null : new SelectorWidget(Label, Tooltip, OnClick, OnHover, TextStyle, Color);
+    public override IWidget? Build(HudArgs? args) => OnClick is null ? null : new SelectorWidget(Label, Tooltip, OnClick, OnHover, TextStyle, Color);
   }
 }

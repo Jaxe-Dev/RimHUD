@@ -19,7 +19,7 @@ namespace RimHUD
 
     private Func<string?> GetTooltip => () => _getTooltip?.Invoke(Active.Pawn);
 
-    public IWidget? Build(HudArgs args) => new NeedBar(needDef!, GetTooltip, colorStyle).Build(args);
+    public IWidget? Build(HudArgs? args) => new NeedBar(needDef!, GetTooltip, colorStyle).Build(args);
 
     protected override void InitializeV1()
     {

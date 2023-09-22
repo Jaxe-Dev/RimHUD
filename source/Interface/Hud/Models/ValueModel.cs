@@ -6,6 +6,6 @@ namespace RimHUD.Interface.Hud.Models
   {
     protected abstract string? Value { get; }
 
-    public override IWidget? Build(HudArgs args) => Value is null ? null : new ValueWidget(Label, Value, Tooltip, OnHover, OnClick, TextStyle);
+    public override IWidget? Build(HudArgs? args) => Value is null ? null : new ValueWidget(Label, Value, Tooltip, OnHover, OnClick, TextStyle);
   }
 }
