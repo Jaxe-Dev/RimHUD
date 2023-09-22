@@ -17,7 +17,7 @@ namespace RimHUD.Interface.Hud
     public string Id { get; }
     public Def? Def { get; }
 
-    public Type? DefType { get; }
+    private readonly Type? _defType;
 
     private readonly BuilderDelegate _builder;
     public LayoutElement LayoutElement { get; }
@@ -30,7 +30,7 @@ namespace RimHUD.Interface.Hud
       _builder = builder;
 
       Def = def;
-      DefType = defType;
+      _defType = defType;
 
       LayoutElement = new LayoutElement(LayoutElementType.Widget, Id, Def);
     }
@@ -59,12 +59,12 @@ namespace RimHUD.Interface.Hud
 
     public bool DefNameIsValid(string? defName)
     {
-      if (DefType is null) { return true; }
+      if (_defType is null) { return true; }
       if (defName is null) { return false; }
 
       if (_validDefNames.TryGetValue(defName, out var value)) { return value; }
 
-      var def = GenDefDatabase.GetDef(DefType, defName, false);
+      var def = GenDefDatabase.GetDef(_defType, defName, false);
       return _validDefNames[defName] = def is not null && (def is not ExternalWidgetDef externalWidgetDef || externalWidgetDef.Initialized);
     }
   }

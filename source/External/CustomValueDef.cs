@@ -16,7 +16,7 @@ namespace RimHUD
     [Unsaved]
     private ExternalMethodHandler<(string? label, string? value, Func<string?>? tooltip, Action? onHover, Action? onClick)>? _getParameters;
 
-    public IWidget Build(HudArgs _)
+    public IWidget Build(HudArgs? args)
     {
       var parameters = _getParameters?.Invoke(Active.Pawn) ?? throw new Exception($"Error getting {nameof(CustomValueDef)} parameters.").AddData(resetOnly: true);
       return new ValueWidget(parameters.value is null ? null : parameters.label, parameters.value ?? parameters.label, parameters.tooltip, parameters.onHover, parameters.onClick, textStyle.GetActual());
