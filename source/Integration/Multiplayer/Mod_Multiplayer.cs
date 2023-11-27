@@ -1,4 +1,5 @@
 using System;
+using HarmonyLib;
 using RimHUD.Engine;
 using RimWorld;
 using Verse;
@@ -13,8 +14,8 @@ namespace RimHUD.Integration.Multiplayer
       {
         if (!Traverse.Field("enabled")!.GetValue<bool>()) { return; }
 
-        var registerSyncMethod = Traverse.Method("RegisterSyncMethod");
-        if (registerSyncMethod is null) { throw new Exception("Failed to find RegisterSyncMethod."); }
+        var registerSyncMethod = Traverse.Method("RegisterSyncMethod", new[] { typeof(Type), typeof(string), AccessTools.TypeByName("Multiplayer.API.SyncType").MakeArrayType() });
+        if (registerSyncMethod is null || !registerSyncMethod.MethodExists()) { throw new Exception("Failed to find RegisterSyncMethod."); }
 
         registerSyncMethod.GetValue(typeof(Mod_Multiplayer), nameof(SetSelfTend), null);
 
