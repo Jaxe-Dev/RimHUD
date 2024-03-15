@@ -13,7 +13,7 @@ namespace RimHUD
   {
     public const string Id = "RimHUD";
     public const string Name = Id;
-    public const string Version = "1.14.5";
+    public const string Version = "1.15.1";
 
     public const string WorkshopLink = "https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027";
 
@@ -22,7 +22,8 @@ namespace RimHUD
 
     public static IEnumerable<string> AcceptedConfigVersions { get; } = new[]
     {
-      "1.14"
+      "1.14",
+      "1.15"
     };
 
     public static bool DevMode { get; set; }

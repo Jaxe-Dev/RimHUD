@@ -38,7 +38,7 @@ namespace RimHUD.Interface.Hud.Tooltips
       var text = getter.Invoke();
       if (text.NullOrWhitespace()) { return; }
 
-      TooltipHandler.TipRegion(rect, new TipSignal(text, (int)id));
+      TooltipHandler.TipRegion(rect, new TipSignal(text.ResolveTags, (int)id));
     }
 
     private enum TooltipId

@@ -49,7 +49,7 @@ namespace RimHUD.Interface.Screen
       if (AllowMedical(pawn)) { DrawMedical(pawn, GetRowRect(bounds, ref offset)); }
       if (AllowSelfTend(pawn)) { DrawSelfTend(pawn, GetRowRect(bounds, ref offset)); }
 
-      if (AllowRename(pawn)) { TrainingCardUtility.DrawRenameButton(GetRowRect(bounds, ref offset, GenUI.SmallIconSize + GUIPlus.SmallPadding, GenUI.SmallIconSize + GUIPlus.SmallPadding), pawn); }
+      if (AllowRename(pawn)) { RenameUIUtility.DrawRenameButton(GetRowRect(bounds, ref offset, GenUI.SmallIconSize + GUIPlus.SmallPadding, GenUI.SmallIconSize + GUIPlus.SmallPadding), pawn); }
     }
 
     private static Rect GetRowRect(Rect bounds, ref float offset, float width = GenUI.SmallIconSize, float height = GenUI.SmallIconSize)
@@ -73,7 +73,7 @@ namespace RimHUD.Interface.Screen
     private static string GetSelfTendTooltip(Pawn pawn, bool canDoctor)
     {
       var canDoctorPriority = pawn.workSettings is null || pawn.workSettings?.GetPriority(WorkTypeDefOf.Doctor) > 0;
-      var selfTendTip = "SelfTendTip".Translate(Faction.OfPlayer!.def!.pawnsPlural, 0.7f.ToStringPercent()).CapitalizeFirst();
+      var selfTendTip = "AllowSelfTend".Translate(Faction.OfPlayer!.def!.pawnsPlural, 0.7f.ToStringPercent()).CapitalizeFirst();
 
       return !canDoctor ? $"{selfTendTip}\n\n{"MessageCannotSelfTendEver".Translate(pawn.LabelShort, pawn)}" : $"{selfTendTip}{(canDoctorPriority ? null : $"\n\n{"MessageSelfTendUnsatisfied".Translate(pawn.LabelShort, pawn)}")}";
     }

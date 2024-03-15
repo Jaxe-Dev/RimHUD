@@ -1,7 +1,7 @@
 # RimHUD
-![Mod Version](https://img.shields.io/badge/Mod_Version-1.14.5-blue.svg)
-![RimWorld Version](https://img.shields.io/badge/Built_for_RimWorld-1.4-blue.svg)
-![Harmony Version](https://img.shields.io/badge/Powered_by_Harmony-2.2.2-blue.svg)\
+![Mod Version](https://img.shields.io/badge/Mod_Version-1.15.1-blue.svg)
+![RimWorld Version](https://img.shields.io/badge/Built_for_RimWorld-1.5-blue.svg)
+![Harmony Version](https://img.shields.io/badge/Powered_by_Harmony-2.3.3-blue.svg)\
 ![Steam Downloads](https://img.shields.io/steam/downloads/1508850027?colorB=blue&label=Steam+Downloads)
 ![GitHub Downloads](https://img.shields.io/github/downloads/Jaxe-Dev/RimHUD/total?colorB=blue&label=GitHub+Downloads)
 

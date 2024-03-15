@@ -12,6 +12,8 @@ namespace RimHUD.Access
 
     [DefAlias("Mood")]
     public static readonly NeedDef NeedMood = null!;
+    [DefAlias("Joy")]
+    public static readonly NeedDef NeedRecreation = null!;
     [DefAlias("Beauty")]
     public static readonly NeedDef NeedBeauty = null!;
     [DefAlias("Comfort")]
