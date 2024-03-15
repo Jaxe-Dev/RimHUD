@@ -3,7 +3,6 @@ using System.Text;
 using RimHUD.Access;
 using RimHUD.Extensions;
 using RimHUD.Interface.Screen;
-using RimWorld;
 
 namespace RimHUD.Interface.Hud.Models.Bars
 {
@@ -13,7 +12,7 @@ namespace RimHUD.Interface.Hud.Models.Bars
 
     protected override Action OnClick { get; }
 
-    public NeedRecreationBar() : base(NeedDefOf.Joy)
+    public NeedRecreationBar() : base(Defs.NeedRecreation)
     {
       Tooltip = GetTooltip;
 

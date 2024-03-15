@@ -30,12 +30,12 @@ namespace RimHUD.Integration.Multiplayer
 
     public static void SetSelfTend(Pawn pawn, bool value) => pawn.playerSettings!.selfTend = value;
 
-    public static void SetFoodRestriction(Pawn pawn, FoodRestriction value) => pawn.foodRestriction!.CurrentFoodRestriction = value;
+    public static void SetFoodRestriction(Pawn pawn, FoodPolicy value) => pawn.foodRestriction!.CurrentFoodPolicy = value;
 
     public static void SetAssignment(Pawn pawn, int hour, TimeAssignmentDef value) => pawn.timetable!.SetAssignment(hour, value);
 
-    public static void SetArea(Pawn pawn, Area? value) => pawn.playerSettings!.AreaRestriction = value;
+    public static void SetArea(Pawn pawn, Area? value) => pawn.playerSettings!.AreaRestrictionInPawnCurrentMap = value;
 
-    public static void SetOutfit(Pawn pawn, Outfit value) => pawn.outfits!.CurrentOutfit = value;
+    public static void SetOutfit(Pawn pawn, ApparelPolicy value) => pawn.outfits!.CurrentApparelPolicy = value;
   }
 }

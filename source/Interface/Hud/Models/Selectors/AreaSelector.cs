@@ -24,9 +24,9 @@ namespace RimHUD.Interface.Hud.Models.Selectors
       if ((!Active.Pawn.Faction?.IsPlayer ?? true) || Active.Pawn.playerSettings is null || (!Active.Pawn.IsColonist && !Active.Pawn.playerSettings.RespectsAllowedArea)) { return; }
 
       Label = Lang.Get("Model.Selector.AreaFormat", AreaUtility.AreaAllowedLabel(Active.Pawn));
-      Color = Active.Pawn.playerSettings.EffectiveAreaRestriction?.Color;
+      Color = Active.Pawn.playerSettings.EffectiveAreaRestrictionInPawnCurrentMap?.Color;
 
-      OnHover = static () => Active.Pawn.playerSettings.EffectiveAreaRestriction?.MarkForDraw();
+      OnHover = static () => Active.Pawn.playerSettings.EffectiveAreaRestrictionInPawnCurrentMap?.MarkForDraw();
       OnClick = DrawFloatMenu;
     }
 
