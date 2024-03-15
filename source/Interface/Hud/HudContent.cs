@@ -62,7 +62,7 @@ namespace RimHUD.Interface.Hud
       HudWidget.FromModel<NeedFoodBar>("NeedFood", NeedDefOf.Food),
       HudWidget.FromModel<NeedSleepBar>("NeedSleep", NeedDefOf.Rest),
       HudWidget.FromModel<NeedEnergyBar>("NeedEnergy", Defs.NeedEnergy),
-      HudWidget.FromModel<NeedRecreationBar>("NeedRecreation", NeedDefOf.Joy),
+      HudWidget.FromModel<NeedRecreationBar>("NeedRecreation", Defs.NeedRecreation),
       HudWidget.FromModel<NeedSuppressionBar>("NeedSuppression", Defs.NeedSuppression)
     };
 
