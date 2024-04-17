@@ -114,7 +114,7 @@ namespace RimHUD.Interface.Screen
     }
 
     private static bool AllowXenotype(Pawn pawn) => ModsConfig.BiotechActive && pawn.genes?.Xenotype is not null;
-    private static bool AllowFaction(Pawn pawn) => Theme.ShowFactionIcon.Value && pawn.Faction is not null;
+    private static bool AllowFaction(Pawn pawn) => Theme.ShowFactionIcon.Value && pawn.Faction is not null && !pawn.Faction.def!.FactionIcon.NullOrBad();
     private static bool AllowIdeo(Pawn pawn) => Theme.ShowIdeoligionIcon.Value && ModsConfig.IdeologyActive && pawn.Ideo is not null;
     private static bool AllowResponse(Pawn pawn) => pawn.playerSettings!.UsesConfigurableHostilityResponse;
     private static bool AllowMedical(Pawn pawn) => pawn.RaceProps?.IsFlesh ?? false;

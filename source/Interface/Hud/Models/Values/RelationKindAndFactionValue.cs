@@ -48,7 +48,7 @@ namespace RimHUD.Interface.Hud.Models.Values
 
     private static string? GetFaction()
     {
-      if (Active.Pawn.Faction is null || !Active.Pawn.Faction.HasName) { return null; }
+      if (Active.Pawn.Faction is null || !Active.Pawn.Faction.HasName || (ModsConfig.AnomalyActive && Active.Pawn.Faction == Faction.OfEntities)) { return null; }
 
       if (Active.Pawn.IsPrisoner || Active.Pawn.IsSlave) { return Active.Pawn.HostFaction is null || Active.Pawn.HostFaction.HasName || Active.Pawn.HostFaction == Faction.OfPlayer ? null : Lang.Get("Model.OfFaction", Active.Pawn.HostFaction.Name); }
 
@@ -68,6 +68,8 @@ namespace RimHUD.Interface.Hud.Models.Values
         if (Active.Pawn.kindDef!.race!.tradeTags?.Contains("AnimalInsect") ?? false) { return Lang.Get("Model.Creature.Insect"); }
         return Lang.Get("Model.Creature.Wild");
       }
+
+      if (Active.Pawn.Faction == Faction.OfEntities) { return Lang.Get("Model.Creature.Entity"); }
 
       switch (Active.Pawn.RaceProps.petness)
       {
