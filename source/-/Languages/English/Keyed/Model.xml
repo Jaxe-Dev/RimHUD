@@ -71,6 +71,7 @@
   <RimHUD.Model.Info.Queued>Queued: {0}</RimHUD.Model.Info.Queued>
   <RimHUD.Model.Info.Equipped>Equipped: {0}</RimHUD.Model.Info.Equipped>
   <RimHUD.Model.Info.Carrying>Carrying: {0}</RimHUD.Model.Info.Carrying>
+  <RimHUD.Model.Info.StunInfo>{0}</RimHUD.Model.Info.StunInfo>
 
   <RimHUD.Model.Selector.OutfitFormat>Outfit: {0}</RimHUD.Model.Selector.OutfitFormat>
   <RimHUD.Model.Selector.FoodFormat>Food: {0}</RimHUD.Model.Selector.FoodFormat>

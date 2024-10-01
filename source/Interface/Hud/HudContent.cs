@@ -51,7 +51,8 @@ namespace RimHUD.Interface.Hud
       HudWidget.FromModel<EquippedValue>("Equipped"),
       HudWidget.FromModel<CarryingValue>("Carrying"),
       HudWidget.FromModel<CompInfoValue>("CompInfo"),
-      HudWidget.FromModel<PrisonerInfoValue>("PrisonerInfo")
+      HudWidget.FromModel<PrisonerInfoValue>("PrisonerInfo"),
+      HudWidget.FromModel<StunInfoValue>("StunInfo")
     };
 
     private static readonly HudWidget[] BarWidgets =

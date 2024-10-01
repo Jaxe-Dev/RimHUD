@@ -68,6 +68,7 @@
   <RimHUD.Layout.Carrying>Carrying</RimHUD.Layout.Carrying>
   <RimHUD.Layout.CompInfo>Extra information</RimHUD.Layout.CompInfo>
   <RimHUD.Layout.PrisonerInfo>Prisoner information</RimHUD.Layout.PrisonerInfo>
+  <RimHUD.Layout.StunInfo>Stun and stagger information</RimHUD.Layout.StunInfo>
 
   <RimHUD.Layout.Target.PlayerHumanlike>Player Humanlike</RimHUD.Layout.Target.PlayerHumanlike>
   <RimHUD.Layout.Target.OtherHumanlike>Other Humanlike</RimHUD.Layout.Target.OtherHumanlike>
