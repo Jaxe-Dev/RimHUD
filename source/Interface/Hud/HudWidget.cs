@@ -8,64 +8,63 @@ using RimHUD.Interface.Hud.Widgets;
 using RimWorld;
 using Verse;
 
-namespace RimHUD.Interface.Hud
+namespace RimHUD.Interface.Hud;
+
+public sealed class HudWidget
 {
-  public sealed class HudWidget
+  private delegate IWidget? BuilderDelegate(HudArgs args);
+
+  public string Id { get; }
+  public Def? Def { get; }
+
+  private readonly Type? _defType;
+
+  private readonly BuilderDelegate _builder;
+  public LayoutElement LayoutElement { get; }
+
+  private readonly Dictionary<string, bool> _validDefNames = new();
+
+  private HudWidget(string id, BuilderDelegate builder, Def? def = null, Type? defType = null)
   {
-    private delegate IWidget? BuilderDelegate(HudArgs args);
+    Id = id;
+    _builder = builder;
 
-    public string Id { get; }
-    public Def? Def { get; }
+    Def = def;
+    _defType = defType;
 
-    private readonly Type? _defType;
+    LayoutElement = new LayoutElement(LayoutElementType.Widget, Id, Def);
+  }
 
-    private readonly BuilderDelegate _builder;
-    public LayoutElement LayoutElement { get; }
+  public static HudWidget Blank() => new(BlankWidget.TypeName, static _ => BlankWidget.Collapsed);
+  public static HudWidget Separator() => new(SeparatorWidget.TypeName, static _ => new SeparatorWidget());
 
-    private readonly Dictionary<string, bool> _validDefNames = new();
+  public static HudWidget FromModel<T>(string id, Def? def = null) where T : BaseModel, new() => new(id, static args => new T().Build(args), def);
+  public static HudWidget FromEitherModel<T, TFallback>(string id, bool condition) where T : BaseModel, new() where TFallback : BaseModel, new() => condition ? FromModel<T>(id) : FromModel<TFallback>(id);
+  public static HudWidget FromSkillModel(string id, SkillDef def) => new(id, args => new SkillValue(def).Build(args), def);
+  public static HudWidget FromTrainableModel(string id, TrainableDef def) => new(id, args => new TrainableValue(def).Build(args), def);
 
-    private HudWidget(string id, BuilderDelegate builder, Def? def = null, Type? defType = null)
-    {
-      Id = id;
-      _builder = builder;
+  public static HudWidget FromNeedDef() => new(HudContent.NeedDefType, static args => args.GetDef<NeedDef>() is { } def ? new NeedBar(def).Build(args) : null, defType: typeof(NeedDef));
+  public static HudWidget FromSkillDef() => new(HudContent.SkillDefType, static args => args.GetDef<SkillDef>() is { } def ? new SkillValue(def).Build(args) : null, defType: typeof(SkillDef));
+  public static HudWidget FromTrainableDef() => new(HudContent.TrainableDefType, static args => args.GetDef<TrainableDef>() is { } def ? new TrainableValue(def).Build(args) : null, defType: typeof(TrainableDef));
+  public static HudWidget FromStatDef() => new(HudContent.StatDefType, static args => args.GetDef<StatDef>() is { } def ? new StatValue(def).Build(args) : null, defType: typeof(StatDef));
+  public static HudWidget FromRecordDef() => new(HudContent.RecordDefType, static args => args.GetDef<RecordDef>() is { } def ? new RecordValue(def).Build(args) : null, defType: typeof(RecordDef));
 
-      Def = def;
-      _defType = defType;
+  public static HudWidget FromCustomWidgetDef() => new(HudContent.ExternalWidgetType, static args => args.GetDef<CustomWidgetDef>(), defType: typeof(CustomWidgetDef));
+  public static HudWidget FromCustomValueDef() => new(HudContent.ExternalValueType, static args => args.GetDefAndBuild<CustomValueDef>(), defType: typeof(CustomValueDef));
+  public static HudWidget FromCustomBarDef() => new(HudContent.ExternalBarType, static args => args.GetDefAndBuild<CustomBarDef>(), defType: typeof(CustomBarDef));
+  public static HudWidget FromCustomSelectorDef() => new(HudContent.ExternalSelectorType, static args => args.GetDefAndBuild<CustomSelectorDef>(), defType: typeof(CustomSelectorDef));
+  public static HudWidget FromCustomNeedDef() => new(HudContent.ExternalNeedType, static args => args.GetDefAndBuild<CustomNeedDef>(), defType: typeof(CustomNeedDef));
 
-      LayoutElement = new LayoutElement(LayoutElementType.Widget, Id, Def);
-    }
+  public IWidget Build(HudArgs args) => _builder.Invoke(args) ?? BlankWidget.Collapsed;
 
-    public static HudWidget Blank() => new(BlankWidget.TypeName, static _ => BlankWidget.Collapsed);
-    public static HudWidget Separator() => new(SeparatorWidget.TypeName, static _ => new SeparatorWidget());
+  public bool DefNameIsValid(string? defName)
+  {
+    if (_defType is null) { return true; }
+    if (defName is null) { return false; }
 
-    public static HudWidget FromModel<T>(string id, Def? def = null) where T : BaseModel, new() => new(id, static args => new T().Build(args), def);
-    public static HudWidget FromEitherModel<T, TFallback>(string id, bool condition) where T : BaseModel, new() where TFallback : BaseModel, new() => condition ? FromModel<T>(id) : FromModel<TFallback>(id);
-    public static HudWidget FromSkillModel(string id, SkillDef def) => new(id, args => new SkillValue(def).Build(args), def);
-    public static HudWidget FromTrainableModel(string id, TrainableDef def) => new(id, args => new TrainableValue(def).Build(args), def);
+    if (_validDefNames.TryGetValue(defName, out var value)) { return value; }
 
-    public static HudWidget FromNeedDef() => new(HudContent.NeedDefType, static args => args.GetDef<NeedDef>() is { } def ? new NeedBar(def).Build(args) : null, defType: typeof(NeedDef));
-    public static HudWidget FromSkillDef() => new(HudContent.SkillDefType, static args => args.GetDef<SkillDef>() is { } def ? new SkillValue(def).Build(args) : null, defType: typeof(SkillDef));
-    public static HudWidget FromTrainableDef() => new(HudContent.TrainableDefType, static args => args.GetDef<TrainableDef>() is { } def ? new TrainableValue(def).Build(args) : null, defType: typeof(TrainableDef));
-    public static HudWidget FromStatDef() => new(HudContent.StatDefType, static args => args.GetDef<StatDef>() is { } def ? new StatValue(def).Build(args) : null, defType: typeof(StatDef));
-    public static HudWidget FromRecordDef() => new(HudContent.RecordDefType, static args => args.GetDef<RecordDef>() is { } def ? new RecordValue(def).Build(args) : null, defType: typeof(RecordDef));
-
-    public static HudWidget FromCustomWidgetDef() => new(HudContent.ExternalWidgetType, static args => args.GetDef<CustomWidgetDef>(), defType: typeof(CustomWidgetDef));
-    public static HudWidget FromCustomValueDef() => new(HudContent.ExternalValueType, static args => args.GetDefAndBuild<CustomValueDef>(), defType: typeof(CustomValueDef));
-    public static HudWidget FromCustomBarDef() => new(HudContent.ExternalBarType, static args => args.GetDefAndBuild<CustomBarDef>(), defType: typeof(CustomBarDef));
-    public static HudWidget FromCustomSelectorDef() => new(HudContent.ExternalSelectorType, static args => args.GetDefAndBuild<CustomSelectorDef>(), defType: typeof(CustomSelectorDef));
-    public static HudWidget FromCustomNeedDef() => new(HudContent.ExternalNeedType, static args => args.GetDefAndBuild<CustomNeedDef>(), defType: typeof(CustomNeedDef));
-
-    public IWidget Build(HudArgs args) => _builder.Invoke(args) ?? BlankWidget.Collapsed;
-
-    public bool DefNameIsValid(string? defName)
-    {
-      if (_defType is null) { return true; }
-      if (defName is null) { return false; }
-
-      if (_validDefNames.TryGetValue(defName, out var value)) { return value; }
-
-      var def = GenDefDatabase.GetDef(_defType, defName, false);
-      return _validDefNames[defName] = def is not null && (def is not ExternalWidgetDef externalWidgetDef || externalWidgetDef.Initialized);
-    }
+    var def = GenDefDatabase.GetDef(_defType, defName, false);
+    return _validDefNames[defName] = def is not null && (def is not ExternalWidgetDef externalWidgetDef || externalWidgetDef.Initialized);
   }
 }

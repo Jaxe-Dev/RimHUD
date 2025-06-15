@@ -7,58 +7,56 @@ using RimHUD.Integration;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD
+namespace RimHUD;
+
+public sealed class Mod : Verse.Mod
 {
-  public sealed class Mod : Verse.Mod
+  public const string Id = "RimHUD";
+  public const string Name = Id;
+  public const string Version = "1.16.0";
+
+  public const string WorkshopLink = "https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027";
+
+  private static Mod? _instance;
+  public static ModContentPack ContentPack => _instance!.Content;
+
+  public static IEnumerable<string> AcceptedConfigVersions { get; } =
+  [
+    "1.16"
+  ];
+
+  public static bool DevMode { get; set; }
+
+  public Mod(ModContentPack content) : base(content)
   {
-    public const string Id = "RimHUD";
-    public const string Name = Id;
-    public const string Version = "1.15.3";
+    _instance = this;
 
-    public const string WorkshopLink = "https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027";
+    var harmony = new Harmony(Id);
+    harmony.PatchAll();
 
-    private static Mod? _instance;
-    public static ModContentPack ContentPack => _instance!.Content;
+    Persistent.Initialize();
 
-    public static IEnumerable<string> AcceptedConfigVersions { get; } = new[]
-    {
-      "1.14",
-      "1.15"
-    };
+    Report.Log("Initialized");
 
-    public static bool DevMode { get; set; }
-
-    public Mod(ModContentPack content) : base(content)
-    {
-      _instance = this;
-
-      var harmony = new Harmony(Id);
-      harmony.PatchAll();
-
-      Persistent.Initialize();
-
-      Report.Log("Initialized");
-
-      LongEventHandler.QueueLongEvent(() => OnStartup(harmony), "InitializingInterface", false, null);
-    }
-
-    private static void OnStartup(Harmony harmony)
-    {
-      try
-      {
-        Persistent.Load();
-        Integrations.Load();
-      }
-      catch (Exception exception)
-      {
-        Report.Error($"RimHUD was unable to initialize properly due to the following exception:\n{exception}");
-        State.Activated = false;
-        harmony.UnpatchAll();
-      }
-    }
-
-    public override string SettingsCategory() => Id;
-
-    public override void DoSettingsWindowContents(Rect rect) => Tutorial.Presentation.OverlayModSettings(rect);
+    LongEventHandler.QueueLongEvent(() => OnStartup(harmony), "InitializingInterface", false, null);
   }
+
+  private static void OnStartup(Harmony harmony)
+  {
+    try
+    {
+      Persistent.Load();
+      Integrations.Load();
+    }
+    catch (Exception exception)
+    {
+      Report.Error($"RimHUD was unable to initialize properly due to the following exception:\n{exception}");
+      State.Activated = false;
+      harmony.UnpatchAll();
+    }
+  }
+
+  public override string SettingsCategory() => Id;
+
+  public override void DoSettingsWindowContents(Rect rect) => Tutorial.Presentation.OverlayModSettings(rect);
 }

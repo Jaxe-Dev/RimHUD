@@ -10,57 +10,48 @@ using RimWorld;
 using Verse;
 using Verse.AI.Group;
 
-namespace RimHUD.Interface.Hud.Models.Values
+namespace RimHUD.Interface.Hud.Models.Values;
+
+public sealed class ActivityValue : ValueModel
 {
-  public sealed class ActivityValue : ValueModel
+  protected override string Value { get; } = GetValue();
+
+  protected override Func<string?> Tooltip { get; } = GetTooltip;
+
+  protected override Action OnClick { get; } = static () => Find.MainTabsRoot!.SetCurrentTab(Defs.MainButtonWork);
+
+  protected override TextStyle TextStyle => Theme.SmallTextStyle;
+
+  private static string GetValue()
   {
-    protected override string Value { get; }
+    var lord = Active.Pawn.GetLord()?.LordJob?.GetReport(Active.Pawn)?.CapitalizeFirst();
+    var jobText = Active.Pawn.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst();
+    var target = Active.Pawn.IsAttacking() ? Active.Pawn.TargetCurrentlyAimingAt.Thing?.LabelShortCap : null;
 
-    protected override Func<string?> Tooltip { get; }
+    var activity = target is null ? lord.NullOrWhitespace() ? jobText : $"{lord} ({jobText})" : Lang.Get("Model.Info.Attacking", target);
 
-    protected override Action OnClick { get; }
+    return activity is null ? string.Empty : Lang.Get("Model.Info.Activity", activity.Bold());
+  }
 
-    protected override TextStyle TextStyle => Theme.SmallTextStyle;
-
-    public ActivityValue()
+  private static string? GetTooltip()
+  {
+    try
     {
-      Value = GetValue();
+      if (Active.Pawn.CurJob?.workGiverDef?.Worker?.def?.workType?.labelShort is null) { return null; }
 
-      Tooltip = GetTooltip;
+      var work = Active.Pawn.CurJob.workGiverDef.Worker.def.workType!.labelShort.CapitalizeFirst();
 
-      OnClick = static () => Find.MainTabsRoot!.SetCurrentTab(Defs.MainButtonWork);
+      var builder = new StringBuilder();
+      builder.AppendLine(Lang.Get("Model.Info.Activity.WorkType", work));
+
+      if (Active.Pawn.CurJob.workGiverDef.Worker.def.workType!.relevantSkills is { } relevantSkills) { builder.AppendLine(Lang.Get("Model.Info.Activity.RelevantSkills", relevantSkills.Select(static skill => skill.LabelCap.ToString()).ToCommaList())); }
+
+      return builder.ToStringTrimmedOrNull();
     }
-
-    private static string GetValue()
+    catch (Exception exception)
     {
-      var lord = Active.Pawn.GetLord()?.LordJob?.GetReport(Active.Pawn)?.CapitalizeFirst();
-      var jobText = Active.Pawn.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst();
-      var target = Active.Pawn.IsAttacking() ? Active.Pawn.TargetCurrentlyAimingAt.Thing?.LabelShortCap : null;
-      var activity = target is null ? lord.NullOrWhitespace() ? jobText : $"{lord} ({jobText})" : Lang.Get("Model.Info.Attacking", target);
-
-      return activity is null ? string.Empty : Lang.Get("Model.Info.Activity", activity.Bold());
-    }
-
-    private static string? GetTooltip()
-    {
-      try
-      {
-        if (Active.Pawn.CurJob?.workGiverDef?.Worker?.def?.workType?.labelShort is null) { return null; }
-
-        var work = Active.Pawn.CurJob.workGiverDef.Worker.def.workType.labelShort.CapitalizeFirst();
-
-        var builder = new StringBuilder();
-        builder.AppendLine(Lang.Get("Model.Info.Activity.WorkType", work));
-
-        if (Active.Pawn.CurJob.workGiverDef.Worker.def.workType.relevantSkills is { } relevantSkills) { builder.AppendLine(Lang.Get("Model.Info.Activity.RelevantSkills", relevantSkills.Select(static skill => skill.LabelCap.ToString()).ToCommaList())); }
-
-        return builder.ToTooltip();
-      }
-      catch (Exception exception)
-      {
-        Report.HandleWarning(exception);
-        return null;
-      }
+      Report.HandleWarning(exception);
+      return null;
     }
   }
 }

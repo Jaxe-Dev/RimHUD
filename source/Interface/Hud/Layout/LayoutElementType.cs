@@ -1,10 +1,9 @@
-namespace RimHUD.Interface.Hud.Layout
+namespace RimHUD.Interface.Hud.Layout;
+
+public enum LayoutElementType
 {
-  public enum LayoutElementType
-  {
-    Stack,
-    Panel,
-    Row,
-    Widget
-  }
+  Stack,
+  Panel,
+  Row,
+  Widget
 }

@@ -8,35 +8,34 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Interface.Hud.Models.Selectors
+namespace RimHUD.Interface.Hud.Models.Selectors;
+
+public sealed class TimetableSelector : SelectorModel
 {
-  public sealed class TimetableSelector : SelectorModel
+  protected override string? Label { get; }
+
+  protected override Action? OnClick { get; }
+
+  protected override Color? Color { get; }
+
+  public TimetableSelector()
   {
-    protected override string? Label { get; }
+    if (!Active.Pawn.IsPlayerFaction() || Active.Pawn.timetable?.CurrentAssignment is null) { return; }
 
-    protected override Action? OnClick { get; }
+    Label = Lang.Get("Model.Selector.TimetableFormat", Active.Pawn.timetable.CurrentAssignment.LabelCap);
 
-    protected override Color? Color { get; }
+    var assignment = Active.Pawn.timetable.CurrentAssignment;
+    Color = assignment == TimeAssignmentDefOf.Anything ? null : assignment.color;
 
-    public TimetableSelector()
-    {
-      if (!Active.Pawn.IsPlayerFaction() || Active.Pawn.timetable?.CurrentAssignment is null) { return; }
+    OnClick = DrawFloatMenu;
+  }
 
-      Label = Lang.Get("Model.Selector.TimetableFormat", Active.Pawn.timetable.CurrentAssignment.LabelCap);
+  private static void DrawFloatMenu()
+  {
+    var hour = GenLocalDate.HourOfDay(Active.Pawn);
+    var options = DefDatabase<TimeAssignmentDef>.AllDefs.Select(timeAssignment => new FloatMenuOption(Lang.Get("Model.Selector.SetTimeAssignment", hour, timeAssignment.LabelCap), () => Mod_Multiplayer.SetAssignment(Active.Pawn, hour, timeAssignment))).ToList();
+    options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), static () => Find.MainTabsRoot!.SetCurrentTab(Defs.MainButtonRestrict)));
 
-      var assignment = Active.Pawn.timetable.CurrentAssignment;
-      Color = assignment == TimeAssignmentDefOf.Anything ? null : assignment.color;
-
-      OnClick = DrawFloatMenu;
-    }
-
-    private static void DrawFloatMenu()
-    {
-      var hour = GenLocalDate.HourOfDay(Active.Pawn);
-      var options = DefDatabase<TimeAssignmentDef>.AllDefs.Select(timeAssignment => new FloatMenuOption(Lang.Get("Model.Selector.SetTimeAssignment", hour, timeAssignment.LabelCap), () => Mod_Multiplayer.SetAssignment(Active.Pawn, hour, timeAssignment))).ToList();
-      options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), static () => Find.MainTabsRoot!.SetCurrentTab(Defs.MainButtonRestrict)));
-
-      Find.WindowStack!.Add(new FloatMenu(options));
-    }
+    Find.WindowStack!.Add(new FloatMenu(options));
   }
 }

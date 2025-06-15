@@ -108,10 +108,10 @@
   <HStack>
     <Panel>
       <Row>
-        <Activity />
+        <Activity Targets="HC" />
       </Row>
       <Row>
-        <Queued />
+        <Queued Targets="HC" />
       </Row>
     </Panel>
     <Panel>

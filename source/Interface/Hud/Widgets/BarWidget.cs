@@ -7,61 +7,38 @@ using RimHUD.Interface.Hud.Tooltips;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Interface.Hud.Widgets
+namespace RimHUD.Interface.Hud.Widgets;
+
+public sealed class BarWidget(string? label, string? value, float fill, float[]? thresholds, Func<string?>? tooltip, Action? onHover, Action? onClick, TextStyle textStyle, BarColorStyle colorStyle) : StandardWidget(label, tooltip, textStyle)
 {
-  public sealed class BarWidget : StandardWidget
+  public override bool Draw(Rect rect)
   {
-    private readonly string? _value;
-    private readonly float _fill;
+    if (fill < 0f) { return false; }
 
-    private readonly BarColorStyle _colorStyle;
+    var percentage = fill / 1f;
 
-    private readonly float[]? _thresholds;
+    var grid = rect.GetHGrid(GUIPlus.TinyPadding, Label is not null ? Theme.LabelWidth.Value : 0f, -1f, Theme.ValueWidth.Value);
 
-    private readonly Action? _onHover;
-    private readonly Action? _onClick;
+    if (Label is not null) { DrawText(grid[1], Label); }
+    WidgetsPlus.DrawBar(grid[2], percentage, colorStyle.GetColor(percentage));
+    DrawThresholds(grid[2]);
+    if (value is not null) { DrawText(grid[3], value); }
 
-    public BarWidget(string? label, string? value, float fill, float[]? thresholds, Func<string?>? tooltip, Action? onHover, Action? onClick, TextStyle textStyle, BarColorStyle colorStyle) : base(label, tooltip, textStyle)
-    {
-      _value = value;
-      _fill = fill;
-      _thresholds = thresholds;
+    if (HudLayout.IsMouseOverConfigButton) { return true; }
 
-      _onHover = onHover;
-      _onClick = onClick;
+    if (Mouse.IsOver(rect)) { onHover?.Invoke(); }
+    if (Verse.Widgets.ButtonInvisible(rect)) { onClick?.Invoke(); }
+    TooltipsPlus.DrawCompact(rect, Tooltip);
 
-      _colorStyle = colorStyle;
-    }
+    return true;
+  }
 
-    public override bool Draw(Rect rect)
-    {
-      if (_fill < 0f) { return false; }
+  private void DrawThresholds(Rect rect)
+  {
+    if (thresholds is null) { return; }
 
-      var percentage = _fill / 1f;
-
-      var grid = rect.GetHGrid(GUIPlus.TinyPadding, Label is not null ? Theme.LabelWidth.Value : 0f, -1f, Theme.ValueWidth.Value);
-
-      if (Label is not null) { DrawText(grid[1], Label); }
-      WidgetsPlus.DrawBar(grid[2], percentage, _colorStyle.GetColor(percentage));
-      DrawThresholds(grid[2]);
-      if (_value is not null) { DrawText(grid[3], _value); }
-
-      if (HudLayout.IsMouseOverConfigButton) { return true; }
-
-      if (Mouse.IsOver(rect)) { _onHover?.Invoke(); }
-      if (Verse.Widgets.ButtonInvisible(rect)) { _onClick?.Invoke(); }
-      TooltipsPlus.DrawCompact(rect, Tooltip);
-
-      return true;
-    }
-
-    private void DrawThresholds(Rect rect)
-    {
-      if (_thresholds is null) { return; }
-
-      GUIPlus.SetColor(Theme.BarThresholdColor.Value);
-      foreach (var threshold in _thresholds.Where(static threshold => threshold > 0f)) { Verse.Widgets.DrawLineVertical(Mathf.Round(rect.x + (rect.width * threshold)), rect.y, rect.height); }
-      GUIPlus.ResetColor();
-    }
+    GUIPlus.SetColor(Theme.BarThresholdColor.Value);
+    foreach (var threshold in thresholds.Where(static threshold => threshold > 0f)) { Verse.Widgets.DrawLineVertical(Mathf.Round(rect.x + (rect.width * threshold)), rect.y, rect.height); }
+    GUIPlus.ResetColor();
   }
 }

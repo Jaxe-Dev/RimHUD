@@ -52,16 +52,24 @@
   <RimHUD.Model.Health.Affected>Affected by {0}</RimHUD.Model.Health.Affected>
   <RimHUD.Model.Health.AffectedTwo>Affected by {0} and 1 other condition</RimHUD.Model.Health.AffectedTwo>
   <RimHUD.Model.Health.AffectedPlural>Affected by {0} and {1} other conditions</RimHUD.Model.Health.AffectedPlural>
-  <RimHUD.Model.Health.Stable>In stable health</RimHUD.Model.Health.Stable>
+
+  <RimHUD.Model.Health.Good>In good condition</RimHUD.Model.Health.Good>
+  <RimHUD.Model.Health.Stable>In stable condition</RimHUD.Model.Health.Stable>
+  <RimHUD.Model.Health.Poor>In poor condition</RimHUD.Model.Health.Poor>
+  <RimHUD.Model.Health.Critical>In critical condition</RimHUD.Model.Health.Critical>
 
   <RimHUD.Model.Health.MedicalCare>Change the level of medical care given to this {0}.\n\nCurrent level: {1}</RimHUD.Model.Health.MedicalCare>
 
   <RimHUD.Model.Mood.ExtremeBreakImminent>Feeling depressed</RimHUD.Model.Mood.ExtremeBreakImminent>
-  <RimHUD.Model.Mood.MajorBreakImminent>Feeling unhappy</RimHUD.Model.Mood.MajorBreakImminent>
-  <RimHUD.Model.Mood.MinorBreakImminent>Feeling stressed</RimHUD.Model.Mood.MinorBreakImminent>
-  <RimHUD.Model.Mood.Happy>Feeling happy</RimHUD.Model.Mood.Happy>
-  <RimHUD.Model.Mood.Content>Feeling content</RimHUD.Model.Mood.Content>
-  <RimHUD.Model.Mood.Indifferent>Feeling indifferent</RimHUD.Model.Mood.Indifferent>
+  <RimHUD.Model.Mood.MajorBreakImminent>Feeling stressed</RimHUD.Model.Mood.MajorBreakImminent>
+  <RimHUD.Model.Mood.MinorBreakImminent>Feeling anxious</RimHUD.Model.Mood.MinorBreakImminent>
+  <RimHUD.Model.Mood.Excellent>Feeling confident</RimHUD.Model.Mood.Excellent>
+  <RimHUD.Model.Mood.Good>Feeling composed</RimHUD.Model.Mood.Good>
+  <RimHUD.Model.Mood.Neutral>Feeling steady</RimHUD.Model.Mood.Neutral>
+  
+  <RimHUD.Model.Mood.Inspired>{0} for {1}</RimHUD.Model.Mood.Inspired>
+  <RimHUD.Model.Mood.Stunned>Stunned for {0}</RimHUD.Model.Mood.Stunned>
+  <RimHUD.Model.Mood.Staggered>Staggered for {0}</RimHUD.Model.Mood.Staggered>
 
   <RimHUD.Model.Info.Activity>Activity: {0}</RimHUD.Model.Info.Activity>
   <RimHUD.Model.Info.Activity.Tooltip>{0}\n\n{1}\n\n{2}</RimHUD.Model.Info.Activity.Tooltip>

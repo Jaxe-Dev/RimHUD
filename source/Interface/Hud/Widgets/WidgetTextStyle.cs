@@ -1,9 +1,8 @@
-namespace RimHUD.Interface.Hud.Widgets
+namespace RimHUD.Interface.Hud.Widgets;
+
+public enum WidgetTextStyle
 {
-  public enum WidgetTextStyle
-  {
-    Small,
-    Regular,
-    Large
-  }
+  Small,
+  Regular,
+  Large
 }

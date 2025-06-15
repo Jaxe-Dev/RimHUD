@@ -3,39 +3,35 @@ using System.Xml.Linq;
 using RimHUD.Extensions;
 using UnityEngine;
 
-namespace RimHUD.Interface.Hud.Layers
+namespace RimHUD.Interface.Hud.Layers;
+
+public sealed class HStackLayer(XElement xml) : StackLayer(xml)
 {
-  public sealed class HStackLayer : StackLayer
+  public const string Name = "HStack";
+
+  public override string Id => Name;
+
+  public override float Prepare()
   {
-    public const string Name = "HStack";
+    if (Children.Length is 0 || !IsTargetted()) { return 0f; }
 
-    public override string Id => Name;
+    var maxHeight = Children.Select(static container => container.Prepare()).Max();
+    return Args.FillHeight ? -1f : maxHeight;
+  }
 
-    public HStackLayer(XElement xml) : base(xml)
-    { }
+  public override bool Draw(Rect rect)
+  {
+    if (Children.Length is 0) { return false; }
 
-    public override float Prepare()
+    var grid = rect.GetHGrid(LayoutLayer.Padding, Enumerable.Repeat(-1f, Children.Length).ToArray());
+    var index = 1;
+
+    foreach (var container in Children)
     {
-      if (Children.Length is 0 || !IsTargetted()) { return 0f; }
-
-      var maxHeight = Children.Select(static container => container.Prepare()).Max();
-      return Args.FillHeight ? -1f : maxHeight;
+      container.Draw(grid[index]);
+      index++;
     }
 
-    public override bool Draw(Rect rect)
-    {
-      if (Children.Length is 0) { return false; }
-
-      var grid = rect.GetHGrid(LayoutLayer.Padding, Enumerable.Repeat(-1f, Children.Length).ToArray());
-      var index = 1;
-
-      foreach (var container in Children)
-      {
-        container.Draw(grid[index]);
-        index++;
-      }
-
-      return true;
-    }
+    return true;
   }
 }
