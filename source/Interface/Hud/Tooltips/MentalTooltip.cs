@@ -8,57 +8,56 @@ using RimHUD.Interface.Hud.Models;
 using RimWorld;
 using Verse;
 
-namespace RimHUD.Interface.Hud.Tooltips
+namespace RimHUD.Interface.Hud.Tooltips;
+
+public static class MentalTooltip
 {
-  public static class MentalTooltip
+  public static string? Get()
   {
-    public static string? Get()
+    if (Active.Pawn.needs?.mood?.thoughts is null) { return null; }
+
+    var thoughts = new List<Thought>();
+    try { PawnNeedsUIUtility.GetThoughtGroupsInDisplayOrder(Active.Pawn.needs.mood, thoughts); }
+    catch (Exception exception) { Report.HandleWarning(exception); }
+
+    var builder = new StringBuilder();
+    foreach (var thought in thoughts)
     {
-      if (Active.Pawn.needs?.mood?.thoughts is null) { return null; }
-
-      var thoughts = new List<Thought>();
-      try { PawnNeedsUIUtility.GetThoughtGroupsInDisplayOrder(Active.Pawn.needs.mood, thoughts); }
-      catch (Exception exception) { Report.HandleWarning(exception); }
-
-      var builder = new StringBuilder();
-      foreach (var thought in thoughts)
+      float offset;
+      try { offset = thought.MoodOffset(); }
+      catch (Exception exception)
       {
-        float offset;
-        try { offset = thought.MoodOffset(); }
-        catch (Exception exception)
-        {
-          Report.HandleWarning(exception);
-          offset = 0;
-        }
-
-        var color = offset switch
-        {
-          <= -10 => Theme.CriticalColor.Value,
-          < 0 => Theme.WarningColor.Value,
-          >= 10 => Theme.ExcellentColor.Value,
-          > 0 => Theme.GoodColor.Value,
-          _ => Theme.InfoColor.Value
-        };
-
-        try
-        {
-          var similar = new List<Thought>();
-          Active.Pawn.needs.mood.thoughts.GetMoodThoughts(thought, similar);
-
-          var thoughtLabel = thought.LabelCap;
-          if (similar.Count > 1) { thoughtLabel += $" x{similar.Count}"; }
-
-          var line = thoughtLabel.WithValue((offset * similar.Count).ToStringWithSign()).Colorize(color);
-          builder.AppendLine(line);
-        }
-        catch (Exception exception) { Report.HandleWarning(exception); }
+        Report.HandleWarning(exception);
+        offset = 0;
       }
 
-      builder.AppendLine();
+      var color = offset switch
+      {
+        <= -10 => Theme.CriticalColor.Value,
+        < 0 => Theme.WarningColor.Value,
+        >= 10 => Theme.ExcellentColor.Value,
+        > 0 => Theme.GoodColor.Value,
+        _ => Theme.InfoColor.Value
+      };
 
-      if (Active.Pawn.Inspired && Active.Pawn.Inspiration != null) { builder.AppendLine(Active.Pawn.Inspiration.InspectLine.Colorize(Theme.ExcellentColor.Value)); }
+      try
+      {
+        var similar = new List<Thought>();
+        Active.Pawn.needs.mood.thoughts.GetMoodThoughts(thought, similar);
 
-      return builder.ToTooltip();
+        var thoughtLabel = thought.LabelCap;
+        if (similar.Count > 1) { thoughtLabel += $" x{similar.Count}"; }
+
+        var line = thoughtLabel.WithValue((offset * similar.Count).ToStringWithSign()).Colorize(color);
+        builder.AppendLine(line);
+      }
+      catch (Exception exception) { Report.HandleWarning(exception); }
     }
+
+    builder.AppendLine();
+
+    if (Active.Pawn.Inspired && Active.Pawn.Inspiration != null) { builder.AppendLine(Active.Pawn.Inspiration.InspectLine.Colorize(Theme.ExcellentColor.Value)); }
+
+    return builder.ToStringTrimmedOrNull();
   }
 }

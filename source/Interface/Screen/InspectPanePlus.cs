@@ -8,45 +8,43 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Interface.Screen
+namespace RimHUD.Interface.Screen;
+
+public static class InspectPanePlus
 {
-  public static class InspectPanePlus
+  public static Rect GetBounds(Rect bounds) => bounds.ContractedBy(GUIPlus.MediumPadding);
+
+  public static void DrawPane(Rect rect, IInspectPane pane)
   {
-    public static Rect GetBounds(Rect bounds) => bounds.ContractedBy(GUIPlus.MediumPadding);
+    Theme.CheckFontChange();
 
-    public static void DrawPane(Rect rect, IInspectPane pane)
+    pane.RecentHeight = Theme.InspectPaneHeight.Value - WidgetsPlus.MainButtonHeight;
+
+    try
     {
-      Theme.CheckFontChange();
+      var bounds = GetBounds(rect);
 
-      pane.RecentHeight = Theme.InspectPaneHeight.Value - WidgetsPlus.MainButtonHeight;
+      var offset = 0f;
 
-      try
-      {
-        var bounds = GetBounds(rect);
+      var headerHeight = Math.Max(Theme.LargeTextStyle.LineHeight, GenUI.SmallIconSize);
+      InspectPaneButtons.Draw(bounds.TopPartPixels(headerHeight), pane, ref offset);
 
-        var offset = 0f;
+      if (State.SelectedPawn is null || !pane.AnythingSelected) { return; }
 
-        var headerHeight = Math.Max(Theme.LargeTextStyle.LineHeight, GenUI.SmallIconSize);
-        InspectPaneButtons.Draw(bounds.TopPartPixels(headerHeight), pane, ref offset);
+      var labelRect = new Rect(bounds.x, bounds.y, bounds.width - offset, headerHeight);
+      WidgetsPlus.DrawText(labelRect, Active.Name, Theme.LargeTextStyle, Active.FactionRelationColor);
+      TooltipsPlus.DrawCompact(labelRect, BioTooltip.Get);
+      if (Widgets.ButtonInvisible(labelRect)) { InspectPaneTabs.ToggleSocial(); }
 
-        if (State.SelectedPawn is null || !pane.AnythingSelected) { return; }
+      if (!pane.ShouldShowPaneContents) { return; }
 
-        var labelRect = new Rect(bounds.x, bounds.y, bounds.width - offset, headerHeight);
-        WidgetsPlus.DrawText(labelRect, Active.Name, Theme.LargeTextStyle, Active.FactionRelationColor);
-        TooltipsPlus.DrawCompact(labelRect, BioTooltip.Get);
-        if (Widgets.ButtonInvisible(labelRect)) { InspectPaneTabs.ToggleSocial(); }
+      var contentRect = bounds.BottomPartPixels(bounds.height - headerHeight - GUIPlus.TinyPadding);
 
-        if (!pane.ShouldShowPaneContents) { return; }
-
-        var contentRect = bounds.BottomPartPixels(bounds.height - headerHeight - GUIPlus.TinyPadding);
-
-        if (Theme.DockedMode.Value) { HudLayout.DrawDocked(contentRect); }
-        else if (Theme.InspectPaneTabAddLog.Value) { InspectPaneLog.Draw(Active.Pawn, contentRect); }
-
-      }
-      catch (Exception exception) { Report.HandleError(exception); }
-
-      if (!Tutorial.IsComplete) { Tutorial.Presentation.Stages.DoInspectPane(rect); }
+      if (Theme.DockedMode.Value) { HudLayout.DrawDocked(contentRect); }
+      else if (Theme.InspectPaneTabAddLog.Value) { InspectPaneLog.Draw(Active.Pawn, contentRect); }
     }
+    catch (Exception exception) { Report.HandleError(exception); }
+
+    if (!Tutorial.IsComplete) { Tutorial.Presentation.Stages.DoInspectPane(rect); }
   }
 }

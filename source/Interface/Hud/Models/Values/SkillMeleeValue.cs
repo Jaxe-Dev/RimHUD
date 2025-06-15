@@ -2,23 +2,22 @@ using System;
 using RimHUD.Extensions;
 using RimWorld;
 
-namespace RimHUD.Interface.Hud.Models.Values
+namespace RimHUD.Interface.Hud.Models.Values;
+
+public sealed class SkillMeleeValue : SkillValue
 {
-  public sealed class SkillMeleeValue : SkillValue
+  protected override Func<string?> Tooltip { get; }
+
+  public SkillMeleeValue() : base(SkillDefOf.Melee) => Tooltip = GetTooltip;
+
+  private string? GetTooltip()
   {
-    protected override Func<string?> Tooltip { get; }
+    var builder = PrepareBuilder();
 
-    public SkillMeleeValue() : base(SkillDefOf.Melee) => Tooltip = GetTooltip;
+    builder.AppendStatLine(StatDefOf.MeleeDPS);
+    builder.AppendStatLine(StatDefOf.MeleeHitChance);
+    builder.AppendStatLine(StatDefOf.MeleeDodgeChance);
 
-    private string? GetTooltip()
-    {
-      var builder = PrepareBuilder();
-
-      builder.AppendStatLine(StatDefOf.MeleeDPS);
-      builder.AppendStatLine(StatDefOf.MeleeHitChance);
-      builder.AppendStatLine(StatDefOf.MeleeDodgeChance);
-
-      return builder.ToTooltip();
-    }
+    return builder.ToStringTrimmedOrNull();
   }
 }

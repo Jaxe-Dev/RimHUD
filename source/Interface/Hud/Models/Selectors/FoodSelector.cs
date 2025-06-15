@@ -6,29 +6,28 @@ using RimHUD.Integration.Multiplayer;
 using RimWorld;
 using Verse;
 
-namespace RimHUD.Interface.Hud.Models.Selectors
+namespace RimHUD.Interface.Hud.Models.Selectors;
+
+public sealed class FoodSelector : SelectorModel
 {
-  public sealed class FoodSelector : SelectorModel
+  protected override string? Label { get; }
+
+  protected override Action? OnClick { get; }
+
+  public FoodSelector()
   {
-    protected override string? Label { get; }
+    if (!Active.Pawn.IsPlayerManaged() || Active.Pawn.foodRestriction?.CurrentFoodPolicy is null || !Active.Pawn.foodRestriction.Configurable) { return; }
 
-    protected override Action? OnClick { get; }
+    Label = Lang.Get("Model.Selector.FoodFormat", Active.Pawn.foodRestriction.CurrentFoodPolicy.label);
 
-    public FoodSelector()
-    {
-      if (!Active.Pawn.IsPlayerManaged() || Active.Pawn.foodRestriction?.CurrentFoodPolicy is null || !Active.Pawn.foodRestriction.Configurable) { return; }
+    OnClick = DrawFloatMenu;
+  }
 
-      Label = Lang.Get("Model.Selector.FoodFormat", Active.Pawn.foodRestriction.CurrentFoodPolicy.label);
+  private static void DrawFloatMenu()
+  {
+    var options = (from food in Current.Game!.foodRestrictionDatabase!.AllFoodRestrictions select new FloatMenuOption(food.label, () => Mod_Multiplayer.SetFoodRestriction(Active.Pawn, food))).ToList();
+    options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), static () => Find.WindowStack!.Add(new Dialog_ManageFoodPolicies(Active.Pawn.foodRestriction!.CurrentFoodPolicy))));
 
-      OnClick = DrawFloatMenu;
-    }
-
-    private static void DrawFloatMenu()
-    {
-      var options = (from food in Current.Game!.foodRestrictionDatabase!.AllFoodRestrictions select new FloatMenuOption(food.label, () => Mod_Multiplayer.SetFoodRestriction(Active.Pawn, food))).ToList();
-      options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), static () => Find.WindowStack!.Add(new Dialog_ManageFoodPolicies(Active.Pawn.foodRestriction!.CurrentFoodPolicy))));
-
-      Find.WindowStack!.Add(new FloatMenu(options));
-    }
+    Find.WindowStack!.Add(new FloatMenu(options));
   }
 }

@@ -3,18 +3,17 @@ using RimHUD.Interface.Hud.Tooltips;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Access.Patch
+namespace RimHUD.Access.Patch;
+
+[HarmonyPatch(typeof(ActiveTip), "DrawInner")]
+public static class Verse_ActiveTip_DrawInner
 {
-  [HarmonyPatch(typeof(ActiveTip), "DrawInner")]
-  public static class Verse_ActiveTip_DrawInner
+  public static bool Prefix(ActiveTip __instance, Rect bgRect, string label)
   {
-    public static bool Prefix(ActiveTip __instance, Rect bgRect, string label)
-    {
-      if (!TooltipsPlus.IsFromHud(__instance.signal.uniqueId)) { return true; }
+    if (!TooltipsPlus.IsFromHud(__instance.signal.uniqueId)) { return true; }
 
-      TooltipsPlus.DrawInner(bgRect, label);
+    TooltipsPlus.DrawInner(bgRect, label);
 
-      return false;
-    }
+    return false;
   }
 }

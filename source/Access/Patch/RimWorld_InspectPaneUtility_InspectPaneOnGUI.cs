@@ -4,18 +4,17 @@ using RimHUD.Interface.Screen;
 using RimWorld;
 using UnityEngine;
 
-namespace RimHUD.Access.Patch
+namespace RimHUD.Access.Patch;
+
+[HarmonyPatch(typeof(InspectPaneUtility), "InspectPaneOnGUI")]
+public static class RimWorld_InspectPaneUtility_InspectPaneOnGUI
 {
-  [HarmonyPatch(typeof(InspectPaneUtility), "InspectPaneOnGUI")]
-  public static class RimWorld_InspectPaneUtility_InspectPaneOnGUI
+  private static bool Prefix(Rect inRect, IInspectPane pane)
   {
-    private static bool Prefix(Rect inRect, IInspectPane pane)
-    {
-      if (!State.ModifyPane) { return true; }
+    if (!State.ModifyPane) { return true; }
 
-      InspectPanePlus.DrawPane(inRect, pane);
+    InspectPanePlus.DrawPane(inRect, pane);
 
-      return false;
-    }
+    return false;
   }
 }
