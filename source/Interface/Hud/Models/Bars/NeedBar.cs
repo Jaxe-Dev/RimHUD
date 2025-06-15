@@ -4,31 +4,30 @@ using RimHUD.Interface.Hud.Widgets;
 using RimWorld;
 using Verse;
 
-namespace RimHUD.Interface.Hud.Models.Bars
+namespace RimHUD.Interface.Hud.Models.Bars;
+
+public class NeedBar : BarModel
 {
-  public class NeedBar : BarModel
+  protected override string? Label { get; }
+  protected override string? Value { get; }
+
+  protected override float Fill { get; } = -1f;
+  protected override Func<string?>? Tooltip { get; }
+
+  protected override BarColorStyle? ColorStyle { get; }
+
+  public NeedBar(NeedDef def, Func<string?>? tooltip = null, BarColorStyle? colorStyle = null)
   {
-    protected override string? Label { get; }
-    protected override string? Value { get; }
+    var need = Active.Pawn.needs?.TryGetNeed(def);
+    if (need is null) { return; }
 
-    protected override float Fill { get; } = -1f;
-    protected override Func<string?>? Tooltip { get; }
+    Label = def.GetDefNameOrLabel();
 
-    protected override BarColorStyle? ColorStyle { get; }
+    var percent = need.CurLevelPercentage;
+    Value = percent.ToStringPercent();
+    Fill = need.CurLevelPercentage;
+    Tooltip = tooltip;
 
-    public NeedBar(NeedDef def, Func<string?>? tooltip = null, BarColorStyle? colorStyle = null)
-    {
-      var need = Active.Pawn.needs?.TryGetNeed(def);
-      if (need is null) { return; }
-
-      Label = def.GetDefNameOrLabel();
-
-      var percent = need.CurLevelPercentage;
-      Value = percent.ToStringPercent();
-      Fill = need.CurLevelPercentage;
-      Tooltip = tooltip;
-
-      ColorStyle = colorStyle;
-    }
+    ColorStyle = colorStyle;
   }
 }

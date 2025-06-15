@@ -1,9 +1,8 @@
-namespace RimHUD.Configuration.Settings
-{
-  public abstract class BaseSetting
-  {
-    public abstract void Refresh();
+namespace RimHUD.Configuration.Settings;
 
-    public abstract void ToDefault();
-  }
+public abstract class BaseSetting
+{
+  public abstract void Refresh();
+
+  public abstract void ToDefault();
 }

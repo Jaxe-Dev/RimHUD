@@ -5,29 +5,21 @@ using RimHUD.Extensions;
 using RimHUD.Interface.Screen;
 using Verse;
 
-namespace RimHUD.Interface.Hud.Models.Bars
+namespace RimHUD.Interface.Hud.Models.Bars;
+
+public sealed class NeedEnergyBar() : NeedBar(Defs.NeedEnergy)
 {
-  public sealed class NeedEnergyBar : NeedBar
+  protected override Func<string?> Tooltip { get; } = GetTooltip;
+
+  protected override Action OnClick { get; } = InspectPaneTabs.ToggleNeeds;
+
+  private static string? GetTooltip()
   {
-    protected override Func<string?> Tooltip { get; }
+    if (Active.Pawn.needs?.energy?.FallPerDay is null) { return null; }
 
-    protected override Action OnClick { get; }
+    var builder = new StringBuilder();
+    builder.AppendValue("CurrentMechEnergyFallPerDay".Translate(), (Active.Pawn.needs.energy.FallPerDay / 100f).ToStringPercent());
 
-    public NeedEnergyBar() : base(Defs.NeedEnergy)
-    {
-      Tooltip = GetTooltip;
-
-      OnClick = InspectPaneTabs.ToggleNeeds;
-    }
-
-    private static string? GetTooltip()
-    {
-      if (Active.Pawn.needs?.energy?.FallPerDay is null) { return null; }
-
-      var builder = new StringBuilder();
-      builder.AppendValue("CurrentMechEnergyFallPerDay".Translate(), (Active.Pawn.needs.energy.FallPerDay / 100f).ToStringPercent());
-
-      return builder.ToTooltip();
-    }
+    return builder.ToStringTrimmedOrNull();
   }
 }

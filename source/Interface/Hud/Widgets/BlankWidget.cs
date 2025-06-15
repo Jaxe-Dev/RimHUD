@@ -1,17 +1,14 @@
 using UnityEngine;
 
-namespace RimHUD.Interface.Hud.Widgets
+namespace RimHUD.Interface.Hud.Widgets;
+
+public sealed class BlankWidget(float height) : IWidget
 {
-  public sealed class BlankWidget : IWidget
-  {
-    public const string TypeName = "Blank";
+  public const string TypeName = "Blank";
 
-    public static BlankWidget Collapsed => new(0f);
+  public static BlankWidget Collapsed => new(0f);
 
-    public float GetMaxHeight { get; }
+  public float GetMaxHeight { get; } = height;
 
-    public BlankWidget(float height) => GetMaxHeight = height;
-
-    public bool Draw(Rect rect) => true;
-  }
+  public bool Draw(Rect rect) => true;
 }

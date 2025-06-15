@@ -3,32 +3,31 @@ using RimHUD.Interface.Hud.Tooltips;
 using RimHUD.Interface.Screen;
 using Verse;
 
-namespace RimHUD.Interface.Hud.Models.Bars
+namespace RimHUD.Interface.Hud.Models.Bars;
+
+public sealed class HealthBar : BarModel
 {
-  public sealed class HealthBar : BarModel
+  protected override string? Label { get; }
+  protected override string? Value { get; }
+
+  protected override float Fill { get; } = -1f;
+
+  protected override Func<string?>? Tooltip { get; }
+
+  protected override Action? OnClick { get; }
+
+  public HealthBar()
   {
-    protected override string? Label { get; }
-    protected override string? Value { get; }
+    if (Active.Pawn.health is null) { return; }
 
-    protected override float Fill { get; } = -1f;
+    Label = "Health".Translate();
 
-    protected override Func<string?>? Tooltip { get; }
+    var percent = Active.Pawn.health?.summaryHealth?.SummaryHealthPercent ?? -1f;
+    Value = percent < 0f ? null : percent.ToStringPercent();
+    Fill = percent;
 
-    protected override Action? OnClick { get; }
+    Tooltip = HealthTooltip.Get;
 
-    public HealthBar()
-    {
-      if (Active.Pawn.health is null) { return; }
-
-      Label = "Health".Translate();
-
-      var percent = Active.Pawn.health?.summaryHealth?.SummaryHealthPercent ?? -1f;
-      Value = percent < 0f ? null : percent.ToStringPercent();
-      Fill = percent;
-
-      Tooltip = HealthTooltip.Get;
-
-      OnClick = InspectPaneTabs.ToggleHealth;
-    }
+    OnClick = InspectPaneTabs.ToggleHealth;
   }
 }

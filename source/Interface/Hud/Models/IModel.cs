@@ -1,9 +1,8 @@
 using RimHUD.Interface.Hud.Widgets;
 
-namespace RimHUD.Interface.Hud.Models
+namespace RimHUD.Interface.Hud.Models;
+
+public interface IModel
 {
-  public interface IModel
-  {
-    IWidget? Build(HudArgs? args);
-  }
+  IWidget? Build(HudArgs? args);
 }

@@ -6,33 +6,32 @@ using RimHUD.Integration.Multiplayer;
 using RimWorld;
 using Verse;
 
-namespace RimHUD.Interface.Hud.Models.Selectors
+namespace RimHUD.Interface.Hud.Models.Selectors;
+
+public sealed class OutfitSelector : SelectorModel
 {
-  public sealed class OutfitSelector : SelectorModel
+  protected override string? Label { get; }
+
+  protected override Action? OnClick { get; }
+
+  public OutfitSelector()
   {
-    protected override string? Label { get; }
+    if (!Active.Pawn.IsPlayerFaction() || Active.Pawn.outfits?.CurrentApparelPolicy is null) { return; }
 
-    protected override Action? OnClick { get; }
+    Label = Lang.Get("Model.Selector.OutfitFormat", Active.Pawn.outfits?.CurrentApparelPolicy.label!);
 
-    public OutfitSelector()
+    OnClick = DrawFloatMenu;
+  }
+
+  private static void DrawFloatMenu()
+  {
+    try
     {
-      if (!Active.Pawn.IsPlayerFaction() || Active.Pawn.outfits?.CurrentApparelPolicy is null) { return; }
+      var options = (from outfit in Current.Game!.outfitDatabase!.AllOutfits select new FloatMenuOption(outfit.label, () => Mod_Multiplayer.SetOutfit(Active.Pawn, outfit))).ToList();
+      options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), static () => Find.WindowStack!.Add(new Dialog_ManageApparelPolicies(Active.Pawn.outfits!.CurrentApparelPolicy))));
 
-      Label = Lang.Get("Model.Selector.OutfitFormat", Active.Pawn.outfits?.CurrentApparelPolicy.label!);
-
-      OnClick = DrawFloatMenu;
+      Find.WindowStack!.Add(new FloatMenu(options));
     }
-
-    private static void DrawFloatMenu()
-    {
-      try
-      {
-        var options = (from outfit in Current.Game!.outfitDatabase!.AllOutfits select new FloatMenuOption(outfit.label, () => Mod_Multiplayer.SetOutfit(Active.Pawn, outfit))).ToList();
-        options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), static () => Find.WindowStack!.Add(new Dialog_ManageApparelPolicies(Active.Pawn.outfits!.CurrentApparelPolicy))));
-
-        Find.WindowStack!.Add(new FloatMenu(options));
-      }
-      catch (Exception exception) { Report.HandleError(exception); }
-    }
+    catch (Exception exception) { Report.HandleError(exception); }
   }
 }

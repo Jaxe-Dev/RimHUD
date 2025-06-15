@@ -2,64 +2,56 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <ProjectGuid>{CCCC7430-4D27-4A71-A435-9E3F8B424D7B}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CCCC7430-4D27-4A71-A435-9E3F8B424D7B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RimHUD</RootNamespace>
-    <AssemblyName>RimHUD</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <AssemblyName>RimHUD</AssemblyName>
+    <RootNamespace>RimHUD</RootNamespace>
     <BaseIntermediateOutputPath>..\build\.obj\$(ProjectName)\$(AssemblyName)</BaseIntermediateOutputPath>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
     <OutputPath>..\build\$(AssemblyName)\Assemblies</OutputPath>
+    <Optimize>true</Optimize>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProjectDir)release.targets" />
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.3.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.Harmony.2.3.3\lib\net472\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp, Version=1.5.8868.32164, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>Assembly-CSharp.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="mscorlib" />
+    <Reference Include="UnityEngine.CoreModule">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony, Version=2.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.2.3.6\lib\net472\0Harmony.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>UnityEngine.IMGUIModule.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>UnityEngine.TextRenderingModule.dll</HintPath>
+    <Reference Include="Assembly-CSharp, Version=1.6.9296.31911, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>Assembly-CSharp.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="packages.config" />
     <None Include="release.targets" />
   </ItemGroup>
@@ -228,6 +220,7 @@
   <ItemGroup>
     <Content Include="-\README.md" />
     <Content Include="-\About\About.xml" />
+    <Content Include="-\About\ModIcon.png" />
     <Content Include="-\About\Preview.png" />
     <Content Include="-\About\PublishedFileId.txt" />
     <Content Include="-\Languages\English\Keyed\Base.xml" />
@@ -245,10 +238,10 @@
     <Content Include="-\LoadFolders.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="-\About\Credits.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\Layouts\Defaults\Docked.xml" />
     <EmbeddedResource Include="Resources\Layouts\Defaults\Floating.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="-\About\Credits.xml" />
   </ItemGroup>
 </Project>

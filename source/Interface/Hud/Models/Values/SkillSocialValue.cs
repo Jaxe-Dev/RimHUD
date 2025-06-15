@@ -3,29 +3,28 @@ using RimHUD.Extensions;
 using RimWorld;
 using Verse;
 
-namespace RimHUD.Interface.Hud.Models.Values
+namespace RimHUD.Interface.Hud.Models.Values;
+
+public sealed class SkillSocialValue : SkillValue
 {
-  public sealed class SkillSocialValue : SkillValue
+  protected override Func<string?> Tooltip { get; }
+
+  public SkillSocialValue() : base(SkillDefOf.Social) => Tooltip = GetTooltip;
+
+  private string? GetTooltip()
   {
-    protected override Func<string?> Tooltip { get; }
+    var builder = PrepareBuilder();
 
-    public SkillSocialValue() : base(SkillDefOf.Social) => Tooltip = GetTooltip;
+    builder.AppendStatLine(StatDefOf.NegotiationAbility);
+    builder.AppendStatLine(StatDefOf.TradePriceImprovement);
+    builder.AppendStatLine(StatDefOf.Beauty);
+    builder.AppendStatLine(StatDefOf.SocialImpact);
 
-    private string? GetTooltip()
-    {
-      var builder = PrepareBuilder();
+    if (!ModsConfig.IdeologyActive) { return builder.ToStringTrimmedOrNull(); }
 
-      builder.AppendStatLine(StatDefOf.NegotiationAbility);
-      builder.AppendStatLine(StatDefOf.TradePriceImprovement);
-      builder.AppendStatLine(StatDefOf.Beauty);
-      builder.AppendStatLine(StatDefOf.SocialImpact);
+    builder.AppendStatLine(StatDefOf.ConversionPower);
+    builder.AppendStatLine(StatDefOf.SuppressionPower);
 
-      if (!ModsConfig.IdeologyActive) { return builder.ToTooltip(); }
-
-      builder.AppendStatLine(StatDefOf.ConversionPower);
-      builder.AppendStatLine(StatDefOf.SuppressionPower);
-
-      return builder.ToTooltip();
-    }
+    return builder.ToStringTrimmedOrNull();
   }
 }

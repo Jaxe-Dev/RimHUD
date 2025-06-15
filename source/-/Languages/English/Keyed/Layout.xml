@@ -66,7 +66,7 @@
   <RimHUD.Layout.Queued>Queued</RimHUD.Layout.Queued>
   <RimHUD.Layout.Equipped>Equipped</RimHUD.Layout.Equipped>
   <RimHUD.Layout.Carrying>Carrying</RimHUD.Layout.Carrying>
-  <RimHUD.Layout.CompInfo>Extra information</RimHUD.Layout.CompInfo>
+  <RimHUD.Layout.CompInfo>Component information</RimHUD.Layout.CompInfo>
   <RimHUD.Layout.PrisonerInfo>Prisoner information</RimHUD.Layout.PrisonerInfo>
 
   <RimHUD.Layout.Target.PlayerHumanlike>Player Humanlike</RimHUD.Layout.Target.PlayerHumanlike>

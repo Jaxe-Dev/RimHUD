@@ -8,51 +8,50 @@ using RimHUD.Interface.Screen;
 using RimWorld;
 using Verse;
 
-namespace RimHUD.Interface.Hud.Models.Values
+namespace RimHUD.Interface.Hud.Models.Values;
+
+public sealed class TrainableValue : ValueModel
 {
-  public sealed class TrainableValue : ValueModel
+  protected override string? Label { get; }
+
+  protected override string? Value { get; }
+
+  protected override Func<string?>? Tooltip { get; }
+
+  protected override Action? OnClick { get; }
+
+  public TrainableValue(TrainableDef def)
   {
-    protected override string? Label { get; }
-
-    protected override string? Value { get; }
-
-    protected override Func<string?>? Tooltip { get; }
-
-    protected override Action? OnClick { get; }
-
-    public TrainableValue(TrainableDef def)
+    try
     {
-      try
+      if (Active.Pawn.RaceProps?.trainability is null || Active.Pawn.training is null || !Active.Pawn.training.CanAssignToTrain(def, out var visible).Accepted || !visible) { return; }
+
+      var disabled = !Active.Pawn.training.GetWanted(def);
+      var hasLearned = Active.Pawn.training.HasLearned(def);
+
+      var color = disabled switch
       {
-        if (Active.Pawn.RaceProps?.trainability is null || Active.Pawn.training is null || !Active.Pawn.training.CanAssignToTrain(def, out var visible).Accepted || !visible) { return; }
+        true => Theme.DisabledColor.Value,
+        _ => hasLearned ? Theme.SkillMinorPassionColor.Value : Theme.MainTextColor.Value
+      };
 
-        var disabled = !Active.Pawn.training.GetWanted(def);
-        var hasLearned = Active.Pawn.training.HasLearned(def);
+      Label = def.GetDefNameOrLabel().Colorize(color);
 
-        var color = disabled switch
-        {
-          true => Theme.DisabledColor.Value,
-          _ => hasLearned ? Theme.SkillMinorPassionColor.Value : Theme.MainTextColor.Value
-        };
+      var steps = GetSteps(Active.Pawn, def);
+      var value = $"{steps} / {def.steps}".Colorize(color);
 
-        Label = def.GetDefNameOrLabel().Colorize(color);
+      Value = hasLearned ? value.Bold() : value;
 
-        var steps = GetSteps(Active.Pawn, def);
-        var value = $"{steps} / {def.steps}".Colorize(color);
+      Tooltip = () => AnimalTooltip.Get(def);
 
-        Value = hasLearned ? value.Bold() : value;
-
-        Tooltip = () => AnimalTooltip.Get(def);
-
-        OnClick = InspectPaneTabs.ToggleTraining;
-      }
-      catch (Exception exception)
-      {
-        Report.HandleWarning(exception);
-        Value = null;
-      }
+      OnClick = InspectPaneTabs.ToggleTraining;
     }
-
-    private static int GetSteps(Pawn pawn, TrainableDef def) => Reflection.RimWorld_Pawn_TrainingTracker_GetSteps.Invoke<int>(pawn.training, def);
+    catch (Exception exception)
+    {
+      Report.HandleWarning(exception);
+      Value = null;
+    }
   }
+
+  private static int GetSteps(Pawn pawn, TrainableDef def) => Reflection.RimWorld_Pawn_TrainingTracker_GetSteps.Invoke<int>(pawn.training, def);
 }

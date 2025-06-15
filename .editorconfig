@@ -1,14 +1,4 @@
-root = true
+﻿[*.{cs,vb}]
 
-[*]
-charset = utf-8
-indent_style = space
-indent_size = 2
-insert_final_newline = true
-trim_trailing_whitespace = true
-
-[*.sln]
-indent_style = tab
-
-[*.{md,mdx}]
-trim_trailing_whitespace = false
+# IDE0300: Simplify collection initialization
+dotnet_style_prefer_collection_expression = never

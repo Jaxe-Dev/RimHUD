@@ -4,25 +4,22 @@ using RimHUD.Engine;
 using RimHUD.Extensions;
 using Verse;
 
-namespace RimHUD.Interface.Hud.Models.Values
+namespace RimHUD.Interface.Hud.Models.Values;
+
+public sealed class QueuedValue : ValueModel
 {
-  public sealed class QueuedValue : ValueModel
+  protected override string Value { get; } = GetValue();
+
+  protected override TextStyle TextStyle => Theme.SmallTextStyle;
+
+  private static string GetValue()
   {
-    protected override string Value { get; }
+    if (Active.Pawn.jobs?.curJob is null || Active.Pawn.jobs.jobQueue!.Count is 0) { return string.Empty; }
 
-    protected override TextStyle TextStyle => Theme.SmallTextStyle;
+    var queued = Active.Pawn.jobs.jobQueue[0]!.job!.GetReport(Active.Pawn)?.TrimEnd('.').CapitalizeFirst().Bold();
+    var remaining = Active.Pawn.jobs.jobQueue.Count - 1;
+    if (remaining > 0) { queued += $" (+{remaining})"; }
 
-    public QueuedValue() => Value = GetValue();
-
-    private static string GetValue()
-    {
-      if (Active.Pawn.jobs?.curJob is null || Active.Pawn.jobs.jobQueue!.Count is 0) { return string.Empty; }
-
-      var queued = Active.Pawn.jobs.jobQueue[0]!.job.GetReport(Active.Pawn)?.TrimEnd('.').CapitalizeFirst().Bold();
-      var remaining = Active.Pawn.jobs.jobQueue.Count - 1;
-      if (remaining > 0) { queued += $" (+{remaining})"; }
-
-      return queued is null ? string.Empty : Lang.Get("Model.Info.Queued", queued);
-    }
+    return queued is null ? string.Empty : Lang.Get("Model.Info.Queued", queued);
   }
 }

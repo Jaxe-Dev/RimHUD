@@ -3,66 +3,65 @@ using RimHUD.Extensions;
 using UnityEngine;
 using Verse;
 
-namespace RimHUD.Interface.Dialog
+namespace RimHUD.Interface.Dialog;
+
+public abstract class WindowPlus : Window
 {
-  public abstract class WindowPlus : Window
+  private const float CloseButtonOffset = 55f;
+
+  protected abstract void DrawContent(Rect rect);
+
+  public override Vector2 InitialSize { get; }
+
+  private readonly string _title;
+  private readonly string? _subtitle;
+
+  protected WindowPlus(Vector2 size, string title, string? subtitle = null)
   {
-    private const float CloseButtonOffset = 55f;
+    draggable = true;
+    doCloseX = true;
+    doCloseButton = true;
+    absorbInputAroundWindow = true;
+    closeOnClickedOutside = false;
+    closeOnAccept = false;
 
-    protected abstract void DrawContent(Rect rect);
+    InitialSize = size == default ? new Vector2(800f, 600f) : size;
 
-    public override Vector2 InitialSize { get; }
+    _title = title;
+    _subtitle = subtitle;
+  }
 
-    private readonly string _title;
-    private readonly string? _subtitle;
+  public override void DoWindowContents(Rect rect) => DrawContent(DrawTitle(rect));
 
-    protected WindowPlus(Vector2 size, string title, string? subtitle = null)
+  private Rect DrawTitle(Rect rect)
+  {
+    if (_title.NullOrEmpty()) { return rect; }
+
+    GUIPlus.SetWrap(false);
+
+    var header = new ListingPlus();
+
+    header.Begin(rect);
+
+    header.Label(_title.Bold(), font: GameFont.Medium);
+
+    if (!_subtitle.NullOrWhitespace())
     {
-      draggable = true;
-      doCloseX = true;
-      doCloseButton = true;
-      absorbInputAroundWindow = true;
-      closeOnClickedOutside = false;
-      closeOnAccept = false;
-
-      InitialSize = size == default ? new Vector2(800f, 600f) : size;
-
-      _title = title;
-      _subtitle = subtitle;
+      var titleSize = GUIPlus.GetTextSize(GUIPlus.GetGameFontStyle(GameFont.Medium), _title);
+      var titleOffset = titleSize.x + GUIPlus.MediumPadding;
+      var subtitleRect = new Rect(rect.x + titleOffset, rect.y, rect.width - titleOffset, titleSize.y);
+      WidgetsPlus.DrawText(subtitleRect, _subtitle.Italic(), Theme.SmallTextStyle);
     }
 
-    public override void DoWindowContents(Rect rect) => DrawContent(DrawTitle(rect));
+    header.GapLine();
+    header.End();
 
-    private Rect DrawTitle(Rect rect)
-    {
-      if (_title.NullOrEmpty()) { return rect; }
+    var contentRect = new Rect(rect.x, rect.y + header.CurHeight, rect.width, rect.height - header.CurHeight);
 
-      GUIPlus.SetWrap(false);
+    if (doCloseButton) { contentRect.height -= CloseButtonOffset; }
 
-      var header = new ListingPlus();
+    GUIPlus.ResetWrap();
 
-      header.Begin(rect);
-
-      header.Label(_title.Bold(), font: GameFont.Medium);
-
-      if (!_subtitle.NullOrWhitespace())
-      {
-        var titleSize = GUIPlus.GetTextSize(GUIPlus.GetGameFontStyle(GameFont.Medium), _title);
-        var titleOffset = titleSize.x + GUIPlus.MediumPadding;
-        var subtitleRect = new Rect(rect.x + titleOffset, rect.y, rect.width - titleOffset, titleSize.y);
-        WidgetsPlus.DrawText(subtitleRect, _subtitle.Italic(), Theme.SmallTextStyle);
-      }
-
-      header.GapLine();
-      header.End();
-
-      var contentRect = new Rect(rect.x, rect.y + header.CurHeight, rect.width, rect.height - header.CurHeight);
-
-      if (doCloseButton) { contentRect.height -= CloseButtonOffset; }
-
-      GUIPlus.ResetWrap();
-
-      return contentRect;
-    }
+    return contentRect;
   }
 }

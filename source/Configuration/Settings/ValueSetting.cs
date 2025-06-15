@@ -1,42 +1,28 @@
 using System;
 
-namespace RimHUD.Configuration.Settings
+namespace RimHUD.Configuration.Settings;
+
+public abstract class ValueSetting(object @default, string label, string? tooltip, Action<ValueSetting>? onChange) : BaseSetting
 {
-  public abstract class ValueSetting : BaseSetting
+  private readonly object _default = @default;
+
+  private object _object = @default;
+  public object Object
   {
-    private readonly object _default;
-
-    private object _object;
-    public object Object
+    get => _object;
+    protected set
     {
-      get => _object;
-      protected set
-      {
-        if (Equals(_object, value)) { return; }
+      if (Equals(_object, value)) { return; }
 
-        _object = value;
-        _onChange?.Invoke(this);
-      }
+      _object = value;
+      onChange?.Invoke(this);
     }
-
-    public string Label { get; }
-    public string? Tooltip { get; }
-
-    private readonly Action<ValueSetting>? _onChange;
-
-    protected ValueSetting(object @default, string label, string? tooltip, Action<ValueSetting>? onChange)
-    {
-      _default = @default;
-      _object = @default;
-
-      Label = label;
-      Tooltip = tooltip;
-
-      _onChange = onChange;
-    }
-
-    public override void Refresh() => _onChange?.Invoke(this);
-
-    public override void ToDefault() => Object = _default;
   }
+
+  public string Label { get; } = label;
+  public string? Tooltip { get; } = tooltip;
+
+  public override void Refresh() => onChange?.Invoke(this);
+
+  public override void ToDefault() => Object = _default;
 }

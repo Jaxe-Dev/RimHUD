@@ -1,10 +1,9 @@
-namespace RimHUD.Interface.Hud.Widgets
+namespace RimHUD.Interface.Hud.Widgets;
+
+public enum BarColorStyle
 {
-  public enum BarColorStyle
-  {
-    LowToMain,
-    LowOnly,
-    MainToLow,
-    MainOnly
-  }
+  LowToMain,
+  LowOnly,
+  MainToLow,
+  MainOnly
 }
