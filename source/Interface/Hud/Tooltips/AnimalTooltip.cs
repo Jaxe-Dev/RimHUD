@@ -18,8 +18,8 @@ public static class AnimalTooltip
       var trainability = Active.Pawn.RaceProps.trainability?.LabelCap;
       if (trainability is not null) { builder.AppendLine(Lang.Get("Model.Bio.Trainability", trainability)); }
 
-      builder.AppendLine($"{"TrainingDecayInterval".Translate()}: {TrainableUtility.DegradationPeriodTicks(Active.Pawn.def).ToStringTicksToDays()}");
-      if (!TrainableUtility.TamenessCanDecay(Active.Pawn.def)) { builder.AppendLine("TamenessWillNotDecay".Translate()); }
+      builder.AppendLine($"{"TrainingDecayInterval".TranslateSimple()}: {TrainableUtility.DegradationPeriodTicks(Active.Pawn.def).ToStringTicksToDays()}");
+      if (!TrainableUtility.TamenessCanDecay(Active.Pawn.def)) { builder.AppendLine("TamenessWillNotDecay".TranslateSimple()); }
 
       builder.AppendLine(Lang.Get("Model.Bio.Petness", Active.Pawn.RaceProps.petness.ToStringPercent()));
       builder.AppendLine(Lang.Get("Model.Bio.Diet", Active.Pawn.RaceProps.ResolvedDietCategory.ToStringHuman()));

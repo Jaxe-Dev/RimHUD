@@ -13,6 +13,8 @@ namespace RimHUD.Interface.Screen;
 
 public static class InspectPaneButtons
 {
+  private const float SelfTendEfficiency = 0.7f;
+
   public static void Draw(Rect bounds, IInspectPane pane, ref float offset)
   {
     if (pane.ShouldShowSelectNextInCellButton)
@@ -64,18 +66,28 @@ public static class InspectPaneButtons
   private static void DrawSelfTend(Pawn pawn, Rect rect)
   {
     var canDoctor = !pawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor);
+    var allowDoctor = pawn.workSettings?.GetPriority(WorkTypeDefOf.Doctor) > 0;
 
     var selfTend = pawn.playerSettings!.selfTend;
-    selfTend = WidgetsPlus.DrawToggle(rect, selfTend, () => GetSelfTendTooltip(pawn, canDoctor), canDoctor, TexturesPlus.SelfTendOnIcon, TexturesPlus.SelfTendOffIcon);
-    if (selfTend != pawn.playerSettings.selfTend) { Mod_Multiplayer.SetSelfTend(pawn, selfTend); }
+    selfTend = WidgetsPlus.DrawToggle(rect, selfTend, () => GetSelfTendTooltip(pawn, canDoctor, allowDoctor), canDoctor, TexturesPlus.SelfTendOnIcon, TexturesPlus.SelfTendOffIcon);
+    if (selfTend == pawn.playerSettings.selfTend) { return; }
+
+    if (!canDoctor)
+    {
+      Messages.Message("MessageCannotSelfTendEver".Translate(pawn.LabelShort, pawn), MessageTypeDefOf.RejectInput, false);
+      return;
+    }
+
+    if (!allowDoctor) { Messages.Message("MessageSelfTendUnsatisfied".Translate(pawn.LabelShort, pawn), MessageTypeDefOf.CautionInput, false); }
+    Mod_Multiplayer.SetSelfTend(pawn, selfTend);
   }
 
-  private static string GetSelfTendTooltip(Pawn pawn, bool canDoctor)
+  private static string GetSelfTendTooltip(Pawn pawn, bool canDoctor, bool allowDoctor)
   {
-    var canDoctorPriority = pawn.workSettings is null || pawn.workSettings?.GetPriority(WorkTypeDefOf.Doctor) > 0;
-    var selfTendTip = "AllowSelfTend".Translate(Faction.OfPlayer!.def!.pawnsPlural, 0.7f.ToStringPercent()).CapitalizeFirst();
+    if (!canDoctor) { return "MessageCannotSelfTendEver".Translate(pawn.LabelShort, pawn); }
 
-    return !canDoctor ? $"{selfTendTip}\n\n{"MessageCannotSelfTendEver".Translate(pawn.LabelShort, pawn)}" : $"{selfTendTip}{(canDoctorPriority ? null : $"\n\n{"MessageSelfTendUnsatisfied".Translate(pawn.LabelShort, pawn)}")}";
+    var tooltip = "AllowSelfTend".TranslateSimple() + "\n\n" + "AllowSelfTendTip".Translate(Faction.OfPlayer!.def!.pawnsPlural.CapitalizeFirst(), SelfTendEfficiency.ToStringPercent());
+    return allowDoctor ? tooltip : $"{tooltip}\n\n" + "MessageSelfTendUnsatisfied".Translate(pawn.LabelShort, pawn);
   }
 
   private static void DrawMedical(Pawn pawn, Rect rect)
@@ -90,8 +102,8 @@ public static class InspectPaneButtons
     if (!Mouse.IsOver(rect)) { return; }
 
     var name = pawn.ideo!.Ideo!.name.Colorize(ColoredText.TipSectionTitleColor);
-    var certainty = "Certainty".Translate().CapitalizeFirst().WithValue(pawn.ideo.Certainty.ToStringPercent());
-    var previous = pawn.ideo.PreviousIdeos.Any() ? $"\n\n{"Formerly".Translate().CapitalizeFirst()}: \n{(from x in pawn.ideo.PreviousIdeos select x.name).ToLineList("  - ")}" : null;
+    var certainty = "Certainty".TranslateSimple().CapitalizeFirst().WithValue(pawn.ideo.Certainty.ToStringPercent());
+    var previous = pawn.ideo.PreviousIdeos.Any() ? $"\n\n{"Formerly".TranslateSimple().CapitalizeFirst()}: \n{(from x in pawn.ideo.PreviousIdeos select x.name).ToLineList("  - ")}" : null;
 
     TooltipsPlus.DrawSimple(rect, $"{name}\n{certainty}{previous}");
   }
@@ -104,7 +116,7 @@ public static class InspectPaneButtons
 
     if (!Mouse.IsOver(rect)) { return; }
 
-    var tooltip = "Xenotype".Translate().CapitalizeFirst().WithValue(pawn.genes.XenotypeLabelCap).Colorize(ColoredText.TipSectionTitleColor);
+    var tooltip = "Xenotype".TranslateSimple().CapitalizeFirst().WithValue(pawn.genes.XenotypeLabelCap).Colorize(ColoredText.TipSectionTitleColor);
     var stage = pawn.ageTracker?.CurLifeStage?.LabelCap.ToString();
 
     if (stage is not null) { tooltip += $"\n{Lang.Get("Model.Bio.Lifestage", stage)}"; }

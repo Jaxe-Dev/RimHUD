@@ -19,7 +19,7 @@ public sealed class EquippedValue : ValueModel
 
   private static string GetValue()
   {
-    if (RestraintsUtility.ShouldShowRestraintsInfo(Active.Pawn)) { return "InRestraints".Translate(); }
+    if (RestraintsUtility.ShouldShowRestraintsInfo(Active.Pawn)) { return "InRestraints".TranslateSimple(); }
 
     var equipped = Active.Pawn.equipment?.Primary?.LabelCap;
     return equipped is null ? string.Empty : Lang.Get("Model.Info.Equipped", equipped.Bold());
