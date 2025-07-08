@@ -20,7 +20,7 @@ public sealed class HealthBar : BarModel
   {
     if (Active.Pawn.health is null) { return; }
 
-    Label = "Health".Translate();
+    Label = "Health".TranslateSimple();
 
     var percent = Active.Pawn.health?.summaryHealth?.SummaryHealthPercent ?? -1f;
     Value = percent < 0f ? null : percent.ToStringPercent();

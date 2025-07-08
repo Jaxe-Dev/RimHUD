@@ -32,7 +32,7 @@ public sealed class AreaSelector : SelectorModel
 
   private static void DrawFloatMenu()
   {
-    var options = new List<FloatMenuOption> { new("NoAreaAllowed".Translate(), static () => Mod_Multiplayer.SetArea(Active.Pawn, null)) };
+    var options = new List<FloatMenuOption> { new("NoAreaAllowed".TranslateSimple(), static () => Mod_Multiplayer.SetArea(Active.Pawn, null)) };
     options.AddRange(from area in Find.CurrentMap!.areaManager!.AllAreas.Where(static area => area.AssignableAsAllowed()) select new FloatMenuOption(area.Label, () => Mod_Multiplayer.SetArea(Active.Pawn, area)));
     options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), static () => Find.WindowStack!.Add(new Dialog_ManageAreas(Find.CurrentMap))));
 
