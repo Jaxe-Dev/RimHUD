@@ -37,7 +37,7 @@ public static class InspectPaneTabs
 
           Text.Font = GameFont.Small;
 
-          if (Widgets.ButtonText(rect, tab.labelKey.Translate())) { Reflection.RimWorld_InspectPaneUtility_InterfaceToggleTab.InvokeStatic(tab, pane); }
+          if (Widgets.ButtonText(rect, tab.labelKey.TranslateSimple())) { Reflection.RimWorld_InspectPaneUtility_InterfaceToggleTab.InvokeStatic(tab, pane); }
           if (!open && !tab.TutorHighlightTagClosed.NullOrEmpty()) { UIHighlighter.HighlightOpportunity(rect, tab.TutorHighlightTagClosed); }
 
           curTabX -= Theme.InspectPaneTabWidth.Value;

@@ -18,7 +18,7 @@ public sealed class NeedFoodBar() : NeedBar(NeedDefOf.Food)
     var builder = new StringBuilder();
     if (Active.Pawn.RaceProps?.foodType is not null)
     {
-      builder.AppendValue("Diet".Translate(), Active.Pawn.RaceProps.foodType.ToHumanString().CapitalizeFirst());
+      builder.AppendValue("Diet".TranslateSimple(), Active.Pawn.RaceProps.foodType.ToHumanString().CapitalizeFirst());
       builder.AppendLine();
     }
 

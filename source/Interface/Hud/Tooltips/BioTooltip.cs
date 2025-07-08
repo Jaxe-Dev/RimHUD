@@ -28,15 +28,15 @@ public static class BioTooltip
 
     builder.AppendLine();
 
-    builder.AppendLineIfNotEmpty("Childhood".Translate().WithValue(Active.Pawn.story.GetBackstory(BackstorySlot.Childhood)?.TitleCapFor(Active.Pawn.gender)));
-    builder.AppendLineIfNotEmpty("Adulthood".Translate().WithValue(Active.Pawn.story.GetBackstory(BackstorySlot.Adulthood)?.TitleCapFor(Active.Pawn.gender)));
+    builder.AppendLineIfNotEmpty("Childhood".TranslateSimple().WithValue(Active.Pawn.story.GetBackstory(BackstorySlot.Childhood)?.TitleCapFor(Active.Pawn.gender)));
+    builder.AppendLineIfNotEmpty("Adulthood".TranslateSimple().WithValue(Active.Pawn.story.GetBackstory(BackstorySlot.Adulthood)?.TitleCapFor(Active.Pawn.gender)));
 
     builder.AppendLine();
 
-    builder.AppendLineIfNotEmpty(Active.Pawn.story.traits?.allTraits?.Count > 0 ? "Traits".Translate().WithValue(Active.Pawn.story.traits.allTraits.Select(static trait => trait.LabelCap).ToCommaList(true)) : null);
+    builder.AppendLineIfNotEmpty(Active.Pawn.story.traits?.allTraits?.Count > 0 ? "Traits".TranslateSimple().WithValue(Active.Pawn.story.traits.allTraits.Select(static trait => trait.LabelCap).ToCommaList(true)) : null);
 
     var disabledWork = Active.Pawn.story.DisabledWorkTagsBackstoryAndTraits;
-    var incapable = disabledWork is WorkTags.None ? null : "IncapableOf".Translate().WithValue(disabledWork.GetAllSelectedItems<WorkTags>().Where(static tag => tag != WorkTags.None).Select(static tag => tag.LabelTranslated().CapitalizeFirst()).ToCommaList(true));
+    var incapable = disabledWork is WorkTags.None ? null : "IncapableOf".TranslateSimple().WithValue(disabledWork.GetAllSelectedItems<WorkTags>().Where(static tag => tag != WorkTags.None).Select(static tag => tag.LabelTranslated().CapitalizeFirst()).ToCommaList(true));
     builder.AppendLineIfNotEmpty(incapable.NullOrWhitespace() ? null : incapable.Colorize(Theme.CriticalColor.Value));
 
     builder.AppendLine();
@@ -45,7 +45,7 @@ public static class BioTooltip
 
     if (ModsConfig.RoyaltyActive)
     {
-      builder.AppendLine("MeditationFocuses".Translate().CapitalizeFirst().WithValue(MeditationUtility.FocusTypesAvailableForPawnString(Active.Pawn).CapitalizeFirst()));
+      builder.AppendLine("MeditationFocuses".TranslateSimple().CapitalizeFirst().WithValue(MeditationUtility.FocusTypesAvailableForPawnString(Active.Pawn).CapitalizeFirst()));
       builder.AppendStatLine(StatDefOf.MeditationFocusGain);
       builder.AppendStatLine(StatDefOf.MeditationFocusStrength);
     }

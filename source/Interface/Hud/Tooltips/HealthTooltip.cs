@@ -22,7 +22,7 @@ public static class HealthTooltip
 
       foreach (var hediff in VisibleHediffGroupsInOrder(true).SelectMany(static hediffs => hediffs.Where(static hediff => hediff.Visible))) { builder.AppendLine(GetHealthTooltipLine(hediff)); }
 
-      if (builder.Length is 0) { builder.AppendLine("NoHealthConditions".Translate().CapitalizeFirst().Colorize(Theme.DisabledColor.Value)); }
+      if (builder.Length is 0) { builder.AppendLine("NoHealthConditions".TranslateSimple().CapitalizeFirst().Colorize(Theme.DisabledColor.Value)); }
 
       return builder.ToStringTrimmedOrNull();
     }
@@ -39,7 +39,7 @@ public static class HealthTooltip
   {
     try
     {
-      var part = hediff.Part?.LabelCap ?? "WholeBody".Translate();
+      var part = hediff.Part?.LabelCap ?? "WholeBody".TranslateSimple();
 
       var condition = hediff.LabelCap;
 

@@ -18,7 +18,7 @@ public sealed class NeedEnergyBar() : NeedBar(Defs.NeedEnergy)
     if (Active.Pawn.needs?.energy?.FallPerDay is null) { return null; }
 
     var builder = new StringBuilder();
-    builder.AppendValue("CurrentMechEnergyFallPerDay".Translate(), (Active.Pawn.needs.energy.FallPerDay / 100f).ToStringPercent());
+    builder.AppendValue("CurrentMechEnergyFallPerDay".TranslateSimple(), (Active.Pawn.needs.energy.FallPerDay / 100f).ToStringPercent());
 
     return builder.ToStringTrimmedOrNull();
   }

@@ -59,7 +59,7 @@ public sealed class MentalConditionValue : ValueModel
     if (stunner?.Stunned ?? false)
     {
       var duration = stunner.StunTicksLeft.ToStringSecondsFromTicks();
-      return (stunner.Hypnotized ? (string)"InTrance".Translate() : Lang.Get("Model.Mood.Stunned", duration)).Colorize(Theme.CriticalColor.Value);
+      return (stunner.Hypnotized ? "InTrance".TranslateSimple() : Lang.Get("Model.Mood.Stunned", duration)).Colorize(Theme.CriticalColor.Value);
     }
 
     var stagger = Active.Pawn.stances?.stagger;
