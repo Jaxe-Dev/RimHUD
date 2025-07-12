@@ -13,7 +13,7 @@ public static class State
 
   public static Pawn? SelectedPawn => Find.Selector?.SingleSelectedThing as Pawn;
 
-  private static bool ShowPane => Active && WorldRendererUtility.CurrentWorldRenderMode is WorldRenderMode.None && SelectedPawn is not null;
+  private static bool ShowPane => Active && WorldRendererUtility.CurrentWorldRenderMode is WorldRenderMode.None or WorldRenderMode.Background && SelectedPawn is not null;
 
   public static bool ModifyPane => ShowPane && Theme.InspectPaneTabModify.Value;
   public static bool CompressLetters => Active && !Theme.DockedMode.Value && Theme.LetterCompress.Value;
