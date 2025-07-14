@@ -16,7 +16,7 @@ public static class HudContent
 {
   public const string NeedDefType = "Need";
   public const string SkillDefType = "Skill";
-  public const string TrainableDefType = "Trainable";
+  public const string TrainableDefType = "Training";
   public const string StatDefType = "Stat";
   public const string RecordDefType = "Record";
 
