@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LanguageData>
+  <RimHUD.Model.Bio.Title>Tytuł: {0}</RimHUD.Model.Bio.Title>
+  <RimHUD.Model.Bio.Faction>Frakcja: {0}</RimHUD.Model.Bio.Faction>
+  <RimHUD.Model.Bio.Ideoligion>Ideoligia: {0}</RimHUD.Model.Bio.Ideoligion>
+  <RimHUD.Model.Bio.Lifestage>Etap życia: {0}</RimHUD.Model.Bio.Lifestage>
+  <RimHUD.Model.Bio.Master>Mistrz: {0}</RimHUD.Model.Bio.Master>
+  <RimHUD.Model.Bio.Diet>Dieta: {0}</RimHUD.Model.Bio.Diet>
+  <RimHUD.Model.Bio.Trainability>Możliwość treningu: {0}</RimHUD.Model.Bio.Trainability>
+  <RimHUD.Model.Bio.Wildness>Dzikość: {0}</RimHUD.Model.Bio.Wildness>
+  <RimHUD.Model.Bio.Petness>Nieżyczliwy: {0}</RimHUD.Model.Bio.Petness>
+
+  <RimHUD.Model.RelationKindAndFaction>{0} {1}</RimHUD.Model.RelationKindAndFaction>
+  <RimHUD.Model.OfFaction>z {0}</RimHUD.Model.OfFaction>
+
+  <RimHUD.Model.Faction.Wild>dziki</RimHUD.Model.Faction.Wild>
+  <RimHUD.Model.Faction.Allied>sojusznik</RimHUD.Model.Faction.Allied>
+  <RimHUD.Model.Faction.Enemy>wróg</RimHUD.Model.Faction.Enemy>
+  <RimHUD.Model.Faction.Hostile>wrogi</RimHUD.Model.Faction.Hostile>
+  <RimHUD.Model.Faction.Independent>niezależny</RimHUD.Model.Faction.Independent>
+  <RimHUD.Model.Faction.Prisoner>przechwycony</RimHUD.Model.Faction.Prisoner>
+  <RimHUD.Model.Faction.Slave>zniewolony</RimHUD.Model.Faction.Slave>
+
+  <RimHUD.Model.Creature.Wild>stworzenie</RimHUD.Model.Creature.Wild>
+  <RimHUD.Model.Creature.Tame>zwierzę</RimHUD.Model.Creature.Tame>
+  <RimHUD.Model.Creature.Stray>zbłąkany</RimHUD.Model.Creature.Stray>
+  <RimHUD.Model.Creature.Pet>zwierzak</RimHUD.Model.Creature.Pet>
+  <RimHUD.Model.Creature.ExoticPet>zwierzę egzotyczne</RimHUD.Model.Creature.ExoticPet>
+  <RimHUD.Model.Creature.Predator>drapieżnik</RimHUD.Model.Creature.Predator>
+  <RimHUD.Model.Creature.Hunt>zwierzę łowne</RimHUD.Model.Creature.Hunt>
+  <RimHUD.Model.Creature.Pack>zwierzę stadne</RimHUD.Model.Creature.Pack>
+  <RimHUD.Model.Creature.Farm>zwierzę hodowlane</RimHUD.Model.Creature.Farm>
+  <RimHUD.Model.Creature.Herd>zwierzę stadne</RimHUD.Model.Creature.Herd>
+  <RimHUD.Model.Creature.Insect>insekt</RimHUD.Model.Creature.Insect>
+  <RimHUD.Model.Creature.Mechanoid>mechanoid</RimHUD.Model.Creature.Mechanoid>
+  <RimHUD.Model.Creature.Unit>jednostka</RimHUD.Model.Creature.Unit>
+  <RimHUD.Model.Creature.Entity>podmiot</RimHUD.Model.Creature.Entity>
+
+  <RimHUD.Model.GenderRaceAndAge>{0} w wieku {1}</RimHUD.Model.GenderRaceAndAge>
+  <RimHUD.Model.Age.Birthday>(Urodziny dzisiaj)</RimHUD.Model.Age.Birthday>
+  <RimHUD.Model.Age.Day>i jednego dnia</RimHUD.Model.Age.Day>
+  <RimHUD.Model.Age.Days>i {0} dni</RimHUD.Model.Age.Days>
+
+  <RimHUD.Model.Health.Dead>Martwy</RimHUD.Model.Health.Dead>
+  <RimHUD.Model.Health.Incapacitated>Niezdolny do pracy</RimHUD.Model.Health.Incapacitated>
+  <RimHUD.Model.Health.Bleed>Krwawienie w {0}</RimHUD.Model.Health.Bleed>
+  <RimHUD.Model.Health.Tend>{0} wymaga opieki</RimHUD.Model.Health.Tend>
+  <RimHUD.Model.Health.TendPlural>{0} warunki wymagają opieki</RimHUD.Model.Health.TendPlural>
+  <RimHUD.Model.Health.Threat>Ma zagrażające życiu {0}</RimHUD.Model.Health.Threat>
+  <RimHUD.Model.Health.ThreatPlural>Ma {0} warunki zagrażające życiu</RimHUD.Model.Health.ThreatPlural>
+  <RimHUD.Model.Health.Affected>Dotyczy {0}</RimHUD.Model.Health.Affected>
+  <RimHUD.Model.Health.AffectedTwo>Dotyczy {0} i 1 inny warunek</RimHUD.Model.Health.AffectedTwo>
+  <RimHUD.Model.Health.AffectedPlural>Dotyczy {0} i {1} inne warunki</RimHUD.Model.Health.AffectedPlural>
+
+  <RimHUD.Model.Health.Good>W dobrym stanie</RimHUD.Model.Health.Good>
+  <RimHUD.Model.Health.Stable>W stabilnym stanie</RimHUD.Model.Health.Stable>
+  <RimHUD.Model.Health.Poor>W złym stanie</RimHUD.Model.Health.Poor>
+  <RimHUD.Model.Health.Critical>W stanie krytycznym</RimHUD.Model.Health.Critical>
+
+  <RimHUD.Model.Health.MedicalCare>Zmiana poziomu opieki medycznej świadczonej tej osobie {0}.\n\nBieżący poziom: {1}</RimHUD.Model.Health.MedicalCare>
+
+  <RimHUD.Model.Mood.ExtremeBreakImminent>Uczucie przygnębienia</RimHUD.Model.Mood.ExtremeBreakImminent>
+  <RimHUD.Model.Mood.MajorBreakImminent>Uczucie stresu</RimHUD.Model.Mood.MajorBreakImminent>
+  <RimHUD.Model.Mood.MinorBreakImminent>Uczucie niepokoju</RimHUD.Model.Mood.MinorBreakImminent>
+  <RimHUD.Model.Mood.Excellent>Poczucie pewności siebie</RimHUD.Model.Mood.Excellent>
+  <RimHUD.Model.Mood.Good>Poczucie opanowania</RimHUD.Model.Mood.Good>
+  <RimHUD.Model.Mood.Neutral>Stabilne samopoczucie</RimHUD.Model.Mood.Neutral>
+  
+  <RimHUD.Model.Mood.Inspired>{0} dla {1}</RimHUD.Model.Mood.Inspired>
+  <RimHUD.Model.Mood.Stunned>Oszołomiony {0}</RimHUD.Model.Mood.Stunned>
+  <RimHUD.Model.Mood.Staggered>Rozłożone w czasie dla {0}</RimHUD.Model.Mood.Staggered>
+
+  <RimHUD.Model.Info.Activity>Aktywność: {0}</RimHUD.Model.Info.Activity>
+  <RimHUD.Model.Info.Activity.Tooltip>{0}\n\n{1}\n\n{2}</RimHUD.Model.Info.Activity.Tooltip>
+  <RimHUD.Model.Info.Activity.WorkType>Rodzaj pracy: {0}</RimHUD.Model.Info.Activity.WorkType>
+  <RimHUD.Model.Info.Activity.RelevantSkills>Odpowiednie umiejętności: {0}</RimHUD.Model.Info.Activity.RelevantSkills>
+  <RimHUD.Model.Info.Attacking>Atakowanie {0}</RimHUD.Model.Info.Attacking>
+  <RimHUD.Model.Info.Queued>W kolejce: {0}</RimHUD.Model.Info.Queued>
+  <RimHUD.Model.Info.Equipped>Wyposażony: {0}</RimHUD.Model.Info.Equipped>
+  <RimHUD.Model.Info.Carrying>Przenoszenie: {0}</RimHUD.Model.Info.Carrying>
+
+  <RimHUD.Model.Selector.OutfitFormat>Strój: {0}</RimHUD.Model.Selector.OutfitFormat>
+  <RimHUD.Model.Selector.FoodFormat>Żywność: {0}</RimHUD.Model.Selector.FoodFormat>
+  <RimHUD.Model.Selector.TimetableFormat>Harmonogram: {0}</RimHUD.Model.Selector.TimetableFormat>
+  <RimHUD.Model.Selector.SetTimeAssignment>Ustaw godzine {0} na {1}</RimHUD.Model.Selector.SetTimeAssignment>
+  <RimHUD.Model.Selector.AreaFormat>Obszar: {0}</RimHUD.Model.Selector.AreaFormat>
+  <RimHUD.Model.Selector.Manage>Zarządzanie...</RimHUD.Model.Selector.Manage>
+
+  <RimHUD.Model.Skill.PassionIndicator>★</RimHUD.Model.Skill.PassionIndicator>
+</LanguageData>
