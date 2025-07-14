@@ -13,7 +13,7 @@ public sealed class Mod : Verse.Mod
 {
   public const string Id = "RimHUD";
   public const string Name = Id;
-  public const string Version = "1.16.2";
+  public const string Version = "1.16.3";
 
   public const string WorkshopLink = "https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027";
 
