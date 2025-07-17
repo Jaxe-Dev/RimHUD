@@ -55,21 +55,24 @@ public sealed class HudArgs
   public T? GetDef<T>() where T : Def => DefName is null ? null : DefDatabase<T>.GetNamed(DefName, false);
   public IWidget? GetDefAndBuild<T>() where T : Def, IModel => GetDef<T>()?.Build(this);
 
-  public Def? GetDefFromLayerId(string id) => DefName is null
-    ? null
-    : id switch
-    {
-      HudContent.NeedDefType => GetDef<NeedDef>(),
-      HudContent.SkillDefType => GetDef<SkillDef>(),
-      HudContent.TrainableDefType => GetDef<TrainableDef>(),
-      HudContent.StatDefType => GetDef<StatDef>(),
-      HudContent.RecordDefType => GetDef<RecordDef>(),
-      HudContent.ExternalWidgetType => GetDef<CustomWidgetDef>(),
-      HudContent.ExternalValueType => GetDef<CustomValueDef>(),
-      HudContent.ExternalBarType => GetDef<CustomBarDef>(),
-      HudContent.ExternalNeedType => GetDef<CustomNeedDef>(),
-      _ => null
-    };
+  public Def? GetDefFromLayerId(string id)
+  {
+    return DefName is null
+      ? null
+      : id switch
+      {
+        HudContent.NeedDefType => GetDef<NeedDef>(),
+        HudContent.SkillDefType => GetDef<SkillDef>(),
+        HudContent.TrainableDefType => GetDef<TrainableDef>(),
+        HudContent.StatDefType => GetDef<StatDef>(),
+        HudContent.RecordDefType => GetDef<RecordDef>(),
+        HudContent.ExternalWidgetType => GetDef<CustomWidgetDef>(),
+        HudContent.ExternalValueType => GetDef<CustomValueDef>(),
+        HudContent.ExternalBarType => GetDef<CustomBarDef>(),
+        HudContent.ExternalNeedType => GetDef<CustomNeedDef>(),
+        _ => null
+      };
+  }
 
   public XElement ToXml(XElement xml)
   {

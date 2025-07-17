@@ -7,11 +7,14 @@ using Verse;
 
 namespace RimHUD.Interface.Hud.Models.Bars;
 
-public sealed class NeedEnergyBar() : NeedBar(Defs.NeedEnergy)
+public sealed class NeedEnergyBar : NeedBar
 {
   protected override Func<string?> Tooltip { get; } = GetTooltip;
 
   protected override Action OnClick { get; } = InspectPaneTabs.ToggleNeeds;
+
+  public NeedEnergyBar() : base(Defs.NeedEnergy)
+  { }
 
   private static string? GetTooltip()
   {

@@ -28,8 +28,8 @@ public sealed class Tab_ConfigContent : Tab
 
     var presets = new List<FloatMenuOption>
     {
-      new(Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.Default").Bold(), static () => LoadDefaultLayout()),
-      new(Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.DefaultCompact").Bold(), static () => LoadDefaultLayout(true))
+      new(Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.Default").Colorize(Theme.EmbeddedPresetColor), static () => LoadDefaultLayout()),
+      new(Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.DefaultCompact").Colorize(Theme.EmbeddedPresetColor), static () => LoadDefaultLayout(true))
     };
     presets.AddRange(LayoutPreset.UserList.OrderBy(static preset => preset.Label).Select(static preset => new FloatMenuOption(preset.Label, () => LoadLayout(preset))));
     presets.AddRange(LayoutPreset.IntegratedList.OrderBy(static preset => preset.Label).Select(static preset => new FloatMenuOption(preset.Label.Colorize(Theme.ExternalModColor), () => LoadLayout(preset))));

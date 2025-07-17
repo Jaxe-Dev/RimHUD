@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace RimHUD.Interface.Hud.Layers;
 
-public sealed class RowLayer(XElement xml) : ContainerLayer<WidgetLayer>(xml)
+public sealed class RowLayer : ContainerLayer<WidgetLayer>
 {
   public const string Name = "Row";
 
@@ -17,9 +17,11 @@ public sealed class RowLayer(XElement xml) : ContainerLayer<WidgetLayer>(xml)
 
   public override string Id => "Row";
 
-  protected override WidgetLayer[] Children { get; } = xml.Elements().Select(WidgetLayer.FromXml).WhereNotNull().ToArray();
+  protected override WidgetLayer[] Children { get; }
 
   private bool _visible;
+
+  public RowLayer(XElement xml) : base(xml) => Children = xml.Elements().Select(WidgetLayer.FromXml).WhereNotNull().ToArray();
 
   public override float Prepare()
   {
@@ -31,6 +33,7 @@ public sealed class RowLayer(XElement xml) : ContainerLayer<WidgetLayer>(xml)
     {
       child.Build();
       if (child.Widget is null) { continue; }
+
       maxHeight = Mathf.Max(maxHeight, child.Widget.GetMaxHeight);
     }
 

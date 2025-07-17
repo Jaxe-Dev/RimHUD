@@ -16,10 +16,8 @@ public sealed class TextStyle : BaseSetting
 
   public int ActualSize => GUIStyle.fontSize;
 
-  [Setting("Size")]
-  public RangeSetting Size { get; }
-  [Setting("Line")]
-  public RangeSetting Height { get; }
+  [Setting("Size")] public RangeSetting Size { get; }
+  [Setting("Line")] public RangeSetting Height { get; }
 
   private readonly Action<TextStyle>? _onChange;
   public float LineHeight { get; private set; }

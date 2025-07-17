@@ -10,11 +10,9 @@ namespace RimHUD;
 
 public sealed class CustomValueDef : ExternalWidgetDef, IModel
 {
-  [DefaultValue(WidgetTextStyle.Small)]
-  public WidgetTextStyle textStyle;
+  [DefaultValue(WidgetTextStyle.Small)] public WidgetTextStyle textStyle;
 
-  [Unsaved]
-  private ExternalMethodHandler<(string? label, string? value, Func<string?>? tooltip, Action? onHover, Action? onClick)>? _getParameters;
+  [Unsaved] private ExternalMethodHandler<(string? label, string? value, Func<string?>? tooltip, Action? onHover, Action? onClick)>? _getParameters;
 
   public IWidget Build(HudArgs? args)
   {

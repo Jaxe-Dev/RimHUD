@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RimHUD.Interface.Hud.Layers;
 
-public abstract class BaseLayer(HudArgs args)
+public abstract class BaseLayer
 {
   public abstract LayoutElementType Type { get; }
 
@@ -20,10 +20,12 @@ public abstract class BaseLayer(HudArgs args)
 
   public abstract void Flush();
 
-  public HudArgs Args { get; } = args;
+  public HudArgs Args { get; }
 
   protected BaseLayer(XElement xml) : this(new HudArgs(xml))
   { }
+
+  protected BaseLayer(HudArgs args) => Args = args;
 
   public XElement ToXml() => Args.ToXml(StartXml());
 

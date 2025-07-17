@@ -44,10 +44,13 @@ public sealed class HealthConditionValue : ValueModel
     var untended = new List<Hediff>();
     var threatening = new List<Hediff>();
     var affected = new List<Hediff>();
+    var hasConcern = false;
 
-    foreach (var hediff in Active.Pawn.health!.hediffSet!.hediffs.Where(static hediff => hediff.Visible).ToArray())
+    foreach (var hediff in Active.Pawn.health!.hediffSet!.hediffs.Where(static hediff => hediff.Visible))
     {
       var isTended = hediff.IsTended();
+
+      if (hediff.def!.isBad) { hasConcern = true; }
 
       if (hediff.Bleeding && !isTended) { bleeding.Add(hediff); }
 
@@ -71,7 +74,7 @@ public sealed class HealthConditionValue : ValueModel
     {
       < HealthCriticalCondition => Lang.Get("Model.Health.Critical").Colorize(Theme.CriticalColor.Value),
       < HealthPoorCondition => Lang.Get("Model.Health.Poor").Colorize(Theme.WarningColor.Value),
-      > HealthTopCondition => Lang.Get("Model.Health.Good").Colorize(Theme.ExcellentColor.Value),
+      > HealthTopCondition when !hasConcern => Lang.Get("Model.Health.Good").Colorize(Theme.ExcellentColor.Value),
       _ => Lang.Get("Model.Health.Stable").Colorize(Theme.GoodColor.Value)
     };
   }

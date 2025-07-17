@@ -31,6 +31,7 @@ public sealed class GenderRaceAndAgeValue : ValueModel
 
   private static string? GetRace()
   {
+    if (Active.Pawn.IsMutant && Active.Pawn.mutant?.Def is not null) { return Active.Pawn.mutant.Def.label; }
     if (!ModsConfig.IdeologyActive || !Active.Pawn.IsHumanlike()) { return Active.Pawn.kindDef?.race?.label; }
     var race = Active.Pawn.Ideo?.memberName ?? Active.Pawn.kindDef?.race?.label;
 

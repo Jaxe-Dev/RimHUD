@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using RimHUD.Configuration;
 using RimHUD.Configuration.Settings;
@@ -15,6 +16,7 @@ public sealed class LayoutPreset
 {
   private const string RootElementName = "Preset";
   private const string VersionAttributeName = "Version";
+  private const string RequiresAttributeName = "Requires";
   private const string TextSizesAttributeName = "TextSizes";
 
   public static IEnumerable<LayoutPreset> IntegratedList { get; } = Presets.GetIntegratedList();
@@ -51,6 +53,9 @@ public sealed class LayoutPreset
     }
 
     var versionText = xml.GetAttribute(VersionAttributeName);
+    var requires = xml.GetAttribute(RequiresAttributeName);
+
+    if (requires is not null && !requires.Split('|', StringSplitOptions.RemoveEmptyEntries).Any(static require => ModLister.GetActiveModWithIdentifier(require) is not null)) { return null; }
 
     var preset = new LayoutPreset(file, name, source);
     if (isIntegrated) { return preset; }
@@ -102,8 +107,8 @@ public sealed class LayoutPreset
     var docked = xml.Element(LayoutLayer.DockedElementName);
     var floating = xml.Element(LayoutLayer.FloatingElementName);
 
-    if (docked is not null) { LayoutLayer.Docked = LayoutLayer.FromXml(docked); }
-    if (floating is not null) { LayoutLayer.Floating = LayoutLayer.FromXml(floating); }
+    if (docked is not null) { LayoutLayer.Docked = LayoutLayer.FromXml(docked, true); }
+    if (floating is not null) { LayoutLayer.Floating = LayoutLayer.FromXml(floating, true); }
 
     Persistent.Save();
 

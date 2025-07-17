@@ -13,6 +13,7 @@
 
   <RimHUD.Model.RelationKindAndFaction>{0} {1}</RimHUD.Model.RelationKindAndFaction>
   <RimHUD.Model.OfFaction>of {0}</RimHUD.Model.OfFaction>
+  <RimHUD.Model.Former>former {0}</RimHUD.Model.Former>
 
   <RimHUD.Model.Faction.Wild>wild</RimHUD.Model.Faction.Wild>
   <RimHUD.Model.Faction.Allied>allied</RimHUD.Model.Faction.Allied>
@@ -37,7 +38,7 @@
   <RimHUD.Model.Creature.Unit>unit</RimHUD.Model.Creature.Unit>
   <RimHUD.Model.Creature.Entity>entity</RimHUD.Model.Creature.Entity>
 
-  <RimHUD.Model.GenderRaceAndAge>{0} aged {1}</RimHUD.Model.GenderRaceAndAge>
+  <RimHUD.Model.GenderRaceAndAge>{0}, aged {1}</RimHUD.Model.GenderRaceAndAge>
   <RimHUD.Model.Age.Birthday>(Birthday today)</RimHUD.Model.Age.Birthday>
   <RimHUD.Model.Age.Day>and one day</RimHUD.Model.Age.Day>
   <RimHUD.Model.Age.Days>and {0} days</RimHUD.Model.Age.Days>
@@ -66,7 +67,7 @@
   <RimHUD.Model.Mood.Excellent>Feeling confident</RimHUD.Model.Mood.Excellent>
   <RimHUD.Model.Mood.Good>Feeling composed</RimHUD.Model.Mood.Good>
   <RimHUD.Model.Mood.Neutral>Feeling steady</RimHUD.Model.Mood.Neutral>
-  
+
   <RimHUD.Model.Mood.Inspired>{0} for {1}</RimHUD.Model.Mood.Inspired>
   <RimHUD.Model.Mood.Stunned>Stunned for {0}</RimHUD.Model.Mood.Stunned>
   <RimHUD.Model.Mood.Staggered>Staggered for {0}</RimHUD.Model.Mood.Staggered>

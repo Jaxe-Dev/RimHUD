@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Preset Version="1.14.0" TextSizes="12|100|9|100|-1|100">
+<Preset Version="1.16.4" Requires="dubwise.dubsbadhygiene|dubwise.dubsbadhygiene.lite" TextSizes="12|100|9|100|-1|100">
   <Docked Height="304">
     <HStack>
       <Panel>
@@ -41,7 +41,7 @@
           <MentalCondition />
         </Row>
         <Row>
-          <NeedFood />
+          <NeedFood Targets="HhC" />
         </Row>
         <Row Targets="H">
           <Need DefName="DBHThirst" />
@@ -104,6 +104,33 @@
         <Row Targets="C">
           <TrainingRescue />
           <TrainingHaul />
+        </Row>
+        <Row Targets="C">
+          <TrainingComfort />
+        </Row>
+        <Row Targets="C">
+          <TrainingForage />
+        </Row>
+        <Row Targets="C">
+          <TrainingTerrorRoar />
+        </Row>
+        <Row Targets="C">
+          <TrainingThrumboRoar />
+        </Row>
+        <Row Targets="C">
+          <TrainingWarTrumpet />
+        </Row>
+        <Row Targets="C">
+          <TrainingDig />
+        </Row>
+        <Row Targets="C">
+          <TrainingEggSpew />
+        </Row>
+        <Row Targets="C">
+          <TrainingSludgeSpew />
+        </Row>
+        <Row Targets="C">
+          <TrainingAttackTarget />
         </Row>
         <Row>
           <CompInfo />
@@ -175,7 +202,7 @@
         <MentalCondition />
       </Row>
       <Row>
-        <NeedFood />
+        <NeedFood Targets="HhC" />
       </Row>
       <Row Targets="H">
         <Need DefName="DBHThirst" />
@@ -240,6 +267,33 @@
         <TrainingRescue />
         <TrainingHaul />
       </Row>
+      <Row Targets="C">
+        <TrainingComfort />
+      </Row>
+      <Row Targets="C">
+        <TrainingForage />
+      </Row>
+      <Row Targets="C">
+        <TrainingTerrorRoar />
+      </Row>
+      <Row Targets="C">
+        <TrainingThrumboRoar />
+      </Row>
+      <Row Targets="C">
+        <TrainingWarTrumpet />
+      </Row>
+      <Row Targets="C">
+        <TrainingDig />
+      </Row>
+      <Row Targets="C">
+        <TrainingEggSpew />
+      </Row>
+      <Row Targets="C">
+        <TrainingSludgeSpew />
+      </Row>
+      <Row Targets="C">
+        <TrainingAttackTarget />
+      </Row>
       <Row>
         <CompInfo />
       </Row>
@@ -249,10 +303,10 @@
         <Separator />
       </Row>
       <Row>
-        <Activity />
+        <Activity Targets="HC" />
       </Row>
       <Row>
-        <Queued />
+        <Queued Targets="HC" />
       </Row>
       <Row>
         <Equipped />

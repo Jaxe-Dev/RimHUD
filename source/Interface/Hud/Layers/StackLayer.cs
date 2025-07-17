@@ -9,8 +9,8 @@ public abstract class StackLayer : ContainerLayer<BaseLayer>
 {
   public static readonly LayoutElement[] LayoutElements =
   [
-    new(LayoutElementType.Stack, VStackLayer.Name),
-    new(LayoutElementType.Stack, HStackLayer.Name)
+    new LayoutElement(LayoutElementType.Stack, VStackLayer.Name),
+    new LayoutElement(LayoutElementType.Stack, HStackLayer.Name)
   ];
 
   public override LayoutElementType Type => LayoutElementType.Stack;

@@ -10,13 +10,11 @@ namespace RimHUD;
 
 public sealed class CustomBarDef : ExternalWidgetDef, IModel
 {
-  [DefaultValue(WidgetTextStyle.Regular)]
-  public WidgetTextStyle textStyle;
+  [DefaultValue(WidgetTextStyle.Regular)] public WidgetTextStyle textStyle;
 
   public BarColorStyle colorStyle;
 
-  [Unsaved]
-  private ExternalMethodHandler<(string? label, string? value, float fill, float[]? thresholds, Func<string?>? tooltip, Action? onHover, Action? onClick)>? _getParameters;
+  [Unsaved] private ExternalMethodHandler<(string? label, string? value, float fill, float[]? thresholds, Func<string?>? tooltip, Action? onHover, Action? onClick)>? _getParameters;
 
   public IWidget Build(HudArgs? args)
   {

@@ -5,11 +5,14 @@ using UnityEngine;
 
 namespace RimHUD.Interface.Hud.Layers;
 
-public sealed class HStackLayer(XElement xml) : StackLayer(xml)
+public sealed class HStackLayer : StackLayer
 {
   public const string Name = "HStack";
 
   public override string Id => Name;
+
+  public HStackLayer(XElement xml) : base(xml)
+  { }
 
   public override float Prepare()
   {

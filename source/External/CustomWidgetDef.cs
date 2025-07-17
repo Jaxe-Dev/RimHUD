@@ -7,10 +7,8 @@ namespace RimHUD;
 
 public sealed class CustomWidgetDef : ExternalWidgetDef, IWidget
 {
-  [Unsaved]
-  private ExternalMethodHandler<bool>? _onDraw;
-  [Unsaved]
-  private ExternalMethodHandler<float>? _getMaxHeight;
+  [Unsaved] private ExternalMethodHandler<bool>? _onDraw;
+  [Unsaved] private ExternalMethodHandler<float>? _getMaxHeight;
 
   public float GetMaxHeight => _getMaxHeight?.Invoke() ?? 0f;
   public bool Draw(Rect rect) => _onDraw?.Invoke(Active.Pawn, rect) ?? false;

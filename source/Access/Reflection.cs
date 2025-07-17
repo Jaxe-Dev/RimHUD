@@ -13,16 +13,11 @@ public static class Reflection
   public static readonly FastInvokeHandler RimWorld_InspectPaneUtility_ToggleTab = MethodInvoker.GetHandler(AccessTools.Method(typeof(InspectPaneUtility), "ToggleTab", [typeof(InspectTabBase), typeof(IInspectPane)]));
   public static readonly FastInvokeHandler RimWorld_Pawn_TrainingTracker_GetSteps = MethodInvoker.GetHandler(AccessTools.Method(typeof(Pawn_TrainingTracker), "GetSteps", [typeof(TrainableDef)]));
   public static readonly FastInvokeHandler RimWorld_SkillUI_GetSkillDescription = MethodInvoker.GetHandler(AccessTools.Method(typeof(SkillUI), "GetSkillDescription", [typeof(SkillRecord)]));
-  public static readonly FastInvokeHandler Verse_Widgets_CheckPlayDragSliderSound = MethodInvoker.GetHandler(AccessTools.Method(typeof(Widgets), "CheckPlayDragSliderSound"));
 
   public static readonly FieldInfo RimWorld_InspectPaneUtility_InspectTabButtonFillTex = AccessTools.Field(typeof(InspectPaneUtility), "InspectTabButtonFillTex");
   public static readonly FieldInfo Verse_LetterStack_LastTopYInt = AccessTools.Field(typeof(LetterStack), "lastTopYInt");
   public static readonly FieldInfo Verse_LetterStack_Letters = AccessTools.Field(typeof(LetterStack), "letters");
   public static readonly FieldInfo Verse_LetterStack_TmpBundledLetters = AccessTools.Field(typeof(LetterStack), "tmpBundledLetters");
-  public static readonly FieldInfo Verse_Widgets_RangeControlTextColor = AccessTools.Field(typeof(Widgets), "RangeControlTextColor");
-  public static readonly FieldInfo Verse_Widgets_SliderDraggingId = AccessTools.Field(typeof(Widgets), "sliderDraggingID");
-  public static readonly FieldInfo Verse_Widgets_SliderHandle = AccessTools.Field(typeof(Widgets), "SliderHandle");
-  public static readonly FieldInfo Verse_Widgets_SliderRailAtlas = AccessTools.Field(typeof(Widgets), "SliderRailAtlas");
 
   public static ModContentPack? GetModFromAssemblyName(string name)
   {

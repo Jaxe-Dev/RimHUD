@@ -7,11 +7,14 @@ using RimWorld;
 
 namespace RimHUD.Interface.Hud.Models.Bars;
 
-public sealed class NeedSuppressionBar() : NeedBar(Defs.NeedSuppression)
+public sealed class NeedSuppressionBar : NeedBar
 {
   protected override Func<string?> Tooltip { get; } = GetTooltip;
 
   protected override Action OnClick { get; } = InspectPaneTabs.ToggleSlave;
+
+  public NeedSuppressionBar() : base(Defs.NeedSuppression)
+  { }
 
   private static string? GetTooltip()
   {

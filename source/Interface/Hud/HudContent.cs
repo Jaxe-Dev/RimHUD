@@ -85,7 +85,17 @@ public static class HudContent
     HudWidget.FromTrainableModel("TrainingObedience", TrainableDefOf.Obedience),
     HudWidget.FromTrainableModel("TrainingRelease", TrainableDefOf.Release),
     HudWidget.FromTrainableModel("TrainingRescue", Defs.TrainableRescue),
-    HudWidget.FromTrainableModel("TrainingHaul", Defs.TrainableHaul)
+    HudWidget.FromTrainableModel("TrainingHaul", Defs.TrainableHaul),
+
+    HudWidget.FromTrainableModel("TrainingAttackTarget", Defs.TrainableAttackTarget),
+    HudWidget.FromTrainableModel("TrainingComfort", Defs.TrainableComfort),
+    HudWidget.FromTrainableModel("TrainingDig", Defs.TrainableDig),
+    HudWidget.FromTrainableModel("TrainingEggSpew", Defs.TrainableEggSpew),
+    HudWidget.FromTrainableModel("TrainingForage", Defs.TrainableForage),
+    HudWidget.FromTrainableModel("TrainingSludgeSpew", Defs.TrainableSludgeSpew),
+    HudWidget.FromTrainableModel("TrainingTerrorRoar", Defs.TrainableTerrorRoar),
+    HudWidget.FromTrainableModel("TrainingThrumboRoar", Defs.TrainableThrumboRoar),
+    HudWidget.FromTrainableModel("TrainingWarTrumpet", Defs.TrainableWarTrumpet)
   ];
 
   private static readonly HudWidget[] DefWidgets =
@@ -110,7 +120,7 @@ public static class HudContent
 
   public static readonly LayoutElement[] CommonElements = BuildElements(CommonWidgets).OrderBy(static entry => entry.Label).ToArray();
   public static readonly LayoutElement[] BarElements = BuildElements(BarWidgets).Concat(BuildElements<NeedDef>(NeedDefType)).OrderBy(static entry => entry.Label).ToArray();
-  public static readonly LayoutElement[] SkillAndTrainableElements = BuildElements(ValueWidgets).Concat(BuildElements<SkillDef>(SkillDefType)).Concat(BuildElements<TrainableDef>(TrainableDefType)).OrderBy(static entry => entry.Label).ToArray();
+  public static readonly LayoutElement[] SkillAndTrainableElements = BuildElements(ValueWidgets).Concat(BuildElements<SkillDef>(SkillDefType).OrderBy(static entry => entry.Label)).Concat(BuildElements<TrainableDef>(TrainableDefType).OrderBy(static entry => entry.Label)).ToArray();
   public static readonly LayoutElement[] StatElements = BuildElements<StatDef>(StatDefType).OrderBy(static entry => entry.Label).ToArray();
   public static readonly LayoutElement[] RecordElements = BuildElements<RecordDef>(RecordDefType).OrderBy(static entry => entry.Label).ToArray();
 
@@ -121,6 +131,7 @@ public static class HudContent
   public static bool IsExternalType(string id) => id is ExternalWidgetType or ExternalValueType or ExternalBarType or ExternalNeedType;
 
   public static IWidget GetWidget(string id, HudArgs args) => Widgets.TryGetValue(id, out var widget) && widget!.DefNameIsValid(args.DefName) ? widget.Build(args) : MissingWidget.Get(id, args);
+  public static Def? GetWidgetDef(string id) => Widgets.GetValueOrDefault(id)?.Def;
 
   private static IEnumerable<LayoutElement> BuildElements(IEnumerable<HudWidget> widgets) => widgets.Select(static widget => widget.LayoutElement);
   private static IEnumerable<LayoutElement> BuildElements<T>(string id) where T : Def => DefDatabase<T>.AllDefs.Where(static def => Widgets.Values.All(widget => widget.Def != def)).Select(def => new LayoutElement(LayoutElementType.Widget, id, def));

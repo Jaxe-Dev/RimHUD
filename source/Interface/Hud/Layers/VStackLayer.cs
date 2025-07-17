@@ -6,12 +6,15 @@ using UnityEngine;
 
 namespace RimHUD.Interface.Hud.Layers;
 
-public class VStackLayer(XElement xml) : StackLayer(xml)
+public class VStackLayer : StackLayer
 {
   public const string Name = "VStack";
   public override string Id => Name;
 
   private float[]? _heights;
+
+  public VStackLayer(XElement xml) : base(xml)
+  { }
 
   public override float Prepare()
   {
@@ -24,8 +27,8 @@ public class VStackLayer(XElement xml) : StackLayer(xml)
     foreach (var height in Children.Select(static container => container.Prepare()))
     {
       list.Add(height);
-      if ((int)height is not -1) { totalFixedHeight += height; }
-      if ((int)height is not 0) { totalVisible++; }
+      if (height is not -1f) { totalFixedHeight += height; }
+      if (height is not 0f) { totalVisible++; }
     }
 
     _heights = list.ToArray();

@@ -7,23 +7,34 @@ using Verse;
 
 namespace RimHUD.Interface.Hud.Widgets;
 
-public sealed class SelectorWidget(string? label, Func<string?>? tooltip, Action? onClick, Action? onHover, TextStyle textStyle, Color? backColor) : StandardWidget(label, tooltip, textStyle)
+public sealed class SelectorWidget : StandardWidget
 {
+  private readonly Action? _onClick;
+  private readonly Action? _onHover;
+  private readonly Color? _backColor;
+
+  public SelectorWidget(string? label, Func<string?>? tooltip, Action? onClick, Action? onHover, TextStyle textStyle, Color? backColor) : base(label, tooltip, textStyle)
+  {
+    _onClick = onClick;
+    _onHover = onHover;
+    _backColor = backColor;
+  }
+
   public override bool Draw(Rect rect)
   {
     if (Label.NullOrWhitespace()) { return true; }
 
-    Verse.Widgets.DrawBoxSolid(rect, backColor ?? Theme.SelectorBackgroundColor.Value);
+    Verse.Widgets.DrawBoxSolid(rect, _backColor ?? Theme.SelectorBackgroundColor.Value);
     DrawText(rect.ContractedBy(GUIPlus.SmallPadding, 0f), Label, Theme.SelectorTextColor.Value);
 
     if (Mouse.IsOver(rect))
     {
       var border = rect.ContractedBy(-1f);
       Verse.Widgets.DrawBox(border);
-      onHover?.Invoke();
+      _onHover?.Invoke();
     }
 
-    if (Verse.Widgets.ButtonInvisible(rect)) { onClick?.Invoke(); }
+    if (Verse.Widgets.ButtonInvisible(rect)) { _onClick?.Invoke(); }
     return true;
   }
 }

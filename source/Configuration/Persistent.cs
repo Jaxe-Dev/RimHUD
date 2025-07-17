@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 using HarmonyLib;
 using RimHUD.Configuration.Settings;
@@ -17,6 +16,9 @@ namespace RimHUD.Configuration;
 public static class Persistent
 {
   private const string ConfigRootName = "Config";
+
+  private const string VersionAttributeName = "Version";
+  private const string CustomLayoutsElementName = "CustomLayouts";
 
   private const int FilenameLengthMax = 250;
 
@@ -38,7 +40,7 @@ public static class Persistent
     if (loadedVersion is Mod.Version) { return false; }
     Report.Warning($"Loaded config version ({loadedVersion ?? "NULL"}) is different from the current mod version.");
 
-    return loadedVersion.NullOrWhitespace() || Mod.AcceptedConfigVersions.All(version => !loadedVersion!.StartsWith(version));
+    return loadedVersion.NullOrWhitespace() || new Version(loadedVersion) < new Version(Mod.MinConfigVersion);
   }
 
   public static void Load()
@@ -60,7 +62,7 @@ public static class Persistent
 
     Tutorial.Initialize(root);
 
-    var versionAttribute = root.Attribute("Version");
+    var versionAttribute = root.Attribute(VersionAttributeName);
     var loadedVersion = versionAttribute?.Value;
 
     if (NeedsNewConfig(loadedVersion))
@@ -73,12 +75,12 @@ public static class Persistent
       return;
     }
 
-    if (versionAttribute is null) { root.Add(new XAttribute("Version", Mod.Version)); }
+    if (versionAttribute is null) { root.Add(new XAttribute(VersionAttributeName, Mod.Version)); }
     else { versionAttribute.Value = Mod.Version; }
 
     LoadElements(root, typeof(Theme));
 
-    Presets.Load(false);
+    Presets.Load(root.Element(CustomLayoutsElementName) is null);
 
     root.Save(ConfigFile.FullName);
   }
@@ -138,9 +140,11 @@ public static class Persistent
     var doc = new XDocument();
 
     var xml = SaveSettings(typeof(Theme), ConfigRootName);
-    xml.Add(new XAttribute("Version", Mod.Version));
+    xml.Add(new XAttribute(VersionAttributeName, Mod.Version));
 
-    if (Tutorial.IsComplete) { xml.Add(new XElement("TutorialComplete")); }
+    if (Tutorial.IsComplete) { xml.Add(new XElement(Tutorial.CompleteElementName)); }
+
+    if (!LayoutLayer.AllStandard) { xml.Add(new XElement(CustomLayoutsElementName)); }
 
     doc.Add(xml);
 

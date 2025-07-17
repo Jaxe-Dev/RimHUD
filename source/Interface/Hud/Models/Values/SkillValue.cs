@@ -29,13 +29,11 @@ public class SkillValue : ValueModel
 
     _skill = skill;
 
-    var passionIndicator = new StringBuilder().Insert(0, Lang.Get("Model.Skill.PassionIndicator"), (int)skill.passion).ToString();
-
     var isActive = Active.Pawn.jobs?.curDriver?.ActiveSkill == def;
     var isSaturated = skill.LearningSaturatedToday;
 
     var color = skill.TotallyDisabled ? Theme.DisabledColor.Value : isSaturated ? Theme.SkillSaturatedColor.Value : isActive ? Theme.SkillActiveColor.Value : GetColor(skill);
-    Label = (def.GetDefNameOrLabel() + passionIndicator).Colorize(color);
+    Label = (def.GetDefNameOrLabel() + new StringBuilder().Insert(0, Lang.Get("Model.Skill.PassionIndicator"), (int)skill.passion)).Colorize(color);
 
     Value = skill.TotallyDisabled ? "-" : skill.Level.ToDecimalString(Math.Max(0, Math.Min(99, skill.XpProgressPercent.ToPercentageInt()))).Colorize(color);
 

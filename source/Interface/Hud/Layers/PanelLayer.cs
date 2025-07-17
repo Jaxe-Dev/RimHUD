@@ -33,28 +33,39 @@ public sealed class PanelLayer : ContainerLayer<RowLayer>
       }
       rows.Add(new RowLayer(element));
     }
-
     Children = rows.ToArray();
   }
 
   public override float Prepare()
   {
     if (Children.Length is 0 || !IsTargetted()) { return 0f; }
-    _heights = Children.Select(static row => row.Prepare()).ToArray();
 
-    return Args.FillHeight ? -1f : _heights.Sum() + (LayoutLayer.Padding * (Children.Length - 1));
+    var list = new List<float>(Children.Length);
+    var totalHeight = 0f;
+
+    foreach (var height in Children.Select(static child => child.Prepare()))
+    {
+      list.Add(height);
+      totalHeight += height;
+    }
+
+    _heights = list.ToArray();
+    return Args.FillHeight ? -1f : totalHeight + (LayoutLayer.Padding * (Children.Length - 1));
   }
 
   public override bool Draw(Rect rect)
   {
-    if (Children.Length is 0) { return false; }
+    if (Children.Length is 0 || _heights is null) { return false; }
 
-    var grid = rect.GetVGrid(LayoutLayer.Padding, _heights!);
-    var index = 0;
-    foreach (var item in Children)
+    var grid = rect.GetVGrid(LayoutLayer.Padding, _heights.Where(static height => height > 0f).ToArray());
+    var gridIndex = 1;
+
+    for (var i = 0; i < Children.Length; i++)
     {
-      index++;
-      item.Draw(grid[index]);
+      if (_heights[i] <= 0f) { continue; }
+      Children[i].Draw(grid[gridIndex]);
+
+      gridIndex++;
     }
 
     return true;

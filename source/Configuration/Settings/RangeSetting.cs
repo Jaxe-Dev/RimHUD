@@ -3,15 +3,23 @@ using UnityEngine;
 
 namespace RimHUD.Configuration.Settings;
 
-public sealed class RangeSetting(int @default, int min, int max, string label, Func<int, string>? format = null, string? tooltip = null, Action<ValueSetting>? onChange = null) : ValueSetting(@default, label, tooltip, onChange)
+public sealed class RangeSetting : ValueSetting
 {
-  public int Min { get; private set; } = min;
-  public int Max { get; private set; } = max;
+  private readonly Func<int, string>? _format;
 
-  [Setting(typeof(int))]
-  public int Value { get => (int)Object; set => Object = Mathf.Clamp(value, Min, Max); }
+  public int Min { get; private set; }
+  public int Max { get; private set; }
 
-  public override string ToString() => format is null ? Value.ToString() : format(Value);
+  [Setting(typeof(int))] public int Value { get => (int)Object; set => Object = Mathf.Clamp(value, Min, Max); }
+
+  public RangeSetting(int @default, int min, int max, string label, Func<int, string>? format = null, string? tooltip = null, Action<ValueSetting>? onChange = null) : base(@default, label, tooltip, onChange)
+  {
+    _format = format;
+    Min = min;
+    Max = max;
+  }
+
+  public override string ToString() => _format is null ? Value.ToString() : _format(Value);
 
   public void SetMinMax(int min, int max)
   {

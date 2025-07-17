@@ -36,14 +36,20 @@ public sealed class LayoutLayer : VStackLayer
   public static LayoutLayer Docked { get; set; } = DefaultDocked;
   public static LayoutLayer Floating { get; set; } = DefaultFloating;
 
+  public static bool AllStandard => Docked.IsStandard && Floating.IsStandard;
+
+  public bool IsStandard { get; }
+
   private readonly Stopwatch _stopwatch = new();
 
   private Pawn? _lastPawn;
 
-  private LayoutLayer(XElement xml) : base(xml)
+  private LayoutLayer(XElement xml, bool isStandard) : base(xml)
   {
     Args.FillHeight = true;
     HudTimings.Add(this);
+
+    IsStandard = isStandard;
 
     bool docked;
     if (xml.Name == DockedElementName) { docked = true; }
@@ -67,9 +73,9 @@ public sealed class LayoutLayer : VStackLayer
     if (docked && tabs > 0) { Theme.InspectPaneMinTabs.Value = tabs; }
   }
 
-  public static LayoutLayer FromXml(XElement xml) => new(xml);
+  public static LayoutLayer FromXml(XElement xml, bool isStandard = false) => new(xml, isStandard);
 
-  public static LayoutLayer FromLayoutView(LayoutEditor editor) => new(editor.Root.ToXml());
+  public static LayoutLayer FromLayoutView(LayoutEditor editor) => new(editor.Root.ToXml(), false);
 
   public static void LoadDefaultAndSave(bool compact = false)
   {
@@ -83,7 +89,7 @@ public sealed class LayoutLayer : VStackLayer
     if (stream is null) { throw new Exception($"Cannot find embedded layout '{id}'."); }
 
     using var reader = XmlReader.Create(stream);
-    return FromXml(XDocument.Load(reader).Root) ?? throw new Exception($"Error reading embedded layout '{id}'.");
+    return FromXml(XDocument.Load(reader).Root, true) ?? throw new Exception($"Error reading embedded layout '{id}'.");
   }
 
   private static void LoadDefault(bool compact)

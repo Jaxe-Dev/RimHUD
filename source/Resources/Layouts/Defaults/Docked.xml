@@ -40,7 +40,7 @@
         <MentalCondition />
       </Row>
       <Row>
-        <NeedFood />
+        <NeedFood Targets="HhC" />
       </Row>
       <Row Targets="HhC">
         <NeedSleep />
@@ -94,6 +94,33 @@
       <Row Targets="C">
         <TrainingRescue />
         <TrainingHaul />
+      </Row>
+      <Row Targets="C">
+        <TrainingComfort />
+      </Row>
+      <Row Targets="C">
+        <TrainingForage />
+      </Row>
+      <Row Targets="C">
+        <TrainingTerrorRoar />
+      </Row>
+      <Row Targets="C">
+        <TrainingThrumboRoar />
+      </Row>
+      <Row Targets="C">
+        <TrainingWarTrumpet />
+      </Row>
+      <Row Targets="C">
+        <TrainingDig />
+      </Row>
+      <Row Targets="C">
+        <TrainingEggSpew />
+      </Row>
+      <Row Targets="C">
+        <TrainingSludgeSpew />
+      </Row>
+      <Row Targets="C">
+        <TrainingAttackTarget />
       </Row>
       <Row>
         <CompInfo />

@@ -4,14 +4,23 @@ using UnityEngine;
 
 namespace RimHUD.Interface.Hud.Widgets;
 
-public abstract class StandardWidget(string? label, Func<string?>? tooltip, TextStyle textStyle) : IWidget
+public abstract class StandardWidget : IWidget
 {
   public abstract bool Draw(Rect rect);
+  private readonly TextStyle _textStyle;
 
-  protected string? Label { get; } = label;
-  protected Func<string?>? Tooltip { get; } = tooltip;
+  protected string? Label { get; }
+  protected Func<string?>? Tooltip { get; }
 
-  public float GetMaxHeight { get; } = textStyle.LineHeight;
+  public float GetMaxHeight { get; }
 
-  protected void DrawText(Rect rect, string? text, Color? color = null, TextAnchor? alignment = null) => WidgetsPlus.DrawText(rect, text, textStyle, color, alignment);
+  protected StandardWidget(string? label, Func<string?>? tooltip, TextStyle textStyle)
+  {
+    _textStyle = textStyle;
+    Label = label;
+    Tooltip = tooltip;
+    GetMaxHeight = textStyle.LineHeight;
+  }
+
+  protected void DrawText(Rect rect, string? text, Color? color = null, TextAnchor? alignment = null) => WidgetsPlus.DrawText(rect, text, _textStyle, color, alignment);
 }

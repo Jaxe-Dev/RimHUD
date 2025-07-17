@@ -6,19 +6,26 @@ using UnityEngine;
 namespace RimHUD.Configuration.Settings;
 
 [AttributeUsage(AttributeTargets.Property)]
-public sealed class SettingAttribute(string? category, string? label, Type? type = null) : Attribute
+public sealed class SettingAttribute : Attribute
 {
-  public string? Category { get; } = category;
+  public string? Category { get; }
 
-  public string? Label { get; } = label;
+  public string? Label { get; }
 
-  public Type? Type { get; } = type;
+  public Type? Type { get; }
 
   public SettingAttribute(string? label, Type? type = null) : this(null, label, type)
   { }
 
   public SettingAttribute(Type type) : this(null, null, type)
   { }
+
+  public SettingAttribute(string? category, string? label, Type? type = null)
+  {
+    Category = category;
+    Label = label;
+    Type = type;
+  }
 
   public string? ConvertToXml(object value)
   {

@@ -14,6 +14,8 @@ namespace RimHUD.Engine;
 
 public static class Tutorial
 {
+  public const string CompleteElementName = "TutorialComplete";
+
   public static class Presentation
   {
     private const float ModSettingsMarginX = 180f;
@@ -202,7 +204,7 @@ public static class Tutorial
 
   public static bool IsComplete { get; private set; }
 
-  public static void Initialize(XElement xml) => IsComplete = xml.Element("TutorialComplete") is not null;
+  public static void Initialize(XElement xml) => IsComplete = xml.Element(CompleteElementName) is not null;
 
   private static void Complete()
   {

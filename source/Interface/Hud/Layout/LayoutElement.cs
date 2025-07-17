@@ -11,28 +11,29 @@ using Verse;
 
 namespace RimHUD.Interface.Hud.Layout;
 
-public sealed class LayoutElement(LayoutElementType type, string id, Def? def = null)
+public sealed class LayoutElement
 {
+  public const string LayoutKeyPrefix = "Layout.";
+
   private const float ButtonSize = 18f;
   private const float Indent = GUIPlus.LargePadding;
-
-  private static readonly Color MissingColor = Color.red;
 
   private readonly LayoutEditor? _editor;
 
   public LayoutElement? Parent { get; }
 
-  private readonly string _id = id;
+  private readonly string _id;
 
   private string? _label;
   public string Label => _label ??= GetLabel();
-  public string? LabelAndId => GetLabelAndId();
 
-  public LayoutElementType Type { get; } = type;
+  public string? LabelAndId => Def is null ? null : $"{Def.defName} [{Def.modContentPack!.Name.Italic().ColorizeByDefMod(Def)}]";
 
-  public HudArgs Args { get; } = new() { DefName = def?.defName };
+  public LayoutElementType Type { get; }
 
-  public Def? Def { get; } = def;
+  public HudArgs Args { get; }
+
+  public Def? Def { get; }
 
   public LayerTarget Targets
   {
@@ -74,13 +75,21 @@ public sealed class LayoutElement(LayoutElementType type, string id, Def? def = 
   private bool? _isExternal;
   private bool IsExternal => _isExternal ??= HudContent.IsExternalType(_id) && !IsMissing;
 
+  public LayoutElement(LayoutElementType type, string id, Def? def = null)
+  {
+    _id = id;
+    Type = type;
+    Args = new HudArgs { DefName = def?.defName };
+    Def = def;
+  }
+
   private LayoutElement(LayoutElementType type, string id, HudArgs args, LayoutEditor editor, LayoutElement? parent = null) : this(type, id)
   {
     _editor = editor;
     Parent = parent;
 
     Args = args;
-    Def = args.GetDefFromLayerId(id);
+    Def = HudContent.GetWidgetDef(id) ?? args.GetDefFromLayerId(id);
   }
 
   public LayoutElement(LayoutElement prototype, LayoutEditor editor, LayoutElement parent) : this(prototype.Type, prototype._id, prototype.Args, editor, parent)
@@ -89,6 +98,53 @@ public sealed class LayoutElement(LayoutElementType type, string id, Def? def = 
   public LayoutElement(BaseLayer layer, LayoutEditor editor, LayoutElement? parent, IEnumerable<BaseLayer>? children = null) : this(layer.Type, layer.Id, layer.Args, editor, parent)
   {
     if (children is not null) { Children = [..children.Select(child => child.GetLayoutItem(editor, this))]; }
+  }
+
+  private string GetLabel()
+  {
+    if (IsMissing) { return $"<{_id}{(Args.DefName is null ? null : $"[{Args.DefName}]")}>".Colorize(Theme.MissingWidgetColor); }
+
+    if (Def is null) { return IsExternal ? $"{_id}[Missing Def]".Colorize(Theme.MissingWidgetColor) : Lang.Get(LayoutKeyPrefix + _id); }
+
+    return (IsExternal ? Def.GetDefNameOrLabel() : Lang.Get(LayoutKeyPrefix + _id, Def.GetDefNameOrLabel())).ColorizeByDefMod(Def);
+  }
+
+  private string? GetAttributes()
+  {
+    var attributes = GetTargets();
+
+    if (Args.BarColorStyle is not null) { attributes = $" ({Args.BarColorStyle.Value.GetLabel()}){attributes}"; }
+    if (FillHeight) { attributes = $" {Lang.Get("Layout.ContainerFilled")}{attributes}"; }
+
+    return attributes;
+  }
+
+  private string? GetTargets()
+  {
+    if (Targets is LayerTarget.All) { return null; }
+
+    var targets = new List<string>();
+    if (Targets.HasTarget(LayerTarget.PlayerHumanlike)) { targets.Add(Lang.Get("Layout.Target.PlayerHumanlike")); }
+    if (Targets.HasTarget(LayerTarget.PlayerCreature)) { targets.Add(Lang.Get("Layout.Target.PlayerCreature")); }
+    if (Targets.HasTarget(LayerTarget.OtherHumanlike)) { targets.Add(Lang.Get("Layout.Target.OtherHumanlike")); }
+    if (Targets.HasTarget(LayerTarget.OtherCreature)) { targets.Add(Lang.Get("Layout.Target.OtherCreature")); }
+
+    return targets.Count > 0 ? $" ({targets.ToCommaList()})".Italic() : null;
+  }
+
+  private Color GetColor()
+  {
+    if (IsMissing) { return Theme.MissingWidgetColor; }
+    if (IsExternal) { return Theme.ExternalModColor; }
+
+    return Type switch
+    {
+      LayoutElementType.Stack => Theme.StackColor,
+      LayoutElementType.Panel => Theme.PanelColor,
+      LayoutElementType.Row => Theme.RowColor,
+      LayoutElementType.Widget => Theme.WidgetColor,
+      _ => throw new Exception("Invalid layout element type.")
+    };
   }
 
   public void MoveUp()
@@ -145,7 +201,7 @@ public sealed class LayoutElement(LayoutElementType type, string id, Def? def = 
 
     if (_collapsed || Children.Count is 0) { return curY; }
 
-    return Children.Aggregate(curY, (current, item) => item.Draw(x + Indent, current, width - Indent));
+    return Children.Aggregate(curY, (current, child) => child.Draw(x + Indent, current, width - Indent));
   }
 
   public XElement ToXml()
@@ -159,55 +215,5 @@ public sealed class LayoutElement(LayoutElementType type, string id, Def? def = 
     foreach (var item in Children) { xml.Add(item.ToXml()); }
 
     return xml;
-  }
-
-  private string GetLabel()
-  {
-    if (IsMissing) { return $"<{_id}{(Args.DefName is null ? null : $"[{Args.DefName}]")}>".Colorize(MissingColor); }
-    if (Def is null) { return IsExternal ? $"{_id}[Missing Def]".Colorize(MissingColor) : Lang.Get($"Layout.{_id}"); }
-
-    return ColorizeByMod(IsExternal ? Def.GetDefNameOrLabel() : Lang.Get($"Layout.{_id}", Def.GetDefNameOrLabel()));
-  }
-
-  private string? GetLabelAndId() => Def is null ? null : $"{Def.defName} [{ColorizeByMod(Def.modContentPack!.Name.Italic())}]";
-
-  private string ColorizeByMod(string text) => Def?.modContentPack?.IsOfficialMod ?? true ? text : text.Colorize(Theme.ExternalModColor);
-
-  private string? GetAttributes()
-  {
-    var attributes = GetTargets();
-
-    if (Args.BarColorStyle is not null) { attributes = $" ({Args.BarColorStyle.Value.GetLabel()}){attributes}"; }
-    if (FillHeight) { attributes = $" {Lang.Get("Layout.ContainerFilled")}{attributes}"; }
-
-    return attributes;
-  }
-
-  private string? GetTargets()
-  {
-    if (Targets is LayerTarget.All) { return null; }
-
-    var targets = new List<string>();
-    if (Targets.HasTarget(LayerTarget.PlayerHumanlike)) { targets.Add(Lang.Get("Layout.Target.PlayerHumanlike")); }
-    if (Targets.HasTarget(LayerTarget.PlayerCreature)) { targets.Add(Lang.Get("Layout.Target.PlayerCreature")); }
-    if (Targets.HasTarget(LayerTarget.OtherHumanlike)) { targets.Add(Lang.Get("Layout.Target.OtherHumanlike")); }
-    if (Targets.HasTarget(LayerTarget.OtherCreature)) { targets.Add(Lang.Get("Layout.Target.OtherCreature")); }
-
-    return targets.Count > 0 ? $" ({targets.ToCommaList()})".Italic() : null;
-  }
-
-  private Color GetColor()
-  {
-    if (IsMissing) { return Theme.MissingWidgetColor; }
-    if (IsExternal) { return Theme.ExternalModColor; }
-
-    return Type switch
-    {
-      LayoutElementType.Stack => Theme.StackColor,
-      LayoutElementType.Panel => Theme.PanelColor,
-      LayoutElementType.Row => Theme.RowColor,
-      LayoutElementType.Widget => Theme.WidgetColor,
-      _ => throw new Exception("Invalid layout element type.")
-    };
   }
 }

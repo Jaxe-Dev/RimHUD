@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using HarmonyLib;
 using RimHUD.Configuration;
 using RimHUD.Engine;
@@ -13,19 +12,16 @@ public sealed class Mod : Verse.Mod
 {
   public const string Id = "RimHUD";
   public const string Name = Id;
-  public const string Version = "1.16.3";
+  public const string Version = "1.16.4";
+
+  public const string MinConfigVersion = "1.16";
 
   public const string WorkshopLink = "https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027";
 
   private static Mod? _instance;
-  public static ModContentPack ContentPack => _instance!.Content;
-
-  public static IEnumerable<string> AcceptedConfigVersions { get; } =
-  [
-    "1.16"
-  ];
 
   public static bool DevMode { get; set; }
+  public static ModContentPack ContentPack => _instance!.Content;
 
   public Mod(ModContentPack content) : base(content)
   {

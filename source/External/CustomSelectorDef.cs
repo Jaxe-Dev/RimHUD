@@ -11,11 +11,9 @@ namespace RimHUD;
 
 public sealed class CustomSelectorDef : ExternalWidgetDef, IModel
 {
-  [DefaultValue(WidgetTextStyle.Small)]
-  public WidgetTextStyle textStyle;
+  [DefaultValue(WidgetTextStyle.Small)] public WidgetTextStyle textStyle;
 
-  [Unsaved]
-  private ExternalMethodHandler<(string? label, Func<string?>? tooltip, Action? onClick, Action? onHover, Color? backColor)>? _getParameters;
+  [Unsaved] private ExternalMethodHandler<(string? label, Func<string?>? tooltip, Action? onClick, Action? onHover, Color? backColor)>? _getParameters;
 
   public IWidget Build(HudArgs? args)
   {

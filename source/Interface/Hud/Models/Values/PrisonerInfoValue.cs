@@ -19,7 +19,7 @@ public sealed class PrisonerInfoValue : ValueModel
   {
     if (!Active.Pawn.IsPrisonerOfColony || Active.Pawn.guest is null) { return null; }
 
-    var resistance = "RecruitmentResistance".TranslateSimple().WithValue(Active.Pawn.guest.resistance.ToString("F1").Bold());
+    var resistance = Active.Pawn.guest.Recruitable ? "RecruitmentResistance".TranslateSimple().WithValue(Active.Pawn.guest.resistance.ToString("F1").Bold()) : (Active.Pawn.Faction is null ? "UnrecruitableNoFaction" : "Unrecruitable").TranslateSimple().CapitalizeFirst().Bold();
     var will = "WillLevel".TranslateSimple().WithValue(Active.Pawn.guest.will.ToString("F1").Bold());
 
     return ModsConfig.IdeologyActive ? $"{resistance} / {will}" : resistance;

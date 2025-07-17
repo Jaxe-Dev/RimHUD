@@ -14,8 +14,7 @@ public sealed class CustomNeedDef : ExternalWidgetDef, IModel
 
   public BarColorStyle? colorStyle;
 
-  [Unsaved]
-  private ExternalMethodHandler<string>? _getTooltip;
+  [Unsaved] private ExternalMethodHandler<string>? _getTooltip;
 
   private Func<string?> GetTooltip => () => _getTooltip?.Invoke(Active.Pawn);
 

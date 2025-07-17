@@ -48,7 +48,7 @@ public sealed class RelationKindAndFactionValue : ValueModel
 
   private static string GetKind()
   {
-    if (Active.Pawn.IsHumanlike()) { return Active.Pawn.Faction == Faction.OfPlayer && !Active.Pawn.IsPrisoner ? Active.Pawn.story?.Title ?? Active.Pawn.KindLabel : Active.Pawn.TraderKind?.label ?? Active.Pawn.KindLabel; }
+    if (Active.Pawn.IsHumanlike()) { return Active.Pawn.Faction == Faction.OfPlayer && !Active.Pawn.IsPrisoner ? GetStoryTitle() ?? Active.Pawn.KindLabel : Active.Pawn.TraderKind?.label ?? Active.Pawn.KindLabel; }
 
     if (Active.Pawn.RaceProps!.IsMechanoid) { return Active.Pawn.Faction == Faction.OfPlayer ? Lang.Get("Model.Creature.Mechanoid") : Lang.Get("Model.Creature.Unit"); }
 
@@ -74,5 +74,14 @@ public sealed class RelationKindAndFactionValue : ValueModel
     if (Active.Pawn.RaceProps.herdAnimal) { return Lang.Get("Model.Creature.Herd"); }
     if (Active.Pawn.kindDef.race.tradeTags?.Contains("AnimalInsect") ?? false) { return Lang.Get("Model.Creature.Insect"); }
     return Lang.Get(Active.Pawn.RaceProps.Animal ? "Model.Creature.Tame" : "Model.Creature.Entity");
+  }
+
+  private static string? GetStoryTitle()
+  {
+    if (Active.Pawn.story is null) { return null; }
+    if (Active.Pawn.story.title is not null) { return Active.Pawn.story.title; }
+    if (Active.Pawn.story.Title is not null && Active.Pawn.IsMutant) { return Lang.Get("Model.Former", Active.Pawn.story.Title); }
+
+    return Active.Pawn.story.Title;
   }
 }
