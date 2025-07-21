@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
@@ -18,14 +17,6 @@ public static class Reflection
   public static readonly FieldInfo Verse_LetterStack_LastTopYInt = AccessTools.Field(typeof(LetterStack), "lastTopYInt");
   public static readonly FieldInfo Verse_LetterStack_Letters = AccessTools.Field(typeof(LetterStack), "letters");
   public static readonly FieldInfo Verse_LetterStack_TmpBundledLetters = AccessTools.Field(typeof(LetterStack), "tmpBundledLetters");
-
-  public static ModContentPack? GetModFromAssemblyName(string name)
-  {
-    var possible = LoadedModManager.RunningMods.FirstOrDefault(mod => mod.assemblies!.loadedAssemblies.FirstOrDefault(assembly => assembly.GetName().Name == name) is not null);
-    if (possible is null || Equals(possible, Mod.ContentPack)) { return null; }
-
-    return possible;
-  }
 
   public static T GetValue<T>(this FieldInfo self, object instance) => (T)self.GetValue(instance);
   public static T GetValueStatic<T>(this FieldInfo self) => (T)self.GetValue(null);

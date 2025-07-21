@@ -18,7 +18,7 @@ public static class Integrations
     foreach (var type in Types)
     {
       try { Activator.CreateInstance(type); }
-      catch (Exception exception) { Report.Warning($"Integrated mod '{type.Name}' failed to register due to the following error:\n{exception.Message}."); }
+      catch (Exception exception) { Report.Error($"Integrated mod '{type.Name}' failed to register due to the following error:\n{exception.Message}."); }
     }
   }
 }

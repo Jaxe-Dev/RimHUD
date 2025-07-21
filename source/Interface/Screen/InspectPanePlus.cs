@@ -20,13 +20,13 @@ public static class InspectPanePlus
 
     pane.RecentHeight = Theme.InspectPaneHeight.Value - WidgetsPlus.MainButtonHeight;
 
+    var bounds = GetBounds(rect);
+
+    var offset = 0f;
+    var headerHeight = Math.Max(Theme.LargeTextStyle.LineHeight, GenUI.SmallIconSize);
+
     try
     {
-      var bounds = GetBounds(rect);
-
-      var offset = 0f;
-
-      var headerHeight = Math.Max(Theme.LargeTextStyle.LineHeight, GenUI.SmallIconSize);
       InspectPaneButtons.Draw(bounds.TopPartPixels(headerHeight), pane, ref offset);
 
       if (State.SelectedPawn is null || !pane.AnythingSelected) { return; }
@@ -37,13 +37,12 @@ public static class InspectPanePlus
       if (Widgets.ButtonInvisible(labelRect)) { InspectPaneTabs.ToggleSocial(); }
 
       if (!pane.ShouldShowPaneContents) { return; }
-
-      var contentRect = bounds.BottomPartPixels(bounds.height - headerHeight - GUIPlus.TinyPadding);
-
-      if (Theme.DockedMode.Value) { HudLayout.DrawDocked(contentRect); }
-      else if (Theme.InspectPaneTabAddLog.Value) { InspectPaneLog.Draw(Active.Pawn, contentRect); }
     }
     catch (Exception exception) { Report.HandleError(exception); }
+
+    var contentRect = bounds.BottomPartPixels(bounds.height - headerHeight - GUIPlus.TinyPadding);
+    if (Theme.DockedMode.Value) { HudLayout.DrawDocked(contentRect); }
+    else if (Theme.InspectPaneTabAddLog.Value) { InspectPaneLog.Draw(Active.Pawn, contentRect); }
 
     if (!Tutorial.IsComplete) { Tutorial.Presentation.Stages.DoInspectPane(rect); }
   }

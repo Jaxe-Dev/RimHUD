@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using RimHUD.Engine;
 using RimHUD.Interface.Hud.Layout;
 using RimHUD.Interface.Hud.Models;
 using RimHUD.Interface.Hud.Models.Bars;
@@ -55,7 +56,15 @@ public sealed class HudWidget
   public static HudWidget FromCustomSelectorDef() => new(HudContent.ExternalSelectorType, static args => args.GetDefAndBuild<CustomSelectorDef>(), defType: typeof(CustomSelectorDef));
   public static HudWidget FromCustomNeedDef() => new(HudContent.ExternalNeedType, static args => args.GetDefAndBuild<CustomNeedDef>(), defType: typeof(CustomNeedDef));
 
-  public IWidget Build(HudArgs args) => _builder.Invoke(args) ?? BlankWidget.Collapsed;
+  public IWidget Build(HudArgs args)
+  {
+    try { return _builder.Invoke(args) ?? BlankWidget.Collapsed; }
+    catch (Exception exception)
+    {
+      Report.HandleError(exception);
+      return BlankWidget.Collapsed;
+    }
+  }
 
   public bool DefNameIsValid(string? defName)
   {

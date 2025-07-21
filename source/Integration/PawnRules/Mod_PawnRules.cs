@@ -19,7 +19,11 @@ public sealed class Mod_PawnRules : IntegratedMod
 
       _instance = this;
     }
-    catch (Exception exception) { DisableFrom(exception); }
+    catch (Exception exception)
+    {
+      DisableFrom(exception);
+      throw;
+    }
   }
 
   private static string GetRules() => _instance!.Traverse.Method("GetRules", Active.Pawn)!.GetValue<string>();
@@ -48,7 +52,7 @@ public sealed class Mod_PawnRules : IntegratedMod
       {
         Label = null;
         _instance!.DisableFrom(exception);
-        Report.HandleWarning(exception);
+        throw;
       }
     }
   }

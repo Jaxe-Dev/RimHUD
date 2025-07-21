@@ -59,29 +59,33 @@ public static class Tutorial
 
       public static void DoInspectPane(Rect rect)
       {
-        if (Find.WindowStack!.IsOpen(typeof(Dialog_Config))) { return; }
-        Theme.DockedMode.Value = true;
-
-        DrawPulse(rect);
-
-        var contentRect = InspectPanePlus.GetBounds(rect);
-
-        var isMouseOver = Mouse.IsOver(contentRect);
-        var text = $"{Mod.Name} - {(isMouseOver ? Lang.Get("Interface.Tutorial.InspectPane") : Lang.Get("Interface.Tutorial.InspectPaneHover")).Bold()}";
-
-        var noticeRect = contentRect.center.GetCenteredRect(InspectPaneNoticeWidth, InspectPaneNoticeHeight);
-
-        if (!isMouseOver)
+        try
         {
+          if (Find.WindowStack!.IsOpen(typeof(Dialog_Config))) { return; }
+          Theme.DockedMode.Value = true;
+
+          DrawPulse(rect);
+
+          var contentRect = InspectPanePlus.GetBounds(rect);
+
+          var isMouseOver = Mouse.IsOver(contentRect);
+          var text = $"{Mod.Name} - {(isMouseOver ? Lang.Get("Interface.Tutorial.InspectPane") : Lang.Get("Interface.Tutorial.InspectPaneHover")).Bold()}";
+
+          var noticeRect = contentRect.center.GetCenteredRect(InspectPaneNoticeWidth, InspectPaneNoticeHeight);
+
+          if (!isMouseOver)
+          {
+            DrawNotice(noticeRect, text);
+            return;
+          }
+
+          var configButtonRect = HudLayout.GetConfigButtonRect(contentRect, false);
+          SetFocus(configButtonRect, Vector2.left);
           DrawNotice(noticeRect, text);
-          return;
+
+          HudLayout.DrawConfigButton(configButtonRect, true);
         }
-
-        var configButtonRect = HudLayout.GetConfigButtonRect(contentRect, false);
-        SetFocus(configButtonRect, Vector2.left);
-        DrawNotice(noticeRect, text);
-
-        HudLayout.DrawConfigButton(configButtonRect, true);
+        catch (Exception exception) { Report.HandleError(exception); }
       }
 
       public static void DoDialogConfigTab(TabManager tabs)

@@ -31,6 +31,26 @@ public static class Presets
 
     if (!reset && floating.Exists && Persistent.LoadXml(floating) is { } floatingXe) { LayoutLayer.Floating = LayoutLayer.FromXml(floatingXe); }
     else { LayoutLayer.Floating.ToXml().Save(floating.FullName); }
+
+    if (reset) { LayoutPreset.Active = LayoutPreset.DefaultName; }
+  }
+
+  public static void Load(string preset)
+  {
+    if (string.IsNullOrWhiteSpace(preset) || preset is LayoutPreset.DefaultName)
+    {
+      Load(true);
+      return;
+    }
+
+    if (LoadedModManager.RunningMods is null) { return; }
+
+    var integratedPreset = new FileInfo(Path.Combine(Mod.ContentPack.RootDir, DirectoryName, preset + Extension));
+    if (integratedPreset.Exists && (LayoutPreset.FromFile(Mod.ContentPack, integratedPreset)?.Load() ?? false)) { return; }
+
+    if ((from mod in LoadedModManager.RunningMods.Where(static mod => !mod.IsOfficialMod && mod != Mod.ContentPack) let modFile = new FileInfo(Path.Combine(mod.RootDir, ModDirectoryName, preset + Extension)) where modFile.Exists && (LayoutPreset.FromFile(mod, modFile)?.Load() ?? false) select mod).Any()) { return; }
+
+    Load(true);
   }
 
   public static void Save()

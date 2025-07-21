@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using RimHUD.Configuration;
-using RimHUD.Engine;
 using RimHUD.Extensions;
 using RimHUD.Interface.Hud.Layout;
 using RimHUD.Interface.Hud.Models;
@@ -36,20 +35,14 @@ public sealed class LayoutLayer : VStackLayer
   public static LayoutLayer Docked { get; set; } = DefaultDocked;
   public static LayoutLayer Floating { get; set; } = DefaultFloating;
 
-  public static bool AllStandard => Docked.IsStandard && Floating.IsStandard;
-
-  public bool IsStandard { get; }
-
   private readonly Stopwatch _stopwatch = new();
 
   private Pawn? _lastPawn;
 
-  private LayoutLayer(XElement xml, bool isStandard) : base(xml)
+  private LayoutLayer(XElement xml) : base(xml)
   {
     Args.FillHeight = true;
     HudTimings.Add(this);
-
-    IsStandard = isStandard;
 
     bool docked;
     if (xml.Name == DockedElementName) { docked = true; }
@@ -73,9 +66,9 @@ public sealed class LayoutLayer : VStackLayer
     if (docked && tabs > 0) { Theme.InspectPaneMinTabs.Value = tabs; }
   }
 
-  public static LayoutLayer FromXml(XElement xml, bool isStandard = false) => new(xml, isStandard);
+  public static LayoutLayer FromXml(XElement xml) => new(xml);
 
-  public static LayoutLayer FromLayoutView(LayoutEditor editor) => new(editor.Root.ToXml(), false);
+  public static LayoutLayer FromLayoutView(LayoutEditor editor) => new(editor.Root.ToXml());
 
   public static void LoadDefaultAndSave(bool compact = false)
   {
@@ -89,7 +82,12 @@ public sealed class LayoutLayer : VStackLayer
     if (stream is null) { throw new Exception($"Cannot find embedded layout '{id}'."); }
 
     using var reader = XmlReader.Create(stream);
-    return FromXml(XDocument.Load(reader).Root, true) ?? throw new Exception($"Error reading embedded layout '{id}'.");
+    var layout = FromXml(XDocument.Load(reader).Root);
+    if (layout is null) { throw new Exception($"Error reading embedded layout '{id}'."); }
+
+    LayoutPreset.Active = LayoutPreset.DefaultName;
+
+    return layout;
   }
 
   private static void LoadDefault(bool compact)
@@ -98,6 +96,8 @@ public sealed class LayoutLayer : VStackLayer
     Floating = DefaultFloating;
 
     Theme.SetDefaultHud(compact);
+
+    LayoutPreset.Active = LayoutPreset.DefaultName;
 
     Persistent.Save();
   }
@@ -131,7 +131,6 @@ public sealed class LayoutLayer : VStackLayer
 
       base.Draw(rect);
     }
-    catch (Exception exception) { Report.HandleError(exception); }
     finally { HudTimings.Update(this)?.Finish(rect, true); }
   }
 

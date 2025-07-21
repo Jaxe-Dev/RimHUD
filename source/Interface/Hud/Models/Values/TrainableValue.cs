@@ -1,7 +1,6 @@
 using System;
 using RimHUD.Access;
 using RimHUD.Configuration;
-using RimHUD.Engine;
 using RimHUD.Extensions;
 using RimHUD.Interface.Hud.Tooltips;
 using RimHUD.Interface.Screen;
@@ -22,35 +21,27 @@ public sealed class TrainableValue : ValueModel
 
   public TrainableValue(TrainableDef def)
   {
-    try
+    if (Active.Pawn.RaceProps?.trainability is null || Active.Pawn.training is null || !Active.Pawn.training.CanAssignToTrain(def, out var visible).Accepted || !visible) { return; }
+
+    var disabled = !Active.Pawn.training.GetWanted(def);
+    var hasLearned = Active.Pawn.training.HasLearned(def);
+
+    var color = disabled switch
     {
-      if (Active.Pawn.RaceProps?.trainability is null || Active.Pawn.training is null || !Active.Pawn.training.CanAssignToTrain(def, out var visible).Accepted || !visible) { return; }
+      true => Theme.DisabledColor.Value,
+      _ => hasLearned ? Theme.SkillMinorPassionColor.Value : Theme.MainTextColor.Value
+    };
 
-      var disabled = !Active.Pawn.training.GetWanted(def);
-      var hasLearned = Active.Pawn.training.HasLearned(def);
+    Label = def.GetDefNameOrLabel().Colorize(color);
 
-      var color = disabled switch
-      {
-        true => Theme.DisabledColor.Value,
-        _ => hasLearned ? Theme.SkillMinorPassionColor.Value : Theme.MainTextColor.Value
-      };
+    var steps = GetSteps(Active.Pawn, def);
+    var value = $"{steps} / {def.steps}".Colorize(color);
 
-      Label = def.GetDefNameOrLabel().Colorize(color);
+    Value = hasLearned ? value.Bold() : value;
 
-      var steps = GetSteps(Active.Pawn, def);
-      var value = $"{steps} / {def.steps}".Colorize(color);
+    Tooltip = () => AnimalTooltip.Get(def);
 
-      Value = hasLearned ? value.Bold() : value;
-
-      Tooltip = () => AnimalTooltip.Get(def);
-
-      OnClick = InspectPaneTabs.ToggleTraining;
-    }
-    catch (Exception exception)
-    {
-      Report.HandleWarning(exception);
-      Value = null;
-    }
+    OnClick = InspectPaneTabs.ToggleTraining;
   }
 
   private static int GetSteps(Pawn pawn, TrainableDef def) => Reflection.RimWorld_Pawn_TrainingTracker_GetSteps.Invoke<int>(pawn.training, def);

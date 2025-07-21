@@ -26,7 +26,11 @@ public sealed class Mod_Multiplayer : IntegratedMod
 
       Report.Log($"Multiplayer ready with API {Traverse.Field("API")!.GetValue<string>()}");
     }
-    catch (Exception exception) { DisableFrom(exception); }
+    catch (Exception exception)
+    {
+      DisableFrom(exception);
+      throw;
+    }
   }
 
   public static void SetSelfTend(Pawn pawn, bool value) => pawn.playerSettings!.selfTend = value;

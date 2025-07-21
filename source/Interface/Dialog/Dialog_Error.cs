@@ -37,8 +37,13 @@ public sealed class Dialog_Error : Window
     listing.Label($"RimHUD v{Mod.Version} has automatically deactivated due to the following error(s):".Bold());
     listing.Label(_info.Message);
 
-    if (_info.Notice is not null) { listing.Label(_info.Notice); }
     listing.Gap();
+
+    if (_info.Notice is not null)
+    {
+      listing.Label(_info.Notice);
+      listing.Gap();
+    }
 
     listing.Label($"{nameof(_info.Trace)}:".Bold(), font: GameFont.Tiny);
     listing.End();
@@ -52,7 +57,7 @@ public sealed class Dialog_Error : Window
     grid[3].yMin += GUIPlus.MediumPadding;
     var buttonGrid = grid[3].GetHGrid(GUIPlus.MediumPadding, buttonWidth, -1f, buttonWidth, buttonWidth);
 
-    if (WidgetsPlus.DrawButton(buttonGrid[1], "Copy to clipboard", font: GameFont.Tiny))
+    if (!_info.IsDuplicate && WidgetsPlus.DrawButton(buttonGrid[1], "Copy to clipboard", font: GameFont.Tiny))
     {
       _info.CopyToClipboard();
       Report.Alert("RimHUD Auto-deactivation details copied to clipboard");

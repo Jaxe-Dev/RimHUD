@@ -72,13 +72,9 @@ public sealed class MentalConditionValue : ValueModel
 
   private static string? GetInspirationInspectLine()
   {
-    try
-    {
-      if (!Active.Pawn.Inspired || Active.Pawn.Inspiration is null) { return null; }
+    if (!Active.Pawn.Inspired || Active.Pawn.Inspiration is null || Active.Pawn.InspirationDef is null) { return null; }
 
-      var duration = ((int)((Active.Pawn.InspirationDef!.baseDurationDays - Active.Pawn.Inspiration.AgeDays) * 60000)).ToStringTicksToPeriod();
-      return Lang.Get("Model.Mood.Inspired", Active.Pawn.InspirationDef!.LabelCap, duration);
-    }
-    catch { return null; }
+    var duration = ((int)((Active.Pawn.InspirationDef.baseDurationDays - Active.Pawn.Inspiration.AgeDays) * 60000)).ToStringTicksToPeriod();
+    return Lang.Get("Model.Mood.Inspired", Active.Pawn.InspirationDef!.LabelCap, duration);
   }
 }

@@ -25,13 +25,9 @@ public sealed class OutfitSelector : SelectorModel
 
   private static void DrawFloatMenu()
   {
-    try
-    {
-      var options = (from outfit in Current.Game!.outfitDatabase!.AllOutfits select new FloatMenuOption(outfit.label, () => Mod_Multiplayer.SetOutfit(Active.Pawn, outfit))).ToList();
-      options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), static () => Find.WindowStack!.Add(new Dialog_ManageApparelPolicies(Active.Pawn.outfits!.CurrentApparelPolicy))));
+    var options = (from outfit in Current.Game!.outfitDatabase!.AllOutfits select new FloatMenuOption(outfit.label, () => Mod_Multiplayer.SetOutfit(Active.Pawn, outfit))).ToList();
+    options.Add(new FloatMenuOption(Lang.Get("Model.Selector.Manage").Italic(), static () => Find.WindowStack!.Add(new Dialog_ManageApparelPolicies(Active.Pawn.outfits!.CurrentApparelPolicy))));
 
-      Find.WindowStack!.Add(new FloatMenu(options));
-    }
-    catch (Exception exception) { Report.HandleError(exception); }
+    Find.WindowStack!.Add(new FloatMenu(options));
   }
 }

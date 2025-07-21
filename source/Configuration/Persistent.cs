@@ -9,6 +9,7 @@ using RimHUD.Engine;
 using RimHUD.Extensions;
 using RimHUD.Interface.Dialog.Tabs;
 using RimHUD.Interface.Hud.Layers;
+using RimHUD.Interface.Hud.Layout;
 using Verse;
 
 namespace RimHUD.Configuration;
@@ -18,7 +19,7 @@ public static class Persistent
   private const string ConfigRootName = "Config";
 
   private const string VersionAttributeName = "Version";
-  private const string CustomLayoutsElementName = "CustomLayouts";
+  private const string PresetElementName = "Preset";
 
   private const int FilenameLengthMax = 250;
 
@@ -80,7 +81,10 @@ public static class Persistent
 
     LoadElements(root, typeof(Theme));
 
-    Presets.Load(root.Element(CustomLayoutsElementName) is null);
+    var preset = root.Element(PresetElementName)?.Value;
+
+    if (preset is null) { Presets.Load(false); }
+    else { Presets.Load(preset); }
 
     root.Save(ConfigFile.FullName);
   }
@@ -144,7 +148,7 @@ public static class Persistent
 
     if (Tutorial.IsComplete) { xml.Add(new XElement(Tutorial.CompleteElementName)); }
 
-    if (!LayoutLayer.AllStandard) { xml.Add(new XElement(CustomLayoutsElementName)); }
+    if (LayoutPreset.Active is not null) { xml.Add(new XElement(PresetElementName, LayoutPreset.Active)); }
 
     doc.Add(xml);
 

@@ -35,23 +35,15 @@ public sealed class ActivityValue : ValueModel
 
   private static string? GetTooltip()
   {
-    try
-    {
-      if (Active.Pawn.CurJob?.workGiverDef?.Worker?.def?.workType?.labelShort is null) { return null; }
+    if (Active.Pawn.CurJob?.workGiverDef?.Worker?.def?.workType?.labelShort is null) { return null; }
 
-      var work = Active.Pawn.CurJob.workGiverDef.Worker.def.workType!.labelShort.CapitalizeFirst();
+    var work = Active.Pawn.CurJob.workGiverDef.Worker.def.workType!.labelShort.CapitalizeFirst();
 
-      var builder = new StringBuilder();
-      builder.AppendLine(Lang.Get("Model.Info.Activity.WorkType", work));
+    var builder = new StringBuilder();
+    builder.AppendLine(Lang.Get("Model.Info.Activity.WorkType", work));
 
-      if (Active.Pawn.CurJob.workGiverDef.Worker.def.workType!.relevantSkills is { } relevantSkills) { builder.AppendLine(Lang.Get("Model.Info.Activity.RelevantSkills", relevantSkills.Select(static skill => skill.LabelCap.ToString()).ToCommaList())); }
+    if (Active.Pawn.CurJob.workGiverDef.Worker.def.workType!.relevantSkills is { } relevantSkills) { builder.AppendLine(Lang.Get("Model.Info.Activity.RelevantSkills", relevantSkills.Select(static skill => skill.LabelCap.ToString()).ToCommaList())); }
 
-      return builder.ToStringTrimmedOrNull();
-    }
-    catch (Exception exception)
-    {
-      Report.HandleWarning(exception);
-      return null;
-    }
+    return builder.ToStringTrimmedOrNull();
   }
 }

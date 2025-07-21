@@ -14,10 +14,14 @@ namespace RimHUD.Interface.Hud.Layout;
 
 public sealed class LayoutPreset
 {
+  public const string DefaultName = "Default";
+
   private const string RootElementName = "Preset";
   private const string VersionAttributeName = "Version";
   private const string RequiresAttributeName = "Requires";
   private const string TextSizesAttributeName = "TextSizes";
+
+  public static string? Active { get; set; }
 
   public static IEnumerable<LayoutPreset> IntegratedList { get; } = Presets.GetIntegratedList();
   public static IEnumerable<LayoutPreset> UserList { get; private set; } = Presets.GetUserList();
@@ -107,8 +111,10 @@ public sealed class LayoutPreset
     var docked = xml.Element(LayoutLayer.DockedElementName);
     var floating = xml.Element(LayoutLayer.FloatingElementName);
 
-    if (docked is not null) { LayoutLayer.Docked = LayoutLayer.FromXml(docked, true); }
-    if (floating is not null) { LayoutLayer.Floating = LayoutLayer.FromXml(floating, true); }
+    if (docked is not null) { LayoutLayer.Docked = LayoutLayer.FromXml(docked); }
+    if (floating is not null) { LayoutLayer.Floating = LayoutLayer.FromXml(floating); }
+
+    Active = Name;
 
     Persistent.Save();
 

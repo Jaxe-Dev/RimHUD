@@ -47,6 +47,8 @@ public sealed class LayoutEditor
 
   public void Update()
   {
+    LayoutPreset.Active = null;
+
     var updated = LayoutLayer.FromLayoutView(this);
 
     if (Theme.DockedMode.Value) { LayoutLayer.Docked = updated; }
