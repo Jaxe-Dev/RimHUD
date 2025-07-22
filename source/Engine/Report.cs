@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -22,19 +21,19 @@ public static class Report
   public static void Alert(string message) => Messages.Message(message, MessageTypeDefOf.TaskCompletion, false);
   private static string? PrefixMessage(string message) => message.NullOrEmpty() ? null : $"[{Mod.Name} v{Mod.Version}] {message}";
 
-  public static void HandleError(Exception exception)
+  public static void HandleError(System.Exception exception)
   {
     State.Activated = false;
     Dialog_Error.Open(new ErrorInfo(exception));
   }
 
-  private static Exception GetDeepestException(Exception ex)
+  private static System.Exception GetDeepestException(System.Exception ex)
   {
     while (ex.InnerException is not null) { ex = ex.InnerException; }
     return ex;
   }
 
-  public static Exception AddData(this Exception self, string? prefix = null, bool resetOnly = false)
+  public static System.Exception AddData(this System.Exception self, string? prefix = null, bool resetOnly = false)
   {
     if (prefix is not null) { Traverse.Create(self)!.Field("_message")!.SetValue(prefix + self.Message); }
     if (resetOnly) { self.Data[ExceptionDataResetOnlyName] = true; }
@@ -47,11 +46,13 @@ public static class Report
     private const string TriggerMod = "This error appears to have been triggered by";
     private const string TriggerModExtra = "Please consider reporting this issue to the relevant mod author(s).";
     private const string NoticeReactivate = "Clicking Reactivate will reset your config in order to avoid this error.";
-    private const string NoticeDuplicate = "This is a duplicate error - only the original instance is relevant. Clear debug logs to reset error tracking.";
+    private const string NoticeDuplicate = "This is a duplicate error and no longer contains useful information to report.";
+
+    private const string DuplicateLine = "Duplicate stacktrace, see ref for original";
 
     private static readonly Regex RegexExternal = new(@"^\s*(?:- )?(?:at|TRANSPILER|PREFIX|POSTFIX|FINALIZER)\s+(?:\([^\)]+\)\s+)?(\w+)", RegexOptions.Multiline);
-    private static readonly Regex RegexDuplicate = new(@"^\s*\[Ref[^\]]+\] Duplicate stacktrace, see ref for original", RegexOptions.Multiline);
-    private static readonly Regex RegexTidy = new(@"( \[[^]]+\] in <[^>]+>:\d+)", RegexOptions.Multiline);
+    private static readonly Regex RegexDuplicate = new(@"^\s*\[Ref[^\]]+\] " + DuplicateLine, RegexOptions.Multiline);
+    private static readonly Regex RegexTidy = new(@"( \[[^]]+\] in <[^>]+>:\d+|^\s*\[Ref \w+\]\s*$)", RegexOptions.Multiline);
 
     public string Message { get; }
     public string Trace { get; }
@@ -61,7 +62,7 @@ public static class Report
 
     private readonly string? _externalModInvolved;
 
-    public ErrorInfo(Exception exception)
+    public ErrorInfo(System.Exception exception)
     {
       var root = GetDeepestException(exception);
 
@@ -74,6 +75,7 @@ public static class Report
       {
         details.AppendLine($"[{inner.GetType().Name}] {inner.Message}");
         details.AppendLine(inner.StackTrace ?? "(No stacktrace)");
+
         inner = inner.InnerException;
         if (inner is not null) { details.AppendLine(); }
       }
@@ -84,7 +86,8 @@ public static class Report
       {
         IsDuplicate = true;
         Notice = NoticeDuplicate;
-        return;
+
+        throw new Exception("Repeated deactivations, check full log", exception);
       }
 
       _externalModInvolved = GetExternalMod(Trace);
@@ -93,7 +96,7 @@ public static class Report
       else if (!string.Equals(exception.Source, nameof(RimHUD))) { Notice = (_externalModInvolved is null ? TriggerExternal : $"{TriggerMod}:\n\n{_externalModInvolved.Bold()}\n\n{TriggerModExtra}").Colorize(Color.yellow); }
     }
 
-    private static bool CheckIsResetOnly(Exception? exception)
+    private static bool CheckIsResetOnly(System.Exception? exception)
     {
       while (exception is not null)
       {
@@ -119,5 +122,14 @@ public static class Report
     }
 
     public void CopyToClipboard() => GUIUtility.systemCopyBuffer = $"[[RimHUD v{Mod.Version} Auto-deactivation report]]\n" + $"{(_externalModInvolved is null ? null : $"({TriggerMod} '{_externalModInvolved}')\n\n")}" + $"{Message}\n\nStacktrace:\n{Trace}";
+  }
+
+  public class Exception : System.Exception
+  {
+    public Exception(string message) : base(message)
+    { }
+
+    public Exception(string message, System.Exception innerException) : base(message, innerException)
+    { }
   }
 }

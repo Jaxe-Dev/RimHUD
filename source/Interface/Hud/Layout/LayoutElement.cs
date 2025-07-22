@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -143,7 +142,7 @@ public sealed class LayoutElement
       LayoutElementType.Panel => Theme.PanelColor,
       LayoutElementType.Row => Theme.RowColor,
       LayoutElementType.Widget => Theme.WidgetColor,
-      _ => throw new Exception("Invalid layout element type.")
+      _ => throw new Report.Exception("Invalid layout element type.")
     };
   }
 

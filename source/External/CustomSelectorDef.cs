@@ -17,7 +17,7 @@ public sealed class CustomSelectorDef : ExternalWidgetDef, IModel
 
   public IWidget Build(HudArgs? args)
   {
-    var parameters = _getParameters?.Invoke(Active.Pawn) ?? throw new Exception($"Error getting {nameof(CustomSelectorDef)} parameters.").AddData(resetOnly: true);
+    var parameters = _getParameters?.Invoke(Active.Pawn) ?? throw new Report.Exception($"Error getting {nameof(CustomSelectorDef)} parameters.").AddData(resetOnly: true);
     return new SelectorWidget(parameters.label, parameters.tooltip, parameters.onHover, parameters.onClick, textStyle.GetActual(), parameters.backColor);
   }
 

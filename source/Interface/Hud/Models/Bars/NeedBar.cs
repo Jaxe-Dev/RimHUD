@@ -16,8 +16,10 @@ public class NeedBar : BarModel
 
   protected override BarColorStyle? ColorStyle { get; }
 
-  public NeedBar(NeedDef def, Func<string?>? tooltip = null, BarColorStyle? colorStyle = null)
+  public NeedBar(NeedDef? def, Func<string?>? tooltip = null, BarColorStyle? colorStyle = null)
   {
+    if (def is null) { return; }
+
     var need = Active.Pawn.needs?.TryGetNeed(def);
     if (need is null) { return; }
 

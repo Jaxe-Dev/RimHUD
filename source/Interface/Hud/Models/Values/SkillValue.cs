@@ -22,8 +22,10 @@ public class SkillValue : ValueModel
 
   private readonly SkillRecord? _skill;
 
-  public SkillValue(SkillDef def)
+  public SkillValue(SkillDef? def)
   {
+    if (def is null) { return; }
+
     var skill = Active.Pawn.skills?.GetSkill(def);
     if (skill is null) { return; }
 

@@ -17,7 +17,7 @@ public abstract class IntegratedMod
 
   protected bool Enabled { get; private set; }
 
-  protected Traverse Traverse => Traverse.Create(_integrator) ?? throw new Exception($"Error creating Traverse integrator for '{_name}'.");
+  protected Traverse Traverse => Traverse.Create(_integrator) ?? throw new Report.Exception($"Error creating Traverse integrator for '{_name}'.");
 
   protected IntegratedMod(string name, string assemblyName, string integratorName, Version? versionExpected = null)
   {

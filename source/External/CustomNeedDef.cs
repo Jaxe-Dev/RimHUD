@@ -1,4 +1,5 @@
 using System;
+using RimHUD.Engine;
 using RimHUD.Interface.Hud;
 using RimHUD.Interface.Hud.Models;
 using RimHUD.Interface.Hud.Models.Bars;
@@ -22,7 +23,7 @@ public sealed class CustomNeedDef : ExternalWidgetDef, IModel
 
   protected override void InitializeV1()
   {
-    if (needDef is null) { throw new Exception("NeedDef is missing."); }
+    if (needDef is null) { throw new Report.Exception("NeedDef is missing."); }
 
     _getTooltip = GetHandler<string>(false, "GetTooltip", typeof(Pawn));
   }

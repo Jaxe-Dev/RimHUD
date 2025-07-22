@@ -19,9 +19,9 @@ public sealed class TrainableValue : ValueModel
 
   protected override Action? OnClick { get; }
 
-  public TrainableValue(TrainableDef def)
+  public TrainableValue(TrainableDef? def)
   {
-    if (Active.Pawn.RaceProps?.trainability is null || Active.Pawn.training is null || !Active.Pawn.training.CanAssignToTrain(def, out var visible).Accepted || !visible) { return; }
+    if (def is null || Active.Pawn.RaceProps?.trainability is null || Active.Pawn.training is null || !Active.Pawn.training.CanAssignToTrain(def, out var visible).Accepted || !visible) { return; }
 
     var disabled = !Active.Pawn.training.GetWanted(def);
     var hasLearned = Active.Pawn.training.HasLearned(def);

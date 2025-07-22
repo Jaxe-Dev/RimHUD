@@ -14,8 +14,8 @@ public sealed class Mod_Multiplayer : IntegratedMod
     {
       if (!Traverse.Field("enabled")!.GetValue<bool>()) { return; }
 
-      var registerSyncMethod = Traverse.Method("RegisterSyncMethod", [typeof(Type), typeof(string), AccessTools.TypeByName("Multiplayer.API.SyncType")?.MakeArrayType() ?? throw new Exception("Failed to find RegisterSyncMethod argument types.")]);
-      if (registerSyncMethod is null || !registerSyncMethod.MethodExists()) { throw new Exception("Failed to find RegisterSyncMethod."); }
+      var registerSyncMethod = Traverse.Method("RegisterSyncMethod", [typeof(Type), typeof(string), AccessTools.TypeByName("Multiplayer.API.SyncType")?.MakeArrayType() ?? throw new Report.Exception("Failed to find RegisterSyncMethod argument types.")]);
+      if (registerSyncMethod is null || !registerSyncMethod.MethodExists()) { throw new Report.Exception("Failed to find RegisterSyncMethod."); }
 
       registerSyncMethod.GetValue(typeof(Mod_Multiplayer), nameof(SetSelfTend), null);
 

@@ -1,4 +1,3 @@
-using System;
 using HarmonyLib;
 using RimHUD.Configuration;
 using RimHUD.Engine;
@@ -12,7 +11,7 @@ public sealed class Mod : Verse.Mod
 {
   public const string Id = "RimHUD";
   public const string Name = Id;
-  public const string Version = "1.16.5";
+  public const string Version = "1.16.6";
 
   public const string MinConfigVersion = "1.16";
 
@@ -44,7 +43,7 @@ public sealed class Mod : Verse.Mod
       Persistent.Load();
       Integrations.Load();
     }
-    catch (Exception exception)
+    catch (Report.Exception exception)
     {
       Report.Error($"RimHUD was unable to initialize properly due to the following exception:\n{exception}");
       State.Activated = false;

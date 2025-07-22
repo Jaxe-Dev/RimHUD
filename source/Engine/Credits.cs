@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -25,7 +24,7 @@ public static class Credits
     try
     {
       var xml = XDocument.Load(file.FullName).Root;
-      if (xml?.IsEmpty ?? true) { throw new Exception("Unable to load credits."); }
+      if (xml?.IsEmpty ?? true) { throw new Report.Exception("Unable to load credits."); }
 
       _groups = xml.Elements("Group").Select(Group.FromXml).WhereNotNull().ToArray();
     }

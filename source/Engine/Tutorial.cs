@@ -136,7 +136,7 @@ public static class Tutorial
             break;
           }
           default:
-            throw new Exception("Invalid tutorial stage.");
+            throw new Report.Exception("Invalid tutorial stage.");
         }
 
         DrawNotice(_dialogConfigNoticeRect, text);

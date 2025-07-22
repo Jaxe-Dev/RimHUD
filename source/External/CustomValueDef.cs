@@ -16,7 +16,7 @@ public sealed class CustomValueDef : ExternalWidgetDef, IModel
 
   public IWidget Build(HudArgs? args)
   {
-    var parameters = _getParameters?.Invoke(Active.Pawn) ?? throw new Exception($"Error getting {nameof(CustomValueDef)} parameters.").AddData(resetOnly: true);
+    var parameters = _getParameters?.Invoke(Active.Pawn) ?? throw new Report.Exception($"Error getting {nameof(CustomValueDef)} parameters.").AddData(resetOnly: true);
     return new ValueWidget(parameters.value is null ? null : parameters.label, parameters.value ?? parameters.label, parameters.tooltip, parameters.onHover, parameters.onClick, textStyle.GetActual());
   }
 

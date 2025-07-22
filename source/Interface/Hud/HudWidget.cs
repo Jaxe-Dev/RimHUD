@@ -41,8 +41,8 @@ public sealed class HudWidget
 
   public static HudWidget FromModel<T>(string id, Def? def = null) where T : BaseModel, new() => new(id, static args => new T().Build(args), def);
   public static HudWidget FromEitherModel<T, TFallback>(string id, bool condition) where T : BaseModel, new() where TFallback : BaseModel, new() => condition ? FromModel<T>(id) : FromModel<TFallback>(id);
-  public static HudWidget FromSkillModel(string id, SkillDef def) => new(id, args => new SkillValue(def).Build(args), def);
-  public static HudWidget FromTrainableModel(string id, TrainableDef def) => new(id, args => new TrainableValue(def).Build(args), def);
+  public static HudWidget FromSkillModel(string id, SkillDef? def) => new(id, args => new SkillValue(def).Build(args), def);
+  public static HudWidget FromTrainableModel(string id, TrainableDef? def) => new(id, args => new TrainableValue(def).Build(args), def);
 
   public static HudWidget FromNeedDef() => new(HudContent.NeedDefType, static args => args.GetDef<NeedDef>() is { } def ? new NeedBar(def).Build(args) : null, defType: typeof(NeedDef));
   public static HudWidget FromSkillDef() => new(HudContent.SkillDefType, static args => args.GetDef<SkillDef>() is { } def ? new SkillValue(def).Build(args) : null, defType: typeof(SkillDef));
@@ -59,11 +59,7 @@ public sealed class HudWidget
   public IWidget Build(HudArgs args)
   {
     try { return _builder.Invoke(args) ?? BlankWidget.Collapsed; }
-    catch (Exception exception)
-    {
-      Report.HandleError(exception);
-      return BlankWidget.Collapsed;
-    }
+    catch (Exception exception) { throw new Report.Exception($"Error building widget '{Id}'", exception); }
   }
 
   public bool DefNameIsValid(string? defName)

@@ -35,7 +35,7 @@ public abstract class ExternalWidgetDef : Def
           InitializeV1();
           break;
         default:
-          throw new Exception("Unsupported api version.");
+          throw new Report.Exception("Unsupported api version.");
       }
 
       Initialized = true;
@@ -51,18 +51,18 @@ public abstract class ExternalWidgetDef : Def
     if (defClass is null)
     {
       if (!isRequired) { return null; }
-      throw new Exception("Required defClass not found.");
+      throw new Report.Exception("Required defClass not found.");
     }
 
     var method = AccessTools.Method(defClass, methodName, parameterTypes);
-    if (method is null) { return isRequired ? throw new Exception($"No method '{methodName}' in '{defClass.FullName}' with expected signature.") : null; }
-    if (method.ReturnType != typeof(T)) { throw new Exception($"Method '{methodName}' has unexpected return type."); }
+    if (method is null) { return isRequired ? throw new Report.Exception($"No method '{methodName}' in '{defClass.FullName}' with expected signature.") : null; }
+    if (method.ReturnType != typeof(T)) { throw new Report.Exception($"Method '{methodName}' has unexpected return type."); }
 
     var handler = MethodInvoker.GetHandler(method);
     if (handler is not null) { return new ExternalMethodHandler<T>(handler); }
 
     if (!isRequired) { return null; }
-    throw new Exception($"Error getting handler for '{methodName}'");
+    throw new Report.Exception($"Error getting handler for '{methodName}'");
   }
 
   private string GetLogDescription() => $"Widget '{this.GetDefNameOrLabel()}' from mod '{modContentPack?.Name ?? "<unknown>"}'";

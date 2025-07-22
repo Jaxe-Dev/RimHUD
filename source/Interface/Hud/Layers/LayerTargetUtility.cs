@@ -1,5 +1,5 @@
-using System;
 using System.Text;
+using RimHUD.Engine;
 using RimHUD.Extensions;
 
 namespace RimHUD.Interface.Hud.Layers;
@@ -52,7 +52,7 @@ public static class LayerTargetUtility
       LayerTarget.OtherHumanlike => OtherHumanlike,
       LayerTarget.OtherCreature => OtherCreature,
       LayerTarget.All => null,
-      _ => throw new Exception("Invalid layer target type.")
+      _ => throw new Report.Exception("Invalid layer target type.")
     };
   }
 }

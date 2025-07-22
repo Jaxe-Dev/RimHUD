@@ -1,9 +1,9 @@
-using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using RimHUD.Configuration;
+using RimHUD.Engine;
 using RimHUD.Extensions;
 using RimHUD.Interface.Hud.Layout;
 using RimHUD.Interface.Hud.Models;
@@ -79,11 +79,11 @@ public sealed class LayoutLayer : VStackLayer
   private static LayoutLayer FromEmbedded(string id)
   {
     using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(ManifestResourcePrefix + id);
-    if (stream is null) { throw new Exception($"Cannot find embedded layout '{id}'."); }
+    if (stream is null) { throw new Report.Exception($"Cannot find embedded layout '{id}'."); }
 
     using var reader = XmlReader.Create(stream);
     var layout = FromXml(XDocument.Load(reader).Root);
-    if (layout is null) { throw new Exception($"Error reading embedded layout '{id}'."); }
+    if (layout is null) { throw new Report.Exception($"Error reading embedded layout '{id}'."); }
 
     LayoutPreset.Active = LayoutPreset.DefaultName;
 

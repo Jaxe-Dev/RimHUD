@@ -1,4 +1,3 @@
-using System;
 using RimHUD.Configuration;
 using RimHUD.Engine;
 using RimHUD.Extensions;
@@ -11,7 +10,7 @@ namespace RimHUD.Interface.Hud.Models;
 
 public static class Active
 {
-  public static Pawn Pawn => State.SelectedPawn ?? throw new Exception("Tried to get active pawn when none selected.");
+  public static Pawn Pawn => State.SelectedPawn ?? throw new Report.Exception("Tried to get active pawn when none selected.");
 
   public static string Name => Pawn.Name?.ToStringFull.CapitalizeFirst() ?? Pawn.LabelCap;
 
