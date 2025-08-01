@@ -9,19 +9,18 @@ using RimHUD.Engine;
 using RimHUD.Extensions;
 using RimHUD.Interface.Dialog.Tabs;
 using RimHUD.Interface.Hud.Layers;
-using RimHUD.Interface.Hud.Layout;
 using Verse;
 
 namespace RimHUD.Configuration;
 
 public static class Persistent
 {
+  public const int FilenameLengthMax = 250;
+
   private const string ConfigRootName = "Config";
 
   private const string VersionAttributeName = "Version";
   private const string PresetElementName = "Preset";
-
-  private const int FilenameLengthMax = 250;
 
   public static readonly DirectoryInfo ConfigDirectory = new(Path.Combine(GenFilePaths.ConfigFolderPath, Mod.Id));
   private static readonly FileInfo ConfigFile = new(Path.Combine(ConfigDirectory.FullName, "Config.xml"));
@@ -148,7 +147,7 @@ public static class Persistent
 
     if (Tutorial.IsComplete) { xml.Add(new XElement(Tutorial.CompleteElementName)); }
 
-    if (LayoutPreset.Active is not null) { xml.Add(new XElement(PresetElementName, LayoutPreset.Active)); }
+    if (Presets.Active is not null) { xml.Add(new XElement(PresetElementName, Presets.Active)); }
 
     doc.Add(xml);
 
@@ -216,8 +215,6 @@ public static class Persistent
   }
 
   public static void OpenConfigFolder() => Process.Start(ConfigDirectory.FullName);
-
-  public static bool IsValidFilename(string? name) => !name.NullOrWhitespace() && name!.Length <= FilenameLengthMax - Presets.UserPresetsDirectory.FullName.Length && Presets.ValidFilenameRegex.IsMatch(name);
 
   public static void ReportIfReset()
   {

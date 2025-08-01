@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -21,33 +20,27 @@ public sealed class LayoutPreset
   private const string RequiresAttributeName = "Requires";
   private const string TextSizesAttributeName = "TextSizes";
 
-  public static string? Active { get; set; }
-
-  public static IEnumerable<LayoutPreset> IntegratedList { get; } = Presets.GetIntegratedList();
-  public static IEnumerable<LayoutPreset> UserList { get; private set; } = Presets.GetUserList();
-
   public FileInfo File { get; }
 
   public string Name { get; }
 
-  private readonly string? _source;
+  public string? Source { get; }
 
-  public string Label => $"{Name} [{_source?.SmallSize()}]";
-
-  public bool IsUserMade => _source is null;
+  public string Label => $"{Name} [{(Source ?? Lang.Get("Layout.UserPreset")).SmallSize()}]";
 
   private LayoutPreset(FileInfo file, string name, string? source)
   {
     File = file;
     Name = name;
-    _source = source;
+    Source = source;
   }
 
-  public static LayoutPreset? FromFile(ModContentPack? mod, FileInfo file)
+  public static LayoutPreset? FromFile(FileInfo file, ModContentPack? mod)
   {
-    var isIntegrated = mod == Mod.ContentPack;
-    var source = isIntegrated ? Lang.Get("Layout.IntegratedPreset") : mod?.Name ?? Lang.Get("Layout.UserPreset");
     var name = file.NameWithoutExtension();
+    var isCore = Presets.CoreNames.Contains(name);
+    var isIntegrated = mod == Mod.ContentPack;
+    var source = isCore ? Mod.Name : isIntegrated ? Lang.Get("Layout.IntegratedPreset") : mod?.Name;
 
     var xml = Persistent.LoadXml(file);
     if (xml is null)
@@ -85,10 +78,8 @@ public sealed class LayoutPreset
     if (includeFloating) { xml.Add(LayoutLayer.Floating.ToXml(LayoutLayer.FloatingElementName, includeWidth ? Theme.FloatingWidth.Value : -1, includeHeight ? Theme.FloatingHeight.Value : -1)); }
 
     Presets.Save(name, xml);
-    RefreshList();
+    Presets.RefreshList();
   }
-
-  public static void RefreshList() => UserList = Presets.GetUserList();
 
   public bool Load()
   {
@@ -113,7 +104,7 @@ public sealed class LayoutPreset
     if (docked is not null) { LayoutLayer.Docked = LayoutLayer.FromXml(docked); }
     if (floating is not null) { LayoutLayer.Floating = LayoutLayer.FromXml(floating); }
 
-    Active = Name;
+    Presets.Active = Name;
 
     Persistent.Save();
 

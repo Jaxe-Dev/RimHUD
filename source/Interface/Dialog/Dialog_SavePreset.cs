@@ -30,7 +30,7 @@ public sealed class Dialog_SavePreset : WindowPlus
 
   public override void OnAcceptKeyPressed()
   {
-    if (!Persistent.IsValidFilename(_name)) { return; }
+    if (!Presets.IsValidFilename(_name)) { return; }
     Save();
   }
 
@@ -58,7 +58,7 @@ public sealed class Dialog_SavePreset : WindowPlus
     l.Gap();
 
     var buttonGrid = l.GetButtonGrid(-1f, -1f);
-    if (WidgetsPlus.DrawButton(buttonGrid[1], Lang.Get("Interface.Button.Save"), enabled: Persistent.IsValidFilename(_name))) { Save(); }
+    if (WidgetsPlus.DrawButton(buttonGrid[1], Lang.Get("Interface.Button.Save"), enabled: Presets.IsValidFilename(_name))) { Save(); }
     if (WidgetsPlus.DrawButton(buttonGrid[2], Lang.Get("Interface.Button.Cancel"))) { Close(); }
     l.End();
   }
@@ -68,7 +68,7 @@ public sealed class Dialog_SavePreset : WindowPlus
     if (_name is null) { return; }
 
     LayoutPreset.SaveCurrent(_name, _includeDocked, _includeFloating, _includeWidth, _includeHeight, _includeTabs, _includeTextSizes);
-    LayoutPreset.RefreshList();
+    Presets.RefreshList();
 
     Dialog_Alert.Open(Lang.Get("Interface.Alert.PresetSaved", _name));
     Close();

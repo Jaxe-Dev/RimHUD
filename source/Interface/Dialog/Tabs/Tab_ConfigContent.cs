@@ -16,7 +16,6 @@ namespace RimHUD.Interface.Dialog.Tabs;
 public sealed class Tab_ConfigContent : Tab
 {
   private const float EditorWidth = 280f;
-  // private const float TargetsHeight = 120f;
 
   private static LayoutEditor _editor = new();
 
@@ -26,13 +25,10 @@ public sealed class Tab_ConfigContent : Tab
   {
     if (!WidgetsPlus.DrawButton(rect, Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.Select"))) { return; }
 
-    var presets = new List<FloatMenuOption>
-    {
-      new(Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.Default").Colorize(Theme.EmbeddedPresetColor), static () => LoadDefaultLayout()),
-      new(Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.DefaultCompact").Colorize(Theme.EmbeddedPresetColor), static () => LoadDefaultLayout(true))
-    };
-    presets.AddRange(LayoutPreset.UserList.OrderBy(static preset => preset.Label).Select(static preset => new FloatMenuOption(preset.Label, () => LoadLayout(preset))));
-    presets.AddRange(LayoutPreset.IntegratedList.OrderBy(static preset => preset.Label).Select(static preset => new FloatMenuOption(preset.Label.Colorize(Theme.ExternalModColor), () => LoadLayout(preset))));
+    var presets = new List<FloatMenuOption> { new(Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.Default").Colorize(Theme.CorePresetColor), static () => LoadDefaultLayout()) };
+    presets.AddRange(Presets.CoreList.OrderBy(static preset => preset.Label).Select(static preset => new FloatMenuOption(preset.Label.Colorize(Theme.CorePresetColor), () => LoadLayout(preset))));
+    presets.AddRange(Presets.UserList.OrderBy(static preset => preset.Label).Select(static preset => new FloatMenuOption(preset.Label, () => LoadLayout(preset))));
+    presets.AddRange(Presets.PackagedList.OrderBy(static preset => preset.Label).Select(static preset => new FloatMenuOption(preset.Label.Colorize(Theme.ExternalModColor), () => LoadLayout(preset))));
 
     presets.ShowMenu();
   }
@@ -62,9 +58,9 @@ public sealed class Tab_ConfigContent : Tab
     _editor.Add(element);
   });
 
-  private static void LoadDefaultLayout(bool compact = false)
+  private static void LoadDefaultLayout()
   {
-    LayoutLayer.LoadDefaultAndSave(compact);
+    LayoutLayer.LoadDefaultAndSave();
     Dialog_Alert.Open(Lang.Get("Interface.Alert.PresetDefaultLoaded"));
     RefreshEditor();
   }

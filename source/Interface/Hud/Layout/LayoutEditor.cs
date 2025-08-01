@@ -47,7 +47,7 @@ public sealed class LayoutEditor
 
   public void Update()
   {
-    LayoutPreset.Active = null;
+    Presets.Active = null;
 
     var updated = LayoutLayer.FromLayoutView(this);
 

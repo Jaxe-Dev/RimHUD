@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Preset Requires="dubwise.dubsbadhygiene|dubwise.dubsbadhygiene.lite" TextSizes="12|100|9|100|-1|100">
-  <Docked Height="268">
+<Preset TextSizes="12|100|9|100|-1|100">
+  <Docked Height="220">
     <HStack>
       <Panel>
         <Row>
@@ -42,15 +42,6 @@
         </Row>
         <Row>
           <NeedFood Targets="HhC" />
-        </Row>
-        <Row Targets="H">
-          <Need DefName="DBHThirst" />
-        </Row>
-        <Row Targets="H">
-          <Need DefName="Bladder" />
-        </Row>
-        <Row Targets="H">
-          <Need DefName="Hygiene" />
         </Row>
         <Row Targets="HhC">
           <NeedSleep />
@@ -161,7 +152,7 @@
       </Panel>
     </HStack>
   </Docked>
-  <Floating Height="444">
+  <Floating Height="396">
     <Panel FillHeight="true">
       <Row>
         <NameHeader />
@@ -203,15 +194,6 @@
       </Row>
       <Row>
         <NeedFood Targets="HhC" />
-      </Row>
-      <Row Targets="H">
-        <Need DefName="DBHThirst" />
-      </Row>
-      <Row Targets="H">
-        <Need DefName="Bladder" />
-      </Row>
-      <Row Targets="H">
-        <Need DefName="Hygiene" />
       </Row>
       <Row Targets="HhC">
         <NeedSleep />

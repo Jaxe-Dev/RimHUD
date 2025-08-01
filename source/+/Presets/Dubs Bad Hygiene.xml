@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Preset Version="1.16.4" Requires="dubwise.dubsbadhygiene|dubwise.dubsbadhygiene.lite" TextSizes="12|100|9|100|-1|100">
+<Preset Requires="dubwise.dubsbadhygiene|dubwise.dubsbadhygiene.lite" TextSizes="12|100|9|100|-1|100">
   <Docked Height="252">
     <HStack>
       <Panel>

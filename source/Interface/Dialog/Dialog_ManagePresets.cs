@@ -24,7 +24,7 @@ public sealed class Dialog_ManagePresets : WindowPlus
 
   public static void Open()
   {
-    LayoutPreset.RefreshList();
+    Presets.RefreshList();
     Find.WindowStack!.Add(new Dialog_ManagePresets());
   }
 
@@ -35,7 +35,7 @@ public sealed class Dialog_ManagePresets : WindowPlus
     var l = new ListingPlus();
     l.BeginScrollView(vGrid[1], ref _scrollPosition, ref _scrollView);
 
-    foreach (var preset in LayoutPreset.UserList)
+    foreach (var preset in Presets.UserList)
     {
       _selected ??= preset;
       if (l.RadioButton(preset.Name, _selected == preset)) { _selected = preset; }
@@ -49,7 +49,7 @@ public sealed class Dialog_ManagePresets : WindowPlus
 
     if (WidgetsPlus.DrawButton(buttonGrid[1], Lang.Get("Interface.Dialog_ManagePresets.Delete"), enabled: _selected is not null))
     {
-      Dialog_Alert.Open(Lang.Get("Interface.Alert.ConfirmDelete", _selected), Dialog_Alert.Buttons.YesNo, () =>
+      Dialog_Alert.Open(Lang.Get("Interface.Alert.ConfirmDelete", _selected!.Name), Dialog_Alert.Buttons.YesNo, () =>
       {
         Presets.Delete(_selected!);
         _selected = null;

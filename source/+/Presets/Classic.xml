@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Preset Requires="dubwise.dubsbadhygiene|dubwise.dubsbadhygiene.lite" TextSizes="12|100|9|100|-1|100">
-  <Docked Height="268">
+<Preset>
+  <Docked>
     <HStack>
       <Panel>
         <Row>
@@ -41,18 +41,9 @@
           <MentalCondition />
         </Row>
         <Row>
-          <NeedFood Targets="HhC" />
+          <NeedFood />
         </Row>
-        <Row Targets="H">
-          <Need DefName="DBHThirst" />
-        </Row>
-        <Row Targets="H">
-          <Need DefName="Bladder" />
-        </Row>
-        <Row Targets="H">
-          <Need DefName="Hygiene" />
-        </Row>
-        <Row Targets="HhC">
+        <Row>
           <NeedSleep />
         </Row>
         <Row Targets="Cc">
@@ -145,10 +136,10 @@
     <HStack>
       <Panel>
         <Row>
-          <Activity Targets="HC" />
+          <Activity />
         </Row>
         <Row>
-          <Queued Targets="HC" />
+          <Queued />
         </Row>
       </Panel>
       <Panel>
@@ -161,7 +152,7 @@
       </Panel>
     </HStack>
   </Docked>
-  <Floating Height="444">
+  <Floating>
     <Panel FillHeight="true">
       <Row>
         <NameHeader />
@@ -202,18 +193,9 @@
         <MentalCondition />
       </Row>
       <Row>
-        <NeedFood Targets="HhC" />
+        <NeedFood />
       </Row>
-      <Row Targets="H">
-        <Need DefName="DBHThirst" />
-      </Row>
-      <Row Targets="H">
-        <Need DefName="Bladder" />
-      </Row>
-      <Row Targets="H">
-        <Need DefName="Hygiene" />
-      </Row>
-      <Row Targets="HhC">
+      <Row>
         <NeedSleep />
       </Row>
       <Row Targets="Cc">
@@ -303,10 +285,10 @@
         <Separator />
       </Row>
       <Row>
-        <Activity Targets="HC" />
+        <Activity />
       </Row>
       <Row>
-        <Queued Targets="HC" />
+        <Queued />
       </Row>
       <Row>
         <Equipped />

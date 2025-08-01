@@ -40,8 +40,9 @@ Prefix*    : RimWorld.InspectPaneUtility.DoTabs
 Prefix*    : RimWorld.InspectPaneUtility.InspectPaneOnGUI
 Prefix*    : RimWorld.InspectPaneUtility.PaneSizeFor
 Postfix    : RimWorld.InspectPaneUtility.PaneWidthFor
-Transpiler : RimWorld_GeneUIUtility_DrawGenesInfo
+Transpiler : RimWorld.GeneUIUtility.DrawGenesInfo
 Prefix*    : RimWorld.MainTabWindow_Inspect.PaneTopY
+Prefix*    : RimWorld.PawnUtility.ShouldShowActionReportToPlayer
 Postfix    : RimWorld.PlaySettings.DoPlaySettingsGlobalControls
 Prefix*    : RimWorld.Tutor.TutorOnGUI
 Prefix*    : Verse.ActiveTip.DrawInner

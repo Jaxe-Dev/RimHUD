@@ -70,9 +70,9 @@ public sealed class LayoutLayer : VStackLayer
 
   public static LayoutLayer FromLayoutView(LayoutEditor editor) => new(editor.Root.ToXml());
 
-  public static void LoadDefaultAndSave(bool compact = false)
+  public static void LoadDefaultAndSave()
   {
-    LoadDefault(compact);
+    LoadDefault();
     Presets.Save();
   }
 
@@ -85,19 +85,19 @@ public sealed class LayoutLayer : VStackLayer
     var layout = FromXml(XDocument.Load(reader).Root);
     if (layout is null) { throw new Report.Exception($"Error reading embedded layout '{id}'."); }
 
-    LayoutPreset.Active = LayoutPreset.DefaultName;
+    Presets.Active = LayoutPreset.DefaultName;
 
     return layout;
   }
 
-  private static void LoadDefault(bool compact)
+  private static void LoadDefault()
   {
     Docked = DefaultDocked;
     Floating = DefaultFloating;
 
-    Theme.SetDefaultHud(compact);
+    Theme.SetDefault();
 
-    LayoutPreset.Active = LayoutPreset.DefaultName;
+    Presets.Active = LayoutPreset.DefaultName;
 
     Persistent.Save();
   }

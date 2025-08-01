@@ -24,7 +24,7 @@ public static class Theme
   public static readonly Color WidgetColor = Color.white;
   public static readonly Color MissingWidgetColor = Color.red;
 
-  public static readonly Color EmbeddedPresetColor = new(1f, 1f, 0.75f);
+  public static readonly Color CorePresetColor = new(1f, 1f, 0.75f);
   public static readonly Color ExternalModColor = new(0.5f, 1f, 1f);
 
   public static readonly Color ContainerColor = new(1f, 1f, 1f, 0.025f);
@@ -149,32 +149,17 @@ public static class Theme
     Tab_ConfigContent.RefreshEditor();
   }
 
-  public static void SetDefaultHud(bool compact)
+  public static void SetDefault()
   {
     InspectPaneTabWidth.ToDefault();
     InspectPaneMinTabs.ToDefault();
 
-    if (compact)
-    {
-      InspectPaneHeight.Value = 220;
-      FloatingHeight.Value = 396;
+    InspectPaneHeight.ToDefault();
+    FloatingHeight.ToDefault();
+    FloatingWidth.ToDefault();
 
-      RegularTextStyle.Size.Value = 12;
-      RegularTextStyle.Height.Value = 100;
-      LargeTextStyle.Size.Value = 9;
-      LargeTextStyle.Height.Value = 100;
-      SmallTextStyle.Size.Value = -1;
-      SmallTextStyle.Height.Value = 100;
-    }
-    else
-    {
-      InspectPaneHeight.ToDefault();
-      FloatingHeight.ToDefault();
-      FloatingWidth.ToDefault();
-
-      RegularTextStyle.ToDefault();
-      LargeTextStyle.ToDefault();
-      SmallTextStyle.ToDefault();
-    }
+    RegularTextStyle.ToDefault();
+    LargeTextStyle.ToDefault();
+    SmallTextStyle.ToDefault();
   }
 }
