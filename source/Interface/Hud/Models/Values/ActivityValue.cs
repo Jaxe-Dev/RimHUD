@@ -24,8 +24,9 @@ public sealed class ActivityValue : ValueModel
 
   private static string GetValue()
   {
-    var lord = Active.Pawn.GetLord()?.LordJob?.GetReport(Active.Pawn)?.CapitalizeFirst();
-    var jobText = Active.Pawn.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst();
+    var lord = PawnUtility.ShouldDisplayLordReport(Active.Pawn) ? Active.Pawn.GetLord()?.LordJob?.GetReport(Active.Pawn)?.CapitalizeFirst() : null;
+    var jobText = PawnUtility.ShouldDisplayJobReport(Active.Pawn) ? Active.Pawn.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst() : null;
+
     var target = Active.Pawn.IsAttacking() ? Active.Pawn.TargetCurrentlyAimingAt.Thing?.LabelShortCap : null;
 
     var activity = target is null ? lord.NullOrWhitespace() ? jobText : $"{lord} ({jobText})" : Lang.Get("Model.Info.Attacking", target);
@@ -35,14 +36,15 @@ public sealed class ActivityValue : ValueModel
 
   private static string? GetTooltip()
   {
-    if (Active.Pawn.CurJob?.workGiverDef?.Worker?.def?.workType?.labelShort is null) { return null; }
+    var work = Active.Pawn.CurJob?.workGiverDef?.Worker?.def?.workType;
+    if (work is null) { return null; }
 
-    var work = Active.Pawn.CurJob.workGiverDef.Worker.def.workType!.labelShort.CapitalizeFirst();
+    var label = work.labelShort.CapitalizeFirst();
 
     var builder = new StringBuilder();
-    builder.AppendLine(Lang.Get("Model.Info.Activity.WorkType", work));
+    builder.AppendLine(Lang.Get("Model.Info.Activity.WorkType", label));
 
-    if (Active.Pawn.CurJob.workGiverDef.Worker.def.workType!.relevantSkills is { } relevantSkills) { builder.AppendLine(Lang.Get("Model.Info.Activity.RelevantSkills", relevantSkills.Select(static skill => skill.LabelCap.ToString()).ToCommaList())); }
+    if (work.relevantSkills is { } relevantSkills) { builder.AppendLine(Lang.Get("Model.Info.Activity.RelevantSkills", relevantSkills.Select(static skill => skill.LabelCap.ToString()).ToCommaList())); }
 
     return builder.ToStringTrimmedOrNull();
   }

@@ -1,7 +1,6 @@
 using HarmonyLib;
 using RimHUD.Configuration;
 using RimHUD.Engine;
-using RimHUD.Interface;
 using RimWorld;
 using UnityEngine;
 
@@ -14,7 +13,7 @@ public static class RimWorld_InspectPaneUtility_PaneSizeFor
   {
     if (!State.ModifyPane || pane is null) { return true; }
 
-    __result = new Vector2(InspectPaneUtility.PaneWidthFor(pane), Theme.InspectPaneHeight.Value - WidgetsPlus.MainButtonHeight);
+    __result = new Vector2(InspectPaneUtility.PaneWidthFor(pane), Theme.InspectPaneHeight.Value);
 
     return false;
   }

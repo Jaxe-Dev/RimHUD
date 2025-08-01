@@ -40,7 +40,7 @@ public static class Theme
 
   [Setting("InspectPane", "Modify")] public static BoolSetting InspectPaneTabModify { get; } = new(true, Lang.Get("Theme.InspectPaneModify"), Lang.Get("Theme.InspectPaneModifyDesc"), EnsureHudNotHidden);
   [Setting("InspectPane", "AddLog")] public static BoolSetting InspectPaneTabAddLog { get; } = new(true, Lang.Get("Theme.InspectPaneAddLog"), Lang.Get("Theme.InspectPaneAddLogDesc"));
-  [Setting("InspectPane", "Height")] public static RangeSetting InspectPaneHeight { get; } = new(268, 200, 800, Lang.Get("Theme.InspectPaneHeight"));
+  [Setting("InspectPane", "Height")] public static RangeSetting InspectPaneHeight { get; } = new(232, 165, 800, Lang.Get("Theme.InspectPaneHeight"));
   [Setting("InspectPane", "MinTabs")] public static RangeSetting InspectPaneMinTabs { get; } = new(7, 6, 12, Lang.Get("Theme.InspectPaneMinTabs"));
   [Setting("InspectPane", "TabWidth")] public static RangeSetting InspectPaneTabWidth { get; } = new(85, 72, 150, Lang.Get("Theme.InspectPaneTabWidth"));
   [Setting("InspectPane", "ShowFactionIcon")] public static BoolSetting ShowFactionIcon { get; } = new(true, Lang.Get("Theme.ShowFactionIcon"));
@@ -49,8 +49,8 @@ public static class Theme
   [Setting("Floating", "Anchor")] public static RangeSetting FloatingAnchor { get; } = new(2, 0, 8, Lang.Get("Theme.FloatingAnchor"), static value => Lang.GetIndexed("Theme.FloatingAnchors", value), onChange: static _ => SetOffsetBounds());
   [Setting("Floating", "OffsetX")] public static RangeSetting FloatingOffsetX { get; } = new(0, -Screen.width, Screen.width, Lang.Get("Theme.FloatingOffsetX"));
   [Setting("Floating", "OffsetY")] public static RangeSetting FloatingOffsetY { get; } = new(0, -Screen.height, Screen.height, Lang.Get("Theme.FloatingOffsetY"));
-  [Setting("Floating", "Width")] public static RangeSetting FloatingWidth { get; } = new(320, 200, 600, Lang.Get("Theme.FloatingWidth"));
-  [Setting("Floating", "Height")] public static RangeSetting FloatingHeight { get; } = new(416, 300, 800, Lang.Get("Theme.FloatingHeight"));
+  [Setting("Floating", "Width")] public static RangeSetting FloatingWidth { get; } = new(320, 100, 1000, Lang.Get("Theme.FloatingWidth"));
+  [Setting("Floating", "Height")] public static RangeSetting FloatingHeight { get; } = new(416, 100, 1000, Lang.Get("Theme.FloatingHeight"));
   [Setting("Floating", "LetterPadding")] public static RangeSetting LetterPadding { get; } = new(4, 0, 12, Lang.Get("Theme.LetterPadding"), tooltip: Lang.Get("Theme.LetterPaddingDesc"));
   [Setting("Floating", "LetterCompress")] public static BoolSetting LetterCompress { get; } = new(true, Lang.Get("Theme.LetterCompress"), Lang.Get("Theme.LetterCompressDesc"));
 
@@ -156,7 +156,7 @@ public static class Theme
 
     if (compact)
     {
-      InspectPaneHeight.Value = 256;
+      InspectPaneHeight.Value = 220;
       FloatingHeight.Value = 396;
 
       RegularTextStyle.Size.Value = 12;

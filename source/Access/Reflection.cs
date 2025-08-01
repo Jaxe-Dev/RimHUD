@@ -1,5 +1,6 @@
 using System.Reflection;
 using HarmonyLib;
+using RimHUD.Configuration;
 using RimWorld;
 using Verse;
 
@@ -17,6 +18,9 @@ public static class Reflection
   public static readonly FieldInfo Verse_LetterStack_LastTopYInt = AccessTools.Field(typeof(LetterStack), "lastTopYInt");
   public static readonly FieldInfo Verse_LetterStack_Letters = AccessTools.Field(typeof(LetterStack), "letters");
   public static readonly FieldInfo Verse_LetterStack_TmpBundledLetters = AccessTools.Field(typeof(LetterStack), "tmpBundledLetters");
+
+  public static readonly MethodInfo Theme_InspectPaneHeight_Value = AccessTools.PropertyGetter(typeof(Reflection), nameof(Wrapper_InspectPaneHeight));
+  private static float Wrapper_InspectPaneHeight => Theme.InspectPaneHeight.Value;
 
   public static T GetValue<T>(this FieldInfo self, object instance) => (T)self.GetValue(instance);
   public static T GetValueStatic<T>(this FieldInfo self) => (T)self.GetValue(null);

@@ -4,13 +4,38 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <Version>$([System.Text.RegularExpressions.Regex]::Match($([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)\Mod.cs')), 'public const string Version = "(.*?)"').Groups[1].Value)</Version>
+    <GameLibDir Condition="'$(GameLibDir)' == ''">$(registry:HKEY_CURRENT_USER\Software\Valve\Steam@SteamPath)\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</GameLibDir>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4518" />
-    <PackageReference Include="Lib.Harmony" Version="2.3.6">
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </PackageReference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(GameLibDir)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>$(GameLibDir)\System.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(GameLibDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(GameLibDir)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(GameLibDir)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="mscorlib">
+      <HintPath>$(GameLibDir)\mscorlib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyLib)</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

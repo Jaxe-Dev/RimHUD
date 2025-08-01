@@ -36,20 +36,20 @@ Visual warnings will appear if a pawn has any life threatening conditions, has w
 
 The following base methods are patched with Harmony:
 ```
-Prefix* : RimWorld.InspectPaneUtility.DoTabs
-Prefix* : RimWorld.InspectPaneUtility.InspectPaneOnGUI
-Prefix* : RimWorld.InspectPaneUtility.PaneSizeFor
-Postfix : RimWorld.InspectPaneUtility.PaneWidthFor
-Prefix* : RimWorld.ITab.PaneTopY
-Prefix* : RimWorld.MainTabWindow_Inspect.PaneTopY
-Postfix : RimWorld.PlaySettings.DoPlaySettingsGlobalControls
-Prefix* : RimWorld.Tutor.TutorOnGUI
-Prefix* : Verse.ActiveTip.DrawInner
-Prefix* : Verse.ActiveTip.TipRect
-Postfix : Verse.Game.FinalizeInit
-Prefix* : Verse.LetterStack.LettersOnGUI
-Prefix  : Verse.MapInterface.MapInterfaceOnGUI_AfterMainTabs
-Postfix : Verse.MapInterface.Notify_SwitchedMap
-Prefix  : Verse.Profile.MemoryUtility.ClearAllMapsAndWorld
+Prefix*    : RimWorld.InspectPaneUtility.DoTabs
+Prefix*    : RimWorld.InspectPaneUtility.InspectPaneOnGUI
+Prefix*    : RimWorld.InspectPaneUtility.PaneSizeFor
+Postfix    : RimWorld.InspectPaneUtility.PaneWidthFor
+Transpiler : RimWorld_GeneUIUtility_DrawGenesInfo
+Prefix*    : RimWorld.MainTabWindow_Inspect.PaneTopY
+Postfix    : RimWorld.PlaySettings.DoPlaySettingsGlobalControls
+Prefix*    : RimWorld.Tutor.TutorOnGUI
+Prefix*    : Verse.ActiveTip.DrawInner
+Prefix*    : Verse.ActiveTip.TipRect
+Postfix    : Verse.Game.FinalizeInit
+Prefix*    : Verse.LetterStack.LettersOnGUI
+Prefix     : Verse.MapInterface.MapInterfaceOnGUI_AfterMainTabs
+Postfix    : Verse.MapInterface.Notify_SwitchedMap
+Prefix     : Verse.Profile.MemoryUtility.ClearAllMapsAndWorld
 ```
 *A prefix marked by a \* denotes that in some circumstances the original method will be bypassed*

@@ -56,14 +56,13 @@ public sealed class LayoutPreset
       return null;
     }
 
-    var versionText = xml.GetAttribute(VersionAttributeName);
     var requires = xml.GetAttribute(RequiresAttributeName);
-
     if (requires is not null && !requires.Split('|', StringSplitOptions.RemoveEmptyEntries).Any(static require => ModLister.GetActiveModWithIdentifier(require) is not null)) { return null; }
 
     var preset = new LayoutPreset(file, name, source);
     if (isIntegrated) { return preset; }
 
+    var versionText = xml.GetAttribute(VersionAttributeName);
     if (versionText is null)
     {
       Report.Warning($"{name} {source} is does not contain a version check.");

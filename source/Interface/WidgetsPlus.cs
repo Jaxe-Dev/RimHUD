@@ -15,7 +15,6 @@ public static class WidgetsPlus
   public const float ScrollbarWidth = 20f;
 
   public const float ButtonHeight = 30f;
-  public const float MainButtonHeight = 35f;
   public const float TabButtonHeight = ButtonHeight;
   public const float SmallButtonHeight = 18f;
 

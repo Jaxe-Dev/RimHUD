@@ -18,9 +18,10 @@ public static class InspectPanePlus
   {
     Theme.CheckFontChange();
 
-    pane.RecentHeight = Theme.InspectPaneHeight.Value - WidgetsPlus.MainButtonHeight;
+    pane.RecentHeight = Theme.InspectPaneHeight.Value;
 
     var bounds = GetBounds(rect);
+    bounds.height += 1f;
 
     var offset = 0f;
     var headerHeight = Math.Max(Theme.LargeTextStyle.LineHeight, GenUI.SmallIconSize);

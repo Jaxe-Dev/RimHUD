@@ -16,7 +16,7 @@ namespace RimHUD.Interface.Dialog.Tabs;
 public sealed class Tab_ConfigContent : Tab
 {
   private const float EditorWidth = 280f;
-  private const float TargetsHeight = 120f;
+  // private const float TargetsHeight = 120f;
 
   private static LayoutEditor _editor = new();
 
@@ -158,9 +158,15 @@ public sealed class Tab_ConfigContent : Tab
 
     if (!hasSelected || _editor.Selected!.IsRoot) { return; }
 
-    var selectedRect = hGrid[2].GetVGrid(GUIPlus.MediumPadding, -1f, TargetsHeight)[2];
+    var fillHeightToggle = _editor.Selected.Type is LayoutElementType.Stack or LayoutElementType.Panel;
+
+    var linesRemaining = 5 + (fillHeightToggle ? 1 : 0);
+    var selectedRect = hGrid[2].GetVGrid(GUIPlus.MediumPadding, -1f, (linesRemaining * (Text.LineHeight + l.verticalSpacing)) - l.verticalSpacing)[2];
+
     l.Begin(selectedRect);
     l.Label(Lang.Get("Interface.Dialog_Config.Tab_Content.Selected").Bold() + _editor.Selected.Label.Bold().Italic());
+
+    if (fillHeightToggle) { _editor.Selected.FillHeight = l.CheckboxLabeled(Lang.Get("Interface.Dialog_Config.Tab_Content.Selected.Filled"), _editor.Selected.FillHeight, Lang.Get("Interface.Dialog_Config.Tab_Content.Selected.FilledDesc")); }
 
     var targets = LayerTarget.All;
     if (!l.CheckboxLabeled(Lang.Get("Layout.Target.PlayerHumanlike"), _editor.Selected.Targets.HasTarget(LayerTarget.PlayerHumanlike), enabled: _editor.Selected.Targets != LayerTarget.PlayerHumanlike)) { targets &= ~LayerTarget.PlayerHumanlike; }
@@ -169,8 +175,6 @@ public sealed class Tab_ConfigContent : Tab
     if (!l.CheckboxLabeled(Lang.Get("Layout.Target.OtherCreature"), _editor.Selected.Targets.HasTarget(LayerTarget.OtherCreature), enabled: _editor.Selected.Targets != LayerTarget.OtherCreature)) { targets &= ~LayerTarget.OtherCreature; }
 
     _editor.Selected.Targets = targets;
-
-    if (_editor.Selected.Type is LayoutElementType.Stack or LayoutElementType.Panel) { _editor.Selected.FillHeight = l.CheckboxLabeled(Lang.Get("Interface.Dialog_Config.Tab_Content.Selected.Filled"), _editor.Selected.FillHeight, Lang.Get("Interface.Dialog_Config.Tab_Content.Selected.FilledDesc")); }
 
     l.End();
   }

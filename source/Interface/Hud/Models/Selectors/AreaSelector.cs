@@ -21,9 +21,10 @@ public sealed class AreaSelector : SelectorModel
 
   public AreaSelector()
   {
-    if ((!Active.Pawn.Faction?.IsPlayer ?? true) || Active.Pawn.playerSettings is null || (!Active.Pawn.IsColonist && !Active.Pawn.playerSettings.RespectsAllowedArea)) { return; }
+    if ((!Active.Pawn.Faction?.IsPlayer ?? true) || Active.Pawn.playerSettings is null || !Active.Pawn.playerSettings.SupportsAllowedAreas || (!Active.Pawn.IsColonist && !Active.Pawn.playerSettings.RespectsAllowedArea) || (Active.Pawn.IsMutant && !Active.Pawn.mutant!.Def!.respectsAllowedArea)) { return; }
 
     Label = Lang.Get("Model.Selector.AreaFormat", AreaUtility.AreaAllowedLabel(Active.Pawn));
+
     Color = Active.Pawn.playerSettings.EffectiveAreaRestrictionInPawnCurrentMap?.Color;
 
     OnHover = static () => Active.Pawn.playerSettings.EffectiveAreaRestrictionInPawnCurrentMap?.MarkForDraw();

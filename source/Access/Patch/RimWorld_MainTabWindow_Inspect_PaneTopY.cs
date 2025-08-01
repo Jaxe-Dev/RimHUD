@@ -9,11 +9,11 @@ namespace RimHUD.Access.Patch;
 [HarmonyPatch(typeof(MainTabWindow_Inspect), "PaneTopY", MethodType.Getter)]
 public static class RimWorld_MainTabWindow_Inspect_PaneTopY
 {
-  public static bool Prefix(ref float __result)
+  private static bool Prefix(ref float __result)
   {
     if (!State.ModifyPane) { return true; }
 
-    __result = (float)UI.screenHeight - Theme.InspectPaneHeight.Value;
+    __result = (float)UI.screenHeight - Theme.InspectPaneHeight.Value - MainButtonDef.ButtonHeight;
 
     return false;
   }
