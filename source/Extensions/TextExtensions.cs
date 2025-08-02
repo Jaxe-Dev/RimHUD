@@ -13,6 +13,7 @@ public static class TextExtensions
 {
   public static string Italic(this string? self) => $"<i>{self}</i>";
   public static string Bold(this string self) => $"<b>{self}</b>";
+  public static string Unbold(this string self) => $"</b>{self}<b>";
   public static string ColorizeHex(this string self, string hex) => $"<color=#{hex}>{self}</color>";
   public static string ColorizeByDefMod(this string text, Def? def) => def?.modContentPack?.IsOfficialMod ?? true ? text : text.Colorize(Theme.ExternalModColor);
 

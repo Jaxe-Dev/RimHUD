@@ -28,6 +28,7 @@
   <RimHUD.Interface.Dialog_Config.Tab_Content.Layers.Floating>Floating layers</RimHUD.Interface.Dialog_Config.Tab_Content.Layers.Floating>
 
   <RimHUD.Interface.Dialog_Config.Tab_Content.Presets>Presets</RimHUD.Interface.Dialog_Config.Tab_Content.Presets>
+  <RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Active>Preset: {0}</RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Active>
   <RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Select>Select preset...</RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Select>
   <RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Save>Save preset</RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Save>
   <RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Manage>Manage presets</RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Manage>

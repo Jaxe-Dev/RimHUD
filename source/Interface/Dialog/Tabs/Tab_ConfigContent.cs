@@ -94,7 +94,7 @@ public sealed class Tab_ConfigContent : Tab
 
     l.Begin(hGrid[2]);
 
-    l.Label(Lang.Get("Interface.Dialog_Config.Tab_Content.Presets").Bold());
+    l.Label((string.IsNullOrWhiteSpace(Presets.Active) ? Lang.Get("Interface.Dialog_Config.Tab_Content.Presets") : Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.Active", Presets.Active!.Unbold())).Bold());
 
     var layoutButtonRect = l.GetRect(WidgetsPlus.ButtonHeight);
     Tutorial.Presentation.Stages.SetDialogConfigLayoutButton(layoutButtonRect);

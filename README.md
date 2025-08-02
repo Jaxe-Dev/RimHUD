@@ -1,5 +1,5 @@
 # RimHUD
-![Mod Version](https://img.shields.io/badge/Mod_Version-1.17.1-blue.svg)
+![Mod Version](https://img.shields.io/badge/Mod_Version-1.17.2-blue.svg)
 ![RimWorld Version](https://img.shields.io/badge/Built_for_RimWorld-1.6-blue.svg)
 ![Harmony Version](https://img.shields.io/badge/Powered_by_Harmony-2.3.6-blue.svg)\
 ![Steam Downloads](https://img.shields.io/steam/downloads/1508850027?colorB=blue&label=Steam+Downloads)
@@ -42,7 +42,6 @@ Prefix*    : RimWorld.InspectPaneUtility.PaneSizeFor
 Postfix    : RimWorld.InspectPaneUtility.PaneWidthFor
 Transpiler : RimWorld.GeneUIUtility.DrawGenesInfo
 Prefix*    : RimWorld.MainTabWindow_Inspect.PaneTopY
-Prefix*    : RimWorld.PawnUtility.ShouldShowActionReportToPlayer
 Postfix    : RimWorld.PlaySettings.DoPlaySettingsGlobalControls
 Prefix*    : RimWorld.Tutor.TutorOnGUI
 Prefix*    : Verse.ActiveTip.DrawInner

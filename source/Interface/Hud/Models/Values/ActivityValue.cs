@@ -24,8 +24,9 @@ public sealed class ActivityValue : ValueModel
 
   private static string GetValue()
   {
-    var lord = PawnUtility.ShouldDisplayLordReport(Active.Pawn) ? Active.Pawn.GetLord()?.LordJob?.GetReport(Active.Pawn)?.CapitalizeFirst() : null;
-    var jobText = PawnUtility.ShouldDisplayJobReport(Active.Pawn) ? Active.Pawn.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst() : null;
+    var hasJob = Active.Pawn.CurJobDef is not null;
+    var lord = hasJob ? Active.Pawn.GetLord()?.LordJob?.GetReport(Active.Pawn)?.CapitalizeFirst() : null;
+    var jobText = hasJob ? Active.Pawn.jobs?.curDriver?.GetReport()?.TrimEnd('.').CapitalizeFirst() : null;
 
     var target = Active.Pawn.IsAttacking() ? Active.Pawn.TargetCurrentlyAimingAt.Thing?.LabelShortCap : null;
 
