@@ -14,7 +14,7 @@ public sealed class SettingAttribute : Attribute
 
   public Type? Type { get; }
 
-  public SettingAttribute(string? label, Type? type = null) : this(null, label, type)
+  public SettingAttribute(string label, Type? type = null) : this(null, label, type)
   { }
 
   public SettingAttribute(Type type) : this(null, null, type)

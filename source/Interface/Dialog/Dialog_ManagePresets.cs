@@ -51,6 +51,7 @@ public sealed class Dialog_ManagePresets : WindowPlus
     {
       Dialog_Alert.Open(Lang.Get("Interface.Alert.ConfirmDelete", _selected!.Name), Dialog_Alert.Buttons.YesNo, () =>
       {
+        if (Presets.Current?.Name == _selected.Name) { Presets.ClearCurrent(); }
         Presets.Delete(_selected!);
         _selected = null;
       });

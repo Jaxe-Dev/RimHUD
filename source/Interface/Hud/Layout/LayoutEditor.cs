@@ -47,11 +47,11 @@ public sealed class LayoutEditor
 
   public void Update()
   {
-    Presets.Active = null;
-
     var updated = LayoutLayer.FromLayoutView(this);
 
     if (Theme.DockedMode.Value) { LayoutLayer.Docked = updated; }
     else { LayoutLayer.Floating = updated; }
+
+    Presets.ClearCurrent();
   }
 }

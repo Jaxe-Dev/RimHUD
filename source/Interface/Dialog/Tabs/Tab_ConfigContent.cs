@@ -26,9 +26,9 @@ public sealed class Tab_ConfigContent : Tab
     if (!WidgetsPlus.DrawButton(rect, Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.Select"))) { return; }
 
     var presets = new List<FloatMenuOption> { new(Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.Default").Colorize(Theme.CorePresetColor), static () => LoadDefaultLayout()) };
-    presets.AddRange(Presets.CoreList.OrderBy(static preset => preset.Label).Select(static preset => new FloatMenuOption(preset.Label.Colorize(Theme.CorePresetColor), () => LoadLayout(preset))));
-    presets.AddRange(Presets.UserList.OrderBy(static preset => preset.Label).Select(static preset => new FloatMenuOption(preset.Label, () => LoadLayout(preset))));
-    presets.AddRange(Presets.PackagedList.OrderBy(static preset => preset.Label).Select(static preset => new FloatMenuOption(preset.Label.Colorize(Theme.ExternalModColor), () => LoadLayout(preset))));
+    presets.AddRange(Presets.CoreList.OrderBy(static preset => preset.FullLabel).Select(static preset => new FloatMenuOption(preset.FullLabel, () => LoadLayout(preset))));
+    presets.AddRange(Presets.UserList.OrderBy(static preset => preset.FullLabel).Select(static preset => new FloatMenuOption(preset.FullLabel, () => LoadLayout(preset))));
+    presets.AddRange(Presets.PackagedList.OrderBy(static preset => preset.FullLabel).Select(static preset => new FloatMenuOption(preset.FullLabel, () => LoadLayout(preset))));
 
     presets.ShowMenu();
   }
@@ -60,7 +60,7 @@ public sealed class Tab_ConfigContent : Tab
 
   private static void LoadDefaultLayout()
   {
-    LayoutLayer.LoadDefaultAndSave();
+    LayoutLayer.ResetToDefault();
     Dialog_Alert.Open(Lang.Get("Interface.Alert.PresetDefaultLoaded"));
     RefreshEditor();
   }
@@ -94,7 +94,7 @@ public sealed class Tab_ConfigContent : Tab
 
     l.Begin(hGrid[2]);
 
-    l.Label((string.IsNullOrWhiteSpace(Presets.Active) ? Lang.Get("Interface.Dialog_Config.Tab_Content.Presets") : Lang.Get("Interface.Dialog_Config.Tab_Content.Presets.Active", Presets.Active!.Unbold())).Bold());
+    l.Label(Lang.Get("Interface.Dialog_Config.Tab_Content.Presets").Bold());
 
     var layoutButtonRect = l.GetRect(WidgetsPlus.ButtonHeight);
     Tutorial.Presentation.Stages.SetDialogConfigLayoutButton(layoutButtonRect);

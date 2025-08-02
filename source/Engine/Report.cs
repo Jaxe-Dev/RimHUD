@@ -113,7 +113,7 @@ public static class Report
       foreach (Match match in matches)
       {
         var name = match.Groups[1].Value;
-        if (string.IsNullOrWhiteSpace(name) || name is nameof(RimHUD)) { continue; }
+        if (name.NullOrWhitespace() || name is nameof(RimHUD)) { continue; }
 
         var mod = LoadedModManager.RunningMods.FirstOrDefault(mod => mod.assemblies!.loadedAssemblies.Any(assembly => assembly.GetName().Name == name));
         if (mod is { IsOfficialMod: false }) { return $"{mod.Name} [{mod.PackageId}]"; }

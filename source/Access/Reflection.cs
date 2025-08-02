@@ -24,7 +24,6 @@ public static class Reflection
 
   public static T GetValue<T>(this FieldInfo self, object instance) => (T)self.GetValue(instance);
   public static T GetValueStatic<T>(this FieldInfo self) => (T)self.GetValue(null);
-  public static void SetValueStatic<T>(this FieldInfo self, T value) => self.SetValue(null, value);
   public static T Invoke<T>(this FastInvokeHandler self, object target, params object[] parameters) => (T)self.Invoke(target, parameters);
   public static T InvokeStatic<T>(this FastInvokeHandler self, params object[] parameters) => (T)self.Invoke(null, parameters);
   public static void InvokeStatic(this FastInvokeHandler self, params object[] parameters) => self.Invoke(null, parameters);

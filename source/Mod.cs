@@ -11,7 +11,7 @@ public sealed class Mod : Verse.Mod
 {
   public const string Id = "RimHUD";
   public const string Name = Id;
-  public const string Version = "1.17.2";
+  public const string Version = "1.17.3";
 
   public const string MinConfigVersion = "1.17.0";
 

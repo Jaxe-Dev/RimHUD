@@ -16,7 +16,7 @@ public static class LayerTargetUtility
     if (value.NullOrWhitespace()) { return LayerTarget.All; }
 
     var targets = LayerTarget.All;
-    if (!value!.Contains(LayerTarget.PlayerHumanlike.GetId())) { targets &= ~LayerTarget.PlayerHumanlike; }
+    if (!value.Contains(LayerTarget.PlayerHumanlike.GetId())) { targets &= ~LayerTarget.PlayerHumanlike; }
     if (!value.Contains(LayerTarget.PlayerCreature.GetId())) { targets &= ~LayerTarget.PlayerCreature; }
     if (!value.Contains(LayerTarget.OtherHumanlike.GetId())) { targets &= ~LayerTarget.OtherHumanlike; }
     if (!value.Contains(LayerTarget.OtherCreature.GetId())) { targets &= ~LayerTarget.OtherCreature; }

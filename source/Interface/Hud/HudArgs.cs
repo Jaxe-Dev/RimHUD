@@ -76,10 +76,10 @@ public sealed class HudArgs
 
   public XElement ToXml(XElement xml)
   {
-    xml.AddAttribute(TargetsAttribute, Targets.ToId());
-    xml.AddAttribute(FillHeightAttribute, FillHeight);
-    xml.AddAttribute(DefNameAttribute, DefName);
+    if (xml.Name != LayoutLayer.RootName) { xml.AddAttribute(FillHeightAttribute, FillHeight); }
 
+    xml.AddAttribute(TargetsAttribute, Targets.ToId());
+    xml.AddAttribute(DefNameAttribute, DefName);
     xml.AddAttribute(BarColorStyleAttribute, BarColorStyle);
     return xml;
   }

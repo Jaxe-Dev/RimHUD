@@ -7,6 +7,7 @@ using RimHUD.Configuration.Settings;
 using RimHUD.Engine;
 using RimHUD.Extensions;
 using RimHUD.Interface.Hud.Layers;
+using UnityEngine;
 using Verse;
 
 namespace RimHUD.Interface.Hud.Layout;
@@ -20,19 +21,51 @@ public sealed class LayoutPreset
   private const string RequiresAttributeName = "Requires";
   private const string TextSizesAttributeName = "TextSizes";
 
-  public FileInfo File { get; }
+  public static readonly LayoutPreset Default = new();
+
+  public FileInfo? File { get; }
 
   public string Name { get; }
 
   public string? Source { get; }
 
-  public string Label => $"{Name} [{(Source ?? Lang.Get("Layout.UserPreset")).SmallSize()}]";
+  public string Label => Name.Colorize(GetColor());
+  public string FullLabel => $"{Name} [{(Source ?? Lang.Get("Layout.UserPreset")).SmallSize()}]".Colorize(GetColor());
+
+  public bool HasDefinedTextStyles { get; private set; }
+  public bool IsDefault => File is null;
+  public bool IsCore { get; }
+  public bool IsIntegrated { get; }
 
   private LayoutPreset(FileInfo file, string name, string? source)
   {
     File = file;
     Name = name;
     Source = source;
+
+    IsIntegrated = source is not null;
+    IsCore = source?.Equals(Mod.Name, StringComparison.OrdinalIgnoreCase) ?? false;
+  }
+
+  private LayoutPreset()
+  {
+    Name = DefaultName;
+
+    IsCore = true;
+  }
+
+  public static void SaveCurrent(string name, bool includeDocked, bool includeFloating, bool includeWidth, bool includeHeight, bool includeTabs, bool includeTextSizes)
+  {
+    var xml = new XElement(RootElementName);
+
+    xml.Add(new XAttribute(VersionAttributeName, Mod.Version));
+    if (includeTextSizes) { xml.AddAttribute(TextSizesAttributeName, TextStyle.GetSizesString()); }
+
+    if (includeDocked) { xml.Add(LayoutLayer.Docked.ToXml(LayoutLayer.DockedElementName, includeWidth ? Theme.InspectPaneTabWidth.Value : -1, includeHeight ? Theme.InspectPaneHeight.Value : -1, includeTabs ? Theme.InspectPaneMinTabs.Value : -1)); }
+    if (includeFloating) { xml.Add(LayoutLayer.Floating.ToXml(LayoutLayer.FloatingElementName, includeWidth ? Theme.FloatingWidth.Value : -1, includeHeight ? Theme.FloatingHeight.Value : -1)); }
+
+    Presets.Save(name, xml);
+    Presets.RefreshList();
   }
 
   public static LayoutPreset? FromFile(FileInfo file, ModContentPack? mod)
@@ -52,7 +85,7 @@ public sealed class LayoutPreset
     var requires = xml.GetAttribute(RequiresAttributeName);
     if (requires is not null && !requires.Split('|', StringSplitOptions.RemoveEmptyEntries).Any(static require => ModLister.GetActiveModWithIdentifier(require) is not null)) { return null; }
 
-    var preset = new LayoutPreset(file, name, source);
+    var preset = new LayoutPreset(file, name, source) { HasDefinedTextStyles = !xml.GetAttribute(TextSizesAttributeName).NullOrWhitespace() };
     if (isIntegrated) { return preset; }
 
     var versionText = xml.GetAttribute(VersionAttributeName);
@@ -67,34 +100,30 @@ public sealed class LayoutPreset
     return preset;
   }
 
-  public static void SaveCurrent(string name, bool includeDocked, bool includeFloating, bool includeWidth, bool includeHeight, bool includeTabs, bool includeTextSizes)
-  {
-    var xml = new XElement(RootElementName);
-
-    xml.Add(new XAttribute(VersionAttributeName, Mod.Version));
-    if (includeTextSizes) { xml.AddAttribute(TextSizesAttributeName, TextStyle.GetSizesString()); }
-
-    if (includeDocked) { xml.Add(LayoutLayer.Docked.ToXml(LayoutLayer.DockedElementName, includeWidth ? Theme.InspectPaneTabWidth.Value : -1, includeHeight ? Theme.InspectPaneHeight.Value : -1, includeTabs ? Theme.InspectPaneMinTabs.Value : -1)); }
-    if (includeFloating) { xml.Add(LayoutLayer.Floating.ToXml(LayoutLayer.FloatingElementName, includeWidth ? Theme.FloatingWidth.Value : -1, includeHeight ? Theme.FloatingHeight.Value : -1)); }
-
-    Presets.Save(name, xml);
-    Presets.RefreshList();
-  }
+  private Color GetColor() => IsCore ? Theme.CorePresetColor : IsIntegrated ? Theme.ExternalModColor : Theme.UserPresetColor;
 
   public bool Load()
   {
+    if (IsDefault || File is null)
+    {
+      LayoutLayer.ResetToDefault();
+      return true;
+    }
+
     if (!File.ExistsNow())
     {
-      Report.Error($"Preset file '{Label}' not found.");
+      Report.Error($"Preset file '{FullLabel}' not found.");
       return false;
     }
 
     var xml = Persistent.LoadXml(File);
     if (xml is null)
     {
-      Report.Error($"Unable to load preset '{Label}'.");
+      Report.Error($"Unable to load preset '{FullLabel}'.");
       return false;
     }
+
+    Presets.Current = this;
 
     TextStyle.SetFromString(xml.GetAttribute(TextSizesAttributeName));
 
@@ -103,8 +132,6 @@ public sealed class LayoutPreset
 
     if (docked is not null) { LayoutLayer.Docked = LayoutLayer.FromXml(docked); }
     if (floating is not null) { LayoutLayer.Floating = LayoutLayer.FromXml(floating); }
-
-    Presets.Active = Name;
 
     Persistent.Save();
 

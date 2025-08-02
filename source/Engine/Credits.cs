@@ -140,7 +140,7 @@ public static class Credits
 
       var entries = xml.Elements("Entry").Select(entry => Entry.FromXml(entry, format)).WhereNotNull();
 
-      return new Group($"[ {label!.ColorizeHex(color)} ]".Bold(), special, entries.ToArray());
+      return new Group($"[ {label.ColorizeHex(color)} ]".Bold(), special, entries.ToArray());
     }
   }
 }

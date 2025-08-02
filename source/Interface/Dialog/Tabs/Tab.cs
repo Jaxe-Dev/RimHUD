@@ -8,8 +8,6 @@ public abstract class Tab
 
   public abstract void Draw(Rect rect);
 
-  public virtual bool Show => true;
-
   public virtual void Reset()
   { }
 }

@@ -26,7 +26,7 @@ public sealed class Dialog_Config : WindowPlus
 
   private readonly TabManager _tabs;
 
-  private Dialog_Config() : base(new Vector2(800f, 700f), Lang.Get("Interface.Dialog_Config.Title"), Lang.HasKey("Language.TranslatedBy") ? Lang.Get("Language.TranslatedBy") : null)
+  private Dialog_Config() : base(new Vector2(800f, 700f), Lang.Get("Interface.Dialog_Config.Title"))
   {
     onlyOneOfTypeAllowed = true;
     absorbInputAroundWindow = false;
@@ -56,6 +56,8 @@ public sealed class Dialog_Config : WindowPlus
 
   protected override void DrawContent(Rect rect)
   {
+    Subtitle = Presets.Current is null || Presets.Current.IsDefault ? null : Presets.Current.Label;
+
     try
     {
       var grid = rect.GetVGrid(GUIPlus.MediumPadding, -1f, ButtonHeight);
@@ -75,7 +77,7 @@ public sealed class Dialog_Config : WindowPlus
       else if (WidgetsPlus.DrawButton(hGrid[2], Lang.Get("Interface.Dialog_Config.OpenFolder"))) { Persistent.OpenConfigFolder(); }
       else if (WidgetsPlus.DrawButton(hGrid[3], Lang.Get("Interface.Button.Close"))) { Close(); }
 
-      WidgetsPlus.DrawText(grid[2], $"Version {Mod.Version}{(Prefs.DevMode && Mod.DevMode ? " [DEV MODE - Click to disable]".Colorize(Color.yellow) : null)}", GameFont.Tiny, alignment: TextAnchor.LowerRight);
+      WidgetsPlus.DrawText(grid[2], $"Version {Mod.Version}{(Prefs.DevMode && Mod.DevMode ? " [DEV MODE - Shift+Click to disable]".Colorize(Color.yellow) : Lang.HasKey("Language.TranslatedBy") ? " " + Lang.Get("Language.TranslatedBy").Colorize(Theme.InfoColor.Value) : null)}", Theme.TinyUITextStyle, alignment: TextAnchor.LowerRight);
 
       if (!Event.current!.shift || !Widgets.ButtonInvisible(grid[2]) || !Prefs.DevMode) { return; }
 

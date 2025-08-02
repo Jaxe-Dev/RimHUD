@@ -58,7 +58,7 @@ public sealed class ListingPlus : Listing_Standard
   {
     if (!Label(text, color: color, hoverColor: hoverColor ?? LinkHoverColor) || url.NullOrWhitespace()) { return; }
 
-    var menuText = $"Click to visit URL:\n{url!.SmallSize().Italic()}";
+    var menuText = $"Click to visit URL:\n{url.SmallSize().Italic()}";
     var menu = new List<FloatMenuOption> { new(menuText, () => Application.OpenURL(url)) };
 
     Find.WindowStack!.Add(new FloatMenu(menu));

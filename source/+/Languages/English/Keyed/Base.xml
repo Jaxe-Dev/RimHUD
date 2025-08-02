@@ -2,7 +2,7 @@
 
 <LanguageData>
   <!-- Uncomment and modify the line below if you would like your name to be credited in the config window -->
-  <!--<RimHUD.Language.TranslatedBy>translated by Jaxe</RimHUD.Language.TranslatedBy>-->
+  <!-- <RimHUD.Language.TranslatedBy>translated by Jaxe</RimHUD.Language.TranslatedBy> -->
   <RimHUD.Language.AdjectiveNounOrder>{0} {1}</RimHUD.Language.AdjectiveNounOrder>
 
   <RimHUD.ToggleHud>Show HUD</RimHUD.ToggleHud>

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using RimHUD.Configuration;
 using RimHUD.Interface;
@@ -13,7 +14,6 @@ public static class TextExtensions
 {
   public static string Italic(this string? self) => $"<i>{self}</i>";
   public static string Bold(this string self) => $"<b>{self}</b>";
-  public static string Unbold(this string self) => $"</b>{self}<b>";
   public static string ColorizeHex(this string self, string hex) => $"<color=#{hex}>{self}</color>";
   public static string ColorizeByDefMod(this string text, Def? def) => def?.modContentPack?.IsOfficialMod ?? true ? text : text.Colorize(Theme.ExternalModColor);
 
@@ -63,6 +63,6 @@ public static class TextExtensions
     self.AppendValue(def.LabelCap, pawn.needs.TryGetNeed(def)?.CurLevelPercentage.ToStringPercent());
   }
 
-  public static bool NullOrWhitespace(this string? self) => string.IsNullOrWhiteSpace(self);
+  public static bool NullOrWhitespace([NotNullWhen(false)] this string? self) => string.IsNullOrWhiteSpace(self);
   public static bool NullOrWhitespace(this TaggedString self) => self.RawText.NullOrWhitespace();
 }

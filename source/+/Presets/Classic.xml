@@ -152,7 +152,7 @@
       </Panel>
     </HStack>
   </Docked>
-  <Floating>
+  <Floating Height="416">
     <Panel FillHeight="true">
       <Row>
         <NameHeader />

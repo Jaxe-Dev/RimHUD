@@ -23,14 +23,14 @@ public sealed class LayoutLayer : VStackLayer
   public const string DockedElementName = "Docked";
   public const string FloatingElementName = "Floating";
 
-  private const string ManifestResourcePrefix = "RimHUD.Resources.Layouts.";
+  private const string EmbeddedResourcePrefix = "RimHUD.Resources.Layouts.";
 
   private const string WidthAttributeName = "Width";
   private const string HeightAttributeName = "Height";
   private const string TabsAttributeName = "Tabs";
 
-  private static readonly LayoutLayer DefaultDocked = FromEmbedded("Defaults.Docked.xml");
-  private static readonly LayoutLayer DefaultFloating = FromEmbedded("Defaults.Floating.xml");
+  public static readonly LayoutLayer DefaultDocked = FromEmbedded("Defaults.Docked.xml");
+  public static readonly LayoutLayer DefaultFloating = FromEmbedded("Defaults.Floating.xml");
 
   public static LayoutLayer Docked { get; set; } = DefaultDocked;
   public static LayoutLayer Floating { get; set; } = DefaultFloating;
@@ -38,6 +38,10 @@ public sealed class LayoutLayer : VStackLayer
   private readonly Stopwatch _stopwatch = new();
 
   private Pawn? _lastPawn;
+
+  public bool HasDefinedHeight { get; set; }
+  public bool HasDefinedWidth { get; set; }
+  public bool HasDefinedTabs { get; set; }
 
   private LayoutLayer(XElement xml) : base(xml)
   {
@@ -53,54 +57,74 @@ public sealed class LayoutLayer : VStackLayer
     var height = xml.GetAttribute(HeightAttributeName)?.ToInt() ?? -1;
     var tabs = xml.GetAttribute(TabsAttributeName)?.ToInt() ?? -1;
 
+    Presets.IsLoading = true;
+
+    if (docked)
+    {
+      Theme.InspectPaneHeight.ToDefault();
+      Theme.InspectPaneTabWidth.ToDefault();
+      Theme.InspectPaneMinTabs.ToDefault();
+    }
+    else
+    {
+      Theme.FloatingHeight.ToDefault();
+      Theme.FloatingWidth.ToDefault();
+    }
+
     if (height > 0)
     {
+      HasDefinedHeight = true;
+
       if (docked) { Theme.InspectPaneHeight.Value = height; }
       else { Theme.FloatingHeight.Value = height; }
     }
     if (width > 0)
     {
+      HasDefinedWidth = true;
+
       if (docked) { Theme.InspectPaneTabWidth.Value = width; }
       else { Theme.FloatingWidth.Value = width; }
     }
-    if (docked && tabs > 0) { Theme.InspectPaneMinTabs.Value = tabs; }
+    if (docked && tabs > 0)
+    {
+      HasDefinedTabs = true;
+
+      Theme.InspectPaneMinTabs.Value = tabs;
+    }
+
+    Presets.IsLoading = false;
   }
 
   public static LayoutLayer FromXml(XElement xml) => new(xml);
 
   public static LayoutLayer FromLayoutView(LayoutEditor editor) => new(editor.Root.ToXml());
 
-  public static void LoadDefaultAndSave()
-  {
-    LoadDefault();
-    Presets.Save();
-  }
-
   private static LayoutLayer FromEmbedded(string id)
   {
-    using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(ManifestResourcePrefix + id);
+    using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(EmbeddedResourcePrefix + id);
     if (stream is null) { throw new Report.Exception($"Cannot find embedded layout '{id}'."); }
 
     using var reader = XmlReader.Create(stream);
     var layout = FromXml(XDocument.Load(reader).Root);
     if (layout is null) { throw new Report.Exception($"Error reading embedded layout '{id}'."); }
 
-    Presets.Active = LayoutPreset.DefaultName;
-
     return layout;
   }
 
-  private static void LoadDefault()
+  public static void ResetToDefault()
   {
     Docked = DefaultDocked;
     Floating = DefaultFloating;
 
     Theme.SetDefault();
 
-    Presets.Active = LayoutPreset.DefaultName;
+    Presets.Current = LayoutPreset.Default;
 
     Persistent.Save();
+    Presets.Save();
   }
+
+  public static XElement ToEmptyXml() => new(RootName);
 
   public XElement ToXml(string? name, int width = -1, int height = -1, int tabs = -1)
   {

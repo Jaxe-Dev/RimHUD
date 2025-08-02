@@ -20,9 +20,10 @@ public sealed class TextStyle : BaseSetting
   [Setting("Line")] public RangeSetting Height { get; }
 
   private readonly Action<TextStyle>? _onChange;
+  private readonly Func<TextStyle, bool>? _extraDefaultCheck;
   public float LineHeight { get; private set; }
 
-  public TextStyle(string? label, TextStyle? baseTextStyle, int size, int sizeMin, int sizeMax, int height, int heightMin, int heightMax, Action<TextStyle>? onChange = null)
+  public TextStyle(string? label, TextStyle? baseTextStyle, int size, int sizeMin, int sizeMax, int height, int heightMin, int heightMax, Action<TextStyle>? onChange = null, Func<TextStyle, bool>? extraDefaultCheck = null)
   {
     _baseTextStyle = baseTextStyle;
 
@@ -34,14 +35,28 @@ public sealed class TextStyle : BaseSetting
     UpdateStyle();
 
     _onChange = onChange;
+    _extraDefaultCheck = extraDefaultCheck;
   }
 
   public static void SetFromString(string? value)
   {
+    Presets.IsLoading = true;
+
+    Theme.RegularTextStyle.Size.ToDefault();
+    Theme.RegularTextStyle.Height.ToDefault();
+    Theme.LargeTextStyle.Size.ToDefault();
+    Theme.LargeTextStyle.Height.ToDefault();
+    Theme.SmallTextStyle.Size.ToDefault();
+    Theme.SmallTextStyle.Height.ToDefault();
+
+    Presets.IsLoading = false;
+
     if (value.NullOrWhitespace()) { return; }
 
-    var split = value!.Split('|');
+    var split = value.Split('|');
     if (split?.Length is not 6) { return; }
+
+    Presets.IsLoading = true;
 
     Theme.RegularTextStyle.Size.Value = split[0].ToInt() ?? Theme.RegularTextStyle.Size.Value;
     Theme.RegularTextStyle.Height.Value = split[1].ToInt() ?? Theme.RegularTextStyle.Height.Value;
@@ -49,6 +64,8 @@ public sealed class TextStyle : BaseSetting
     Theme.LargeTextStyle.Height.Value = split[3].ToInt() ?? Theme.LargeTextStyle.Height.Value;
     Theme.SmallTextStyle.Size.Value = split[4].ToInt() ?? Theme.SmallTextStyle.Size.Value;
     Theme.SmallTextStyle.Height.Value = split[5].ToInt() ?? Theme.SmallTextStyle.Height.Value;
+
+    Presets.IsLoading = false;
   }
 
   public static string GetSizesString() => $"{Theme.RegularTextStyle.Size.Value}|{Theme.RegularTextStyle.Height.Value}|{Theme.LargeTextStyle.Size.Value}|{Theme.LargeTextStyle.Height.Value}|{Theme.SmallTextStyle.Size.Value}|{Theme.SmallTextStyle.Height.Value}";
@@ -59,13 +76,14 @@ public sealed class TextStyle : BaseSetting
     Height.ToDefault();
   }
 
-  public override void Refresh() => _onChange?.Invoke(this);
+  public override bool IsDefault() => _extraDefaultCheck?.Invoke(this) ?? (Size.IsDefault() && Height.IsDefault());
 
   public void UpdateStyle()
   {
     GUIStyle = _baseTextStyle?.GUIStyle.ResizedBy(Size.Value) ?? Theme.BaseGUIStyle.SetTo(Size.Value);
     LineHeight = GUIStyle.lineHeight * Height.Value.ToPercentageFloat();
 
+    if (!Presets.IsLoading && !IsDefault()) { Presets.ClearCurrent(); }
     _onChange?.Invoke(this);
   }
 }

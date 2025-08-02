@@ -13,8 +13,8 @@ public abstract class WindowPlus : Window
 
   public override Vector2 InitialSize { get; }
 
-  private readonly string _title;
-  private readonly string? _subtitle;
+  protected string Title { get; set; }
+  protected string? Subtitle { get; set; }
 
   protected WindowPlus(Vector2 size, string title, string? subtitle = null)
   {
@@ -27,15 +27,15 @@ public abstract class WindowPlus : Window
 
     InitialSize = size == default ? new Vector2(800f, 600f) : size;
 
-    _title = title;
-    _subtitle = subtitle;
+    Title = title;
+    Subtitle = subtitle;
   }
 
   public override void DoWindowContents(Rect rect) => DrawContent(DrawTitle(rect));
 
   private Rect DrawTitle(Rect rect)
   {
-    if (_title.NullOrEmpty()) { return rect; }
+    if (Title.NullOrEmpty()) { return rect; }
 
     GUIPlus.SetWrap(false);
 
@@ -43,14 +43,15 @@ public abstract class WindowPlus : Window
 
     header.Begin(rect);
 
-    header.Label(_title.Bold(), font: GameFont.Medium);
+    header.Label(Title.Bold(), font: GameFont.Medium);
 
-    if (!_subtitle.NullOrWhitespace())
+    if (!Subtitle.NullOrWhitespace())
     {
-      var titleSize = GUIPlus.GetTextSize(GUIPlus.GetGameFontStyle(GameFont.Medium), _title);
+      var titleSize = GUIPlus.GetTextSize(GUIPlus.GetGameFontStyle(GameFont.Medium), Title);
       var titleOffset = titleSize.x + GUIPlus.MediumPadding;
-      var subtitleRect = new Rect(rect.x + titleOffset, rect.y, rect.width - titleOffset, titleSize.y);
-      WidgetsPlus.DrawText(subtitleRect, _subtitle.Italic(), Theme.SmallTextStyle);
+      var subtitleRect = new Rect(rect.x + titleOffset, rect.y + 1f, rect.width - titleOffset, titleSize.y);
+
+      WidgetsPlus.DrawText(subtitleRect, Subtitle, Theme.TinyUITextStyle, alignment: TextAnchor.MiddleLeft);
     }
 
     header.GapLine();

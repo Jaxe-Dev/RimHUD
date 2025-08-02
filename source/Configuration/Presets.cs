@@ -31,7 +31,7 @@ public static class Presets
 
   static Presets()
   {
-    var packaged = GetPackagedList().ToLookup(static preset => preset.Source == Mod.Name);
+    var packaged = GetPackagedList().ToLookup(static preset => preset.IsCore);
 
     CoreList = packaged[true].ToArray();
     PackagedList = packaged[false].ToArray();
@@ -39,31 +39,19 @@ public static class Presets
     UserList = GetUserList();
   }
 
-  public static string? Active { get; set; }
+  public static LayoutPreset? Current { get; set; }
+
+  public static bool IsLoading { get; set; }
 
   public static IEnumerable<LayoutPreset> CoreList { get; }
   public static IEnumerable<LayoutPreset> PackagedList { get; }
   public static IEnumerable<LayoutPreset> UserList { get; private set; }
 
-  public static void Load(bool reset)
-  {
-    var docked = new FileInfo(Path.Combine(Persistent.ConfigDirectory.FullName, LayoutLayer.DockedFileName));
-    var floating = new FileInfo(Path.Combine(Persistent.ConfigDirectory.FullName, LayoutLayer.FloatingFileName));
-
-    if (!reset && docked.Exists && Persistent.LoadXml(docked) is { } dockedXe) { LayoutLayer.Docked = LayoutLayer.FromXml(dockedXe); }
-    else { LayoutLayer.Docked.ToXml().Save(docked.FullName); }
-
-    if (!reset && floating.Exists && Persistent.LoadXml(floating) is { } floatingXe) { LayoutLayer.Floating = LayoutLayer.FromXml(floatingXe); }
-    else { LayoutLayer.Floating.ToXml().Save(floating.FullName); }
-
-    if (reset) { Active = LayoutPreset.DefaultName; }
-  }
-
   public static void Load(string preset)
   {
-    if (string.IsNullOrWhiteSpace(preset) || preset is LayoutPreset.DefaultName)
+    if (preset.NullOrWhitespace() || preset is LayoutPreset.DefaultName)
     {
-      Load(true);
+      LoadSavedOrDefault(true);
       return;
     }
 
@@ -84,7 +72,26 @@ public static class Presets
       return;
     }
 
-    Load(true);
+    LoadSavedOrDefault(true);
+  }
+
+  public static void LoadSavedOrDefault(bool reset = false)
+  {
+    Current = reset ? LayoutPreset.Default : null;
+
+    var docked = new FileInfo(Path.Combine(Persistent.ConfigDirectory.FullName, LayoutLayer.DockedFileName));
+    var floating = new FileInfo(Path.Combine(Persistent.ConfigDirectory.FullName, LayoutLayer.FloatingFileName));
+
+    LayoutLayer.Docked = TryLoadSaved(reset, docked, LayoutLayer.DefaultDocked);
+    LayoutLayer.Floating = TryLoadSaved(reset, floating, LayoutLayer.DefaultFloating);
+  }
+
+  private static LayoutLayer TryLoadSaved(bool reset, FileInfo file, LayoutLayer @default)
+  {
+    if (!reset && file.Exists && Persistent.LoadXml(file) is { IsEmpty: false } xml) { return LayoutLayer.FromXml(xml); }
+
+    @default.ToXml().Save(file.FullName);
+    return @default;
   }
 
   private static bool TryLoadPreset(string name, ModContentPack? mod)
@@ -92,7 +99,9 @@ public static class Presets
     var folder = mod is null ? UserPresetsDirectory.FullName : Path.Combine(mod.RootDir, mod == Mod.ContentPack ? DirectoryName : ModDirectoryName);
 
     var file = new FileInfo(Path.Combine(folder, name + Extension));
-    return file.Exists && (LayoutPreset.FromFile(file, mod)?.Load() ?? false);
+    var result = file.Exists && (LayoutPreset.FromFile(file, mod)?.Load() ?? false);
+
+    return result;
   }
 
   public static void Save()
@@ -100,8 +109,16 @@ public static class Presets
     var docked = new FileInfo(Path.Combine(Persistent.ConfigDirectory.FullName, LayoutLayer.DockedFileName));
     var floating = new FileInfo(Path.Combine(Persistent.ConfigDirectory.FullName, LayoutLayer.FloatingFileName));
 
-    LayoutLayer.Docked.ToXml().Save(docked.FullName);
-    LayoutLayer.Floating.ToXml().Save(floating.FullName);
+    if (Current is null)
+    {
+      LayoutLayer.Docked.ToXml().Save(docked.FullName);
+      LayoutLayer.Floating.ToXml().Save(floating.FullName);
+    }
+    else
+    {
+      LayoutLayer.ToEmptyXml().Save(docked.FullName);
+      LayoutLayer.ToEmptyXml().Save(floating.FullName);
+    }
   }
 
   public static void Save(string name, XElement xml)
@@ -112,7 +129,7 @@ public static class Presets
 
   public static void Delete(LayoutPreset preset)
   {
-    if (preset.Source is not null || !preset.File.ExistsNow()) { return; }
+    if (preset.IsIntegrated || preset.File is null || !preset.File.ExistsNow()) { throw new Report.Exception($"Tried to delete invalid preset '{preset.Name}'"); }
     preset.File.Delete();
     RefreshList();
   }
@@ -140,5 +157,12 @@ public static class Presets
 
   public static void RefreshList() => UserList = GetUserList();
 
-  public static bool IsValidFilename(string? name) => !name.NullOrWhitespace() && name!.Length <= Persistent.FilenameLengthMax - UserPresetsDirectory.FullName.Length && ValidFilenameRegex.IsMatch(name) && !CoreList.Concat(PackagedList).Any(preset => string.Equals(preset.Name, name, StringComparison.OrdinalIgnoreCase));
+  public static bool IsValidFilename(string? name) => !name.NullOrWhitespace() && !name.Equals(LayoutPreset.DefaultName, StringComparison.OrdinalIgnoreCase) && name.Length <= Persistent.FilenameLengthMax - UserPresetsDirectory.FullName.Length && ValidFilenameRegex.IsMatch(name) && !CoreList.Concat(PackagedList).Any(preset => string.Equals(preset.Name, name, StringComparison.OrdinalIgnoreCase));
+
+  public static void ClearCurrent()
+  {
+    Current = null;
+    LayoutLayer.Docked.HasDefinedHeight = false;
+    LayoutLayer.Floating.HasDefinedHeight = false;
+  }
 }

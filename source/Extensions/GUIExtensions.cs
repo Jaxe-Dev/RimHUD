@@ -66,8 +66,6 @@ public static class GUIExtensions
 
   public static void ShowMenu(this IEnumerable<FloatMenuOption> self) => Find.WindowStack!.Add(new FloatMenu(self.ToList()));
 
-  public static Vector2 ToGUIPoint(this Vector2 self) => GUIUtility.ScreenToGUIPoint(self * Prefs.UIScale);
-  public static Vector2 ToScreenPoint(this Vector2 self) => UI.GUIToScreenPoint(self);
-  public static Rect ToGUIRect(this Rect self) => new() { min = self.min.ToGUIPoint(), max = self.max.ToGUIPoint() };
+  public static Rect ToGUIRect(this Rect self) => new() { min = GUIUtility.ScreenToGUIPoint(self.min * Prefs.UIScale), max = GUIUtility.ScreenToGUIPoint(self.max * Prefs.UIScale) };
   public static Rect ToScreenRect(this Rect self) => UI.GUIToScreenRect(self);
 }

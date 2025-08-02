@@ -1,3 +1,4 @@
+using System.Linq;
 using RimHUD.Configuration;
 using RimHUD.Engine;
 using RimHUD.Interface.Hud.Layout;
@@ -65,10 +66,12 @@ public sealed class Dialog_SavePreset : WindowPlus
 
   private void Save()
   {
-    if (_name is null) { return; }
+    if (_name is null) { throw new Report.Exception("Tried to save preset with no name"); }
 
     LayoutPreset.SaveCurrent(_name, _includeDocked, _includeFloating, _includeWidth, _includeHeight, _includeTabs, _includeTextSizes);
     Presets.RefreshList();
+
+    Presets.Current = Presets.UserList.FirstOrDefault(preset => preset.Name == _name);
 
     Dialog_Alert.Open(Lang.Get("Interface.Alert.PresetSaved", _name));
     Close();

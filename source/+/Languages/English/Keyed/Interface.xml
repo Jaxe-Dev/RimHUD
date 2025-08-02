@@ -28,12 +28,10 @@
   <RimHUD.Interface.Dialog_Config.Tab_Content.Layers.Floating>Floating layers</RimHUD.Interface.Dialog_Config.Tab_Content.Layers.Floating>
 
   <RimHUD.Interface.Dialog_Config.Tab_Content.Presets>Presets</RimHUD.Interface.Dialog_Config.Tab_Content.Presets>
-  <RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Active>Preset: {0}</RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Active>
   <RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Select>Select preset...</RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Select>
   <RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Save>Save preset</RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Save>
   <RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Manage>Manage presets</RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Manage>
   <RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Default>[Default]</RimHUD.Interface.Dialog_Config.Tab_Content.Presets.Default>
-  <RimHUD.Interface.Dialog_Config.Tab_Content.Presets.DefaultCompact>[Default - Compact]</RimHUD.Interface.Dialog_Config.Tab_Content.Presets.DefaultCompact>
 
   <RimHUD.Interface.Dialog_Config.Tab_Content.Layer>Layer</RimHUD.Interface.Dialog_Config.Tab_Content.Layer>
   <RimHUD.Interface.Dialog_Config.Tab_Content.Layer.MoveUp>Move up</RimHUD.Interface.Dialog_Config.Tab_Content.Layer.MoveUp>

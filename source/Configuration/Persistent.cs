@@ -82,10 +82,10 @@ public static class Persistent
 
     var preset = root.Element(PresetElementName)?.Value;
 
-    if (preset is null) { Presets.Load(false); }
+    if (preset is null) { Presets.LoadSavedOrDefault(); }
     else { Presets.Load(preset); }
 
-    root.Save(ConfigFile.FullName);
+    Save();
   }
 
   public static XElement? LoadXml(FileInfo file, bool resetOnFail = false)
@@ -147,7 +147,7 @@ public static class Persistent
 
     if (Tutorial.IsComplete) { xml.Add(new XElement(Tutorial.CompleteElementName)); }
 
-    if (Presets.Active is not null) { xml.Add(new XElement(PresetElementName, Presets.Active)); }
+    if (Presets.Current is not null && !Presets.Current.IsDefault) { xml.Add(new XElement(PresetElementName, Presets.Current.Name)); }
 
     doc.Add(xml);
 
@@ -170,28 +170,33 @@ public static class Persistent
 
     foreach (var propertyInfo in type.GetProperties())
     {
-      var settings = propertyInfo.TryGetAttribute<SettingAttribute>();
-      if (settings is null) { continue; }
+      var attribute = propertyInfo.TryGetAttribute<SettingAttribute>();
+      if (attribute is null) { continue; }
 
       var propertyValue = propertyInfo.GetValue(instance, null);
 
-      if (settings.Label.NullOrEmpty())
+      if (attribute.Label.NullOrEmpty())
       {
-        if (settings.Type is not null) { xml.Value = settings.ConvertToXml(propertyValue); }
+        if (attribute.Type is not null) { xml.Value = attribute.ConvertToXml(propertyValue); }
         return;
       }
 
-      var element = new XElement(settings.Label);
+      var element = new XElement(attribute.Label);
 
-      if (settings.Type is not null) { element.Value = settings.ConvertToXml(propertyValue); }
-      else { SaveElements(propertyValue, element); }
-
-      if (element.IsEmpty) { continue; }
-      if (settings.Category is null) { xml.Add(element); }
+      if (attribute.Type is not null) { element.Value = attribute.ConvertToXml(propertyValue); }
       else
       {
-        if (!categories.ContainsKey(settings.Category)) { categories[settings.Category] = new XElement(settings.Category); }
-        categories[settings.Category]?.Add(element);
+        if (propertyValue is BaseSetting setting && setting.IsDefault()) { continue; }
+
+        SaveElements(propertyValue, element);
+      }
+
+      if (element.IsEmpty) { continue; }
+      if (attribute.Category is null) { xml.Add(element); }
+      else
+      {
+        if (!categories.ContainsKey(attribute.Category)) { categories[attribute.Category] = new XElement(attribute.Category); }
+        categories[attribute.Category]?.Add(element);
       }
     }
 
@@ -203,7 +208,7 @@ public static class Persistent
     SettingsToDefault();
     Save();
 
-    Presets.Load(true);
+    Presets.LoadSavedOrDefault(true);
     if (!initializationStage) { Tab_ConfigContent.RefreshEditor(); }
   }
 
@@ -211,7 +216,7 @@ public static class Persistent
   {
     Theme.Settings.Do(static settings => settings.ToDefault());
 
-    LayoutLayer.LoadDefaultAndSave();
+    LayoutLayer.ResetToDefault();
   }
 
   public static void OpenConfigFolder() => Process.Start(ConfigDirectory.FullName);
@@ -219,6 +224,7 @@ public static class Persistent
   public static void ReportIfReset()
   {
     if (!_alertReset) { return; }
+    _alertReset = false;
 
     var alert = Lang.Get("Interface.Alert.ConfigReset", Mod.Version);
     Report.Alert(alert);
