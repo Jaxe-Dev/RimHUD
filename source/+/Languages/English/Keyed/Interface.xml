@@ -11,6 +11,7 @@
   <RimHUD.Interface.Dialog_Config.Title>RimHUD</RimHUD.Interface.Dialog_Config.Title>
   <RimHUD.Interface.Dialog_Config.SetToDefault>Use default</RimHUD.Interface.Dialog_Config.SetToDefault>
   <RimHUD.Interface.Dialog_Config.OpenFolder>Config folder</RimHUD.Interface.Dialog_Config.OpenFolder>
+  <RimHUD.Interface.Dialog_Config.Modified>(Modified)</RimHUD.Interface.Dialog_Config.Modified>
 
   <RimHUD.Interface.Dialog_Config.Tab_Design>Design</RimHUD.Interface.Dialog_Config.Tab_Design>
 

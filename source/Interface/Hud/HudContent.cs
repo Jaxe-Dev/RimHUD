@@ -107,7 +107,7 @@ public static class HudContent
     HudWidget.FromRecordDef()
   ];
 
-  private static readonly HudWidget[] IntegratedWidgets =
+  private static readonly HudWidget[] ExternalWidgets =
   [
     HudWidget.FromCustomWidgetDef(),
     HudWidget.FromCustomValueDef(),
@@ -116,7 +116,8 @@ public static class HudContent
     HudWidget.FromCustomNeedDef()
   ];
 
-  private static readonly Dictionary<string, HudWidget> Widgets = CommonWidgets.Concat(BarWidgets).Concat(ValueWidgets).Concat(DefWidgets).Concat(IntegratedWidgets).ToDictionary(static entry => entry.Id, static entry => entry);
+  private static readonly Dictionary<string, HudWidget> Widgets = CommonWidgets.Concat(BarWidgets).Concat(ValueWidgets).Concat(DefWidgets).Concat(ExternalWidgets).ToDictionary(static entry => entry.Id, static entry => entry);
+  private static readonly Dictionary<string, HudWidget> WidgetsRequiringDef = DefWidgets.Concat(ExternalWidgets).ToDictionary(static entry => entry.Id, static entry => entry);
 
   public static readonly LayoutElement[] CommonElements = BuildElements(CommonWidgets).OrderBy(static entry => entry.Label).ToArray();
   public static readonly LayoutElement[] BarElements = BuildElements(BarWidgets).Concat(BuildElements<NeedDef>(NeedDefType)).OrderBy(static entry => entry.Label).ToArray();
@@ -127,7 +128,7 @@ public static class HudContent
   public static readonly LayoutElement[] ExternalElements = BuildExternalElements<CustomWidgetDef>(ExternalWidgetType).Concat(BuildExternalElements<CustomValueDef>(ExternalValueType)).Concat(BuildExternalElements<CustomBarDef>(ExternalBarType)).Concat(BuildExternalElements<CustomNeedDef>(ExternalNeedType)).OrderBy(static entry => entry.Label).ToArray();
 
   public static bool IsValidId(string id, string? defName) => Widgets.TryGetValue(id, out var widget) && widget!.DefNameIsValid(defName);
-
+  public static bool IsDefType(string id) => WidgetsRequiringDef.ContainsKey(id);
   public static bool IsExternalType(string id) => id is ExternalWidgetType or ExternalValueType or ExternalBarType or ExternalNeedType;
 
   public static IWidget GetWidget(string id, HudArgs args) => Widgets.TryGetValue(id, out var widget) && widget!.DefNameIsValid(args.DefName) ? widget.Build(args) : MissingWidget.Get(id, args);

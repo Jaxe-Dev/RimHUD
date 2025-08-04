@@ -52,6 +52,6 @@ public sealed class LayoutEditor
     if (Theme.DockedMode.Value) { LayoutLayer.Docked = updated; }
     else { LayoutLayer.Floating = updated; }
 
-    Presets.ClearCurrent();
+    Presets.Current = null;
   }
 }

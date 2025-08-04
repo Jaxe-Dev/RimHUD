@@ -56,7 +56,7 @@ public sealed class Dialog_Config : WindowPlus
 
   protected override void DrawContent(Rect rect)
   {
-    Subtitle = Presets.Current is null || Presets.Current.IsDefault ? null : Presets.Current.Label;
+    Subtitle = (Presets.Current is null ? Lang.Get("Interface.Dialog_Config.Modified").Colorize(Theme.CorePresetColor) : Presets.Current.IsDefault ? null : Presets.Current.Label)?.Bold();
 
     try
     {

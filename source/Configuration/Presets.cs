@@ -124,7 +124,10 @@ public static class Presets
   public static void Save(string name, XElement xml)
   {
     if (!UserPresetsDirectory.ExistsNow()) { UserPresetsDirectory.Create(); }
-    xml.Save(Path.Combine(UserPresetsDirectory.FullName, name + Extension));
+    var file = Path.Combine(UserPresetsDirectory.FullName, name + Extension);
+
+    xml.Save(file);
+    Persistent.EnsureFilenameCase(file);
   }
 
   public static void Delete(LayoutPreset preset)
@@ -158,11 +161,4 @@ public static class Presets
   public static void RefreshList() => UserList = GetUserList();
 
   public static bool IsValidFilename(string? name) => !name.NullOrWhitespace() && !name.Equals(LayoutPreset.DefaultName, StringComparison.OrdinalIgnoreCase) && name.Length <= Persistent.FilenameLengthMax - UserPresetsDirectory.FullName.Length && ValidFilenameRegex.IsMatch(name) && !CoreList.Concat(PackagedList).Any(preset => string.Equals(preset.Name, name, StringComparison.OrdinalIgnoreCase));
-
-  public static void ClearCurrent()
-  {
-    Current = null;
-    LayoutLayer.Docked.HasDefinedHeight = false;
-    LayoutLayer.Floating.HasDefinedHeight = false;
-  }
 }

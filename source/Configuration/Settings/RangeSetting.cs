@@ -12,7 +12,7 @@ public sealed class RangeSetting : ValueSetting
 
   [Setting(typeof(int))] public int Value { get => (int)Object; set => Object = Mathf.Clamp(value, Min, Max); }
 
-  public RangeSetting(int @default, int min, int max, string label, Func<int, string>? format = null, string? tooltip = null, Action<RangeSetting>? onChange = null, Func<RangeSetting, bool>? extraDefaultCheck = null) : base(@default, label, tooltip, setting => onChange?.Invoke((RangeSetting)setting), setting => extraDefaultCheck?.Invoke((RangeSetting)setting) ?? false)
+  public RangeSetting(int @default, int min, int max, string label, Func<int, string>? format = null, string? tooltip = null, Action<RangeSetting>? onChange = null, Func<RangeSetting, bool>? saveCheck = null, bool canIncludeInPreset = false) : base(@default, label, tooltip, ConvertOnChange(onChange), ConvertSaveCheck(saveCheck), canIncludeInPreset)
   {
     _format = format;
     Min = min;

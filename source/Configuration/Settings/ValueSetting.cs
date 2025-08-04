@@ -6,8 +6,7 @@ public abstract class ValueSetting : BaseSetting
 {
   protected readonly object Default;
 
-  private readonly Action<ValueSetting>? _onChange;
-  private readonly Func<BaseSetting, bool> _extraDefaultCheck;
+  private bool _initialized;
 
   private object _object;
   protected object Object
@@ -18,27 +17,29 @@ public abstract class ValueSetting : BaseSetting
       if (Equals(_object, value)) { return; }
 
       _object = value;
-      if (!Presets.IsLoading && !IsDefault()) { Presets.ClearCurrent(); }
-      _onChange?.Invoke(this);
+
+      if (!_initialized)
+      {
+        _initialized = true;
+        return;
+      }
+
+      OnChange();
     }
   }
 
   public string Label { get; }
   public string? Tooltip { get; }
 
-  protected ValueSetting(object @default, string label, string? tooltip, Action<ValueSetting>? onChange, Func<BaseSetting, bool> extraDefaultCheck)
+  protected ValueSetting(object @default, string label, string? tooltip, Action<BaseSetting>? onChange, Func<BaseSetting, bool>? saveCheck, bool canIncludeInPreset) : base(ConvertOnChange(onChange), ConvertSaveCheck(saveCheck), canIncludeInPreset)
   {
     Default = @default;
     Label = label;
     Tooltip = tooltip;
 
     _object = @default;
-    _onChange = onChange;
-    _extraDefaultCheck = extraDefaultCheck;
   }
 
   public override void ToDefault() => Object = Default;
-  public override bool IsDefault() => ExtraDefaultCheck() || Object.Equals(Default);
-
-  protected bool ExtraDefaultCheck() => _extraDefaultCheck.Invoke(this);
+  public override bool IsDefault() => Object.Equals(Default);
 }

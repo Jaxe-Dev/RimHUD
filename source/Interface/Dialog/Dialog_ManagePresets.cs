@@ -38,7 +38,10 @@ public sealed class Dialog_ManagePresets : WindowPlus
     foreach (var preset in Presets.UserList)
     {
       _selected ??= preset;
-      if (l.RadioButton(preset.Name, _selected == preset)) { _selected = preset; }
+      if (!l.RadioButton(preset.Name, _selected == preset)) { continue; }
+
+      _selected = preset;
+      Persistent.Save();
     }
 
     l.EndScrollView(ref _scrollView);
@@ -51,9 +54,11 @@ public sealed class Dialog_ManagePresets : WindowPlus
     {
       Dialog_Alert.Open(Lang.Get("Interface.Alert.ConfirmDelete", _selected!.Name), Dialog_Alert.Buttons.YesNo, () =>
       {
-        if (Presets.Current?.Name == _selected.Name) { Presets.ClearCurrent(); }
+        if (Presets.Current?.Name == _selected.Name) { Presets.Current = null; }
         Presets.Delete(_selected!);
         _selected = null;
+
+        Persistent.Save();
       });
     }
     if (WidgetsPlus.DrawButton(buttonGrid[2], Lang.Get("Interface.Button.Close"))) { Close(); }

@@ -39,9 +39,9 @@ public sealed class LayoutLayer : VStackLayer
 
   private Pawn? _lastPawn;
 
-  public bool HasDefinedHeight { get; set; }
-  public bool HasDefinedWidth { get; set; }
-  public bool HasDefinedTabs { get; set; }
+  public bool HasDefinedHeight { get; }
+  public bool HasDefinedWidth { get; }
+  public bool HasDefinedTabs { get; }
 
   private LayoutLayer(XElement xml) : base(xml)
   {

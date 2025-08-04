@@ -124,7 +124,7 @@ public static class Report
     public void CopyToClipboard() => GUIUtility.systemCopyBuffer = $"[[RimHUD v{Mod.Version} Auto-deactivation report]]\n" + $"{(_externalModInvolved is null ? null : $"({TriggerMod} '{_externalModInvolved}')\n\n")}" + $"{Message}\n\nStacktrace:\n{Trace}";
   }
 
-  public class Exception : System.Exception
+  public sealed class Exception : System.Exception
   {
     public Exception(string message) : base(message)
     { }

@@ -11,14 +11,13 @@ public sealed class Mod : Verse.Mod
 {
   public const string Id = "RimHUD";
   public const string Name = Id;
-  public const string Version = "1.17.3";
+  public const string Version = "1.17.4";
 
   public const string MinConfigVersion = "1.17.0";
 
   public const string WorkshopLink = "https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027";
 
   private static Mod? _instance;
-
   public static bool DevMode { get; set; }
   public static ModContentPack ContentPack => _instance!.Content;
 

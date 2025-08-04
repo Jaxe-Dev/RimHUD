@@ -51,8 +51,12 @@ public static class Credits
 
     l.Gap();
 
+    var hasEntry = false;
     foreach (var group in _groups.Where(static group => group.Entries.Length > 0 || group.Special))
     {
+      if (hasEntry) { l.Gap(); }
+      hasEntry = true;
+
       l.Label(group.Label);
       l.Gap(GenUI.GapTiny);
 
@@ -65,8 +69,6 @@ public static class Credits
         }
       }
       else { l.Label("(None)".ColorizeHex("888888")); }
-
-      l.Gap();
     }
 
     l.Gap();

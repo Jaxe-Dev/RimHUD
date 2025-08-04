@@ -133,13 +133,6 @@ public static class Persistent
 
   public static void Save()
   {
-    SaveXml();
-
-    Presets.Save();
-  }
-
-  private static void SaveXml()
-  {
     var doc = new XDocument();
 
     var xml = SaveSettings(typeof(Theme), ConfigRootName);
@@ -152,6 +145,8 @@ public static class Persistent
     doc.Add(xml);
 
     doc.Save(ConfigFile.FullName);
+
+    Presets.Save();
   }
 
   private static XElement SaveSettings(Type type, string? name)
@@ -186,7 +181,7 @@ public static class Persistent
       if (attribute.Type is not null) { element.Value = attribute.ConvertToXml(propertyValue); }
       else
       {
-        if (propertyValue is BaseSetting setting && setting.IsDefault()) { continue; }
+        if (propertyValue is BaseSetting setting && setting.IsSaved()) { continue; }
 
         SaveElements(propertyValue, element);
       }
@@ -201,6 +196,15 @@ public static class Persistent
     }
 
     if (categories.Count > 0) { xml.Add(categories.Values); }
+  }
+
+  public static void EnsureFilenameCase(string file)
+  {
+    if (!File.Exists(file)) { return; }
+
+    var temp = file + "_TEMP";
+    File.Move(file, temp);
+    File.Move(temp, file);
   }
 
   public static void Reset(bool initializationStage = false)

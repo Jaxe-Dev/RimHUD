@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Xml.Linq;
 using RimHUD.Engine;
 using RimHUD.Interface.Hud.Layout;
@@ -29,7 +30,8 @@ public sealed class WidgetLayer : BaseLayer
 
     if (HudContent.IsValidId(id, args.DefName)) { return new WidgetLayer(id, args); }
 
-    Report.ErrorOnce((args.DefName is null ? $"Invalid id '{id}'" : $"Invalid id '{id}' with def '{args.DefName}'") + ". It is recommended to reset your config to default.");
+    var root = xml.Ancestors().FirstOrDefault(element => element.Parent == xml.Document?.Root)?.Name;
+    Report.ErrorOnce((root is null ? $"Invalid id '{id}'" : $"Layer '{root}' has invalid id '{id}'") + (args.DefName is null ? null : $" with def '{args.DefName}'") + ". It is recommended to reset your config to default.");
 
     args.Targets = LayerTarget.All;
 

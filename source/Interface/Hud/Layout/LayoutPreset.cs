@@ -32,6 +32,8 @@ public sealed class LayoutPreset
   public string Label => Name.Colorize(GetColor());
   public string FullLabel => $"{Name} [{(Source ?? Lang.Get("Layout.UserPreset")).SmallSize()}]".Colorize(GetColor());
 
+  private string? _version;
+
   public bool HasDefinedTextStyles { get; private set; }
   public bool IsDefault => File is null;
   public bool IsCore { get; }
@@ -88,14 +90,13 @@ public sealed class LayoutPreset
     var preset = new LayoutPreset(file, name, source) { HasDefinedTextStyles = !xml.GetAttribute(TextSizesAttributeName).NullOrWhitespace() };
     if (isIntegrated) { return preset; }
 
-    var versionText = xml.GetAttribute(VersionAttributeName);
-    if (versionText is null)
+    var version = xml.GetAttribute(VersionAttributeName);
+    if (version is null)
     {
       Report.Warning($"{name} {source} is does not contain a version check.");
       return preset;
     }
-    var version = new Version(versionText);
-    if (new Version(Mod.Version).ComparePartial(version) is 1) { Report.Warning($"{name} {source} was built for an older version of {Mod.Name} ({versionText})."); }
+    preset._version = version;
 
     return preset;
   }
@@ -121,6 +122,12 @@ public sealed class LayoutPreset
     {
       Report.Error($"Unable to load preset '{FullLabel}'.");
       return false;
+    }
+
+    if (_version is not null)
+    {
+      var version = new Version(_version);
+      if (new Version(Mod.Version).ComparePartial(version) is 1) { Report.Warning($"{Name} {Source} was built for an older version of {Mod.Name} ({_version})."); }
     }
 
     Presets.Current = this;

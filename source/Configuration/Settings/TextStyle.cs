@@ -19,11 +19,9 @@ public sealed class TextStyle : BaseSetting
   [Setting("Size")] public RangeSetting Size { get; }
   [Setting("Line")] public RangeSetting Height { get; }
 
-  private readonly Action<TextStyle>? _onChange;
-  private readonly Func<TextStyle, bool>? _extraDefaultCheck;
   public float LineHeight { get; private set; }
 
-  public TextStyle(string? label, TextStyle? baseTextStyle, int size, int sizeMin, int sizeMax, int height, int heightMin, int heightMax, Action<TextStyle>? onChange = null, Func<TextStyle, bool>? extraDefaultCheck = null)
+  public TextStyle(string? label, TextStyle? baseTextStyle, int size, int sizeMin, int sizeMax, int height, int heightMin, int heightMax, Action<TextStyle>? onChange = null, Func<TextStyle, bool>? saveCheck = null, bool canIncludeInPreset = false) : base(ConvertOnChange(onChange), ConvertSaveCheck(saveCheck), canIncludeInPreset)
   {
     _baseTextStyle = baseTextStyle;
 
@@ -32,24 +30,23 @@ public sealed class TextStyle : BaseSetting
     Size = new RangeSetting(size, sizeMin, sizeMax, Lang.Get("Theme.TextStyle.Size"), value => _baseTextStyle is null ? value.ToString() : value.ToStringWithSign(), onChange: _ => UpdateStyle());
     Height = new RangeSetting(height, heightMin, heightMax, Lang.Get("Theme.TextStyle.Height"), static value => $"{value}%", onChange: _ => UpdateStyle());
 
+    IsUpdating = true;
     UpdateStyle();
-
-    _onChange = onChange;
-    _extraDefaultCheck = extraDefaultCheck;
+    IsUpdating = false;
   }
 
   public static void SetFromString(string? value)
   {
     Presets.IsLoading = true;
-
     Theme.RegularTextStyle.Size.ToDefault();
     Theme.RegularTextStyle.Height.ToDefault();
     Theme.LargeTextStyle.Size.ToDefault();
     Theme.LargeTextStyle.Height.ToDefault();
     Theme.SmallTextStyle.Size.ToDefault();
     Theme.SmallTextStyle.Height.ToDefault();
-
     Presets.IsLoading = false;
+
+    Theme.RegularTextStyle.UpdateStyle();
 
     if (value.NullOrWhitespace()) { return; }
 
@@ -57,15 +54,15 @@ public sealed class TextStyle : BaseSetting
     if (split?.Length is not 6) { return; }
 
     Presets.IsLoading = true;
-
     Theme.RegularTextStyle.Size.Value = split[0].ToInt() ?? Theme.RegularTextStyle.Size.Value;
     Theme.RegularTextStyle.Height.Value = split[1].ToInt() ?? Theme.RegularTextStyle.Height.Value;
     Theme.LargeTextStyle.Size.Value = split[2].ToInt() ?? Theme.LargeTextStyle.Size.Value;
     Theme.LargeTextStyle.Height.Value = split[3].ToInt() ?? Theme.LargeTextStyle.Height.Value;
     Theme.SmallTextStyle.Size.Value = split[4].ToInt() ?? Theme.SmallTextStyle.Size.Value;
     Theme.SmallTextStyle.Height.Value = split[5].ToInt() ?? Theme.SmallTextStyle.Height.Value;
-
     Presets.IsLoading = false;
+
+    Theme.RegularTextStyle.UpdateStyle();
   }
 
   public static string GetSizesString() => $"{Theme.RegularTextStyle.Size.Value}|{Theme.RegularTextStyle.Height.Value}|{Theme.LargeTextStyle.Size.Value}|{Theme.LargeTextStyle.Height.Value}|{Theme.SmallTextStyle.Size.Value}|{Theme.SmallTextStyle.Height.Value}";
@@ -76,14 +73,13 @@ public sealed class TextStyle : BaseSetting
     Height.ToDefault();
   }
 
-  public override bool IsDefault() => _extraDefaultCheck?.Invoke(this) ?? (Size.IsDefault() && Height.IsDefault());
+  public override bool IsDefault() => Size.IsDefault() && Height.IsDefault();
 
   public void UpdateStyle()
   {
     GUIStyle = _baseTextStyle?.GUIStyle.ResizedBy(Size.Value) ?? Theme.BaseGUIStyle.SetTo(Size.Value);
     LineHeight = GUIStyle.lineHeight * Height.Value.ToPercentageFloat();
 
-    if (!Presets.IsLoading && !IsDefault()) { Presets.ClearCurrent(); }
-    _onChange?.Invoke(this);
+    OnChange();
   }
 }

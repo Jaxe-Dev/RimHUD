@@ -44,23 +44,23 @@ public static class Theme
 
   [Setting("InspectPane", "Modify")] public static BoolSetting InspectPaneTabModify { get; } = new(true, Lang.Get("Theme.InspectPaneModify"), Lang.Get("Theme.InspectPaneModifyDesc"), EnsureHudNotHidden);
   [Setting("InspectPane", "AddLog")] public static BoolSetting InspectPaneTabAddLog { get; } = new(true, Lang.Get("Theme.InspectPaneAddLog"), Lang.Get("Theme.InspectPaneAddLogDesc"));
-  [Setting("InspectPane", "Height")] public static RangeSetting InspectPaneHeight { get; } = new(232, 165, 800, Lang.Get("Theme.InspectPaneHeight"), onChange: static _ => LayoutLayer.Docked.HasDefinedHeight = false, extraDefaultCheck: static _ => LayoutLayer.Docked.HasDefinedHeight);
-  [Setting("InspectPane", "MinTabs")] public static RangeSetting InspectPaneMinTabs { get; } = new(7, 6, 12, Lang.Get("Theme.InspectPaneMinTabs"), onChange: static _ => LayoutLayer.Floating.HasDefinedTabs = false, extraDefaultCheck: static _ => LayoutLayer.Floating.HasDefinedTabs);
-  [Setting("InspectPane", "TabWidth")] public static RangeSetting InspectPaneTabWidth { get; } = new(85, 72, 150, Lang.Get("Theme.InspectPaneTabWidth"));
+  [Setting("InspectPane", "Height")] public static RangeSetting InspectPaneHeight { get; } = new(232, 165, 800, Lang.Get("Theme.InspectPaneHeight"), saveCheck: static _ => LayoutLayer.Docked.HasDefinedHeight, canIncludeInPreset: true);
+  [Setting("InspectPane", "MinTabs")] public static RangeSetting InspectPaneMinTabs { get; } = new(7, 6, 12, Lang.Get("Theme.InspectPaneMinTabs"), saveCheck: static _ => LayoutLayer.Floating.HasDefinedTabs, canIncludeInPreset: true);
+  [Setting("InspectPane", "TabWidth")] public static RangeSetting InspectPaneTabWidth { get; } = new(85, 72, 150, Lang.Get("Theme.InspectPaneTabWidth"), saveCheck: static _ => LayoutLayer.Floating.HasDefinedWidth, canIncludeInPreset: true);
   [Setting("InspectPane", "ShowFactionIcon")] public static BoolSetting ShowFactionIcon { get; } = new(true, Lang.Get("Theme.ShowFactionIcon"));
   [Setting("InspectPane", "ShowIdeoligionIcon")] public static BoolSetting ShowIdeoligionIcon { get; } = new(true, Lang.Get("Theme.ShowIdeoligionIcon"));
 
   [Setting("Floating", "Anchor")] public static RangeSetting FloatingAnchor { get; } = new(2, 0, 8, Lang.Get("Theme.FloatingAnchor"), static value => Lang.GetIndexed("Theme.FloatingAnchors", value), onChange: static _ => SetOffsetBounds());
   [Setting("Floating", "OffsetX")] public static RangeSetting FloatingOffsetX { get; } = new(0, -Screen.width, Screen.width, Lang.Get("Theme.FloatingOffsetX"));
   [Setting("Floating", "OffsetY")] public static RangeSetting FloatingOffsetY { get; } = new(0, -Screen.height, Screen.height, Lang.Get("Theme.FloatingOffsetY"));
-  [Setting("Floating", "Width")] public static RangeSetting FloatingWidth { get; } = new(320, 100, 1000, Lang.Get("Theme.FloatingWidth"), onChange: static _ => LayoutLayer.Floating.HasDefinedWidth = false, extraDefaultCheck: static _ => LayoutLayer.Floating.HasDefinedWidth);
-  [Setting("Floating", "Height")] public static RangeSetting FloatingHeight { get; } = new(416, 100, 1000, Lang.Get("Theme.FloatingHeight"), onChange: static _ => LayoutLayer.Floating.HasDefinedHeight = false, extraDefaultCheck: static _ => LayoutLayer.Floating.HasDefinedHeight);
+  [Setting("Floating", "Width")] public static RangeSetting FloatingWidth { get; } = new(320, 100, 1000, Lang.Get("Theme.FloatingWidth"), saveCheck: static _ => LayoutLayer.Floating.HasDefinedWidth, canIncludeInPreset: true);
+  [Setting("Floating", "Height")] public static RangeSetting FloatingHeight { get; } = new(416, 100, 1000, Lang.Get("Theme.FloatingHeight"), saveCheck: static _ => LayoutLayer.Floating.HasDefinedHeight, canIncludeInPreset: true);
   [Setting("Floating", "LetterPadding")] public static RangeSetting LetterPadding { get; } = new(4, 0, 12, Lang.Get("Theme.LetterPadding"), tooltip: Lang.Get("Theme.LetterPaddingDesc"));
   [Setting("Floating", "LetterCompress")] public static BoolSetting LetterCompress { get; } = new(true, Lang.Get("Theme.LetterCompress"), Lang.Get("Theme.LetterCompressDesc"));
 
-  [Setting("Text", "Regular")] public static TextStyle RegularTextStyle { get; } = new(Lang.Get("Theme.TextStyleRegular"), null, DefaultBaseFontSize, 7, 20, 100, 100, 250, static _ => UpdateTextStyles(), static _ => Presets.Current?.HasDefinedTextStyles ?? false);
-  [Setting("Text", "Large")] public static TextStyle LargeTextStyle { get; } = new(Lang.Get("Theme.TextStyleLarge"), RegularTextStyle, 9, 0, 24, 100, 100, 250, extraDefaultCheck: static _ => Presets.Current?.HasDefinedTextStyles ?? false);
-  [Setting("Text", "Small")] public static TextStyle SmallTextStyle { get; } = new(Lang.Get("Theme.TextStyleSmall"), RegularTextStyle, -1, -5, 0, 100, 100, 250, extraDefaultCheck: static _ => Presets.Current?.HasDefinedTextStyles ?? false);
+  [Setting("Text", "Regular")] public static TextStyle RegularTextStyle { get; } = new(Lang.Get("Theme.TextStyleRegular"), null, DefaultBaseFontSize, 7, 20, 100, 100, 250, static _ => UpdateTextStyles(), static _ => Presets.Current?.HasDefinedTextStyles ?? false, true);
+  [Setting("Text", "Large")] public static TextStyle LargeTextStyle { get; } = new(Lang.Get("Theme.TextStyleLarge"), RegularTextStyle, 9, 0, 24, 100, 100, 250, saveCheck: static _ => Presets.Current?.HasDefinedTextStyles ?? false, canIncludeInPreset: true);
+  [Setting("Text", "Small")] public static TextStyle SmallTextStyle { get; } = new(Lang.Get("Theme.TextStyleSmall"), RegularTextStyle, -1, -5, 0, 100, 100, 250, saveCheck: static _ => Presets.Current?.HasDefinedTextStyles ?? false, canIncludeInPreset: true);
   [Setting("Text", "LabelWidth")] public static RangeSetting LabelWidth { get; } = new(95, 30, 150, Lang.Get("Theme.LabelWidth"));
   [Setting("Text", "ValueWidth")] public static RangeSetting ValueWidth { get; } = new(40, 30, 150, Lang.Get("Theme.ValueWidth"));
   [Setting("Text", "ShowDecimals")] public static BoolSetting ShowDecimals { get; } = new(true, Lang.Get("Theme.ShowDecimals"));
@@ -69,8 +69,8 @@ public static class Theme
 
   [Setting("Colors", "MainText")] public static ColorSetting MainTextColor { get; } = new(Color.white, Lang.Get("Theme.MainTextColor"));
   [Setting("Colors", "Disabled")] public static ColorSetting DisabledColor { get; } = new(new Color(0.5f, 0.5f, 0.5f), Lang.Get("Theme.DisabledColor"));
-  [Setting("Colors", "Critical")] public static ColorSetting CriticalColor { get; } = new(ColorLibrary.RedReadable, Lang.Get("Theme.CriticalColor"), extraDefaultCheck: static setting => setting.Value.ToHex().Equals("D46F68FF", StringComparison.OrdinalIgnoreCase)); // TEMPORARY
-  [Setting("Colors", "Warning")] public static ColorSetting WarningColor { get; } = new(new Color(1f, 0.9f, 0.1f), Lang.Get("Theme.WarningColor"), extraDefaultCheck: static setting => setting.Value.ToHex().Equals("FF0000FF", StringComparison.OrdinalIgnoreCase));         // TEMPORARY
+  [Setting("Colors", "Critical")] public static ColorSetting CriticalColor { get; } = new(ColorLibrary.RedReadable, Lang.Get("Theme.CriticalColor"), saveCheck: static setting => setting.Value.ToHex().Equals("D46F68FF", StringComparison.OrdinalIgnoreCase)); // TEMPORARY
+  [Setting("Colors", "Warning")] public static ColorSetting WarningColor { get; } = new(new Color(1f, 0.9f, 0.1f), Lang.Get("Theme.WarningColor"), saveCheck: static setting => setting.Value.ToHex().Equals("FF0000FF", StringComparison.OrdinalIgnoreCase));   // TEMPORARY
   [Setting("Colors", "Info")] public static ColorSetting InfoColor { get; } = new(ColoredText.SubtleGrayColor, Lang.Get("Theme.InfoColor"));
   [Setting("Colors", "Good")] public static ColorSetting GoodColor { get; } = new(new Color(0.4f, 0.8f, 0.8f), Lang.Get("Theme.GoodColor"));
   [Setting("Colors", "Excellent")] public static ColorSetting ExcellentColor { get; } = new(new Color(0.4f, 0.8f, 0.2f), Lang.Get("Theme.ExcellentColor"));
@@ -166,6 +166,6 @@ public static class Theme
     LargeTextStyle.ToDefault();
     SmallTextStyle.ToDefault();
 
-    Presets.ClearCurrent();
+    Presets.Current = null;
   }
 }
