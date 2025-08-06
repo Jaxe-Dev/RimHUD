@@ -18,7 +18,7 @@ public sealed class OutfitSelector : SelectorModel
   {
     if (!Active.Pawn.IsPlayerFaction() || Active.Pawn.outfits?.CurrentApparelPolicy is null) { return; }
 
-    Label = Lang.Get("Model.Selector.OutfitFormat", Active.Pawn.outfits?.CurrentApparelPolicy.label!);
+    Label = Lang.Get("Model.Selector.OutfitFormat").WithValue(Active.Pawn.outfits?.CurrentApparelPolicy.label!);
 
     OnClick = DrawFloatMenu;
   }

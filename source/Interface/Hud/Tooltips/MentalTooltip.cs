@@ -27,7 +27,7 @@ public static class MentalTooltip
         < 0 => Theme.WarningColor.Value,
         >= 10 => Theme.ExcellentColor.Value,
         > 0 => Theme.GoodColor.Value,
-        _ => Theme.InfoColor.Value
+        _ => Theme.NeutralColor.Value
       };
 
       var similar = new List<Thought>();

@@ -12,11 +12,11 @@
       </Panel>
       <Panel>
         <Row>
-          <Outfit Targets="H" />
           <Food Targets="HC" />
+          <Timetable Targets="H" />
         </Row>
         <Row>
-          <Timetable Targets="H" />
+          <Outfit Targets="H" />
           <Area Targets="HC" />
         </Row>
       </Panel>
@@ -123,7 +123,7 @@
         <Row Targets="C">
           <TrainingAttackTarget />
         </Row>
-        <Row>
+        <Row Targets="Cc">
           <CompInfo />
         </Row>
       </Panel>
@@ -152,7 +152,7 @@
       </Panel>
     </HStack>
   </Docked>
-  <Floating Height="416">
+  <Floating>
     <Panel FillHeight="true">
       <Row>
         <NameHeader />
@@ -170,11 +170,11 @@
         <Separator />
       </Row>
       <Row>
-        <Outfit Targets="H" />
         <Food Targets="HC" />
+        <Timetable Targets="H" />
       </Row>
       <Row>
-        <Timetable Targets="H" />
+        <Outfit Targets="H" />
         <Area Targets="HC" />
       </Row>
       <Row Targets="HC">
@@ -276,7 +276,7 @@
       <Row Targets="C">
         <TrainingAttackTarget />
       </Row>
-      <Row>
+      <Row Targets="Cc">
         <CompInfo />
       </Row>
     </Panel>

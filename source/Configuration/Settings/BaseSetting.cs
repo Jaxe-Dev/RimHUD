@@ -10,7 +10,8 @@ public abstract class BaseSetting
 
   private readonly Action<BaseSetting>? _onChange;
   private readonly Func<BaseSetting, bool>? _saveCheck;
-  private readonly bool _canIncludeInPreset;
+
+  public readonly bool CanIncludeInPreset;
 
   protected bool IsUpdating;
 
@@ -18,7 +19,7 @@ public abstract class BaseSetting
   {
     _onChange = onChange;
     _saveCheck = saveCheck;
-    _canIncludeInPreset = canIncludeInPreset;
+    CanIncludeInPreset = canIncludeInPreset;
   }
 
   protected static Action<BaseSetting>? ConvertOnChange<T>(Action<T>? action) where T : BaseSetting => action is null ? null : setting => action.Invoke((T)setting);
@@ -37,7 +38,7 @@ public abstract class BaseSetting
   {
     if (IsUpdating || Presets.IsLoading) { return; }
 
-    if (_canIncludeInPreset && !IsSaved()) { Presets.Current = null; }
+    if (CanIncludeInPreset) { Presets.Current = null; }
 
     _onChange?.Invoke(this);
   }

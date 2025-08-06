@@ -46,7 +46,7 @@ public sealed class Tab_ConfigColors : Tab
     l.ColorSettingSelect(Theme.DisabledColor, ref _selected);
     l.ColorSettingSelect(Theme.CriticalColor, ref _selected);
     l.ColorSettingSelect(Theme.WarningColor, ref _selected);
-    l.ColorSettingSelect(Theme.InfoColor, ref _selected);
+    l.ColorSettingSelect(Theme.NeutralColor, ref _selected);
     l.ColorSettingSelect(Theme.GoodColor, ref _selected);
     l.ColorSettingSelect(Theme.ExcellentColor, ref _selected);
     l.ColorSettingSelect(Theme.BarBackgroundColor, ref _selected);

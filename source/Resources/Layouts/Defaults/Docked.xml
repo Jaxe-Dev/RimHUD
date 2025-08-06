@@ -11,11 +11,11 @@
     </Panel>
     <Panel>
       <Row>
-        <Outfit Targets="H" />
         <Food Targets="HC" />
+        <Timetable Targets="H" />
       </Row>
       <Row>
-        <Timetable Targets="H" />
+        <Outfit Targets="H" />
         <Area Targets="HC" />
       </Row>
     </Panel>
@@ -122,7 +122,7 @@
       <Row Targets="C">
         <TrainingAttackTarget />
       </Row>
-      <Row>
+      <Row Targets="Cc">
         <CompInfo />
       </Row>
     </Panel>

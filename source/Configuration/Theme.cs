@@ -67,11 +67,11 @@ public static class Theme
 
   [Setting("Colors", "Line")] public static ColorSetting LineColor { get; } = new(new Color(0.8f, 0.8f, 0.8f, 0.4f), Lang.Get("Theme.LineColor"));
 
-  [Setting("Colors", "MainText")] public static ColorSetting MainTextColor { get; } = new(Color.white, Lang.Get("Theme.MainTextColor"));
+  [Setting("Colors", "Main")] public static ColorSetting MainTextColor { get; } = new(Color.white, Lang.Get("Theme.MainColor"));
   [Setting("Colors", "Disabled")] public static ColorSetting DisabledColor { get; } = new(new Color(0.5f, 0.5f, 0.5f), Lang.Get("Theme.DisabledColor"));
   [Setting("Colors", "Critical")] public static ColorSetting CriticalColor { get; } = new(ColorLibrary.RedReadable, Lang.Get("Theme.CriticalColor"), saveCheck: static setting => setting.Value.ToHex().Equals("D46F68FF", StringComparison.OrdinalIgnoreCase)); // TEMPORARY
   [Setting("Colors", "Warning")] public static ColorSetting WarningColor { get; } = new(new Color(1f, 0.9f, 0.1f), Lang.Get("Theme.WarningColor"), saveCheck: static setting => setting.Value.ToHex().Equals("FF0000FF", StringComparison.OrdinalIgnoreCase));   // TEMPORARY
-  [Setting("Colors", "Info")] public static ColorSetting InfoColor { get; } = new(ColoredText.SubtleGrayColor, Lang.Get("Theme.InfoColor"));
+  [Setting("Colors", "Neutral")] public static ColorSetting NeutralColor { get; } = new(new Color(0.65f, 0.65f, 0.65f), Lang.Get("Theme.NeutralColor"));
   [Setting("Colors", "Good")] public static ColorSetting GoodColor { get; } = new(new Color(0.4f, 0.8f, 0.8f), Lang.Get("Theme.GoodColor"));
   [Setting("Colors", "Excellent")] public static ColorSetting ExcellentColor { get; } = new(new Color(0.4f, 0.8f, 0.2f), Lang.Get("Theme.ExcellentColor"));
 
@@ -98,7 +98,7 @@ public static class Theme
 
   private static Font GetCurrentFontStyle() => Text.CurFontStyle!.font;
 
-  private static void UpdateTextStyles()
+  public static void UpdateTextStyles()
   {
     SmallTextStyle.UpdateStyle();
     LargeTextStyle.UpdateStyle();
@@ -153,7 +153,7 @@ public static class Theme
     Tab_ConfigContent.RefreshEditor();
   }
 
-  public static void SetDefault()
+  public static void SetDefaultForPreset()
   {
     InspectPaneTabWidth.ToDefault();
     InspectPaneMinTabs.ToDefault();
@@ -165,7 +165,7 @@ public static class Theme
     RegularTextStyle.ToDefault();
     LargeTextStyle.ToDefault();
     SmallTextStyle.ToDefault();
-
-    Presets.Current = null;
   }
+
+  public static bool IsDefaultForPreset() => LayoutLayer.IsAllDefault() && SettingAttribute.GetAll(typeof(Theme)).Where(static settings => settings.CanIncludeInPreset).All(static settings => settings.IsDefault());
 }

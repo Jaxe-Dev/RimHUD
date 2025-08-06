@@ -77,7 +77,7 @@ public sealed class Dialog_Config : WindowPlus
       else if (WidgetsPlus.DrawButton(hGrid[2], Lang.Get("Interface.Dialog_Config.OpenFolder"))) { Persistent.OpenConfigFolder(); }
       else if (WidgetsPlus.DrawButton(hGrid[3], Lang.Get("Interface.Button.Close"))) { Close(); }
 
-      WidgetsPlus.DrawText(grid[2], $"Version {Mod.Version}{(Prefs.DevMode && Mod.DevMode ? " [DEV MODE - Shift+Click to disable]".Colorize(Color.yellow) : Lang.HasKey("Language.TranslatedBy") ? " " + Lang.Get("Language.TranslatedBy").Colorize(Theme.InfoColor.Value) : null)}", Theme.TinyUITextStyle, alignment: TextAnchor.LowerRight);
+      WidgetsPlus.DrawText(grid[2], $"Version {Mod.Version}{(Prefs.DevMode && Mod.DevMode ? " [DEV MODE - Shift+Click to disable]".Colorize(Color.yellow) : Lang.HasKey("Language.TranslatedBy") ? " " + Lang.Get("Language.TranslatedBy").Colorize(ColoredText.SubtleGrayColor) : null)}", Theme.TinyUITextStyle, alignment: TextAnchor.LowerRight);
 
       if (!Event.current!.shift || !Widgets.ButtonInvisible(grid[2]) || !Prefs.DevMode) { return; }
 

@@ -128,9 +128,9 @@ public sealed class Tab_ConfigContent : Tab
       return;
     }
 
-    if (canAddContainer && l.ButtonText(Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddStack"), Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddStackDesc"))) { ShowLayoutElementFloatMenu(StackLayer.LayoutElements); }
-    if (canAddContainer && l.ButtonText(Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddPanel"), Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddPanelDesc"))) { _editor.Add(PanelLayer.LayoutElement); }
-    if (canAddRow && l.ButtonText(Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddRow"), Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddRowDesc")))
+    if (canAddContainer && l.ButtonText(Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddStack"), static () => Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddStackDesc"))) { ShowLayoutElementFloatMenu(StackLayer.LayoutElements); }
+    if (canAddContainer && l.ButtonText(Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddPanel"), static () => Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddPanelDesc"))) { _editor.Add(PanelLayer.LayoutElement); }
+    if (canAddRow && l.ButtonText(Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddRow"), static () => Lang.Get("Interface.Dialog_Config.Tab_Content.Layer.AddRowDesc")))
     {
       if (_editor.Selected!.Type is LayoutElementType.Row) { _editor.AddSibling(RowLayer.LayoutElement); }
       else { _editor.Add(RowLayer.LayoutElement, true); }

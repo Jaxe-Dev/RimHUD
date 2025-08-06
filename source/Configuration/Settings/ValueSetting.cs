@@ -6,7 +6,7 @@ public abstract class ValueSetting : BaseSetting
 {
   protected readonly object Default;
 
-  private bool _initialized;
+  private readonly bool _initialized;
 
   private object _object;
   protected object Object
@@ -18,11 +18,7 @@ public abstract class ValueSetting : BaseSetting
 
       _object = value;
 
-      if (!_initialized)
-      {
-        _initialized = true;
-        return;
-      }
+      if (!_initialized || Presets.IsLoading) { return; }
 
       OnChange();
     }
@@ -38,6 +34,7 @@ public abstract class ValueSetting : BaseSetting
     Tooltip = tooltip;
 
     _object = @default;
+    _initialized = true;
   }
 
   public override void ToDefault() => Object = Default;

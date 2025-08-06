@@ -9,6 +9,8 @@ public abstract class ContainerLayer<T>(XElement xml) : BaseLayer(xml)
 {
   protected abstract T[] Children { get; }
 
+  public override bool IsVisible() => Children.Length > 0 && IsTarget();
+
   public override void Flush() => Children.Do(static item => item.Flush());
 
   public override LayoutElement GetLayoutItem(LayoutEditor editor, LayoutElement? parent) => new(this, editor, parent, Children);

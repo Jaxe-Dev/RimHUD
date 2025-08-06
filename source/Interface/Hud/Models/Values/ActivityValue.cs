@@ -14,7 +14,7 @@ namespace RimHUD.Interface.Hud.Models.Values;
 
 public sealed class ActivityValue : ValueModel
 {
-  protected override string Value { get; } = GetValue();
+  protected override string? Value { get; } = GetValue();
 
   protected override Func<string?> Tooltip { get; } = GetTooltip;
 
@@ -22,7 +22,7 @@ public sealed class ActivityValue : ValueModel
 
   protected override TextStyle TextStyle => Theme.SmallTextStyle;
 
-  private static string GetValue()
+  private static string? GetValue()
   {
     var hasJob = Active.Pawn.CurJobDef is not null;
     var lord = hasJob ? Active.Pawn.GetLord()?.LordJob?.GetReport(Active.Pawn)?.CapitalizeFirst() : null;
@@ -31,8 +31,7 @@ public sealed class ActivityValue : ValueModel
     var target = Active.Pawn.IsAttacking() ? Active.Pawn.TargetCurrentlyAimingAt.Thing?.LabelShortCap : null;
 
     var activity = target is null ? lord.NullOrWhitespace() ? jobText : $"{lord} ({jobText})" : Lang.Get("Model.Info.Attacking", target);
-
-    return activity is null ? string.Empty : Lang.Get("Model.Info.Activity", activity.Bold());
+    return activity is null ? string.Empty : Lang.Get("Model.Info.Activity").WithValue(activity.Bold());
   }
 
   private static string? GetTooltip()
@@ -43,9 +42,9 @@ public sealed class ActivityValue : ValueModel
     var label = work.labelShort.CapitalizeFirst();
 
     var builder = new StringBuilder();
-    builder.AppendLine(Lang.Get("Model.Info.Activity.WorkType", label));
+    builder.AppendValue(Lang.Get("Model.Info.Activity.WorkType"), label);
 
-    if (work.relevantSkills is { } relevantSkills) { builder.AppendLine(Lang.Get("Model.Info.Activity.RelevantSkills", relevantSkills.Select(static skill => skill.LabelCap.ToString()).ToCommaList())); }
+    if (work.relevantSkills is { } relevantSkills) { builder.AppendValue(Lang.Get("Model.Info.Activity.RelevantSkills"), relevantSkills.Select(static skill => skill.LabelCap.ToString()).ToCommaList()); }
 
     return builder.ToStringTrimmedOrNull();
   }

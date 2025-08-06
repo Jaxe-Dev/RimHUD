@@ -38,7 +38,7 @@ public sealed class PanelLayer : ContainerLayer<RowLayer>
 
   public override float Prepare()
   {
-    if (Children.Length is 0 || !IsTargetted()) { return 0f; }
+    if (!IsVisible()) { return 0f; }
 
     var list = new List<float>(Children.Length);
     var totalHeight = 0f;
@@ -55,7 +55,7 @@ public sealed class PanelLayer : ContainerLayer<RowLayer>
 
   public override bool Draw(Rect rect)
   {
-    if (Children.Length is 0 || _heights is null) { return false; }
+    if (!IsVisible() || _heights is null) { return false; }
 
     var grid = rect.GetVGrid(LayoutLayer.Padding, _heights.Where(static height => height > 0f).ToArray());
     var gridIndex = 1;

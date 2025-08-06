@@ -12,7 +12,7 @@ namespace RimHUD.Interface.Hud.Models.Values;
 
 public sealed class GenderRaceAndAgeValue : ValueModel
 {
-  protected override string Value { get; }
+  protected override string? Value { get; }
 
   protected override Func<string?> Tooltip { get; }
 
@@ -32,10 +32,9 @@ public sealed class GenderRaceAndAgeValue : ValueModel
   private static string? GetRace()
   {
     if (Active.Pawn.IsMutant && Active.Pawn.mutant?.Def is not null) { return Active.Pawn.mutant.Def.label; }
-    if (!ModsConfig.IdeologyActive || !Active.Pawn.IsHumanlike()) { return Active.Pawn.kindDef?.race?.label; }
-    var race = Active.Pawn.Ideo?.memberName ?? Active.Pawn.kindDef?.race?.label;
-
-    return race?.Trim();
+    if (!Active.Pawn.IsHumanlike()) { return Active.Pawn.kindDef?.race?.label; }
+    if (ModsConfig.BiotechActive && Active.Pawn.genes is not null) { return Active.Pawn.genes.XenotypeLabel; }
+    return (Active.Pawn.Ideo?.memberName ?? Active.Pawn.kindDef?.race?.label)?.Trim();
   }
 
   private string GetValue()

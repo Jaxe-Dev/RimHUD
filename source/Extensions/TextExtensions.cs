@@ -22,6 +22,7 @@ public static class TextExtensions
 
   public static string? WithDefault(this string? self, string? @default) => self.NullOrWhitespace() ? @default : self;
   public static string? WithValue(this string? self, string? value) => self.NullOrWhitespace() || value.NullOrWhitespace() ? null : $"{self}: {value}";
+  public static string? WithTipValue(this string? self, string? value) => self.NullOrWhitespace() || value.NullOrWhitespace() ? null : $"{self.Colorize(ColoredText.TipSectionTitleColor)}: {value}";
 
   public static string ToStringTrimmed(this StringBuilder self) => self.ToString().TrimEndNewlines()!.Trim();
   public static string? ToStringTrimmedOrNull(this StringBuilder self) => self.Length > 0 ? self.ToStringTrimmed() : null;
@@ -48,7 +49,7 @@ public static class TextExtensions
 
   public static void AppendValue(this StringBuilder self, string? label, string? value)
   {
-    if (!label.NullOrWhitespace() && !value.NullOrWhitespace()) { self.AppendLine(label.WithValue(value)); }
+    if (!label.NullOrWhitespace() && !value.NullOrWhitespace()) { self.AppendLine(label.WithTipValue(value)); }
   }
 
   public static void AppendStatLine(this StringBuilder self, StatDef def)

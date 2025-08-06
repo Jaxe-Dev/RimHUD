@@ -29,8 +29,7 @@ public sealed class SelectorWidget : StandardWidget
 
     if (Mouse.IsOver(rect))
     {
-      var border = rect.ContractedBy(-1f);
-      Verse.Widgets.DrawBox(border);
+      Verse.Widgets.DrawBox(rect.ExpandedBy(1f));
       _onHover?.Invoke();
     }
 

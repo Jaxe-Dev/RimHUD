@@ -33,7 +33,7 @@ public static class HealthTooltip
 
     Color color;
     if (!hediff.def!.isBad) { color = Theme.GoodColor.Value; }
-    else if (hediff.IsPermanent() || hediff.FullyImmune()) { color = Theme.InfoColor.Value; }
+    else if (hediff.IsPermanent() || hediff.FullyImmune()) { color = Theme.NeutralColor.Value; }
     else if (hediff.def.IsAddiction || hediff.IsTended()) { color = Theme.WarningColor.Value; }
     else { color = Theme.CriticalColor.Value; }
 

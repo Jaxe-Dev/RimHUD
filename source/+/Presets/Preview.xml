@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Preset TextSizes="12|100|9|100|-1|100">
-  <Docked Height="220">
+<Preset>
+  <Docked>
     <HStack>
       <Panel>
         <Row>
@@ -123,6 +123,9 @@
         <Row Targets="C">
           <TrainingAttackTarget />
         </Row>
+        <Row Targets="Hh">
+          <Traits />
+        </Row>
         <Row Targets="Cc">
           <CompInfo />
         </Row>
@@ -152,7 +155,7 @@
       </Panel>
     </HStack>
   </Docked>
-  <Floating Height="396">
+  <Floating>
     <Panel FillHeight="true">
       <Row>
         <NameHeader />
@@ -275,6 +278,9 @@
       </Row>
       <Row Targets="C">
         <TrainingAttackTarget />
+      </Row>
+      <Row Targets="Hh">
+        <Traits />
       </Row>
       <Row Targets="Cc">
         <CompInfo />

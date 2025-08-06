@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using LudeonTK;
 using UnityEngine;
 using Verse;
 
@@ -48,8 +49,8 @@ public static class GUIExtensions
       for (var column = 0; column < widths.Length; column++)
       {
         var w = columns[column];
-        var cell = new Rect(x, y, w, rows[row]);
-        grid[index++] = w <= 0f || rows[row] <= 0f ? new Rect(0, 0, 0, 0) : cell;
+        var cell = UIScaling.AdjustRectToUIScaling(new Rect(x, y, w, rows[row]));
+        grid[index++] = w <= 0f || rows[row] <= 0f ? Rect.zero : cell;
         x += w + (w > 0f ? padding : 0f);
       }
       y += rows[row] + (rows[row] > 0f ? padding : 0f);

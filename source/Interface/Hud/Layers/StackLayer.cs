@@ -41,4 +41,6 @@ public abstract class StackLayer : ContainerLayer<BaseLayer>
 
     Children = children.ToArray();
   }
+
+  public override bool IsVisible() => Children.Length > 0 && IsTarget();
 }

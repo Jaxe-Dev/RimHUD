@@ -39,6 +39,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="+\Legacy\**" />
+    <EmbeddedResource Remove="+\Legacy\**" />
+    <None Remove="+\Legacy\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Resources\Layouts\Defaults\Docked.xml" />
     <EmbeddedResource Include="Resources\Layouts\Defaults\Floating.xml" />
   </ItemGroup>

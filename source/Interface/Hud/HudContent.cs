@@ -33,10 +33,10 @@ public static class HudContent
 
     HudWidget.FromModel<NameHeaderValue>("NameHeader"),
 
-    HudWidget.FromModel<OutfitSelector>("Outfit"),
     HudWidget.FromEitherModel<Mod_PawnRules.RulesSelector, FoodSelector>("Food", Mod_PawnRules.IsAvailable),
-    HudWidget.FromModel<TimetableSelector>("Timetable"),
+    HudWidget.FromModel<OutfitSelector>("Outfit"),
     HudWidget.FromModel<AreaSelector>("Area"),
+    HudWidget.FromModel<TimetableSelector>("Timetable"),
 
     HudWidget.FromModel<RelationKindAndFactionValue>("RelationKindAndFaction"),
     HudWidget.FromModel<GenderRaceAndAgeValue>("GenderRaceAndAge"),
@@ -50,6 +50,7 @@ public static class HudContent
     HudWidget.FromModel<QueuedValue>("Queued"),
     HudWidget.FromModel<EquippedValue>("Equipped"),
     HudWidget.FromModel<CarryingValue>("Carrying"),
+    HudWidget.FromModel<TraitsValue>("Traits"),
     HudWidget.FromModel<CompInfoValue>("CompInfo"),
     HudWidget.FromModel<PrisonerInfoValue>("PrisonerInfo")
   ];

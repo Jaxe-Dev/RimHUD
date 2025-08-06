@@ -1,7 +1,7 @@
 using System;
 using RimHUD.Configuration;
 using RimHUD.Configuration.Settings;
-using RimHUD.Engine;
+using RimHUD.Extensions;
 using RimHUD.Interface.Hud.Tooltips;
 using RimHUD.Interface.Screen;
 using RimWorld;
@@ -24,10 +24,9 @@ public sealed class AnimalMasterValue : ValueModel
     var master = Active.Pawn.playerSettings?.Master;
     if (master is null) { return; }
 
-    var masterName = master.LabelShort;
     var relation = Active.Pawn.GetMostImportantRelation(master)?.LabelCap;
 
-    var text = Lang.Get("Model.Bio.Master", masterName);
+    var text = "Master".TranslateSimple().WithValue(master.LabelShort);
 
     Value = relation is null ? text : text.Colorize(Theme.SkillMinorPassionColor.Value);
 

@@ -22,7 +22,7 @@ public sealed class TimetableSelector : SelectorModel
   {
     if (!Active.Pawn.IsPlayerFaction() || Active.Pawn.timetable?.CurrentAssignment is null) { return; }
 
-    Label = Lang.Get("Model.Selector.TimetableFormat", Active.Pawn.timetable.CurrentAssignment.LabelCap);
+    Label = Lang.Get("Model.Selector.TimetableFormat").WithValue(Active.Pawn.timetable.CurrentAssignment.LabelCap);
 
     var assignment = Active.Pawn.timetable.CurrentAssignment;
     Color = assignment == TimeAssignmentDefOf.Anything ? null : assignment.color;

@@ -81,7 +81,6 @@ public static class Persistent
     LoadElements(root, typeof(Theme));
 
     var preset = root.Element(PresetElementName)?.Value;
-
     if (preset is null) { Presets.LoadSavedOrDefault(); }
     else { Presets.Load(preset); }
 

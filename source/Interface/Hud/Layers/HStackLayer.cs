@@ -16,7 +16,7 @@ public sealed class HStackLayer : StackLayer
 
   public override float Prepare()
   {
-    if (Children.Length is 0 || !IsTargetted()) { return 0f; }
+    if (!IsVisible()) { return 0f; }
 
     var maxHeight = Children.Select(static container => container.Prepare()).Max();
     return Args.FillHeight ? -1f : maxHeight;
@@ -24,7 +24,7 @@ public sealed class HStackLayer : StackLayer
 
   public override bool Draw(Rect rect)
   {
-    if (Children.Length is 0) { return false; }
+    if (!IsVisible()) { return false; }
 
     var grid = rect.GetHGrid(LayoutLayer.Padding, Enumerable.Repeat(-1f, Children.Length).ToArray());
     var index = 1;

@@ -19,7 +19,7 @@ public static class Lang
     }
   }
 
-  public static string GetIndexed(string key, int index) => Get(key).Split('|')?[index] ?? "";
+  public static string GetIndexed(string key, int index) => Get(key).Split('|')?[index] ?? string.Empty;
 
   public static string AdjectiveNoun(string? adjective, string? noun) => Get("Language.AdjectiveNounOrder", adjective, noun).Trim();
 }

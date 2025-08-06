@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using RimHUD.Extensions;
 using RimHUD.Interface;
 using UnityEngine;
@@ -26,6 +29,8 @@ public sealed class SettingAttribute : Attribute
     Label = label;
     Type = type;
   }
+
+  public static IEnumerable<BaseSetting> GetAll(Type type) => type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic).Where(static propertyInfo => propertyInfo.GetCustomAttribute<SettingAttribute>() is not null).Select(static propertyInfo => propertyInfo.GetValue(null)).Cast<BaseSetting>();
 
   public string? ConvertToXml(object value)
   {

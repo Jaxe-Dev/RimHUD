@@ -26,7 +26,7 @@ public sealed class RowLayer : ContainerLayer<WidgetLayer>
   public override float Prepare()
   {
     _visible = false;
-    if (Children.Length is 0 || !IsTargetted()) { return 0f; }
+    if (!IsVisible()) { return 0f; }
 
     var maxHeight = 0f;
     foreach (var child in Children)
@@ -44,7 +44,7 @@ public sealed class RowLayer : ContainerLayer<WidgetLayer>
 
   public override bool Draw(Rect rect)
   {
-    if (!_visible || Children.Length is 0) { return false; }
+    if (!_visible || !IsVisible()) { return false; }
 
     var grid = rect.GetHGrid(GUIPlus.MediumPadding, Enumerable.Repeat(-1f, Children.Length).ToArray());
 

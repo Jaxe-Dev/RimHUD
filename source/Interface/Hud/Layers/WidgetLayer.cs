@@ -58,7 +58,7 @@ public sealed class WidgetLayer : BaseLayer
   public void Build()
   {
     var widget = HudContent.GetWidget(Id, Args);
-    Widget = IsTargetted() ? widget : new BlankWidget(widget.GetMaxHeight);
+    Widget = IsTarget() ? widget : new BlankWidget(widget.GetMaxHeight);
   }
 
   public override void Flush() => Widget = null;

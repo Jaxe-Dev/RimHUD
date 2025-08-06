@@ -9,7 +9,7 @@ namespace RimHUD.Interface.Hud.Models.Values;
 
 public sealed class NameHeaderValue : ValueModel
 {
-  protected override string Value { get; } = Active.Name.Colorize(Active.FactionRelationColor);
+  protected override string? Value { get; } = Active.Name.Colorize(Active.FactionRelationColor);
 
   protected override Func<string?> Tooltip { get; } = BioTooltip.Get;
 

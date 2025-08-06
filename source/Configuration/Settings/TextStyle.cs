@@ -27,11 +27,13 @@ public sealed class TextStyle : BaseSetting
 
     Label = label;
 
+    IsUpdating = true;
+
     Size = new RangeSetting(size, sizeMin, sizeMax, Lang.Get("Theme.TextStyle.Size"), value => _baseTextStyle is null ? value.ToString() : value.ToStringWithSign(), onChange: _ => UpdateStyle());
     Height = new RangeSetting(height, heightMin, heightMax, Lang.Get("Theme.TextStyle.Height"), static value => $"{value}%", onChange: _ => UpdateStyle());
 
-    IsUpdating = true;
     UpdateStyle();
+
     IsUpdating = false;
   }
 
@@ -44,9 +46,9 @@ public sealed class TextStyle : BaseSetting
     Theme.LargeTextStyle.Height.ToDefault();
     Theme.SmallTextStyle.Size.ToDefault();
     Theme.SmallTextStyle.Height.ToDefault();
-    Presets.IsLoading = false;
-
     Theme.RegularTextStyle.UpdateStyle();
+    Theme.UpdateTextStyles();
+    Presets.IsLoading = false;
 
     if (value.NullOrWhitespace()) { return; }
 
@@ -60,9 +62,9 @@ public sealed class TextStyle : BaseSetting
     Theme.LargeTextStyle.Height.Value = split[3].ToInt() ?? Theme.LargeTextStyle.Height.Value;
     Theme.SmallTextStyle.Size.Value = split[4].ToInt() ?? Theme.SmallTextStyle.Size.Value;
     Theme.SmallTextStyle.Height.Value = split[5].ToInt() ?? Theme.SmallTextStyle.Height.Value;
-    Presets.IsLoading = false;
-
     Theme.RegularTextStyle.UpdateStyle();
+    Theme.UpdateTextStyles();
+    Presets.IsLoading = false;
   }
 
   public static string GetSizesString() => $"{Theme.RegularTextStyle.Size.Value}|{Theme.RegularTextStyle.Height.Value}|{Theme.LargeTextStyle.Size.Value}|{Theme.LargeTextStyle.Height.Value}|{Theme.SmallTextStyle.Size.Value}|{Theme.SmallTextStyle.Height.Value}";

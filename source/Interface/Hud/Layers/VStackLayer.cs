@@ -18,7 +18,7 @@ public class VStackLayer : StackLayer
 
   public override float Prepare()
   {
-    if (Children.Length is 0 || !IsTargetted()) { return 0f; }
+    if (!IsVisible()) { return 0f; }
 
     var list = new List<float>();
     var totalFixedHeight = 0f;
@@ -38,7 +38,7 @@ public class VStackLayer : StackLayer
 
   public override bool Draw(Rect rect)
   {
-    if (Children.Length is 0 || _heights is null || !IsTargetted()) { return false; }
+    if (!IsVisible() || _heights is null) { return false; }
 
     var grid = rect.GetVGrid(LayoutLayer.Padding, _heights);
     var index = 1;

@@ -38,7 +38,7 @@ public sealed class HealthConditionValue : ValueModel
 
   private static string? GetValue()
   {
-    if (Active.Pawn.Dead) { return Lang.Get("Model.Health.Dead").Colorize(Theme.InfoColor.Value); }
+    if (Active.Pawn.Dead) { return "Dead".TranslateSimple().Colorize(Theme.CriticalColor.Value); }
 
     var bleeding = new List<Hediff>();
     var untended = new List<Hediff>();
@@ -115,5 +115,5 @@ public sealed class HealthConditionValue : ValueModel
     return text.Colorize(Theme.WarningColor.Value);
   }
 
-  private static string? GetIncapacitatedWarning() => Active.Pawn.health!.Downed ? Lang.Get("Model.Health.Incapacitated").Colorize(Theme.WarningColor.Value) : null;
+  private static string? GetIncapacitatedWarning() => Active.Pawn.health!.Downed ? "Incapacitated".TranslateSimple().Colorize(Theme.WarningColor.Value) : null;
 }

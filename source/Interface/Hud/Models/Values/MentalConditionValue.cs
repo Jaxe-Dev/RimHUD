@@ -49,7 +49,7 @@ public sealed class MentalConditionValue : ValueModel
     {
       > MoodExcellentLevel => Lang.Get("Model.Mood.Excellent").Colorize(Theme.ExcellentColor.Value),
       > MoodGoodLevel => Lang.Get("Model.Mood.Good").Colorize(Theme.GoodColor.Value),
-      _ => Lang.Get("Model.Mood.Neutral").Colorize(Theme.InfoColor.Value)
+      _ => Lang.Get("Model.Mood.Neutral").Colorize(Theme.NeutralColor.Value)
     };
   }
 

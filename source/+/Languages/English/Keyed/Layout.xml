@@ -17,14 +17,13 @@
   <RimHUD.Layout.Blank>Blank</RimHUD.Layout.Blank>
   <RimHUD.Layout.Separator>Line separator</RimHUD.Layout.Separator>
   <RimHUD.Layout.NameHeader>Name as header</RimHUD.Layout.NameHeader>
-  <RimHUD.Layout.Outfit>Outfit selector</RimHUD.Layout.Outfit>
   <RimHUD.Layout.Food>Food selector</RimHUD.Layout.Food>
+  <RimHUD.Layout.Outfit>Outfit selector</RimHUD.Layout.Outfit>
   <RimHUD.Layout.Rules>Rules selector</RimHUD.Layout.Rules>
-  <RimHUD.Layout.Timetable>Timetable selector</RimHUD.Layout.Timetable>
   <RimHUD.Layout.Area>Area selector</RimHUD.Layout.Area>
+  <RimHUD.Layout.Timetable>Timetable selector</RimHUD.Layout.Timetable>
   <RimHUD.Layout.RelationKindAndFaction>Relation, kind and faction</RimHUD.Layout.RelationKindAndFaction>
   <RimHUD.Layout.GenderRaceAndAge>Gender, race and age</RimHUD.Layout.GenderRaceAndAge>
-  <RimHUD.Layout.SimpleGenderRaceAndAge>Simple gender, race and age</RimHUD.Layout.SimpleGenderRaceAndAge>
   <RimHUD.Layout.Health>Health bar</RimHUD.Layout.Health>
   <RimHUD.Layout.HealthCondition>Health condition</RimHUD.Layout.HealthCondition>
   <RimHUD.Layout.MentalCondition>Mental condition</RimHUD.Layout.MentalCondition>
@@ -75,6 +74,7 @@
   <RimHUD.Layout.Queued>Queued</RimHUD.Layout.Queued>
   <RimHUD.Layout.Equipped>Equipped</RimHUD.Layout.Equipped>
   <RimHUD.Layout.Carrying>Carrying</RimHUD.Layout.Carrying>
+  <RimHUD.Layout.Traits>Traits</RimHUD.Layout.Traits>
   <RimHUD.Layout.CompInfo>Component information</RimHUD.Layout.CompInfo>
   <RimHUD.Layout.PrisonerInfo>Prisoner information</RimHUD.Layout.PrisonerInfo>
 

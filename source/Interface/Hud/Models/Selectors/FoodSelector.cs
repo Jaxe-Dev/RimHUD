@@ -18,7 +18,7 @@ public sealed class FoodSelector : SelectorModel
   {
     if (!Active.Pawn.IsPlayerManaged() || Active.Pawn.foodRestriction?.CurrentFoodPolicy is null || !Active.Pawn.foodRestriction.Configurable) { return; }
 
-    Label = Lang.Get("Model.Selector.FoodFormat", Active.Pawn.foodRestriction.CurrentFoodPolicy.label);
+    Label = Lang.Get("Model.Selector.FoodFormat").WithValue(Active.Pawn.foodRestriction.CurrentFoodPolicy.label);
 
     OnClick = DrawFloatMenu;
   }

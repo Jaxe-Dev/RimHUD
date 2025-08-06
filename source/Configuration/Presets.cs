@@ -26,7 +26,8 @@ public static class Presets
   public static readonly string[] CoreNames =
   [
     "Compact",
-    "Classic"
+    "Classic",
+    "Preview"
   ];
 
   static Presets()
@@ -77,13 +78,13 @@ public static class Presets
 
   public static void LoadSavedOrDefault(bool reset = false)
   {
-    Current = reset ? LayoutPreset.Default : null;
-
     var docked = new FileInfo(Path.Combine(Persistent.ConfigDirectory.FullName, LayoutLayer.DockedFileName));
     var floating = new FileInfo(Path.Combine(Persistent.ConfigDirectory.FullName, LayoutLayer.FloatingFileName));
 
     LayoutLayer.Docked = TryLoadSaved(reset, docked, LayoutLayer.DefaultDocked);
     LayoutLayer.Floating = TryLoadSaved(reset, floating, LayoutLayer.DefaultFloating);
+
+    Current = reset || Theme.IsDefaultForPreset() ? LayoutPreset.Default : null;
   }
 
   private static LayoutLayer TryLoadSaved(bool reset, FileInfo file, LayoutLayer @default)

@@ -1,6 +1,4 @@
 using System;
-using RimHUD.Configuration;
-using RimHUD.Configuration.Settings;
 using RimHUD.Engine;
 using RimHUD.Extensions;
 using RimHUD.Interface.Hud.Tooltips;
@@ -12,13 +10,11 @@ namespace RimHUD.Interface.Hud.Models.Values;
 
 public sealed class RelationKindAndFactionValue : ValueModel
 {
-  protected override string Value { get; } = GetValue();
+  protected override string? Value { get; } = GetValue();
 
   protected override Func<string?> Tooltip { get; } = BioTooltip.Get;
 
   protected override Action OnClick { get; } = InspectPaneTabs.ToggleBio;
-
-  protected override TextStyle TextStyle => Theme.SmallTextStyle;
 
   private static string GetValue() => Lang.Get("Model.RelationKindAndFaction", Lang.AdjectiveNoun(GetRelation(), GetKind()), GetFaction()).Trim().CapitalizeFirst().Colorize(Active.FactionRelationColor);
 

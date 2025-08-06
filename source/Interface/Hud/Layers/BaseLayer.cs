@@ -27,7 +27,9 @@ public abstract class BaseLayer
 
   protected BaseLayer(HudArgs args) => Args = args;
 
+  public virtual bool IsVisible() => true;
+
   public XElement ToXml() => Args.ToXml(StartXml());
 
-  protected bool IsTargetted() => Args.Targets.HasTarget(Active.Target);
+  protected bool IsTarget() => Args.Targets.HasTarget(Active.Target);
 }

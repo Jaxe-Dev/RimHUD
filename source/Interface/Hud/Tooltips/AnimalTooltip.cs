@@ -16,20 +16,24 @@ public static class AnimalTooltip
     if (Active.Pawn.RaceProps is not null)
     {
       var trainability = Active.Pawn.RaceProps.trainability?.LabelCap;
-      if (trainability is not null) { builder.AppendLine(Lang.Get("Model.Bio.Trainability", trainability)); }
+      if (trainability is not null) { builder.AppendValue(Lang.Get("Model.Bio.Trainability"), trainability); }
 
-      builder.AppendLine($"{"TrainingDecayInterval".TranslateSimple()}: {TrainableUtility.DegradationPeriodTicks(Active.Pawn.def).ToStringTicksToDays()}");
-      if (!TrainableUtility.TamenessCanDecay(Active.Pawn.def)) { builder.AppendLine("TamenessWillNotDecay".TranslateSimple()); }
+      builder.AppendValue("TrainingDecayInterval".TranslateSimple(), TrainableUtility.DegradationPeriodTicks(Active.Pawn.def).ToStringTicksToDays());
+      if (!TrainableUtility.TamenessCanDecay(Active.Pawn.def))
+      {
+        builder.AppendLine("TamenessWillNotDecay".TranslateSimple().Colorize(ColoredText.SubtleGrayColor));
+        builder.AppendLine();
+      }
 
-      builder.AppendLine(Lang.Get("Model.Bio.Petness", Active.Pawn.RaceProps.petness.ToStringPercent()));
-      builder.AppendLine(Lang.Get("Model.Bio.Diet", Active.Pawn.RaceProps.ResolvedDietCategory.ToStringHuman()));
+      builder.AppendValue(Lang.Get("Model.Bio.Petness"), Active.Pawn.RaceProps.petness.ToStringPercent());
+      builder.AppendValue("Diet".TranslateSimple(), Active.Pawn.RaceProps.ResolvedDietCategory.ToStringHuman());
     }
 
     var master = Active.Pawn.playerSettings?.Master?.LabelShort;
     if (!master.NullOrWhitespace())
     {
       builder.AppendLine();
-      builder.AppendLine(Lang.Get("Model.Bio.Master", master));
+      builder.AppendValue("Master".TranslateSimple(), master);
     }
 
     if (def is null) { return builder.ToStringTrimmed(); }

@@ -37,11 +37,7 @@ public static class LayerTargetUtility
     return value.Length > 0 ? value.ToString() : null;
   }
 
-  public static bool HasTarget(this LayerTarget self, LayerTarget target)
-  {
-    var targettedInt = (int)target;
-    return ((int)self & targettedInt) == targettedInt;
-  }
+  public static bool HasTarget(this LayerTarget self, LayerTarget target) => ((int)self & (int)target) == (int)target;
 
   private static string? GetId(this LayerTarget self)
   {

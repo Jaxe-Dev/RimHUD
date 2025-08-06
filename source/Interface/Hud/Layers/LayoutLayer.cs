@@ -116,13 +116,15 @@ public sealed class LayoutLayer : VStackLayer
     Docked = DefaultDocked;
     Floating = DefaultFloating;
 
-    Theme.SetDefault();
+    Theme.SetDefaultForPreset();
 
     Presets.Current = LayoutPreset.Default;
 
     Persistent.Save();
     Presets.Save();
   }
+
+  public static bool IsAllDefault() => Docked == DefaultDocked && Floating == DefaultFloating;
 
   public static XElement ToEmptyXml() => new(RootName);
 
